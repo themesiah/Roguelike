@@ -1,0 +1,155 @@
+﻿using NUnit.Framework;
+using Laresistance.Battle;
+using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.TestTools;
+using UnityEngine;
+
+namespace Laresistance.Tests {
+    public class Battle_Damage_Tests
+    {
+        private BattleAbility GetAbilityByIndex(int i)
+        {
+            float cooldown = 0f;
+            List<BattleEffect> effects = new List<BattleEffect>();
+
+            switch(i)
+            {
+                case 0:
+                    effects.Add(new BattleEffectDamage(10));
+                    cooldown = 1f;
+                    break;
+                case 1:
+                    effects.Add(new BattleEffectHeal(10));
+                    cooldown = 1f;
+                    break;
+                case 2:
+                    effects.Add(new BattleEffectShield(10));
+                    cooldown = 1f;
+                    break;
+                case 3:
+                    effects.Add(new BattleEffectShield(5));
+                    cooldown = 1f;
+                    break;
+            }
+
+            BattleAbility ability = new BattleAbility(effects, cooldown);
+            return ability;
+        }
+
+        private BattleStatusManager GetStatusManager(int health)
+        {
+            return new BattleStatusManager(new CharacterHealth(health));
+        }
+
+        [UnityTest]
+        public IEnumerator TestSetup()
+        {
+            yield return new WaitForSeconds(1.1f);
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDamage()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDamageTwiceWithoutWaiting()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDamageTwiceWithWaiting()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            yield return new WaitForSeconds(1.1f);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(80, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDamageAndHealing()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            var ability2 = GetAbilityByIndex(1);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            yield return ability2.ExecuteAbility(enemy, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(100, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_HealingMoreThanMax()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            var ability = GetAbilityByIndex(1);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { player }, 1);
+            Assert.AreEqual(100, player.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDamageWithShield()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            var ability2 = GetAbilityByIndex(2);
+            yield return ability2.ExecuteAbility(enemy, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(100, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDamageAfterShield()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            var ability2 = GetAbilityByIndex(2);
+            yield return ability2.ExecuteAbility(enemy, new BattleStatusManager[] { enemy }, 1);
+            yield return new WaitForSeconds(0.6f);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator When_DealingDoubleDamageWithSmallShield()
+        {
+            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager enemy = GetStatusManager(100);
+            var ability = GetAbilityByIndex(0);
+            var ability2 = GetAbilityByIndex(0);
+            var ability3 = GetAbilityByIndex(3);
+            yield return ability3.ExecuteAbility(enemy, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            yield return ability2.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
+            Assert.AreEqual(85, enemy.health.GetCurrentHealth());
+            yield return null;
+        }
+    }
+}
