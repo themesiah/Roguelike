@@ -34,18 +34,13 @@ namespace Laresistance.Tests {
             }
 
             BattleAbility ability = new BattleAbility(effects, cooldown);
+            ability.Tick(1.1f);
             return ability;
         }
 
         private BattleStatusManager GetStatusManager(int health)
         {
             return new BattleStatusManager(new CharacterHealth(health));
-        }
-
-        [UnityTest]
-        public IEnumerator TestSetup()
-        {
-            yield return new WaitForSeconds(1.1f);
         }
 
         [UnityTest]
@@ -80,7 +75,7 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
-            yield return new WaitForSeconds(1.1f);
+            ability.Tick(1.1f);
             yield return ability.ExecuteAbility(player, new BattleStatusManager[] { enemy }, 1);
             Assert.AreEqual(80, enemy.health.GetCurrentHealth());
             yield return null;

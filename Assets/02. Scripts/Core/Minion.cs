@@ -1,4 +1,5 @@
 ﻿using Laresistance.Battle;
+using System.Collections;
 
 namespace Laresistance.Core
 {
@@ -27,5 +28,12 @@ namespace Laresistance.Core
         {
             return player.EquipMinion(this);
         }
+
+        public IEnumerator ExecuteAbility(BattleStatusManager user, BattleStatusManager[] enemies)
+        {
+            yield return ability.ExecuteAbility(user, enemies, Level);
+        }
+
+        public BattleAbility[] Abilities => new BattleAbility[] { ability };
     } 
 }

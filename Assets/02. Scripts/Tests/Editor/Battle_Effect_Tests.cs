@@ -12,7 +12,7 @@ namespace Laresistance.Tests
         {
             int power = 5;
             BattleEffectDamage effect = new BattleEffectDamage(power);
-            Assert.AreEqual(power, effect.GetPower(BASE_LEVEL));
+            Assert.AreEqual(power, effect.GetPower(BASE_LEVEL, null));
         }
 
         [Test]
@@ -20,8 +20,8 @@ namespace Laresistance.Tests
         {
             int power = 5;
             BattleEffectDamage effect = new BattleEffectDamage(power);
-            Assert.Catch(()=> { effect.GetPower(0); });
-            Assert.Catch(()=> { effect.GetPower(-1); });
+            Assert.Catch(()=> { effect.GetPower(0, null); });
+            Assert.Catch(()=> { effect.GetPower(-1, null); });
         }
 
         [Test]
@@ -29,10 +29,10 @@ namespace Laresistance.Tests
         {
             int power = 5;
             BattleEffectDamage effect = new BattleEffectDamage(power);
-            Assert.AreEqual(6, effect.GetPower(2));
-            Assert.AreEqual(6, effect.GetPower(3));
-            Assert.AreEqual(7, effect.GetPower(4));
-            Assert.AreEqual(7, effect.GetPower(5));
+            Assert.AreEqual(6, effect.GetPower(2, null));
+            Assert.AreEqual(6, effect.GetPower(3, null));
+            Assert.AreEqual(7, effect.GetPower(4, null));
+            Assert.AreEqual(7, effect.GetPower(5, null));
         }
     }
 }

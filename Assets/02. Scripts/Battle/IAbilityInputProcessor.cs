@@ -2,6 +2,6 @@
 {
     public interface IAbilityInputProcessor
     {
-        int GetAbilityToExecute(BattleStatusManager battleStatus);
+        int GetAbilityToExecute(BattleStatusManager battleStatus, float delta);
     }
 }

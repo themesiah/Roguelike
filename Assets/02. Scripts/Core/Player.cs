@@ -9,15 +9,22 @@
         private Minion[] minions;
         private Equipment[] equipments;
         private Consumable[] consumables;
+        private EquipmentEvents equipmentEvents = null;
 
         public Player()
         {
             minions = new Minion[MAX_MINIONS];
             equipments = new Equipment[MAX_EQUIPS];
             consumables = new Consumable[MAX_CONSUMABLES];
+            InitEquipmentEvents();
         }
 
         #region Minions
+        public Minion[] GetMinions()
+        {
+            return minions;
+        }
+
         public int EquippedMinionsQuantity {
             get {
                 int minionQuantity = 0;
@@ -79,6 +86,11 @@
         #endregion
 
         #region Equipments
+        public EquipmentEvents GetEquipmentEvents()
+        {
+            return equipmentEvents;
+        }
+
         public int EquippedEquipmentsQuantity
         {
             get
@@ -95,11 +107,20 @@
             }
         }
 
+        private void InitEquipmentEvents()
+        {
+            if (equipmentEvents == null)
+            {
+                equipmentEvents = new EquipmentEvents();
+            }
+        }
+
         public bool EquipEquipment(Equipment equipment)
         {
             if (equipment == null || equipment.Slot == -1 || equipments[equipment.Slot] != null)
                 throw new System.Exception("Can't equip. Equipment does not exist, or invalid slot");
             equipments[equipment.Slot] = equipment;
+            equipment.EquipEquipment();
             return true;
         }
 
@@ -108,6 +129,7 @@
             if (equipment == null || equipment.Slot == -1 || equipments[equipment.Slot] != equipment)
                 throw new System.Exception("Can't unequip. Equipment does not exist, or invalid slot");
             equipments[equipment.Slot] = null;
+            equipment.UnequipEquipment();
             return true;
         }
         #endregion

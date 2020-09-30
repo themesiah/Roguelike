@@ -14,10 +14,11 @@ namespace Laresistance.Battle
             this.level = level;
         }
 
-        public int GetAbilityToExecute(BattleStatusManager battleStatus)
+        public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
         {
             for(int i = 0; i < abilities.Length; ++i)
             {
+                abilities[i].Tick(delta * battleStatus.GetSpeedModifier());
                 if (abilities[i].CanBeUsed())
                 {
                     return i;

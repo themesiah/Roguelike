@@ -1,29 +1,46 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using System.Collections;
+using Laresistance.Core;
 
 namespace Laresistance.Battle
 {
     public class BattleAbility
     {
         private static int MAX_EFFECTS = 2;
-        public float Cooldown { get; private set; }
+        private float cooldown;
         private List<BattleEffect> effects = default;
-        private float lastExecution = 0f;
+        private float timer = 0f;
+        private EquipmentEvents equipmentEvents;
 
-        public BattleAbility(List<BattleEffect> effectsToSet, float cooldown)
+        public delegate void OnAbilityTimerChangedHandler(float currentTimer, float cooldown, float percent);
+        public event OnAbilityTimerChangedHandler OnAbilityTimerChanged;
+
+        public BattleAbility(List<BattleEffect> effectsToSet, float cooldown, EquipmentEvents equipmentEvents = null)
         {
             if (effectsToSet.Count > MAX_EFFECTS)
                 throw new System.Exception("Abilities can only have up to " + MAX_EFFECTS + " effects");
             effects = effectsToSet;
-            Cooldown = cooldown;
+            this.cooldown = cooldown;
+            this.equipmentEvents = equipmentEvents;
+        }
+
+        public BattleAbility Copy()
+        {
+            BattleAbility ba = new BattleAbility(effects, GetCooldown(), equipmentEvents);
+            return ba;
         }
 
         public int GetEffectPower(int index, int level)
         {
             if (index > effects.Count - 1 || index < 0)
                 throw new System.Exception("Invalid index for effect power");
-            return effects[index].GetPower(level);
+            return effects[index].GetPower(level, equipmentEvents);
+        }
+
+        public void Tick(float deltaTime)
+        {
+            timer += deltaTime;
+            OnAbilityTimerChanged?.Invoke(timer, cooldown, timer / cooldown);
         }
 
         public IEnumerator ExecuteAbility(BattleStatusManager user, BattleStatusManager[] targets, int level)
@@ -32,16 +49,23 @@ namespace Laresistance.Battle
             {
                 foreach (var effect in effects)
                 {
-                    effect.PerformEffect(user, targets, level);
+                    effect.PerformEffect(user, targets, level, equipmentEvents);
                 }
-                lastExecution = Time.time;
+                timer = 0f;
             }
             yield return null;
         }
 
         public bool CanBeUsed()
         {
-            return Time.time > lastExecution + Cooldown;
+            return timer >= GetCooldown();
+        }
+
+        public float GetCooldown()
+        {
+            float temp = cooldown;
+            equipmentEvents?.InvokeOnGetCooldown(ref temp);
+            return temp;
         }
     }
 }
