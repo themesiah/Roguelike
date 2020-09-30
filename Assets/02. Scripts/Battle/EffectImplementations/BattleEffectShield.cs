@@ -11,7 +11,7 @@ namespace Laresistance.Battle
 
         }
 
-        public override EffectType EffectType => EffectType.Heal;
+        public override EffectType EffectType => EffectType.Shield;
 
         public override int GetPower(int level, EquipmentEvents equipmentEvents)
         {
