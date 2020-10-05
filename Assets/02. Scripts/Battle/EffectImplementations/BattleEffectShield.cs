@@ -6,7 +6,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectShield : BattleEffect
     {
-        public BattleEffectShield(int power) : base(power)
+        public BattleEffectShield(int power, EffectTargetType targetType) : base(power, targetType)
         {
 
         }
@@ -21,9 +21,9 @@ namespace Laresistance.Battle
             return power;
         }
 
-        public override void PerformEffect(BattleStatusManager user, BattleStatusManager[] targets, int level, EquipmentEvents equipmentEvents)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents)
         {
-            targets[0].health.AddShield(GetPower(level, equipmentEvents));
+            target.health.AddShield(GetPower(level, equipmentEvents));
         }
     }
 }

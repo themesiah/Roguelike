@@ -27,7 +27,7 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
             Event.UnregisterListener(this);
         }
 
-        public void OnEventRaised()
+        public virtual void OnEventRaised()
         {
             Response.Invoke();
             if (destroyOnEvent)

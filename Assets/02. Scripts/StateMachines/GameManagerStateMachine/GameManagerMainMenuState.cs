@@ -5,7 +5,7 @@ using Laresistance.Behaviours;
 
 namespace Laresistance.StateMachines
 {
-    public class MainMenuContextState : ICoroutineState
+    public class GameManagerMainMenuState : ICoroutineState
     {
         private string nextScene = null;
 

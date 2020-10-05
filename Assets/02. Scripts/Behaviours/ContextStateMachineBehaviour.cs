@@ -6,16 +6,16 @@ using System.Collections;
 
 namespace Laresistance.Behaviours
 {
-    public class ContextStateMachineBehaviour : MonoBehaviour
+    public class GameManagerStateMachineBehaviour : MonoBehaviour
     {
-        private GameContextStateMachine stateMachine = default;
+        private SimpleSignalStateMachine stateMachine = default;
 
         void Start()
         {
-            stateMachine = new GameContextStateMachine();
+            stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
-            states.Add("MainMenu", new MainMenuContextState());
-            states.Add("Map", new MapContextState());
+            states.Add("MainMenu", new GameManagerMainMenuState());
+            states.Add("Map", new GameManagerMapState());
 
             stateMachine.SetStates(states);
             StartCoroutine(StateMachineCoroutine());

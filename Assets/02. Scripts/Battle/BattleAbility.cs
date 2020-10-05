@@ -17,6 +17,8 @@ namespace Laresistance.Battle
 
         public BattleAbility(List<BattleEffect> effectsToSet, float cooldown, EquipmentEvents equipmentEvents = null)
         {
+            if (effectsToSet == null || effectsToSet.Count == 0)
+                throw new System.Exception("Abilities should have at least one effect");
             if (effectsToSet.Count > MAX_EFFECTS)
                 throw new System.Exception("Abilities can only have up to " + MAX_EFFECTS + " effects");
             effects = effectsToSet;
@@ -43,13 +45,13 @@ namespace Laresistance.Battle
             OnAbilityTimerChanged?.Invoke(timer, cooldown, timer / cooldown);
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager user, BattleStatusManager[] targets, int level)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level)
         {
             if (CanBeUsed())
             {
                 foreach (var effect in effects)
                 {
-                    effect.PerformEffect(user, targets, level, equipmentEvents);
+                    effect.PerformEffect(allies, targets, level, equipmentEvents);
                 }
                 timer = 0f;
             }

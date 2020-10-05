@@ -13,6 +13,8 @@ namespace Laresistance.Core
         public Minion(string name, BattleAbility ability, int level)
         {
             Name = name;
+            if (ability == null)
+                throw new System.Exception("A minion should have an ability");
             this.ability = ability;
             if (level <= 0 || level > MAX_MINION_LEVEL)
                 throw new System.Exception("A minion level must be at least 1 and " + MAX_MINION_LEVEL + " at max");
@@ -29,9 +31,9 @@ namespace Laresistance.Core
             return player.EquipMinion(this);
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager user, BattleStatusManager[] enemies)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies)
         {
-            yield return ability.ExecuteAbility(user, enemies, Level);
+            yield return ability.ExecuteAbility(allies, enemies, Level);
         }
 
         public BattleAbility[] Abilities => new BattleAbility[] { ability };

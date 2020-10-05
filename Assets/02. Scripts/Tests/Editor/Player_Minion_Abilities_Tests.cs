@@ -11,7 +11,7 @@ namespace Laresistance.Tests
         public void When_SettingAbilityOnMinion()
         {
             List<BattleEffect> effects = new List<BattleEffect>();
-            effects.Add(new BattleEffectDamage(5));
+            effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy));
             BattleAbility ability = new BattleAbility(effects, 5f);
             Minion minion = new Minion("", ability, 1);
         }
@@ -20,8 +20,8 @@ namespace Laresistance.Tests
         public void When_GettingAbilityPower()
         {
             List<BattleEffect> effects = new List<BattleEffect>();
-            effects.Add(new BattleEffectDamage(5));
-            effects.Add(new BattleEffectDamage(7));
+            effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy));
+            effects.Add(new BattleEffectDamage(7, Data.EffectTargetType.Enemy));
             BattleAbility ability = new BattleAbility(effects, 5f);
             Minion minion = new Minion("", ability, 1);
             Minion minion2 = new Minion("", ability, 2);

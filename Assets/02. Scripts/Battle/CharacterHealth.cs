@@ -30,12 +30,19 @@ namespace Laresistance.Battle
         public event OnHealedHandler OnHealed;
         public delegate void OnShieldsChangedHandler(CharacterHealth sender, int delta, int totalShields);
         public event OnShieldsChangedHandler OnShieldsChanged;
+        public delegate void OnDeathHandler(CharacterHealth sender);
+        public event OnDeathHandler OnDeath;
         #endregion
 
         #region Public API
         public int GetCurrentHealth()
         {
             return currentHealth;
+        }
+
+        public float GetPercentHealth()
+        {
+            return (float)currentHealth / (float)maxHealth;
         }
 
         public int TotalShields()
@@ -64,6 +71,7 @@ namespace Laresistance.Battle
 
         public void TakeDamage(int power)
         {
+            Debug.Log("Damage taken: " + power);
             int remainingPower = power;
             
             for (int i = currentShields.Count-1; i >= 0; --i)
@@ -98,6 +106,11 @@ namespace Laresistance.Battle
             if (remainingPower > 0)
             {
                 OnDamageTaken?.Invoke(this, remainingPower, currentHealth);
+            }
+
+            if (currentHealth <= 0)
+            {
+                OnDeath?.Invoke(this);
             }
         }
 

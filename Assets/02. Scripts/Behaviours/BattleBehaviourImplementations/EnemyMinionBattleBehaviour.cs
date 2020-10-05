@@ -32,10 +32,10 @@ namespace Laresistance.Behaviours
             AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level);
         }
 
-        protected override void Start()
+        protected override void Awake()
         {
             minion = MinionFactory.GetMinion(minionData, currentLevel.GetValue(), null);
-            base.Start();
+            base.Awake();
         }
     }
 }

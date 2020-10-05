@@ -13,5 +13,9 @@ namespace Laresistance.Data
         [SerializeField]
         private int power = default;
         public int Power { get { return power; } }
+
+        [SerializeField]
+        private EffectTargetType targetType = default;
+        public EffectTargetType TargetType { get { return targetType; } }
     }
 }

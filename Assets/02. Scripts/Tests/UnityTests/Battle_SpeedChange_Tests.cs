@@ -16,15 +16,15 @@ namespace Laresistance.Tests {
             switch(i)
             {
                 case 0:
-                    effects.Add(new BattleEffectHeal(10));
+                    effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self));
                     cooldown = 1f;
                     break;
                 case 1:
-                    effects.Add(new BattleEffectSpeed(50));
+                    effects.Add(new BattleEffectSpeed(50, Data.EffectTargetType.Self));
                     cooldown = 1f;
                     break;
                 case 2:
-                    effects.Add(new BattleEffectSpeed(200));
+                    effects.Add(new BattleEffectSpeed(200, Data.EffectTargetType.Self));
                     cooldown = 1f;
                     break;
             }
@@ -45,11 +45,11 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             Assert.IsFalse(ability.CanBeUsed());
             ability.Tick(1.1f * player.GetSpeedModifier());
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             Assert.IsFalse(ability.CanBeUsed());
             yield return null;
         }
@@ -62,9 +62,9 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(1);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             Assert.IsFalse(ability.CanBeUsed());
-            yield return ability2.ExecuteAbility(enemy, new BattleStatusManager[] { player }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             ability.Tick(1.1f * player.GetSpeedModifier());
             Assert.IsFalse(ability.CanBeUsed());
             ability.Tick(1.1f * player.GetSpeedModifier());
@@ -80,12 +80,12 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             Assert.IsFalse(ability.CanBeUsed());
-            yield return ability2.ExecuteAbility(enemy, new BattleStatusManager[] { player }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             ability.Tick(0.6f * player.GetSpeedModifier());
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(player, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
             Assert.IsFalse(ability.CanBeUsed());
             ability.Tick(0.2f * player.GetSpeedModifier());
             Assert.IsFalse(ability.CanBeUsed());

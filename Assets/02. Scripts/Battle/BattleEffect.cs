@@ -1,15 +1,19 @@
 ﻿using Laresistance.Core;
 using Laresistance.Data;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Laresistance.Battle
 {
     public abstract class BattleEffect
     {
         protected int Power;
+        protected EffectTargetType TargetType;
 
-        public BattleEffect(int power)
+        public BattleEffect(int power, EffectTargetType targetType)
         {
             SetPower(power);
+            TargetType = targetType;
         }
 
         public virtual int GetPower(int level, EquipmentEvents equipmentEvents)
@@ -24,7 +28,68 @@ namespace Laresistance.Battle
             Power = power;
         }
 
-        public abstract void PerformEffect(BattleStatusManager user, BattleStatusManager[] targets, int level, EquipmentEvents equipmentEvents);
+        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentEvents equipmentEvents)
+        {
+            GetTargets(allies, enemies).ForEach((target) => PerformEffectOnTarget(target, level, equipmentEvents));
+        }
+
+        protected abstract void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents);
+
         public abstract EffectType EffectType { get; }
+
+        public List<BattleStatusManager> GetTargets(BattleStatusManager[] allies, BattleStatusManager[] enemies)
+        {
+            List<BattleStatusManager> statuses = new List<BattleStatusManager>();
+            switch(TargetType)
+            {
+                case EffectTargetType.Self:
+                    statuses.Add(allies[0]);
+                    break;
+                case EffectTargetType.Enemy:
+                    statuses.Add(enemies[0]);
+                    break;
+                case EffectTargetType.AllAllies:
+                    foreach(var ally in allies)
+                    {
+                        statuses.Add(ally);
+                    }
+                    break;
+                case EffectTargetType.AllEnemies:
+                    foreach (var enemy in enemies)
+                    {
+                        statuses.Add(enemy);
+                    }
+                    break;
+                case EffectTargetType.AllCharacters:
+                    foreach (var ally in allies)
+                    {
+                        statuses.Add(ally);
+                    }
+                    foreach (var enemy in enemies)
+                    {
+                        statuses.Add(enemy);
+                    }
+                    break;
+                case EffectTargetType.RandomAlly:
+                    statuses.Add(allies[Random.Range(0, allies.Length)]);
+                    break;
+                case EffectTargetType.RandomEnemy:
+                    statuses.Add(enemies[Random.Range(0, enemies.Length)]);
+                    break;
+                case EffectTargetType.RandomCharacter:
+                    List<BattleStatusManager> statusesTemp = new List<BattleStatusManager>();
+                    foreach (var ally in allies)
+                    {
+                        statusesTemp.Add(ally);
+                    }
+                    foreach (var enemy in enemies)
+                    {
+                        statusesTemp.Add(enemy);
+                    }
+                    statuses.Add(statusesTemp[Random.Range(0, statusesTemp.Count)]);
+                    break;
+            }
+            return statuses;
+        }
     }
 }

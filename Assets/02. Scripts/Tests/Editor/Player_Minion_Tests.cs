@@ -1,15 +1,24 @@
 ﻿using NUnit.Framework;
 using Laresistance.Core;
+using Laresistance.Battle;
+using System.Collections.Generic;
 
 namespace Laresistance.Tests
 {
     public class Player_Minion_Tests
     {
+        private BattleAbility GetAbility()
+        {
+            List<BattleEffect> effects = new List<BattleEffect>();
+            effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy));
+            return new BattleAbility(effects, 0f);
+        }
+
         [Test]
         public void When_EquippingMinionWithNoMinions()
         {
             Player player = new Player();
-            Minion minion = new Minion("", null, 1);
+            Minion minion = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion);
             Assert.AreEqual(true, equipped);
             Assert.AreEqual(1, player.EquippedMinionsQuantity);
@@ -19,13 +28,13 @@ namespace Laresistance.Tests
         public void When_Equipping3MinionsWithNoMinions()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
-            Minion minion2 = new Minion("", null, 1);
+            Minion minion2 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion2);
             Assert.AreEqual(true, equipped);
-            Minion minion3 = new Minion("", null, 1);
+            Minion minion3 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion3);
             Assert.AreEqual(true, equipped);
             Assert.AreEqual(3, player.EquippedMinionsQuantity);
@@ -35,7 +44,7 @@ namespace Laresistance.Tests
         public void When_EquippingSameMinionTwoTimes()
         {
             Player player = new Player();
-            Minion minion = new Minion("", null, 1);
+            Minion minion = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion);
             Assert.AreEqual(true, equipped);
             Assert.Catch(()=>player.EquipMinion(minion));
@@ -45,16 +54,16 @@ namespace Laresistance.Tests
         public void When_EquippingMoreMinionsThanMaximum()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
-            Minion minion2 = new Minion("", null, 1);
+            Minion minion2 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion2);
             Assert.AreEqual(true, equipped);
-            Minion minion3 = new Minion("", null, 1);
+            Minion minion3 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion3);
             Assert.AreEqual(true, equipped);
-            Minion minion4 = new Minion("", null, 1);
+            Minion minion4 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion4);
             Assert.AreEqual(false, equipped);
             Assert.AreEqual(3, player.EquippedMinionsQuantity);
@@ -64,7 +73,7 @@ namespace Laresistance.Tests
         public void When_EquippingAndUnequippingMinionWithReference()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
             bool unequipped = player.UnequipMinion(minion1);
@@ -76,7 +85,7 @@ namespace Laresistance.Tests
         public void When_EquippingAndUnequippingMinionWithIndex()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
             bool unequipped = player.UnequipMinion(0);
@@ -88,7 +97,7 @@ namespace Laresistance.Tests
         public void When_EquippingMinionAndTryingToUnequipInvalidReferenceOrIndex()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
             Assert.Catch(()=>player.UnequipMinion(1));
@@ -101,7 +110,7 @@ namespace Laresistance.Tests
         public void When_EquippingMinionAndTryingToUnequipInvalidReferenceOrIndexAndEquippingAgain()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
             Assert.Catch(()=>player.UnequipMinion(1));
@@ -114,17 +123,17 @@ namespace Laresistance.Tests
         public void When_EquippingAllMaximumMinionsAndUnequippingOneToEquipAnotherNewOne()
         {
             Player player = new Player();
-            Minion minion1 = new Minion("", null, 1);
+            Minion minion1 = new Minion("", GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
-            Minion minion2 = new Minion("", null, 1);
+            Minion minion2 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion2);
             Assert.AreEqual(true, equipped);
-            Minion minion3 = new Minion("", null, 1);
+            Minion minion3 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion3);
             Assert.AreEqual(true, equipped);
             player.UnequipMinion(1);
-            Minion minion4 = new Minion("", null, 1);
+            Minion minion4 = new Minion("", GetAbility(), 1);
             equipped = player.EquipMinion(minion4);
             Assert.AreEqual(true, equipped);
             Assert.AreEqual(3, player.EquippedMinionsQuantity);

@@ -11,7 +11,7 @@ namespace Laresistance.Tests
         public void When_ObtainingEffectPowerAtBaseLevel()
         {
             int power = 5;
-            BattleEffectDamage effect = new BattleEffectDamage(power);
+            BattleEffectDamage effect = new BattleEffectDamage(power, Data.EffectTargetType.Enemy);
             Assert.AreEqual(power, effect.GetPower(BASE_LEVEL, null));
         }
 
@@ -19,7 +19,7 @@ namespace Laresistance.Tests
         public void When_ObtainingEffectPowerAtIncorrectLevel()
         {
             int power = 5;
-            BattleEffectDamage effect = new BattleEffectDamage(power);
+            BattleEffectDamage effect = new BattleEffectDamage(power, Data.EffectTargetType.Enemy);
             Assert.Catch(()=> { effect.GetPower(0, null); });
             Assert.Catch(()=> { effect.GetPower(-1, null); });
         }
@@ -28,7 +28,7 @@ namespace Laresistance.Tests
         public void When_ObtainingEffectPowerAtDifferentLevels()
         {
             int power = 5;
-            BattleEffectDamage effect = new BattleEffectDamage(power);
+            BattleEffectDamage effect = new BattleEffectDamage(power, Data.EffectTargetType.Enemy);
             Assert.AreEqual(6, effect.GetPower(2, null));
             Assert.AreEqual(6, effect.GetPower(3, null));
             Assert.AreEqual(7, effect.GetPower(4, null));

@@ -12,11 +12,18 @@ namespace Laresistance.Battle
             player = p;
         }
 
-        public IEnumerator ExecuteAbility(int minionIndex, BattleStatusManager user, BattleStatusManager[] enemies)
+        public IEnumerator ExecuteAbility(int abilityIndex, BattleStatusManager[] allies, BattleStatusManager[] enemies)
         {
-            if (minionIndex < 0 || minionIndex > player.EquippedMinionsQuantity - 1)
-                throw new System.Exception("Invalid index for executing minion ability");
-            yield return player.GetMinions()[minionIndex].ExecuteAbility(user, enemies);
+            if (abilityIndex == 0)
+            {
+                yield return player.characterAbility.ExecuteAbility(allies, enemies, 1);
+            } else if (abilityIndex > 0 && abilityIndex  < 4)
+            {
+                yield return player.GetMinions()[abilityIndex-1].ExecuteAbility(allies, enemies);
+            } else
+            {
+                yield return player.GetConsumables()[abilityIndex - 4].Ability.ExecuteAbility(allies, enemies, 1);
+            }
         }
     }
 }

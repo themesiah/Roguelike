@@ -27,11 +27,11 @@ namespace Laresistance.Battle
             return -1;
         }
 
-        public IEnumerator ExecuteAbility(int abilityIndex, BattleStatusManager user, BattleStatusManager[] enemies)
+        public IEnumerator ExecuteAbility(int abilityIndex, BattleStatusManager[] allies, BattleStatusManager[] enemies)
         {
             if (abilityIndex < 0 || abilityIndex > abilities.Length - 1)
                 throw new System.Exception("Invalid index for executing ability");
-            yield return abilities[abilityIndex].ExecuteAbility(user, enemies, level);
+            yield return abilities[abilityIndex].ExecuteAbility(allies, enemies, level);
         }
     }
 }

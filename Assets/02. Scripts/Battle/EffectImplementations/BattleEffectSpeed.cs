@@ -6,7 +6,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectSpeed : BattleEffect
     {
-        public BattleEffectSpeed(int power) : base(power)
+        public BattleEffectSpeed(int power, EffectTargetType targetType) : base(power, targetType)
         {
 
         }
@@ -21,9 +21,9 @@ namespace Laresistance.Battle
             return power;
         }
 
-        public override void PerformEffect(BattleStatusManager user, BattleStatusManager[] targets, int level, EquipmentEvents equipmentEvents)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents)
         {
-            targets[0].ApplySpeedModifier(GetPower(level, equipmentEvents) / 100f);
+            target.ApplySpeedModifier(GetPower(level, equipmentEvents) / 100f);
         }
     }
 }

@@ -4,14 +4,22 @@ using NUnit.Framework;
 using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using System.Collections.Generic;
+using Laresistance.Battle;
 
 namespace Laresistance.Tests
 {
     public class Systems_Shop_Buy_Tests
     {
+        private static BattleAbility GetAbility()
+        {
+            List<BattleEffect> effects = new List<BattleEffect>();
+            effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy));
+            return new BattleAbility(effects, 0f);
+        }
+
         private List<ShopOffer> offers = new List<ShopOffer>() {
-            new ShopOffer(1000, false, new Minion("", null, 1)),
-            new ShopOffer(500, false, new Minion("", null, 1)),
+            new ShopOffer(1000, false, new Minion("", GetAbility(), 1)),
+            new ShopOffer(500, false, new Minion("", GetAbility(), 1)),
             new ShopOffer(50, true, new Equipment(0)),
             new ShopOffer(5, true, new Consumable())
         };

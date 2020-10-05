@@ -3,7 +3,7 @@
 namespace Laresistance.StateMachines
 {
     [System.Serializable]
-    public class GameContextStateMachine : CoroutineStateMachine
+    public class SimpleSignalStateMachine : CoroutineStateMachine
     {
         public override void ReceiveSignal(string signal)
         {

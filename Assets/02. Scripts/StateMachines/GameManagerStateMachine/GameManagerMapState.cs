@@ -5,9 +5,9 @@ using Laresistance.Behaviours;
 
 namespace Laresistance.StateMachines
 {
-    public class MapContextState : ICoroutineState
+    public class GameManagerMapState : ICoroutineState
     {
-        private string nextScene = null;
+        private string nextState = null;
 
         public IEnumerator EnterState()
         {
@@ -16,7 +16,7 @@ namespace Laresistance.StateMachines
 
         public IEnumerator ExitState()
         {
-            nextScene = null;
+            nextState = null;
             yield return null;
         }
 
@@ -26,7 +26,7 @@ namespace Laresistance.StateMachines
 
         public void ReceiveSignal(string signal)
         {
-            nextScene = signal;
+            nextState = signal;
         }
 
         public void Resume()
@@ -35,9 +35,9 @@ namespace Laresistance.StateMachines
 
         public IEnumerator Update(Action<string> resolve)
         {
-            if (nextScene != null)
+            if (nextState != null)
             {
-                resolve(nextScene);
+                resolve(nextState);
             }
             yield return null;
         }

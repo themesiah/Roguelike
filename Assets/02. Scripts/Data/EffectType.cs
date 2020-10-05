@@ -8,8 +8,6 @@
         Shield,
         DamageOverTime,
         Speed,
-        DamageAll,
-        SpeedAllEnemies,
         Stun,
         ImproveDamage,
         Cure

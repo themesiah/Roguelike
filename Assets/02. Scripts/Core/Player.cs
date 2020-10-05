@@ -1,4 +1,6 @@
-﻿namespace Laresistance.Core
+﻿using Laresistance.Battle;
+
+namespace Laresistance.Core
 {
     public class Player
     {
@@ -10,6 +12,7 @@
         private Equipment[] equipments;
         private Consumable[] consumables;
         private EquipmentEvents equipmentEvents = null;
+        public BattleAbility characterAbility { get; private set; }
 
         public Player()
         {
@@ -135,6 +138,11 @@
         #endregion
 
         #region Consumables
+        public Consumable[] GetConsumables()
+        {
+            return consumables;
+        }
+
         public int ConsumablesAmount
         {
             get
@@ -222,5 +230,26 @@
             throw new System.Exception("Can't dispose a not posessed consumable");
         }
         #endregion
+
+        public BattleAbility[] GetAbilities()
+        {
+            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS + MAX_CONSUMABLES + 1];
+            abilities[0] = characterAbility;
+            for(int i = 0; i < MAX_MINIONS; ++i)
+            {
+                if (minions.Length > i && minions[i] != null)
+                {
+                    abilities[i + 1] = minions[i].Abilities[0];
+                }
+            }
+            for(int i = 0; i < MAX_CONSUMABLES; ++i)
+            {
+                if (consumables.Length > i && consumables[i] != null)
+                {
+                    abilities[i + 1 + MAX_MINIONS] = consumables[i].Ability;
+                }
+            }
+            return abilities;
+        }
     }
 }
