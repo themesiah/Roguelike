@@ -1,6 +1,6 @@
 ﻿using Laresistance.Core;
 
-namespace Laresistance.Systems
+namespace Laresistance.Data
 {
     public class ShopOffer
     {

@@ -231,6 +231,7 @@ namespace Laresistance.Core
         }
         #endregion
 
+        #region Abilities
         public BattleAbility[] GetAbilities()
         {
             BattleAbility[] abilities = new BattleAbility[MAX_MINIONS + MAX_CONSUMABLES + 1];
@@ -251,5 +252,14 @@ namespace Laresistance.Core
             }
             return abilities;
         }
+
+        public void ResetAbilities()
+        {
+            foreach(var ability in GetAbilities())
+            {
+                ability?.ResetTimer();
+            }
+        }
+        #endregion
     }
 }

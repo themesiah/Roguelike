@@ -10,6 +10,8 @@ namespace Laresistance.Behaviours
         private CharacterBattleBehaviour battleBehaviour = default;
 
         [SerializeField]
+        private UnityEvent<int> OnMaxHealth = default;
+        [SerializeField]
         private UnityEvent<int> OnDamageReceived = default;
         [SerializeField]
         private UnityEvent<int> OnHealReceived = default;
@@ -24,11 +26,12 @@ namespace Laresistance.Behaviours
 
         private void OnEnable()
         {
-            Debug.Log(name);
-            battleBehaviour.StatusManager.health.OnDamageTaken += OnDamageTaken;
-            battleBehaviour.StatusManager.health.OnHealed += OnHealed;
-            battleBehaviour.StatusManager.health.OnShieldsChanged += OnShieldsChanged;
-            battleBehaviour.StatusManager.health.OnDeath += OnDeath;
+            if (battleBehaviour.StatusManager == null)
+            {
+                battleBehaviour.OnStatusGenerated += EnableSuscriptions;
+                return;
+            }
+            EnableSuscriptions();
         }
 
         private void OnDisable()
@@ -37,6 +40,17 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnHealed -= OnHealed;
             battleBehaviour.StatusManager.health.OnShieldsChanged -= OnShieldsChanged;
             battleBehaviour.StatusManager.health.OnDeath -= OnDeath;
+        }
+
+        private void EnableSuscriptions()
+        {
+            battleBehaviour.StatusManager.health.OnDamageTaken += OnDamageTaken;
+            battleBehaviour.StatusManager.health.OnHealed += OnHealed;
+            battleBehaviour.StatusManager.health.OnShieldsChanged += OnShieldsChanged;
+            battleBehaviour.StatusManager.health.OnDeath += OnDeath;
+            OnMaxHealth?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth());
+            OnHealthChanged?.Invoke(battleBehaviour.StatusManager.health.GetCurrentHealth());
+            OnHealthChangedPercent?.Invoke(battleBehaviour.StatusManager.health.GetPercentHealth());
         }
 
         private void OnDamageTaken(CharacterHealth sender, int damageTaken, int currentHealth)

@@ -1,5 +1,6 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Core;
+using Laresistance.Data;
 using System.Collections.Generic;
 
 namespace Laresistance.Systems

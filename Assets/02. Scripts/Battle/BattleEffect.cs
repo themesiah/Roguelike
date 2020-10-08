@@ -2,6 +2,7 @@
 using Laresistance.Data;
 using System.Collections.Generic;
 using UnityEngine;
+using GamedevsToolbox.ScriptableArchitecture.Localization;
 
 namespace Laresistance.Battle
 {
@@ -90,6 +91,40 @@ namespace Laresistance.Battle
                     break;
             }
             return statuses;
+        }
+
+        public abstract string GetEffectString(int level, EquipmentEvents equipmentEvents);
+        protected string GetTargetString()
+        {
+            string textId = "";
+            switch (TargetType)
+            {
+                case EffectTargetType.Self:
+                    textId = "EFF_TARGET_SELF";
+                    break;
+                case EffectTargetType.Enemy:
+                    textId = "EFF_TARGET_ENEMY";
+                    break;
+                case EffectTargetType.AllAllies:
+                    textId = "NOTEXT";
+                    break;
+                case EffectTargetType.AllEnemies:
+                    textId = "EFF_TARGET_ENEMIES";
+                    break;
+                case EffectTargetType.AllCharacters:
+                    textId = "EFF_TARGET_ALL_CHARS";
+                    break;
+                case EffectTargetType.RandomAlly:
+                    textId = "NOTEXT";
+                    break;
+                case EffectTargetType.RandomEnemy:
+                    textId = "EFF_TARGET_RANDOM_ENEMY";
+                    break;
+                case EffectTargetType.RandomCharacter:
+                    textId = "EFF_TARGET_RANDOM_CHAR";
+                    break;
+            }
+            return ScriptableLanguageLocator.languageInstance.GetText(textId);
         }
     }
 }

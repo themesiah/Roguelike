@@ -1,4 +1,5 @@
-﻿using Laresistance.Core;
+﻿using GamedevsToolbox.ScriptableArchitecture.Localization;
+using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
 
@@ -23,7 +24,30 @@ namespace Laresistance.Battle
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents)
         {
-            target.ApplySpeedModifier(GetPower(level, equipmentEvents) / 100f);
+            target.ApplySpeedModifier(GetModifier(level, equipmentEvents));
+        }
+
+        private float GetModifier(int level, EquipmentEvents equipmentEvents)
+        {
+            return GetPower(level, equipmentEvents) / 100f;
+        }
+
+        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        {
+            float modifier = GetModifier(level, equipmentEvents);
+            string textId = "";
+            if (modifier > 100f)
+            {
+                textId = "EFF_ACCEL_DESC";
+                modifier -= 100f;
+                
+            } else
+            {
+                textId = "EFF_SLOW_DESC";
+                modifier = 100f - modifier;
+            }
+            var text = new ScriptableTextRef(textId);
+            return text.GetText(new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.SPEED_MODIFIER_DURATION });
         }
     }
 }

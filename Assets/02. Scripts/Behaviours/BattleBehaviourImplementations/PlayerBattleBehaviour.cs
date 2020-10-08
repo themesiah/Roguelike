@@ -31,7 +31,7 @@ namespace Laresistance.Behaviours
             player = new Player();
             ///////
             List<BattleEffect> testEffects = new List<BattleEffect>();
-            testEffects.Add(new BattleEffectDamage(20, EffectTargetType.Enemy));
+            testEffects.Add(new BattleEffectDamage(50, EffectTargetType.Enemy));
             BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
             Minion m = new Minion("", testAbility, 1);
             player.EquipMinion(m);
@@ -57,6 +57,11 @@ namespace Laresistance.Behaviours
         public void PerformAbility(InputAction.CallbackContext context, int abilityIndex)
         {
             if (context.performed) ((PlayerAbilityInput)AbilityInputProcessor).TryToExecuteAbility(abilityIndex);
+        }
+
+        public void ResetAbilities()
+        {
+            player.ResetAbilities();
         }
     }
 }

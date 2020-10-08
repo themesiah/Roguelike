@@ -35,6 +35,11 @@ namespace Laresistance.Battle
         #endregion
 
         #region Public API
+        public int GetMaxHealth()
+        {
+            return maxHealth;
+        }
+
         public int GetCurrentHealth()
         {
             return currentHealth;

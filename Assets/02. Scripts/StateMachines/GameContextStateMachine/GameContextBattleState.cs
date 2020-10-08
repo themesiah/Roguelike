@@ -5,17 +5,27 @@ using System.Collections;
 using Laresistance.Behaviours;
 using Laresistance.Battle;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using Laresistance.Systems;
+using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Data;
+using Laresistance.Core;
 
 namespace Laresistance.StateMachines
 {
     public class GameContextBattleState : ICoroutineState
     {
         private static float CHARACTERS_HORIZONTAL_OFFSET = 3f;
+        private static float CENTER_RAYCAST_THRESHOLD = 6f;
+        private static int CENTER_DOWN_RAYCAST_AMOUNT = 3;
+        private static float CENTER_DOWN_RAYCAST_DISTANCE = 1f;
 
         private GameObject playerObject;
         private Camera playerCamera;
         private PlayerInput playerInput;
+        private int centerCheckLayerMask;
         private bool goToMap = false;
+        private RewardSystem rewardSystem;
 
         private GameObject[] enemyObjects;
         private int deathCount;
@@ -38,7 +48,10 @@ namespace Laresistance.StateMachines
         {
             ObjectActivationAndDesactivation(false);
             // Yield end battle screen
-            // Dispose enemies
+            Minion minion = enemyObjects[0].GetComponent<EnemyMinionBattleBehaviour>().Minion;
+            RewardData rewardData = new RewardData(1500, minion, null);
+            yield return rewardSystem.GetReward(rewardData);
+            // Give rewards
             goToMap = false;
             yield return null;
         }
@@ -75,11 +88,13 @@ namespace Laresistance.StateMachines
             this.enemyObjects = enemyObjects;
         }
 
-        public GameContextBattleState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput)
+        public GameContextBattleState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
             this.playerInput = playerInput;
+            this.centerCheckLayerMask = centerCheckLayerMask;
+            this.rewardSystem = new RewardSystem(playerObject.GetComponent<PlayerBattleBehaviour>().player, bloodReference, hardCurrencyReference);
         }
         #endregion
 
@@ -112,12 +127,75 @@ namespace Laresistance.StateMachines
 
         private Vector3 GetCenter()
         {
-            return (this.playerObject.transform.position + this.enemyObjects[0].transform.position) / 2f;
+            
+            Vector3 tempCenter = (this.playerObject.transform.position + this.enemyObjects[0].transform.position) / 2f;
+            float offset = CalculateOffset(tempCenter);
+            tempCenter.x += offset;
+
+            return tempCenter;
+        }
+
+        private float CalculateOffset(Vector3 center)
+        {
+            float offset = 0f;
+            ContactFilter2D raycastFilters = new ContactFilter2D();
+            raycastFilters.layerMask = centerCheckLayerMask;
+            raycastFilters.useTriggers = false;
+            raycastFilters.useLayerMask = true;
+            {
+                List<RaycastHit2D> results = new List<RaycastHit2D>();
+                int hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.left, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
+                if (hits > 0)
+                {
+                    offset += (CENTER_RAYCAST_THRESHOLD - results[0].distance);
+                }
+            }
+            {
+                List<RaycastHit2D> results2 = new List<RaycastHit2D>();
+                int hits2 = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.right, raycastFilters, results2, CENTER_RAYCAST_THRESHOLD);
+                if (hits2 > 0)
+                {
+                    offset -= (CENTER_RAYCAST_THRESHOLD - results2[0].distance);
+                }
+            }
+            for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
+            {
+                List<RaycastHit2D> results = new List<RaycastHit2D>();
+                int hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.left * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
+                if (hits == 0)
+                {
+                    offset += CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i - 1);
+                    break;
+                }
+            }
+            for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
+            {
+                List<RaycastHit2D> results = new List<RaycastHit2D>();
+                int hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.right * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
+                if (hits == 0)
+                {
+                    offset -= CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i - 1);
+                    break;
+                }
+            }
+
+
+            return offset;
         }
 
         private Vector3 GetCenter(Vector3 originalPosition)
         {
+            ContactFilter2D raycastFilters = new ContactFilter2D();
+            raycastFilters.layerMask = centerCheckLayerMask;
+            raycastFilters.useTriggers = false;
+            raycastFilters.useLayerMask = true;
             originalPosition.x = GetCenter().x;
+            List<RaycastHit2D> results = new List<RaycastHit2D>();
+            int hits = Physics2D.Raycast(originalPosition + Vector3.up * 0.5f, Vector2.down, raycastFilters, results);
+            if (hits > 0)
+            {
+                originalPosition = results[0].point;
+            }
             return originalPosition;
         }
 

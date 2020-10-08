@@ -23,12 +23,15 @@ namespace Laresistance.Behaviours
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
         public IAbilityExecutor AbilityExecutor { get; protected set; }
 
+        public UnityAction OnStatusGenerated = delegate { };
+
 
         protected virtual void Awake()
         {
             SetupStatusManager();
             SetupAbilityInputProcessor();
             SetupAbilityInputExecutor();
+            OnStatusGenerated.Invoke();
             this.enabled = false;
         }
 

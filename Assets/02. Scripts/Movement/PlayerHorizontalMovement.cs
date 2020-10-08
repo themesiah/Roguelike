@@ -44,5 +44,10 @@ namespace Laresistance.Movement
                 transform.localScale = scale;
             }
         }
+
+        public void Stop()
+        {
+            currentSpeed = 0f;
+        }
     }
 }

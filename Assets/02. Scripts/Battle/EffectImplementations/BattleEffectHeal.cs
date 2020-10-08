@@ -1,4 +1,5 @@
-﻿using Laresistance.Core;
+﻿using GamedevsToolbox.ScriptableArchitecture.Localization;
+using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
 
@@ -24,6 +25,13 @@ namespace Laresistance.Battle
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents)
         {
             target.health.Heal(GetPower(level, equipmentEvents));
+        }
+
+        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        {
+            string textId = "EFF_HEAL_DESC";
+            var text = new ScriptableTextRef(textId);
+            return text.GetText(GetTargetString(), GetPower(level, equipmentEvents));
         }
     }
 }

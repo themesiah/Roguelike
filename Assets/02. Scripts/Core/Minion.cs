@@ -37,5 +37,9 @@ namespace Laresistance.Core
         }
 
         public BattleAbility[] Abilities => new BattleAbility[] { ability };
+        public string GetAbilityText()
+        {
+            return Abilities[0].GetAbilityText(Level);
+        }
     } 
 }

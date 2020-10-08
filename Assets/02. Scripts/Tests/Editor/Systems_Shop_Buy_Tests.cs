@@ -1,10 +1,10 @@
 ﻿using Laresistance.Core;
 using Laresistance.Systems;
 using NUnit.Framework;
-using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using System.Collections.Generic;
 using Laresistance.Battle;
+using Laresistance.Data;
 
 namespace Laresistance.Tests
 {

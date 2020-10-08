@@ -15,10 +15,9 @@ namespace Laresistance.Battle
 
         public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
         {
-            for (int i = 0; i < player.GetMinions().Length; ++i)
+            foreach(var ability in player.GetAbilities())
             {
-                if (player.GetAbilities()[i] != null)
-                    player.GetAbilities()[i].Tick(delta * battleStatus.GetSpeedModifier());
+                ability?.Tick(delta * battleStatus.GetSpeedModifier());
             }
             int temp = currentAbilityIndex;
             currentAbilityIndex = -1;
@@ -29,14 +28,13 @@ namespace Laresistance.Battle
         {
             if (index < -1 || index > 6)
                 throw new System.Exception("Invalid index trying to execute ability. It must be 0 (character ability), 1,2,3 (minion abilities) or 4,5,6 (consumables)");
-            if (player.GetMinions().Length < index)
+            var ability = player.GetAbilities()[index];
+            if (ability != null)
             {
-                // Nothing for now
-                return;
-            }
-            if (player.GetAbilities()[index] != null && player.GetAbilities()[index].CanBeUsed())
-            {
-                currentAbilityIndex = index;
+                if (ability.CanBeUsed())
+                {
+                    currentAbilityIndex = index;
+                }
             }
         }
     }

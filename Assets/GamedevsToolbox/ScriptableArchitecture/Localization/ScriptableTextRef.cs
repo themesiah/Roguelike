@@ -20,6 +20,13 @@ namespace GamedevsToolbox.ScriptableArchitecture.Localization
         [SerializeField]
         private ScriptableLocalizedText textRef = default;
 
+        public ScriptableTextRef(string id)
+        {
+            textId = id;
+            useTextId = true;
+            useConstantText = false;
+        }
+
         public string GetText()
         {
             return GetText(new object[] {"" });

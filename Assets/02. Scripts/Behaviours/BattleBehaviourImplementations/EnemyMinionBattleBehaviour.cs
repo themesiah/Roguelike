@@ -37,5 +37,7 @@ namespace Laresistance.Behaviours
             minion = MinionFactory.GetMinion(minionData, currentLevel.GetValue(), null);
             base.Awake();
         }
+
+        public Minion Minion => minion;
     }
 }

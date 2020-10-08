@@ -43,6 +43,8 @@ namespace Laresistance.Movement
         public void Stop()
         {
             body.simulated = false;
+            body.velocity = Vector3.zero;
+            HorizontalMovement.Stop();
         }
 
         public void Resume()

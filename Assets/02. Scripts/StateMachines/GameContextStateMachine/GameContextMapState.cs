@@ -31,6 +31,7 @@ namespace Laresistance.StateMachines
         {
             playerInput.SwitchCurrentActionMap("PlayerMap");
             ObjectActivationAndDesactivation(true);
+            playerObject.GetComponent<PlayerMapBehaviour>().ResumeMapBehaviour();
             // Move camera
             Debug.Log("Entering map state");
             yield return null;
@@ -39,6 +40,7 @@ namespace Laresistance.StateMachines
         public IEnumerator ExitState()
         {
             ObjectActivationAndDesactivation(false);
+            playerObject.GetComponent<PlayerMapBehaviour>().PauseMapBehaviour();
             goToBattle = false;
             yield return null;
         }

@@ -13,6 +13,7 @@ namespace Laresistance.Behaviours
         {
             public int abilityIndex = -1;
             public UnityEvent OnAbilityDoesNotExist = default;
+            public UnityEvent OnAbilityExists = default;
             public UnityEvent<float> OnAbilityTimerChanged = default;
         }
 
@@ -37,6 +38,7 @@ namespace Laresistance.Behaviours
                 }
                 else
                 {
+                    suscription.OnAbilityExists?.Invoke();
                     abilities[suscription.abilityIndex].OnAbilityTimerChanged += (current, cooldown, percent)=> { AbilityTimerChanged(suscription.abilityIndex, current, cooldown, percent); };
                 }
             }

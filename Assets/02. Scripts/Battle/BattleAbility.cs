@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using Laresistance.Core;
+using System.Text;
+using GamedevsToolbox.ScriptableArchitecture.Localization;
 
 namespace Laresistance.Battle
 {
@@ -39,10 +41,28 @@ namespace Laresistance.Battle
             return effects[index].GetPower(level, equipmentEvents);
         }
 
+        public string GetAbilityText(int level)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach(var effect in effects)
+            {
+                builder.Append(effect.GetEffectString(level, equipmentEvents));
+                builder.Append(" ");
+            }
+            var text = new ScriptableTextRef("ABILITY_COOLDOWN");
+            builder.Append(text.GetText(GetCooldown()));
+            return builder.ToString();
+        }
+
         public void Tick(float deltaTime)
         {
             timer += deltaTime;
             OnAbilityTimerChanged?.Invoke(timer, cooldown, timer / cooldown);
+        }
+
+        public void ResetTimer()
+        {
+            timer = 0f;
         }
 
         public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level)

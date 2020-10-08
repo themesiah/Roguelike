@@ -25,12 +25,12 @@ namespace Laresistance.Behaviours
 
         public void PauseMapBehaviour()
         {
-            movementManager.Stop();
+            movementManager?.Stop();
         }
 
         public void ResumeMapBehaviour()
         {
-            movementManager.Resume();
+            movementManager?.Resume();
         }
 
         private void OnDisable()
