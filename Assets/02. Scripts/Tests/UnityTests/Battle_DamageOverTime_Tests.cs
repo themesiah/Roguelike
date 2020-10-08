@@ -8,6 +8,11 @@ using UnityEngine;
 namespace Laresistance.Tests {
     public class Battle_DamageOverTime_Tests
     {
+        private BattleStatusManager GetStatus()
+        {
+            return new BattleStatusManager(new CharacterHealth(100));
+        }
+
         private BattleAbility GetAbilityByIndex(int i)
         {
             float cooldown = 0f;
@@ -16,7 +21,7 @@ namespace Laresistance.Tests {
             switch(i)
             {
                 case 0:
-                    effects.Add(new BattleEffectDamageOverTime(3, Data.EffectTargetType.Enemy));
+                    effects.Add(new BattleEffectDamageOverTime(3, Data.EffectTargetType.Enemy, GetStatus()));
                     cooldown = 1f;
                     break;
             }

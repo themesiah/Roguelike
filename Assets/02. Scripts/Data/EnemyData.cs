@@ -22,5 +22,9 @@ namespace Laresistance.Data
         [SerializeField]
         private AbilityData[] abilitiesData = default;
         public AbilityData[] AbilitiesData { get { return abilitiesData; } }
+
+        [SerializeField]
+        private int baseBloodReward = default;
+        public int BaseBloodReward { get { return baseBloodReward; } }
     }
 }

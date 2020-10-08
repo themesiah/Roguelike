@@ -10,11 +10,13 @@ namespace Laresistance.Battle
     {
         protected int Power;
         protected EffectTargetType TargetType;
+        protected BattleStatusManager SelfStatus;
 
-        public BattleEffect(int power, EffectTargetType targetType)
+        public BattleEffect(int power, EffectTargetType targetType, BattleStatusManager selfStatus)
         {
             SetPower(power);
             TargetType = targetType;
+            SelfStatus = selfStatus;
         }
 
         public virtual int GetPower(int level, EquipmentEvents equipmentEvents)

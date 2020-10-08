@@ -45,6 +45,7 @@ namespace Laresistance.Systems
                     {
                         player.EquipMinion(reward.minion);
                         autoEquipped = true;
+                        break;
                     }
                 }
 

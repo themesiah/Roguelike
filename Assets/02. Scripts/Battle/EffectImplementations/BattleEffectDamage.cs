@@ -7,7 +7,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectDamage : BattleEffect
     {
-        public BattleEffectDamage(int power, EffectTargetType targetType) : base(power, targetType)
+        public BattleEffectDamage(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
         {
 
         }
@@ -19,6 +19,7 @@ namespace Laresistance.Battle
             base.GetPower(level, equipmentEvents);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
             equipmentEvents?.InvokeOnGetPower(ref power);
+            power = (int)(power * SelfStatus.GetDamageModifier());
             return power;
         }
 

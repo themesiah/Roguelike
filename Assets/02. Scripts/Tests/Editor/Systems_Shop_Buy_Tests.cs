@@ -10,10 +10,15 @@ namespace Laresistance.Tests
 {
     public class Systems_Shop_Buy_Tests
     {
+        private static BattleStatusManager GetStatus()
+        {
+            return new BattleStatusManager(new CharacterHealth(100));
+        }
+
         private static BattleAbility GetAbility()
         {
             List<BattleEffect> effects = new List<BattleEffect>();
-            effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy));
+            effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy, GetStatus()));
             return new BattleAbility(effects, 0f);
         }
 

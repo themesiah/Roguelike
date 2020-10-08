@@ -29,6 +29,7 @@ namespace Laresistance.StateMachines
 
         private GameObject[] enemyObjects;
         private int deathCount;
+        private RewardData rewardData = null;
 
         #region ICoroutineState Implementation
         public IEnumerator EnterState()
@@ -46,12 +47,10 @@ namespace Laresistance.StateMachines
 
         public IEnumerator ExitState()
         {
+            // Deactivate things
             ObjectActivationAndDesactivation(false);
-            // Yield end battle screen
-            Minion minion = enemyObjects[0].GetComponent<EnemyMinionBattleBehaviour>().Minion;
-            RewardData rewardData = new RewardData(1500, minion, null);
+            // Yield end battle screen and give rewards
             yield return rewardSystem.GetReward(rewardData);
-            // Give rewards
             goToMap = false;
             yield return null;
         }
@@ -86,6 +85,7 @@ namespace Laresistance.StateMachines
         public void SetEnemyObjects(GameObject[] enemyObjects)
         {
             this.enemyObjects = enemyObjects;
+            rewardData = enemyObjects[0].GetComponent<IRewardable>().GetReward();
         }
 
         public GameContextBattleState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask)

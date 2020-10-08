@@ -7,7 +7,7 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Behaviours
 {
-    public class EnemyMinionBattleBehaviour : CharacterBattleBehaviour
+    public class EnemyMinionBattleBehaviour : CharacterBattleBehaviour, IRewardable
     {
         [SerializeField]
         private MinionData minionData = default;
@@ -34,8 +34,18 @@ namespace Laresistance.Behaviours
 
         protected override void Awake()
         {
-            minion = MinionFactory.GetMinion(minionData, currentLevel.GetValue(), null);
-            base.Awake();
+            SetupStatusManager();
+            minion = MinionFactory.GetMinion(minionData, currentLevel.GetValue(), null, StatusManager);
+            SetupAbilityInputProcessor();
+            SetupAbilityInputExecutor();
+            OnStatusGenerated.Invoke();
+            this.enabled = false;
+        }
+
+        public RewardData GetReward()
+        {
+            RewardData rewardData = new RewardData(0, minion, null);
+            return rewardData;
         }
 
         public Minion Minion => minion;

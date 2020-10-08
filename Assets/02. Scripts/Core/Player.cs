@@ -260,6 +260,11 @@ namespace Laresistance.Core
                 ability?.ResetTimer();
             }
         }
+
+        public void SetMainAbility(BattleAbility ability)
+        {
+            characterAbility = ability;
+        }
         #endregion
     }
 }

@@ -8,6 +8,11 @@ using UnityEngine;
 namespace Laresistance.Tests {
     public class Battle_Damage_Tests
     {
+        private BattleStatusManager GetStatus()
+        {
+            return new BattleStatusManager(new CharacterHealth(100));
+        }
+
         private BattleAbility GetAbilityByIndex(int i)
         {
             float cooldown = 0f;
@@ -16,19 +21,19 @@ namespace Laresistance.Tests {
             switch(i)
             {
                 case 0:
-                    effects.Add(new BattleEffectDamage(10, Data.EffectTargetType.Enemy));
+                    effects.Add(new BattleEffectDamage(10, Data.EffectTargetType.Enemy, GetStatus()));
                     cooldown = 1f;
                     break;
                 case 1:
-                    effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self));
+                    effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self, GetStatus()));
                     cooldown = 1f;
                     break;
                 case 2:
-                    effects.Add(new BattleEffectShield(10, Data.EffectTargetType.Self));
+                    effects.Add(new BattleEffectShield(10, Data.EffectTargetType.Self, GetStatus()));
                     cooldown = 1f;
                     break;
                 case 3:
-                    effects.Add(new BattleEffectShield(5, Data.EffectTargetType.Self));
+                    effects.Add(new BattleEffectShield(5, Data.EffectTargetType.Self, GetStatus()));
                     cooldown = 1f;
                     break;
             }

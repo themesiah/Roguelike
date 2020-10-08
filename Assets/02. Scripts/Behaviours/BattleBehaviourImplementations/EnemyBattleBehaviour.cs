@@ -6,7 +6,7 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Behaviours
 {
-    public class EnemyBattleBehaviour : CharacterBattleBehaviour
+    public class EnemyBattleBehaviour : CharacterBattleBehaviour, IRewardable
     {
         [SerializeField]
         private EnemyData enemyData = default;
@@ -28,10 +28,16 @@ namespace Laresistance.Behaviours
             BattleAbility[] abilities = new BattleAbility[enemyData.AbilitiesData.Length];
             for(int i = 0; i < enemyData.AbilitiesData.Length; ++i)
             {
-                abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], null);
+                abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], null, StatusManager);
             }
 
-            AbilityInputProcessor = new EnemyAbilityManager(abilities, 1);
+            AbilityInputProcessor = new EnemyAbilityManager(abilities, currentLevel.GetValue());
+        }
+
+        public RewardData GetReward()
+        {
+            RewardData rewardData = new RewardData(enemyData.BaseBloodReward * currentLevel.GetValue(), null, null);
+            return rewardData;
         }
     }
 }

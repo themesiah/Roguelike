@@ -57,7 +57,9 @@ namespace GamedevsToolbox.ScriptableArchitecture.Localization
 
         private void Awake()
         {
+#if UNITY_EDITOR
             OnValidate();
+#endif
         }
 
 #if UNITY_EDITOR

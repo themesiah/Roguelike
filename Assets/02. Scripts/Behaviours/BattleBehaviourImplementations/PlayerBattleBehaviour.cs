@@ -30,20 +30,25 @@ namespace Laresistance.Behaviours
         {
             player = new Player();
             ///////
-            List<BattleEffect> testEffects = new List<BattleEffect>();
-            testEffects.Add(new BattleEffectDamage(50, EffectTargetType.Enemy));
-            BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
-            Minion m = new Minion("", testAbility, 1);
-            player.EquipMinion(m);
-
-            List<BattleEffect> testEffects2 = new List<BattleEffect>();
-            testEffects2.Add(new BattleEffectHeal(5, EffectTargetType.Self));
-            BattleAbility testAbility2 = new BattleAbility(testEffects2, 4f, player.GetEquipmentEvents());
-            Minion m2 = new Minion("", testAbility2, 1);
-            player.EquipMinion(m2);
+            //List<BattleEffect> testEffects = new List<BattleEffect>();
+            //testEffects.Add(new BattleEffectDamage(50, EffectTargetType.Enemy));
+            //BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
+            //Minion m = new Minion("", testAbility, 1);
+            //player.EquipMinion(m);
+            //
+            //List<BattleEffect> testEffects2 = new List<BattleEffect>();
+            //testEffects2.Add(new BattleEffectHeal(5, EffectTargetType.Self));
+            //BattleAbility testAbility2 = new BattleAbility(testEffects2, 4f, player.GetEquipmentEvents());
+            //Minion m2 = new Minion("", testAbility2, 1);
+            //player.EquipMinion(m2);
             ///////
 
             base.Awake();
+
+            List<BattleEffect> testEffects = new List<BattleEffect>();
+            testEffects.Add(new BattleEffectDamage(15, EffectTargetType.Enemy, StatusManager));
+            BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
+            player.SetMainAbility(testAbility);
         }
 
         public void PerformPlayerAction(InputAction.CallbackContext context) => PerformAbility(context, 0);
@@ -62,6 +67,7 @@ namespace Laresistance.Behaviours
         public void ResetAbilities()
         {
             player.ResetAbilities();
+            StatusManager.ResetModifiers();
         }
     }
 }

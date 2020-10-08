@@ -18,6 +18,11 @@ namespace Laresistance.Battle
             public float timer;
             public int ticked;
         }
+
+        public class DamageImprovement // Infinite
+        {
+            public float coeficient;
+        }
         #endregion
 
         #region Constants
@@ -29,6 +34,7 @@ namespace Laresistance.Battle
         #region Private Variables
         private List<SpeedEffect> speedModifiers;
         private List<DamageOverTime> damageOverTimes;
+        private List<DamageImprovement> damageImprovements;
         // Damage, heal and shield modifiers
         #endregion
 
@@ -41,6 +47,8 @@ namespace Laresistance.Battle
         public event OnSpeedModifierAppliedHandler OnSpeedModifierApplied;
         public delegate void OnDamageOverTimeAppliedHandler(BattleStatusManager sender, int power);
         public event OnDamageOverTimeAppliedHandler OnDamageOverTimeApplied;
+        public delegate void OnDamageImprovementAppliedHandler(BattleStatusManager sender, float coeficient, float currentDamageImprovement);
+        public event OnDamageImprovementAppliedHandler OnDamageImprovementApplied;
         #endregion
 
         #region Public methods
@@ -49,6 +57,7 @@ namespace Laresistance.Battle
             this.health = health;
             speedModifiers = new List<SpeedEffect>();
             damageOverTimes = new List<DamageOverTime>();
+            damageImprovements = new List<DamageImprovement>();
         }
 
         public void ProcessStatus(float delta)
@@ -87,6 +96,12 @@ namespace Laresistance.Battle
             OnDamageOverTimeApplied?.Invoke(this, power);
         }
 
+        public void ApplyDamageImprovement(float coeficient)
+        {
+            damageImprovements.Add(new DamageImprovement() { coeficient = coeficient });
+            OnDamageImprovementApplied?.Invoke(this, coeficient, GetDamageModifier());
+        }
+
         public float GetSpeedModifier()
         {
             float speedModifier = 1f;
@@ -103,6 +118,26 @@ namespace Laresistance.Battle
                 }
             }
             return speedModifier;
+        }
+
+        public float GetDamageModifier()
+        {
+            float damageModifier = 1f;
+            foreach(var modifier in damageImprovements)
+            {
+                damageModifier *= modifier.coeficient;
+            }
+
+            // Temp improvements and reductions here
+
+            return damageModifier;
+        }
+
+        public void ResetModifiers()
+        {
+            damageImprovements.Clear();
+            speedModifiers.Clear();
+            damageOverTimes.Clear();
         }
         #endregion
     }

@@ -7,10 +7,15 @@ namespace Laresistance.Tests
 {
     public class Player_Minion_Tests
     {
+        private BattleStatusManager GetStatus()
+        {
+            return new BattleStatusManager(new CharacterHealth(100));
+        }
+
         private BattleAbility GetAbility()
         {
             List<BattleEffect> effects = new List<BattleEffect>();
-            effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy));
+            effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy, GetStatus()));
             return new BattleAbility(effects, 0f);
         }
 
