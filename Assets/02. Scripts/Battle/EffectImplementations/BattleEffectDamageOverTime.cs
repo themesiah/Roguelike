@@ -1,4 +1,4 @@
-﻿using GamedevsToolbox.ScriptableArchitecture.Localization;
+﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -31,8 +31,7 @@ namespace Laresistance.Battle
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
             string textId = "EFF_DOT_DESC";
-            var text = new ScriptableTextRef(textId);
-            return text.GetText(new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, BattleStatusManager.DAMAGE_OVER_TIME_DURATION });
+            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, BattleStatusManager.DAMAGE_OVER_TIME_DURATION });
         }
     }
 }

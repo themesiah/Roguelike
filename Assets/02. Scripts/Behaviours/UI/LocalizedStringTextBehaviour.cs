@@ -1,4 +1,4 @@
-﻿using GamedevsToolbox.ScriptableArchitecture.Localization;
+﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace Laresistance.Behaviours
         private Text text = default;
 
         [SerializeField]
-        private ScriptableTextRef textRef = default;
+        private string textId = default;
 
         [SerializeField]
         private string value = default;
@@ -30,7 +30,7 @@ namespace Laresistance.Behaviours
 
         private void SetText()
         {
-            text.text = textRef.GetText(value);
+            text.text = Texts.GetText(textId, value);
         }
     }
 }

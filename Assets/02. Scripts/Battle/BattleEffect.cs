@@ -2,7 +2,7 @@
 using Laresistance.Data;
 using System.Collections.Generic;
 using UnityEngine;
-using GamedevsToolbox.ScriptableArchitecture.Localization;
+using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 
 namespace Laresistance.Battle
 {
@@ -126,7 +126,7 @@ namespace Laresistance.Battle
                     textId = "EFF_TARGET_RANDOM_CHAR";
                     break;
             }
-            return ScriptableLanguageLocator.languageInstance.GetText(textId);
+            return Texts.GetText(textId);
         }
     }
 }

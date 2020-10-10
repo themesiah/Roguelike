@@ -2,7 +2,7 @@
 using System.Collections;
 using Laresistance.Core;
 using System.Text;
-using GamedevsToolbox.ScriptableArchitecture.Localization;
+using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 
 namespace Laresistance.Battle
 {
@@ -49,8 +49,7 @@ namespace Laresistance.Battle
                 builder.Append(effect.GetEffectString(level, equipmentEvents));
                 builder.Append(" ");
             }
-            var text = new ScriptableTextRef("ABILITY_COOLDOWN");
-            builder.Append(text.GetText(GetCooldown()));
+            builder.Append(Texts.GetText("ABILITY_COOLDOWN", GetCooldown()));
             return builder.ToString();
         }
 

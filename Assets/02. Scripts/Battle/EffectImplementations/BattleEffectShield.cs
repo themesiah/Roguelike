@@ -1,4 +1,4 @@
-﻿using GamedevsToolbox.ScriptableArchitecture.Localization;
+﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -30,8 +30,7 @@ namespace Laresistance.Battle
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
             string textId = "EFF_SHIELD_DESC";
-            var text = new ScriptableTextRef(textId);
-            return text.GetText(GetPower(level, equipmentEvents));
+            return Texts.GetText(textId, GetPower(level, equipmentEvents));
         }
     }
 }

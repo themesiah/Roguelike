@@ -1,4 +1,4 @@
-﻿using GamedevsToolbox.ScriptableArchitecture.Localization;
+﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -46,8 +46,7 @@ namespace Laresistance.Battle
                 textId = "EFF_SLOW_DESC";
                 modifier = 100f - modifier;
             }
-            var text = new ScriptableTextRef(textId);
-            return text.GetText(new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.SPEED_MODIFIER_DURATION });
+            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.SPEED_MODIFIER_DURATION });
         }
     }
 }

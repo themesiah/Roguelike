@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 
 namespace Laresistance.Behaviours
 {
@@ -12,7 +13,7 @@ namespace Laresistance.Behaviours
         private Text text = default;
 
         [SerializeField]
-        private ScriptableTextRef textRef = default;
+        private string textId = default;
 
         [SerializeField]
         private int value = default;
@@ -30,7 +31,7 @@ namespace Laresistance.Behaviours
 
         private void SetText()
         {
-            text.text = textRef.GetText(value);
+            text.text = Texts.GetText(textId, value);
         }
     }
 }
