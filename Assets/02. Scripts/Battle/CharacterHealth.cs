@@ -9,12 +9,12 @@ namespace Laresistance.Battle
         public class Shield
         {
             public int remainingAmount;
-            public float setupTime;
+            public float timer;
         }
         #endregion
 
         #region Constants
-        private static float SHIELD_DURATION = 0.5f;
+        public static float SHIELD_DURATION = 0.5f;
         #endregion
 
         #region Private Variables
@@ -54,8 +54,7 @@ namespace Laresistance.Battle
         {
             int totalShields = 0;
             currentShields.ForEach((s) => {
-                if (Time.time < s.setupTime + SHIELD_DURATION)
-                    totalShields += s.remainingAmount;
+                totalShields += s.remainingAmount;
             });
             return totalShields;
         }
@@ -82,7 +81,7 @@ namespace Laresistance.Battle
             for (int i = currentShields.Count-1; i >= 0; --i)
             {
                 Shield s = currentShields[i];
-                if (s.remainingAmount > 0 && Time.time < s.setupTime + SHIELD_DURATION)
+                if (s.remainingAmount > 0)
                 {
                     if (s.remainingAmount >= remainingPower)
                     {
@@ -121,8 +120,23 @@ namespace Laresistance.Battle
 
         public void AddShield(int power)
         {
-            currentShields.Add(new Shield() { remainingAmount = power, setupTime = Time.time });
+            currentShields.Add(new Shield() { remainingAmount = power, timer = 0f });
             OnShieldsChanged?.Invoke(this, power, TotalShields());
+        }
+
+        public void Tick(float delta)
+        {
+            currentShields.ForEach((s) => {
+                s.timer += delta;
+            });
+
+            for (int i = currentShields.Count-1; i >= 0; --i)
+            {
+                if (currentShields[i].timer >= SHIELD_DURATION)
+                {
+                    currentShields.RemoveAt(i);
+                }
+            }
         }
         #endregion
     }

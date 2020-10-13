@@ -54,7 +54,7 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             BattleStatusManager enemy = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -65,9 +65,9 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             BattleStatusManager enemy = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -78,10 +78,10 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             BattleStatusManager enemy = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
             ability.Tick(1.1f);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(80, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -93,9 +93,9 @@ namespace Laresistance.Tests {
             BattleStatusManager enemy = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(1);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
-            yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -105,7 +105,7 @@ namespace Laresistance.Tests {
         {
             BattleStatusManager player = GetStatusManager(100);
             var ability = GetAbilityByIndex(1);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.AreEqual(100, player.health.GetCurrentHealth());
             yield return null;
         }
@@ -117,8 +117,8 @@ namespace Laresistance.Tests {
             BattleStatusManager enemy = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
-            yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -130,9 +130,9 @@ namespace Laresistance.Tests {
             BattleStatusManager enemy = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
-            yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1);
-            yield return new WaitForSeconds(0.6f);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
+            enemy.ProcessStatus(CharacterHealth.SHIELD_DURATION+0.1f);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(90, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -145,9 +145,9 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(0);
             var ability3 = GetAbilityByIndex(3);
-            yield return ability3.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1);
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
-            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1);
+            yield return ability3.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(85, enemy.health.GetCurrentHealth());
             yield return null;
         }

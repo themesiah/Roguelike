@@ -50,11 +50,11 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             var ability = GetAbilityByIndex(0);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             ability.Tick(1.1f * player.GetSpeedModifier());
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             yield return null;
         }
@@ -67,9 +67,9 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(1);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
-            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             ability.Tick(1.1f * player.GetSpeedModifier());
             Assert.IsFalse(ability.CanBeUsed());
             ability.Tick(1.1f * player.GetSpeedModifier());
@@ -85,12 +85,12 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
-            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             ability.Tick(0.6f * player.GetSpeedModifier());
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             ability.Tick(0.2f * player.GetSpeedModifier());
             Assert.IsFalse(ability.CanBeUsed());

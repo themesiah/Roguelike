@@ -3,6 +3,7 @@ using System.Collections;
 using Laresistance.Core;
 using System.Text;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Behaviours;
 
 namespace Laresistance.Battle
 {
@@ -13,6 +14,7 @@ namespace Laresistance.Battle
         private List<BattleEffect> effects = default;
         private float timer = 0f;
         private EquipmentEvents equipmentEvents;
+        private bool executingAbility = false;
 
         public delegate void OnAbilityTimerChangedHandler(float currentTimer, float cooldown, float percent);
         public event OnAbilityTimerChangedHandler OnAbilityTimerChanged;
@@ -55,8 +57,11 @@ namespace Laresistance.Battle
 
         public void Tick(float deltaTime)
         {
-            timer += deltaTime;
-            OnAbilityTimerChanged?.Invoke(timer, cooldown, timer / cooldown);
+            if (!BattleAbilityManager.currentlyExecuting)
+            {
+                timer += deltaTime;
+                OnAbilityTimerChanged?.Invoke(timer, cooldown, timer / cooldown);
+            }
         }
 
         public void ResetTimer()
@@ -64,17 +69,32 @@ namespace Laresistance.Battle
             timer = 0f;
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, AnimatorWrapperBehaviour animator)
         {
             if (CanBeUsed())
             {
-                foreach (var effect in effects)
-                {
-                    effect.PerformEffect(allies, targets, level, equipmentEvents);
-                }
                 timer = 0f;
+                executingAbility = true;
+                allies[0].health.OnDeath += CancelExecution;
+                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, GetAnimation(animator));
+                allies[0].health.OnDeath -= CancelExecution;
+                executingAbility = false;
             }
             yield return null;
+        }
+
+        public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level)
+        {
+            foreach (var effect in effects)
+            {
+                effect.PerformEffect(allies, targets, level, equipmentEvents);
+            }
+        }
+
+        public void CancelExecution(CharacterHealth sender)
+        {
+            if (executingAbility)
+                BattleAbilityManager.CancelExecution(this);
         }
 
         public bool CanBeUsed()
@@ -87,6 +107,12 @@ namespace Laresistance.Battle
             float temp = cooldown;
             equipmentEvents?.InvokeOnGetCooldown(ref temp);
             return temp;
+        }
+
+        private BattleAbilityManager.AnimationToExecuteHandler GetAnimation(AnimatorWrapperBehaviour animator)
+        {
+            //return animator.PlayEffectAnimation; // TODO
+            return BattleAbilityManager.DummyAnimation;
         }
     }
 }

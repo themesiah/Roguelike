@@ -9,7 +9,7 @@ namespace Laresistance.Core
         {
             UnityEngine.Assertions.Assert.IsTrue(minionData.AbilitiesData.Length > 0);
             BattleAbility ability = BattleAbilityFactory.GetBattleAbility(minionData.AbilitiesData[0], events, battleStatus);
-            Minion minion = new Minion(minionData.NameRef, ability, level);
+            Minion minion = new Minion(minionData, ability, level);
             return minion;
         }
     }

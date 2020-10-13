@@ -11,6 +11,11 @@ namespace Laresistance.Behaviours
     {
         public Player player { get; private set; }
 
+        [SerializeField]
+        private List<MinionData> startingMinions = default;
+        [SerializeField]
+        private AnimatorWrapperBehaviour animatorReference = default;
+
         protected override void SetupAbilityInputProcessor()
         {
             AbilityInputProcessor = new PlayerAbilityInput(player);
@@ -18,12 +23,17 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputExecutor()
         {
-            AbilityExecutor = new PlayerAbilityExecutor(player);
+            AbilityExecutor = new PlayerAbilityExecutor(player, animator);
         }
 
         protected override void SetupStatusManager()
         {
             StatusManager = new BattleStatusManager(new CharacterHealth(100));
+        }
+
+        protected override void ConfigurePrefab()
+        {
+
         }
 
         protected override void Awake()
@@ -44,11 +54,18 @@ namespace Laresistance.Behaviours
             ///////
 
             base.Awake();
+            SetAnimator(animatorReference);
 
             List<BattleEffect> testEffects = new List<BattleEffect>();
             testEffects.Add(new BattleEffectDamage(15, EffectTargetType.Enemy, StatusManager));
             BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
             player.SetMainAbility(testAbility);
+
+            foreach (var md in startingMinions)
+            {
+                Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentEvents(), StatusManager);
+                player.EquipMinion(m);
+            }
         }
 
         public void PerformPlayerAction(InputAction.CallbackContext context) => PerformAbility(context, 0);

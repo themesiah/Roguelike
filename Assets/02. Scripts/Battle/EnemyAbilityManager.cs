@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Laresistance.Behaviours;
+using System.Collections;
 using UnityEngine;
 
 namespace Laresistance.Battle
@@ -7,11 +8,13 @@ namespace Laresistance.Battle
     {
         private BattleAbility[] abilities;
         private int level;
+        private AnimatorWrapperBehaviour animator;
 
-        public EnemyAbilityManager(BattleAbility[] abilities, int level)
+        public EnemyAbilityManager(BattleAbility[] abilities, int level, AnimatorWrapperBehaviour animator)
         {
             this.abilities = abilities;
             this.level = level;
+            this.animator = animator;
         }
 
         public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
@@ -31,7 +34,7 @@ namespace Laresistance.Battle
         {
             if (abilityIndex < 0 || abilityIndex > abilities.Length - 1)
                 throw new System.Exception("Invalid index for executing ability");
-            yield return abilities[abilityIndex].ExecuteAbility(allies, enemies, level);
+            yield return abilities[abilityIndex].ExecuteAbility(allies, enemies, level, animator);
         }
     }
 }

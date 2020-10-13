@@ -31,7 +31,16 @@ namespace Laresistance.Behaviours
                 abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], null, StatusManager);
             }
 
-            AbilityInputProcessor = new EnemyAbilityManager(abilities, currentLevel.GetValue());
+            AbilityInputProcessor = new EnemyAbilityManager(abilities, currentLevel.GetValue(), animator);
+        }
+
+        protected override void ConfigurePrefab()
+        {
+            EnemyPrefabConfiguration epc = GetComponent<EnemyPrefabConfiguration>();
+            if (epc != null)
+            {
+                epc.ConfigurePrefab(enemyData.Prefab, SetAnimator);
+            }
         }
 
         public RewardData GetReward()

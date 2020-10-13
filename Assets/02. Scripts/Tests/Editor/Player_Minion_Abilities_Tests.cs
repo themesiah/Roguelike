@@ -18,7 +18,7 @@ namespace Laresistance.Tests
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             BattleAbility ability = new BattleAbility(effects, 5f);
-            Minion minion = new Minion("", ability, 1);
+            Minion minion = new Minion(null, ability, 1);
         }
 
         [Test]
@@ -28,9 +28,9 @@ namespace Laresistance.Tests
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             effects.Add(new BattleEffectDamage(7, Data.EffectTargetType.Enemy, GetStatus()));
             BattleAbility ability = new BattleAbility(effects, 5f);
-            Minion minion = new Minion("", ability, 1);
-            Minion minion2 = new Minion("", ability, 2);
-            Minion minion3 = new Minion("", ability, 3);
+            Minion minion = new Minion(null, ability, 1);
+            Minion minion2 = new Minion(null, ability, 2);
+            Minion minion3 = new Minion(null, ability, 3);
             Assert.AreEqual(5, minion.GetEffectPower(0));
             Assert.AreEqual(7, minion.GetEffectPower(1));
             Assert.AreEqual(6, minion2.GetEffectPower(0));
@@ -42,9 +42,9 @@ namespace Laresistance.Tests
         [Test]
         public void When_CreatingMinionWithInvalidLevel()
         {
-            Assert.Catch(() => { Minion minion = new Minion("", null, 0); });
-            Assert.Catch(() => { Minion minion2 = new Minion("", null, -1); });
-            Assert.Catch(() => { Minion minion3 = new Minion("", null, 11); });
+            Assert.Catch(() => { Minion minion = new Minion(null, null, 0); });
+            Assert.Catch(() => { Minion minion2 = new Minion(null, null, -1); });
+            Assert.Catch(() => { Minion minion3 = new Minion(null, null, 11); });
         }
     }
 }

@@ -1,18 +1,21 @@
 ﻿using Laresistance.Battle;
 using System.Collections;
+using Laresistance.Data;
+using Laresistance.Behaviours;
 
 namespace Laresistance.Core
 {
     public class Minion : ISlot
     {
         private static int MAX_MINION_LEVEL = 10;
-        public string Name { get; private set; }
+        public string Name { get { return Data.name; }}
+        public MinionData Data { get; private set; }
         private BattleAbility ability = default;
         public int Level { get; private set; }
 
-        public Minion(string name, BattleAbility ability, int level)
+        public Minion(MinionData data, BattleAbility ability, int level)
         {
-            Name = name;
+            Data = data;
             if (ability == null)
                 throw new System.Exception("A minion should have an ability");
             this.ability = ability;
@@ -31,9 +34,9 @@ namespace Laresistance.Core
             return player.EquipMinion(this);
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies, AnimatorWrapperBehaviour animator)
         {
-            yield return ability.ExecuteAbility(allies, enemies, Level);
+            yield return ability.ExecuteAbility(allies, enemies, Level, animator);
         }
 
         public BattleAbility[] Abilities => new BattleAbility[] { ability };

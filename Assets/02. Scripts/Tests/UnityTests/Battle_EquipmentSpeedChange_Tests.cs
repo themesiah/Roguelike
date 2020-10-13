@@ -44,7 +44,7 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             var ability = GetAbilityByIndex(0, events);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             Equipment e = new Equipment(0);
             e.SetCooldownModifier(events, 2f);
@@ -61,7 +61,7 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             var ability = GetAbilityByIndex(0, events);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             Equipment e = new Equipment(0);
             e.SetCooldownModifier(events, 2f);
@@ -81,7 +81,7 @@ namespace Laresistance.Tests {
             BattleStatusManager player = GetStatusManager(100);
             var ability = GetAbilityByIndex(0, events);
             Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1);
+            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             Equipment e2 = new Equipment(1);
             e2.SetCooldownModifier(events, 0.5f);

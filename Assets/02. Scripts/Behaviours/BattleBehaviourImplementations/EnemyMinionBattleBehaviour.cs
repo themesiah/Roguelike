@@ -29,11 +29,12 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputProcessor()
         {
-            AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level);
+            AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level, animator);
         }
 
         protected override void Awake()
         {
+            ConfigurePrefab();
             SetupStatusManager();
             minion = MinionFactory.GetMinion(minionData, currentLevel.GetValue(), null, StatusManager);
             SetupAbilityInputProcessor();
@@ -46,6 +47,15 @@ namespace Laresistance.Behaviours
         {
             RewardData rewardData = new RewardData(0, minion, null);
             return rewardData;
+        }
+
+        protected override void ConfigurePrefab()
+        {
+            EnemyPrefabConfiguration epc = GetComponent<EnemyPrefabConfiguration>();
+            if (epc != null)
+            {
+                epc.ConfigurePrefab(minionData.Prefab, SetAnimator);
+            }
         }
 
         public Minion Minion => minion;

@@ -26,6 +26,7 @@ namespace Laresistance.StateMachines
         private int centerCheckLayerMask;
         private bool goToMap = false;
         private RewardSystem rewardSystem;
+        private PlayerMinionCompanionSpawner companionSpawner;
 
         private GameObject[] enemyObjects;
         private int deathCount;
@@ -38,6 +39,7 @@ namespace Laresistance.StateMachines
             playerInput.SwitchCurrentActionMap("PlayerBattle");
             ObjectActivationAndDesactivation(true);
             ConfigureEnemyObjects();
+            SpawnPlayerCompanions();
             // Move camera
             // Move characters
             MoveCharacters();
@@ -49,6 +51,7 @@ namespace Laresistance.StateMachines
         {
             // Deactivate things
             ObjectActivationAndDesactivation(false);
+            companionSpawner.Despawn();
             // Yield end battle screen and give rewards
             yield return rewardSystem.GetReward(rewardData);
             goToMap = false;
@@ -94,7 +97,9 @@ namespace Laresistance.StateMachines
             this.playerCamera = playerCamera;
             this.playerInput = playerInput;
             this.centerCheckLayerMask = centerCheckLayerMask;
-            this.rewardSystem = new RewardSystem(playerObject.GetComponent<PlayerBattleBehaviour>().player, bloodReference, hardCurrencyReference);
+            Player player = playerObject.GetComponent<PlayerBattleBehaviour>().player;
+            this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference);
+            this.companionSpawner = new PlayerMinionCompanionSpawner(player);
         }
         #endregion
 
@@ -105,6 +110,19 @@ namespace Laresistance.StateMachines
             {
                 go.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += EnemyDeath;
             }
+        }
+
+        private void SpawnPlayerCompanions()
+        {
+            float modifier = -1f;
+            if (playerObject.transform.position.x < enemyObjects[0].transform.position.x)
+            {
+                modifier = 1f;
+            }
+
+            Vector3 center = GetCenter(playerObject.transform.position) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+
+            companionSpawner.Spawn(center, playerObject);
         }
 
         private void ObjectActivationAndDesactivation(bool enter)
@@ -142,40 +160,54 @@ namespace Laresistance.StateMachines
             raycastFilters.layerMask = centerCheckLayerMask;
             raycastFilters.useTriggers = false;
             raycastFilters.useLayerMask = true;
+            bool horizontalHit = false;
+            List<RaycastHit2D> results = new List<RaycastHit2D>();
+            int hits = 0;
+
+            // Left wall
+            hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.left, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
+            if (hits > 0)
             {
-                List<RaycastHit2D> results = new List<RaycastHit2D>();
-                int hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.left, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
+                offset += (CENTER_RAYCAST_THRESHOLD - results[0].distance);
+                horizontalHit = true;
+            }
+
+            // Right wall
+            if (!horizontalHit) {
+                hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.right, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
                 if (hits > 0)
                 {
-                    offset += (CENTER_RAYCAST_THRESHOLD - results[0].distance);
+                    offset -= (CENTER_RAYCAST_THRESHOLD - results[0].distance);
+                    horizontalHit = true;
                 }
             }
+
+            // Left fall
+            if (!horizontalHit)
             {
-                List<RaycastHit2D> results2 = new List<RaycastHit2D>();
-                int hits2 = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.right, raycastFilters, results2, CENTER_RAYCAST_THRESHOLD);
-                if (hits2 > 0)
+                for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
                 {
-                    offset -= (CENTER_RAYCAST_THRESHOLD - results2[0].distance);
+                    hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.left * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
+                    if (hits == 0)
+                    {
+                        offset += CENTER_RAYCAST_THRESHOLD;
+                        horizontalHit = true;
+                        break;
+                    }
                 }
             }
-            for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
+
+            // Right fall
+            if (!horizontalHit)
             {
-                List<RaycastHit2D> results = new List<RaycastHit2D>();
-                int hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.left * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
-                if (hits == 0)
+                for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
                 {
-                    offset += CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i - 1);
-                    break;
-                }
-            }
-            for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
-            {
-                List<RaycastHit2D> results = new List<RaycastHit2D>();
-                int hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.right * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
-                if (hits == 0)
-                {
-                    offset -= CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i - 1);
-                    break;
+                    hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.right * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
+                    if (hits == 0)
+                    {
+                        offset -= CENTER_RAYCAST_THRESHOLD;
+                        break;
+                    }
                 }
             }
 

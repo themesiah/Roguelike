@@ -3,6 +3,7 @@ using Laresistance.Battle;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine.Events;
+using System;
 
 namespace Laresistance.Behaviours
 {
@@ -25,9 +26,12 @@ namespace Laresistance.Behaviours
 
         public UnityAction OnStatusGenerated = delegate { };
 
+        protected AnimatorWrapperBehaviour animator;
+
 
         protected virtual void Awake()
         {
+            ConfigurePrefab();
             SetupStatusManager();
             SetupAbilityInputProcessor();
             SetupAbilityInputExecutor();
@@ -38,6 +42,11 @@ namespace Laresistance.Behaviours
         protected abstract void SetupStatusManager();
         protected abstract void SetupAbilityInputProcessor();
         protected abstract void SetupAbilityInputExecutor();
+        protected abstract void ConfigurePrefab();
+        protected void SetAnimator(AnimatorWrapperBehaviour animator)
+        {
+            this.animator = animator;
+        }
 
         protected virtual void OnEnable()
         {

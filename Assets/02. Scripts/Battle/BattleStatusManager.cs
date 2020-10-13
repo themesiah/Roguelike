@@ -82,6 +82,7 @@ namespace Laresistance.Battle
             {
                 health.TakeDamage(totalDamage);
             }
+            health.Tick(delta);
         }
 
         public void ApplySpeedModifier(float coeficient)
