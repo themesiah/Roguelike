@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -32,5 +33,12 @@ namespace Laresistance.Battle
             string textId = "EFF_SHIELD_DESC";
             return Texts.GetText(textId, GetPower(level, equipmentEvents));
         }
+
+        public override string GetAnimationTrigger()
+        {
+            return "Shield";
+        }
+
+        public override bool IsPrioritary => true;
     }
 }

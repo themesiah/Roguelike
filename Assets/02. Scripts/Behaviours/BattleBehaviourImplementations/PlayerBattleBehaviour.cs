@@ -52,9 +52,9 @@ namespace Laresistance.Behaviours
             //Minion m2 = new Minion("", testAbility2, 1);
             //player.EquipMinion(m2);
             ///////
-
-            base.Awake();
             SetAnimator(animatorReference);
+            base.Awake();
+            
 
             List<BattleEffect> testEffects = new List<BattleEffect>();
             testEffects.Add(new BattleEffectDamage(15, EffectTargetType.Enemy, StatusManager));

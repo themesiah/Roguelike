@@ -76,7 +76,7 @@ namespace Laresistance.Battle
                 timer = 0f;
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
-                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, GetAnimation(animator));
+                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger());
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }
@@ -109,10 +109,19 @@ namespace Laresistance.Battle
             return temp;
         }
 
-        private BattleAbilityManager.AnimationToExecuteHandler GetAnimation(AnimatorWrapperBehaviour animator)
+        private string GetAnimationTrigger()
         {
-            //return animator.PlayEffectAnimation; // TODO
-            return BattleAbilityManager.DummyAnimation;
+            return effects[0].GetAnimationTrigger();
+        }
+
+        public bool IsPrioritary()
+        {
+            foreach(var effect in effects)
+            {
+                if (effect.IsPrioritary)
+                    return true;
+            }
+            return false;
         }
     }
 }

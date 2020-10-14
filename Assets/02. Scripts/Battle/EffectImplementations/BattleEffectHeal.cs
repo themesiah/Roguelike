@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -31,6 +32,11 @@ namespace Laresistance.Battle
         {
             string textId = "EFF_HEAL_DESC";
             return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents)});
+        }
+
+        public override string GetAnimationTrigger()
+        {
+            return "Effect";
         }
     }
 }

@@ -9,26 +9,36 @@ namespace Laresistance.Battle
     {
         public static bool currentlyExecuting = false;
         private static List<BattleAbility> abilityQueue;
-        public delegate IEnumerator AnimationToExecuteHandler();
-        public static IEnumerator DummyAnimation(){yield return null;}
-        public static AnimationToExecuteHandler handler = DummyAnimation;
+        public delegate IEnumerator AnimationToExecuteHandler(string trigger);
+        private static AnimatorWrapperBehaviour currentAnimator = null;
 
-        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, AnimationToExecuteHandler animation)
+        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, AnimatorWrapperBehaviour animator, string animationTrigger)
         {
             if (abilityQueue == null)
                 abilityQueue = new List<BattleAbility>();
 
             abilityQueue.Add(abilityToExecute);
 
-            while(abilityQueue[0] != abilityToExecute)
+            while(abilityQueue[0] != abilityToExecute && !abilityToExecute.IsPrioritary())
             {
                 yield return null;
             }
+            AnimatorWrapperBehaviour lastAnimator = currentAnimator;
+            if (abilityToExecute.IsPrioritary())
+            {
+                lastAnimator?.Pause();
+            }
             currentlyExecuting = true;
-            yield return animation();
-            abilityQueue[0].Perform(allies, targets, level);
-            abilityQueue.RemoveAt(0);
+            currentAnimator = animator;
+            yield return animator?.PlayAnimation(animationTrigger);
+            abilityToExecute.Perform(allies, targets, level);
+            abilityQueue.Remove(abilityToExecute);
             currentlyExecuting = false;
+            if (abilityToExecute.IsPrioritary())
+            {
+                lastAnimator?.Resume();
+                currentAnimator = lastAnimator;
+            }
         }
 
         public static void CancelExecution(BattleAbility abilityToCancel)

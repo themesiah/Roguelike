@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -47,6 +48,11 @@ namespace Laresistance.Battle
                 modifier = 100f - modifier;
             }
             return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.SPEED_MODIFIER_DURATION });
+        }
+
+        public override string GetAnimationTrigger()
+        {
+            return "Effect";
         }
     }
 }

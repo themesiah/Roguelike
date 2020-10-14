@@ -1,6 +1,5 @@
-﻿using Laresistance.Battle;
+﻿using Laresistance.Extensions;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -14,64 +13,36 @@ namespace Laresistance.Behaviours
 
         private bool animating = false;
         private string currentAnimating = "";
+        private float lastAnimatorSpeed = 0f;
         private static string ASSERT_ANIMATION_FORMAT = "Trying to animate while currently animating. Last played: {0}. Tried to play: {1}";
-        private static string ATTACK_ANIMATION_NAME = "Attack";
-        private static string DAMAGE_ANIMATION_NAME = "Damage";
-        private static string EFFECT_ANIMATION_NAME = "Effect";
-
-        public BattleAbilityManager.AnimationToExecuteHandler PlayAttackAnimationHandler;
-        public BattleAbilityManager.AnimationToExecuteHandler PlayDamageAnimationHandler;
-        public BattleAbilityManager.AnimationToExecuteHandler PlayEffectAnimationHandler;
 
         public void Start()
         {
             if (animator == null)
             {
                 animator = GetComponent<Animator>();
-            }
-            PlayAttackAnimationHandler = PlayAttackAnimation;
-            PlayDamageAnimationHandler = PlayReceiveDamageAnimation;
-            PlayEffectAnimationHandler = PlayEffectAnimation;
-        }
-
-        public IEnumerator PlayAttackAnimation()
-        {
-            Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, "PlayAttackAnimation"));
-            animating = true;
-#if UNITY_EDITOR
-            currentAnimating = "PlayAttackAnimation";
-#endif
-            animator.Play(ATTACK_ANIMATION_NAME);
-            while (animating == true)
-            {
-                yield return null;
+                lastAnimatorSpeed = animator.speed;
             }
         }
 
-        public IEnumerator PlayReceiveDamageAnimation()
+        public IEnumerator PlayAnimation(string trigger)
         {
-            Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, "PlayReceiveDamageAnimation"));
+            Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, trigger));
             animating = true;
 #if UNITY_EDITOR
-            currentAnimating = "PlayReceiveDamageAnimation";
+            currentAnimating = trigger;
 #endif
-            animator.Play(DAMAGE_ANIMATION_NAME);
-            while (animating == true)
+            if (animator.HasParameter(trigger))
             {
-                yield return null;
-            }
-        }
-
-        public IEnumerator PlayEffectAnimation()
-        {
-            Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, "PlayEffectAnimation"));
-            animating = true;
-#if UNITY_EDITOR
-            currentAnimating = "PlayEffectAnimation";
-#endif
-            animator.Play(EFFECT_ANIMATION_NAME);
-            while (animating == true)
+                animator.SetTrigger(trigger);
+                while (animating == true)
+                {
+                    yield return null;
+                }
+            } else
             {
+                animating = false;
+                Debug.LogWarning(string.Format("Animator doesn't have the trigger {0}", trigger));
                 yield return null;
             }
         }
@@ -79,6 +50,17 @@ namespace Laresistance.Behaviours
         public void ReceiveAnimationEndSignal()
         {
             animating = false;
+        }
+
+        public void Pause()
+        {
+            lastAnimatorSpeed = animator.speed;
+            animator.speed = 0f;
+        }
+
+        public void Resume()
+        {
+            animator.speed = lastAnimatorSpeed;
         }
     }
 }

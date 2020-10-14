@@ -3,6 +3,7 @@ using Laresistance.Data;
 using System.Collections.Generic;
 using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Behaviours;
 
 namespace Laresistance.Battle
 {
@@ -128,5 +129,9 @@ namespace Laresistance.Battle
             }
             return Texts.GetText(textId);
         }
+
+        public abstract string GetAnimationTrigger();
+
+        public virtual bool IsPrioritary => false;
     }
 }

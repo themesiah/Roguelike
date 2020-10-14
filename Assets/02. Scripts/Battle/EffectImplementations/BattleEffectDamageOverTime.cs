@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -32,6 +33,11 @@ namespace Laresistance.Battle
         {
             string textId = "EFF_DOT_DESC";
             return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, BattleStatusManager.DAMAGE_OVER_TIME_DURATION });
+        }
+
+        public override string GetAnimationTrigger()
+        {
+            return "Attack";
         }
     }
 }
