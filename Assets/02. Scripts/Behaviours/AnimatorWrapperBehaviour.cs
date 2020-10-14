@@ -1,5 +1,6 @@
 ﻿using Laresistance.Extensions;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -15,6 +16,8 @@ namespace Laresistance.Behaviours
         private string currentAnimating = "";
         private float lastAnimatorSpeed = 0f;
         private static string ASSERT_ANIMATION_FORMAT = "Trying to animate while currently animating. Last played: {0}. Tried to play: {1}";
+        private float timer = 0f;
+        private static float TIMEOUT = 5f;
 
         public void Start()
         {
@@ -35,9 +38,16 @@ namespace Laresistance.Behaviours
             if (animator.HasParameter(trigger))
             {
                 animator.SetTrigger(trigger);
-                while (animating == true)
+                timer = 0f;
+                while (animating == true && timer < TIMEOUT)
                 {
+                    timer += Time.deltaTime;
                     yield return null;
+                }
+                animating = false;
+                if (timer >= TIMEOUT)
+                {
+                    Debug.LogWarning(string.Format("Animation trigger {0} caused a timeout.", trigger));
                 }
             } else
             {

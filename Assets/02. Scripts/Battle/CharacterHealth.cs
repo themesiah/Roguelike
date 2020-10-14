@@ -75,7 +75,6 @@ namespace Laresistance.Battle
 
         public void TakeDamage(int power)
         {
-            Debug.Log("Damage taken: " + power);
             int remainingPower = power;
             
             for (int i = currentShields.Count-1; i >= 0; --i)

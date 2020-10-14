@@ -120,7 +120,8 @@ namespace Laresistance.StateMachines
                 modifier = 1f;
             }
 
-            Vector3 center = GetCenter(playerObject.transform.position) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+            Vector3 originalCenter = GetCenter();
+            Vector3 center = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
 
             companionSpawner.Spawn(center, playerObject);
         }
@@ -215,13 +216,13 @@ namespace Laresistance.StateMachines
             return offset;
         }
 
-        private Vector3 GetCenter(Vector3 originalPosition)
+        private Vector3 GetCenter(Vector3 originalPosition, Vector3 originalCenter)
         {
             ContactFilter2D raycastFilters = new ContactFilter2D();
             raycastFilters.layerMask = centerCheckLayerMask;
             raycastFilters.useTriggers = false;
             raycastFilters.useLayerMask = true;
-            originalPosition.x = GetCenter().x;
+            originalPosition.x = originalCenter.x;
             List<RaycastHit2D> results = new List<RaycastHit2D>();
             int hits = Physics2D.Raycast(originalPosition + Vector3.up * 0.5f, Vector2.down, raycastFilters, results);
             if (hits > 0)
@@ -246,8 +247,9 @@ namespace Laresistance.StateMachines
                 Turn(go, !playerLookingRight);
             }
 
-            playerObject.transform.position = GetCenter(playerObject.transform.position) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
-            enemyObjects[0].transform.position = GetCenter(enemyObjects[0].transform.position) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+            Vector3 originalCenter = GetCenter();
+            playerObject.transform.position = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+            enemyObjects[0].transform.position = GetCenter(enemyObjects[0].transform.position, originalCenter) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
         }
 
         private void Turn(GameObject character, bool right)
