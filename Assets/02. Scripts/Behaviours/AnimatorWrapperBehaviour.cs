@@ -30,7 +30,7 @@ namespace Laresistance.Behaviours
 
         public IEnumerator PlayAnimation(string trigger)
         {
-            Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, trigger));
+            //Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, trigger));
             animating = true;
 #if UNITY_EDITOR
             currentAnimating = trigger;

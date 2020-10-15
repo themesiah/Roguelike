@@ -1,4 +1,5 @@
 ﻿using DigitalRuby.Tween;
+using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace Laresistance.Behaviours
             finished = true;
         }
 
-        protected virtual IEnumerator StartingTween(RewardData rewardData)
+        protected virtual IEnumerator StartingTween(RewardData rewardData, Player player)
         {
             panel.SetActive(true);
             finished = false;
@@ -38,7 +39,7 @@ namespace Laresistance.Behaviours
             }
         }
 
-        protected virtual IEnumerator FinishingTween(RewardData rewardData)
+        protected virtual IEnumerator FinishingTween(RewardData rewardData, Player player)
         {
             panel.Tween("PanelSize", Vector3.one, Vector2.zero, 1f, TweenScaleFunctions.CubicEaseIn, UpdatePanelSize, ResizeCompleted);
             finished = false;
@@ -49,13 +50,13 @@ namespace Laresistance.Behaviours
             panel.SetActive(false);
         }
 
-        public IEnumerator StartPanel(RewardData rewardData)
+        public IEnumerator StartPanel(RewardData rewardData, Player player)
         {
-            yield return StartingTween(rewardData);
-            yield return ExecutePanelProcess(rewardData);
-            yield return FinishingTween(rewardData);
+            yield return StartingTween(rewardData, player);
+            yield return ExecutePanelProcess(rewardData, player);
+            yield return FinishingTween(rewardData, player);
         }
 
-        protected abstract IEnumerator ExecutePanelProcess(RewardData rewardData);
+        protected abstract IEnumerator ExecutePanelProcess(RewardData rewardData, Player player);
     }
 }

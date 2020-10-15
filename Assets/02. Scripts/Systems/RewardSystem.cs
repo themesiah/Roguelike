@@ -32,7 +32,7 @@ namespace Laresistance.Systems
             if (reward.bloodAmount > 0)
             {
                 bloodReference.SetValue(bloodReference.GetValue() + reward.bloodAmount);
-                yield return BloodObtainedBehaviour.instance.StartPanel(reward);
+                yield return BloodObtainedBehaviour.instance.StartPanel(reward, player);
             }
 
             if (reward.minion != null)
@@ -43,7 +43,7 @@ namespace Laresistance.Systems
                 {
                     if (minions[i] == null)
                     {
-                        player.EquipMinion(reward.minion);
+                        //player.EquipMinion(reward.minion);
                         autoEquipped = true;
                         break;
                     }
@@ -52,11 +52,12 @@ namespace Laresistance.Systems
                 if (autoEquipped)
                 {
                     // Show message telling you obtained the minion
-                    yield return MinionObtainedBehaviour.instance.StartPanel(reward);
+                    yield return MinionObtainedBehaviour.instance.StartPanel(reward, player);
                 }
                 else
                 {
                     // Show options to switch minions
+                    yield return MinionsFullObtainedBehaviour.instance.StartPanel(reward, player);
                 }
             }
 

@@ -6,6 +6,7 @@ using GamedevsToolbox.ScriptableArchitecture.Localization;
 using DigitalRuby.Tween;
 using UnityEngine.InputSystem;
 using Laresistance.Data;
+using Laresistance.Core;
 
 namespace Laresistance.Behaviours
 {
@@ -28,13 +29,13 @@ namespace Laresistance.Behaviours
             inputDone = true;
         }
 
-        protected override IEnumerator StartingTween(RewardData rewardData)
+        protected override IEnumerator StartingTween(RewardData rewardData, Player player)
         {
             textBehaviour.ChangeVariable(rewardData.bloodAmount);
-            yield return base.StartingTween(rewardData);
+            yield return base.StartingTween(rewardData, player);
         }
 
-        protected override IEnumerator ExecutePanelProcess(RewardData rewardData)
+        protected override IEnumerator ExecutePanelProcess(RewardData rewardData, Player player)
         {
             inputDone = false;
             while (!inputDone)

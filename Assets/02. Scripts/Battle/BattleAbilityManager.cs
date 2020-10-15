@@ -19,12 +19,13 @@ namespace Laresistance.Battle
 
             abilityQueue.Add(abilityToExecute);
 
-            while(abilityQueue[0] != abilityToExecute && !abilityToExecute.IsPrioritary())
+            while(abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
             {
                 yield return null;
             }
             AnimatorWrapperBehaviour lastAnimator = currentAnimator;
-            if (abilityToExecute.IsPrioritary())
+            bool needPause = abilityQueue[0] != abilityToExecute;
+            if (abilityToExecute.IsPrioritary() && needPause)
             {
                 lastAnimator?.Pause();
             }
@@ -34,7 +35,7 @@ namespace Laresistance.Battle
             abilityToExecute.Perform(allies, targets, level);
             abilityQueue.Remove(abilityToExecute);
             currentlyExecuting = false;
-            if (abilityToExecute.IsPrioritary())
+            if (abilityToExecute.IsPrioritary() && needPause)
             {
                 lastAnimator?.Resume();
                 currentAnimator = lastAnimator;

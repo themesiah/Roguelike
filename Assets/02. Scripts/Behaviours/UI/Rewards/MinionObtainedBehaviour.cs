@@ -4,6 +4,7 @@ using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Laresistance.Core;
 
 namespace Laresistance.Behaviours
 {
@@ -28,20 +29,21 @@ namespace Laresistance.Behaviours
             inputDone = true;
         }
 
-        protected override IEnumerator StartingTween(RewardData rewardData)
+        protected override IEnumerator StartingTween(RewardData rewardData, Player player)
         {
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
-            yield return base.StartingTween(rewardData);
+            yield return base.StartingTween(rewardData, player);
         }
 
-        protected override IEnumerator ExecutePanelProcess(RewardData rewardData)
+        protected override IEnumerator ExecutePanelProcess(RewardData rewardData, Player player)
         {
             inputDone = false;
             while (!inputDone)
             {
                 yield return null;
             }
+            player.EquipMinion(rewardData.minion);
         }
     }
 }
