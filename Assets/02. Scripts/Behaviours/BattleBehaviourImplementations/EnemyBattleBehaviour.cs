@@ -8,9 +8,9 @@ namespace Laresistance.Behaviours
     public class EnemyBattleBehaviour : CharacterBattleBehaviour, IRewardable
     {
         [SerializeField]
-        private EnemyData enemyData = default;
+        protected EnemyData enemyData = default;
         [SerializeField]
-        private ScriptableIntReference currentLevel = default;
+        protected ScriptableIntReference currentLevel = default;
 
         protected override void SetupStatusManager()
         {
@@ -42,7 +42,7 @@ namespace Laresistance.Behaviours
             }
         }
 
-        public RewardData GetReward()
+        public virtual RewardData GetReward()
         {
             RewardData rewardData = new RewardData(enemyData.BaseBloodReward * currentLevel.GetValue(), null, null);
             return rewardData;

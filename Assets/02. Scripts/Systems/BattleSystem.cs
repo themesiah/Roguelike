@@ -46,7 +46,6 @@ namespace Laresistance.Systems
         private float lastTime = 0f;
         public IEnumerator Tick(float delta)
         {
-            UnityEngine.Debug.LogFormat("Difference with last time is {0} and delta is {1}", Time.time - lastTime, delta);
             float customDelta = delta;
             if (lastTime != 0)
             {

@@ -16,8 +16,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private AnimatorWrapperBehaviour animatorReference = default;
 
-        private BattleStatusManager targetStatus = null;
-
         protected override void SetupAbilityInputProcessor()
         {
             AbilityInputProcessor = new PlayerAbilityInput(player);
@@ -41,19 +39,6 @@ namespace Laresistance.Behaviours
         protected override void Awake()
         {
             player = new Player();
-            ///////
-            //List<BattleEffect> testEffects = new List<BattleEffect>();
-            //testEffects.Add(new BattleEffectDamage(50, EffectTargetType.Enemy));
-            //BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
-            //Minion m = new Minion("", testAbility, 1);
-            //player.EquipMinion(m);
-            //
-            //List<BattleEffect> testEffects2 = new List<BattleEffect>();
-            //testEffects2.Add(new BattleEffectHeal(5, EffectTargetType.Self));
-            //BattleAbility testAbility2 = new BattleAbility(testEffects2, 4f, player.GetEquipmentEvents());
-            //Minion m2 = new Minion("", testAbility2, 1);
-            //player.EquipMinion(m2);
-            ///////
             SetAnimator(animatorReference);
             base.Awake();
             
@@ -91,54 +76,6 @@ namespace Laresistance.Behaviours
         {
             player.ResetAbilities();
             StatusManager.ResetModifiers();
-        }
-
-        public void ChangeTarget(int index)
-        {
-            targetStatus = enemiesBattleBehaviour.Items[index].StatusManager;
-        }
-
-        public void ChangeTargetToFirstNotDead()
-        {
-            if (targetStatus != null && targetStatus.health.GetCurrentHealth() > 0)
-                return;
-            for (int i = 0; i < enemiesBattleBehaviour.Items.Count; ++i)
-            {
-                if (enemiesBattleBehaviour.Items[i].StatusManager.health.GetCurrentHealth() > 0)
-                {
-                    ChangeTarget(i);
-                    break;
-                }
-            }
-        }
-
-        protected override BattleStatusManager[] GetStatuses()
-        {
-            var enemies = GetEnemies();
-            BattleStatusManager[] statuses = new BattleStatusManager[enemies.Length];
-            int targetIndex = 0;
-            for (int i = 0; i < statuses.Length; ++i)
-            {
-                if (targetStatus == enemies[i].StatusManager)
-                {
-                    targetIndex = i;
-                    break;
-                }
-            }
-
-            if (targetIndex != 0)
-            {
-                var temp = enemies[0];
-                enemies[0] = enemies[targetIndex];
-                enemies[targetIndex] = temp;
-            }
-
-            for (int i = 0; i < statuses.Length; ++i)
-            {
-                statuses[i] = enemies[i].StatusManager;
-            }
-
-            return statuses;
         }
     }
 }

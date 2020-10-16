@@ -39,7 +39,6 @@ namespace Laresistance.StateMachines
         {
             deathCount = 0;
             playerInput.SwitchCurrentActionMap("PlayerBattle");
-            ObjectActivationAndDesactivation(true);
             ConfigureEnemyObjects();
             SpawnPlayerCompanions();
             // Init battle system
@@ -60,7 +59,6 @@ namespace Laresistance.StateMachines
         public IEnumerator ExitState()
         {
             // Deactivate things
-            ObjectActivationAndDesactivation(false);
             companionSpawner.Despawn();
             battleSystem.EndBattle();
             // Yield end battle screen and give rewards
@@ -138,30 +136,12 @@ namespace Laresistance.StateMachines
             companionSpawner.Spawn(center, playerObject);
         }
 
-        private void ObjectActivationAndDesactivation(bool enter)
-        {
-            playerObject.GetComponent<CharacterBattleBehaviour>().enabled = enter;
-            foreach (var go in enemyObjects)
-            {
-                if (enter == true)
-                {
-                    go.GetComponent<CharacterBattleBehaviour>().enabled = enter;
-                } else
-                {
-                    GameObject.Destroy(go);
-                }
-            }
-        }
-
         private void EnemyDeath(CharacterHealth health)
         {
             deathCount++;
             if (deathCount == enemyObjects.Length)
             {
                 goToMap = true;
-            } else
-            {
-                playerObject.GetComponent<PlayerBattleBehaviour>().ChangeTargetToFirstNotDead();
             }
         }
 
@@ -264,10 +244,6 @@ namespace Laresistance.StateMachines
             }
             Turn(playerObject, playerLookingRight);
             Turn(enemyObjects[0], !playerLookingRight);
-            //foreach(var go in enemyObjects)
-            //{
-            //    Turn(go, !playerLookingRight);
-            //}
 
             Vector3 originalCenter = GetCenter();
             playerObject.transform.position = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;

@@ -1,30 +1,17 @@
 ﻿using Laresistance.Battle;
-using System.Collections.Generic;
 using Laresistance.Data;
 using Laresistance.Core;
-using UnityEngine;
-using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Behaviours
 {
-    public class EnemyMinionBattleBehaviour : CharacterBattleBehaviour, IRewardable
+    public class EnemyMinionBattleBehaviour : EnemyBattleBehaviour
     {
-        [SerializeField]
-        private MinionData minionData = default;
-
-        [SerializeField]
-        private ScriptableIntReference currentLevel = default;
-
         private Minion minion;
 
         protected override void SetupStatusManager()
         {
-            StatusManager = new BattleStatusManager(new CharacterHealth(minionData.MaxHealth * (int)(1f + (currentLevel.GetValue() - 1) * 0.1f)));
-        }
-
-        protected override void SetupAbilityInputExecutor()
-        {
-            AbilityExecutor = (IAbilityExecutor)AbilityInputProcessor;
+            base.SetupStatusManager();
+            minion = MinionFactory.GetMinion((MinionData)enemyData, currentLevel.GetValue(), null, StatusManager);
         }
 
         protected override void SetupAbilityInputProcessor()
@@ -32,21 +19,7 @@ namespace Laresistance.Behaviours
             AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level, animator);
         }
 
-        protected override void Awake()
-        {
-            ConfigurePrefab();
-            SetupStatusManager();
-            minion = MinionFactory.GetMinion(minionData, currentLevel.GetValue(), null, StatusManager);
-            SetupAbilityInputProcessor();
-            SetupAbilityInputExecutor();
-            OnStatusGenerated.Invoke();
-            battleManager = new CharacterBattleManager(StatusManager, AbilityInputProcessor, AbilityExecutor, animator);
-            battleManager.OnBattleStart += OnBattleBehaviourEnable.Invoke;
-            battleManager.OnBattleEnd += OnBattleBehaviourDisable.Invoke;
-            this.enabled = false;
-        }
-
-        public RewardData GetReward()
+        public override RewardData GetReward()
         {
             RewardData rewardData = new RewardData(0, minion, null);
             return rewardData;
@@ -57,7 +30,7 @@ namespace Laresistance.Behaviours
             EnemyPrefabConfiguration epc = GetComponent<EnemyPrefabConfiguration>();
             if (epc != null)
             {
-                epc.ConfigurePrefab(minionData.Prefab, SetAnimator);
+                epc.ConfigurePrefab(enemyData.Prefab, SetAnimator);
             }
         }
 
