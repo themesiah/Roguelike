@@ -69,7 +69,14 @@ namespace Laresistance.Battle
             timer = 0f;
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, AnimatorWrapperBehaviour animator)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator)
+        {
+            // We need to actually start a new coroutine here because prioritary abilities can and should be processed BEFORE non prioritary abilities.
+            CoroutineHelperBehaviour.GetInstance().StartCoroutine(ExecuteAbilityCoroutine(allies, targets, level, animator));
+            yield return null;
+        }
+
+        public IEnumerator ExecuteAbilityCoroutine(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator)
         {
             if (CanBeUsed())
             {
@@ -80,7 +87,6 @@ namespace Laresistance.Battle
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }
-            yield return null;
         }
 
         public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level)

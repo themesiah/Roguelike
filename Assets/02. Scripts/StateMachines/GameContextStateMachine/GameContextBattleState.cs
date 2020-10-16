@@ -19,6 +19,8 @@ namespace Laresistance.StateMachines
         private static float CENTER_RAYCAST_THRESHOLD = 6f;
         private static int CENTER_DOWN_RAYCAST_AMOUNT = 3;
         private static float CENTER_DOWN_RAYCAST_DISTANCE = 1f;
+        private static float PARTY_HORIZONTAL_OFFSET = 0.4f;
+        private static float PARTY_VERTICAL_OFFSET = 0.4f;
 
         private GameObject playerObject;
         private Camera playerCamera;
@@ -27,7 +29,7 @@ namespace Laresistance.StateMachines
         private bool goToMap = false;
         private RewardSystem rewardSystem;
         private PlayerMinionCompanionSpawner companionSpawner;
-
+        private BattleSystem battleSystem;
         private GameObject[] enemyObjects;
         private int deathCount;
         private RewardData rewardData = null;
@@ -40,10 +42,18 @@ namespace Laresistance.StateMachines
             ObjectActivationAndDesactivation(true);
             ConfigureEnemyObjects();
             SpawnPlayerCompanions();
+            // Init battle system
+            CharacterBattleManager[] enemies = new CharacterBattleManager[enemyObjects.Length];
+            for (int i = 0; i < enemies.Length; ++i)
+            {
+                enemies[i] = enemyObjects[i].GetComponent<CharacterBattleBehaviour>().battleManager;
+            }
+            battleSystem.InitBattle(playerObject.GetComponent<PlayerBattleBehaviour>().battleManager, enemies);
             // Move camera
             // Move characters
             MoveCharacters();
             Debug.Log("Entering battle state");
+            //playerObject.GetComponent<PlayerBattleBehaviour>().ChangeTargetToFirstNotDead();
             yield return null;
         }
 
@@ -52,6 +62,7 @@ namespace Laresistance.StateMachines
             // Deactivate things
             ObjectActivationAndDesactivation(false);
             companionSpawner.Despawn();
+            battleSystem.EndBattle();
             // Yield end battle screen and give rewards
             yield return rewardSystem.GetReward(rewardData);
             goToMap = false;
@@ -76,11 +87,11 @@ namespace Laresistance.StateMachines
 
         public IEnumerator Update(Action<string> resolve)
         {
-            if (goToMap)
+            if(goToMap)
             {
                 resolve("Map");
             }
-            yield return null;
+            yield return battleSystem.Tick(Time.deltaTime);
         }
         #endregion
 
@@ -100,6 +111,7 @@ namespace Laresistance.StateMachines
             Player player = playerObject.GetComponent<PlayerBattleBehaviour>().player;
             this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference);
             this.companionSpawner = new PlayerMinionCompanionSpawner(player);
+            this.battleSystem = new BattleSystem();
         }
         #endregion
 
@@ -131,7 +143,13 @@ namespace Laresistance.StateMachines
             playerObject.GetComponent<CharacterBattleBehaviour>().enabled = enter;
             foreach (var go in enemyObjects)
             {
-                go.GetComponent<CharacterBattleBehaviour>().enabled = enter;
+                if (enter == true)
+                {
+                    go.GetComponent<CharacterBattleBehaviour>().enabled = enter;
+                } else
+                {
+                    GameObject.Destroy(go);
+                }
             }
         }
 
@@ -141,6 +159,9 @@ namespace Laresistance.StateMachines
             if (deathCount == enemyObjects.Length)
             {
                 goToMap = true;
+            } else
+            {
+                playerObject.GetComponent<PlayerBattleBehaviour>().ChangeTargetToFirstNotDead();
             }
         }
 
@@ -242,14 +263,19 @@ namespace Laresistance.StateMachines
                 modifier = 1f;
             }
             Turn(playerObject, playerLookingRight);
-            foreach(var go in enemyObjects)
-            {
-                Turn(go, !playerLookingRight);
-            }
+            Turn(enemyObjects[0], !playerLookingRight);
+            //foreach(var go in enemyObjects)
+            //{
+            //    Turn(go, !playerLookingRight);
+            //}
 
             Vector3 originalCenter = GetCenter();
             playerObject.transform.position = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
             enemyObjects[0].transform.position = GetCenter(enemyObjects[0].transform.position, originalCenter) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+            for (int i = 1; i < enemyObjects.Length; ++i)
+            {
+                enemyObjects[1].transform.position = enemyObjects[0].transform.position + Vector3.left * PARTY_HORIZONTAL_OFFSET * modifier * i + Vector3.up * PARTY_VERTICAL_OFFSET * i;
+            }
         }
 
         private void Turn(GameObject character, bool right)

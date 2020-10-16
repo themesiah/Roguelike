@@ -53,13 +53,11 @@ namespace GamedevsToolbox.StateMachine {
                 else
                 {
                     Debug.LogError("Your state machine of type " + this.GetType().Name + " is trying to switch to the state " + newState + " which is not in the State Machine dictionary");
-                    yield return null;
                 }
             }
             else
             {
                 resolve?.Invoke(newState);
-                yield return null;
             }
         }
 

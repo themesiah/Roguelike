@@ -35,7 +35,7 @@ namespace Laresistance.Core
             return player.EquipMinion(this);
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies, AnimatorWrapperBehaviour animator)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies, IBattleAnimator animator)
         {
             yield return ability.ExecuteAbility(allies, enemies, Level, animator);
         }

@@ -16,6 +16,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private AnimatorWrapperBehaviour animatorReference = default;
 
+        private BattleStatusManager targetStatus = null;
+
         protected override void SetupAbilityInputProcessor()
         {
             AbilityInputProcessor = new PlayerAbilityInput(player);
@@ -75,6 +77,10 @@ namespace Laresistance.Behaviours
         public void PerformConsumableAbility1(InputAction.CallbackContext context) => PerformAbility(context, 4);
         public void PerformConsumableAbility2(InputAction.CallbackContext context) => PerformAbility(context, 5);
         public void PerformConsumableAbility3(InputAction.CallbackContext context) => PerformAbility(context, 6);
+        public void PerformChangeTarget(InputAction.CallbackContext context)
+        {
+
+        }
 
         public void PerformAbility(InputAction.CallbackContext context, int abilityIndex)
         {
@@ -85,6 +91,54 @@ namespace Laresistance.Behaviours
         {
             player.ResetAbilities();
             StatusManager.ResetModifiers();
+        }
+
+        public void ChangeTarget(int index)
+        {
+            targetStatus = enemiesBattleBehaviour.Items[index].StatusManager;
+        }
+
+        public void ChangeTargetToFirstNotDead()
+        {
+            if (targetStatus != null && targetStatus.health.GetCurrentHealth() > 0)
+                return;
+            for (int i = 0; i < enemiesBattleBehaviour.Items.Count; ++i)
+            {
+                if (enemiesBattleBehaviour.Items[i].StatusManager.health.GetCurrentHealth() > 0)
+                {
+                    ChangeTarget(i);
+                    break;
+                }
+            }
+        }
+
+        protected override BattleStatusManager[] GetStatuses()
+        {
+            var enemies = GetEnemies();
+            BattleStatusManager[] statuses = new BattleStatusManager[enemies.Length];
+            int targetIndex = 0;
+            for (int i = 0; i < statuses.Length; ++i)
+            {
+                if (targetStatus == enemies[i].StatusManager)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            if (targetIndex != 0)
+            {
+                var temp = enemies[0];
+                enemies[0] = enemies[targetIndex];
+                enemies[targetIndex] = temp;
+            }
+
+            for (int i = 0; i < statuses.Length; ++i)
+            {
+                statuses[i] = enemies[i].StatusManager;
+            }
+
+            return statuses;
         }
     }
 }

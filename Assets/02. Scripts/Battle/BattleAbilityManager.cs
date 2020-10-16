@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Laresistance.Behaviours;
+using UnityEngine.Analytics;
 
 namespace Laresistance.Battle
 {
@@ -10,20 +11,20 @@ namespace Laresistance.Battle
         public static bool currentlyExecuting = false;
         private static List<BattleAbility> abilityQueue;
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
-        private static AnimatorWrapperBehaviour currentAnimator = null;
+        private static IBattleAnimator currentAnimator = null;
 
-        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, AnimatorWrapperBehaviour animator, string animationTrigger)
+        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger)
         {
             if (abilityQueue == null)
                 abilityQueue = new List<BattleAbility>();
 
             abilityQueue.Add(abilityToExecute);
 
-            while(abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
+            while (abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
             {
                 yield return null;
             }
-            AnimatorWrapperBehaviour lastAnimator = currentAnimator;
+            IBattleAnimator lastAnimator = currentAnimator;
             bool needPause = abilityQueue[0] != abilityToExecute;
             if (abilityToExecute.IsPrioritary() && needPause)
             {

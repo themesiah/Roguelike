@@ -8,9 +8,9 @@ namespace Laresistance.Battle
     {
         private BattleAbility[] abilities;
         private int level;
-        private AnimatorWrapperBehaviour animator;
+        private IBattleAnimator animator;
 
-        public EnemyAbilityManager(BattleAbility[] abilities, int level, AnimatorWrapperBehaviour animator)
+        public EnemyAbilityManager(BattleAbility[] abilities, int level, IBattleAnimator animator)
         {
             this.abilities = abilities;
             this.level = level;

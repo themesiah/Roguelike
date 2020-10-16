@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 namespace Laresistance.Behaviours
 {
     [RequireComponent(typeof(Animator))]
-    public class AnimatorWrapperBehaviour : MonoBehaviour
+    public class AnimatorWrapperBehaviour : MonoBehaviour, IBattleAnimator
     {
         [SerializeField]
         private Animator animator = default;
@@ -15,7 +15,6 @@ namespace Laresistance.Behaviours
         private bool animating = false;
         private string currentAnimating = "";
         private float lastAnimatorSpeed = 0f;
-        private static string ASSERT_ANIMATION_FORMAT = "Trying to animate while currently animating. Last played: {0}. Tried to play: {1}";
         private float timer = 0f;
         private static float TIMEOUT = 5f;
 
@@ -30,7 +29,6 @@ namespace Laresistance.Behaviours
 
         public IEnumerator PlayAnimation(string trigger)
         {
-            //Assert.IsFalse(animating, string.Format(ASSERT_ANIMATION_FORMAT, currentAnimating, trigger));
             animating = true;
 #if UNITY_EDITOR
             currentAnimating = trigger;

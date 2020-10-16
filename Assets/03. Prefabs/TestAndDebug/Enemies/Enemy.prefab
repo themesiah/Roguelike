@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 5483957954753791515}
   - component: {fileID: 2320645775852034817}
   - component: {fileID: 7977501592227898785}
+  - component: {fileID: 6252518509512114618}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -242,6 +243,7 @@ Transform:
   - {fileID: 7909678482631436281}
   - {fileID: 7909678483471566019}
   - {fileID: 7909678482502529984}
+  - {fileID: 8478128905058416120}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -394,15 +396,15 @@ MonoBehaviour:
   OnDie:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7909678482288378003}
-        m_TargetAssemblyTypeName: GamedevsToolbox.Utils.TimedDestroy, GamedevsToolbox
-        m_MethodName: DoDestroy
+      - m_Target: {fileID: 7909678482288378002}
+        m_TargetAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
+        m_MethodName: set_alpha
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 3
+          m_FloatArgument: 1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -580,6 +582,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8410598202582482540}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnBattleBehaviourDisable:
     m_PersistentCalls:
       m_Calls:
@@ -607,6 +621,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 8410598202582482540}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   enemyData: {fileID: 11400000, guid: 7c89885e594a6fa42b9df23e0c34b0d3, type: 2}
   currentLevel:
     useConstant: 0
@@ -629,6 +655,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af7aa98de527d54b9f3204af826021c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6252518509512114618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7909678482288377995}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b81ea410a371ba4285ffd28e1754288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partyHolder: {fileID: 8478128905058416120}
+  partyPrefabs:
+  - {fileID: 7161766185300077890, guid: f4f5e76a79d068c43b1c310233ad3922, type: 3}
 --- !u!1 &7909678482502529855
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,3 +970,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c533a2f7c45408c4ba08d7fc48e3bd99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8410598202582482540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8478128905058416120}
+  m_Layer: 8
+  m_Name: Party
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8478128905058416120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410598202582482540}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7909678482288377996}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

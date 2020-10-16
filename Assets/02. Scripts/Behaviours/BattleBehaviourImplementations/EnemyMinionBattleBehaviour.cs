@@ -40,6 +40,9 @@ namespace Laresistance.Behaviours
             SetupAbilityInputProcessor();
             SetupAbilityInputExecutor();
             OnStatusGenerated.Invoke();
+            battleManager = new CharacterBattleManager(StatusManager, AbilityInputProcessor, AbilityExecutor, animator);
+            battleManager.OnBattleStart += OnBattleBehaviourEnable.Invoke;
+            battleManager.OnBattleEnd += OnBattleBehaviourDisable.Invoke;
             this.enabled = false;
         }
 

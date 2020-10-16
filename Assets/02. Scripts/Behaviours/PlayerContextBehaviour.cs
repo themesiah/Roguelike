@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.InputSystem;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using UnityEditor.Experimental.GraphView;
 
 namespace Laresistance.Behaviours
 {
@@ -51,7 +52,16 @@ namespace Laresistance.Behaviours
         {
             if (collision.gameObject.CompareTag("Enemy"))
             {
-                battleState.SetEnemyObjects(new GameObject[] { collision.gameObject });
+                PartyManagerBehaviour pmb = collision.gameObject.GetComponent<PartyManagerBehaviour>();
+                GameObject[] enemies;
+                if (pmb == null)
+                {
+                    enemies = new GameObject[] { collision.gameObject };
+                } else
+                {
+                    enemies = pmb.GetFullParty();
+                }
+                battleState.SetEnemyObjects(enemies);
                 stateMachine.ReceiveSignal("Battle");
             }
         }

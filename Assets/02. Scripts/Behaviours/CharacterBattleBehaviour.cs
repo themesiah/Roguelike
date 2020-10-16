@@ -4,6 +4,7 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine.Events;
 using System;
+using Laresistance.Core;
 
 namespace Laresistance.Behaviours
 {
@@ -16,9 +17,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         protected RuntimeBattleBehaviourSet alliesBattleBehaviour = default;
         [SerializeField]
-        private UnityEvent OnBattleBehaviourEnable = default;
+        protected UnityEvent OnBattleBehaviourEnable = default;
         [SerializeField]
-        private UnityEvent OnBattleBehaviourDisable = default;
+        protected UnityEvent OnBattleBehaviourDisable = default;
         
         public BattleStatusManager StatusManager { get; protected set; }
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
@@ -26,7 +27,8 @@ namespace Laresistance.Behaviours
 
         public UnityAction OnStatusGenerated = delegate { };
 
-        protected AnimatorWrapperBehaviour animator;
+        protected IBattleAnimator animator;
+        public CharacterBattleManager battleManager { get; protected set; }
 
 
         protected virtual void Awake()
@@ -36,6 +38,9 @@ namespace Laresistance.Behaviours
             SetupAbilityInputProcessor();
             SetupAbilityInputExecutor();
             OnStatusGenerated.Invoke();
+            battleManager = new CharacterBattleManager(StatusManager, AbilityInputProcessor, AbilityExecutor, animator);
+            battleManager.OnBattleStart += OnBattleBehaviourEnable.Invoke;
+            battleManager.OnBattleEnd += OnBattleBehaviourDisable.Invoke;
             this.enabled = false;
         }
 
@@ -43,36 +48,38 @@ namespace Laresistance.Behaviours
         protected abstract void SetupAbilityInputProcessor();
         protected abstract void SetupAbilityInputExecutor();
         protected abstract void ConfigurePrefab();
-        protected void SetAnimator(AnimatorWrapperBehaviour animator)
+        protected void SetAnimator(IBattleAnimator animator)
         {
             this.animator = animator;
         }
 
-        protected virtual void OnEnable()
-        {
-            selfBattleBehaviour.Add(this);
-            OnBattleBehaviourEnable?.Invoke();
-        }
-
-        protected virtual void OnDisable()
-        {
-            selfBattleBehaviour.Remove(this);
-            OnBattleBehaviourDisable?.Invoke();
-        }
+        //protected virtual void OnEnable()
+        //{
+        //    selfBattleBehaviour.Add(this);
+        //    OnBattleBehaviourEnable?.Invoke();
+        //}
+        //
+        //protected virtual void OnDisable()
+        //{
+        //    selfBattleBehaviour.Remove(this);
+        //    OnBattleBehaviourDisable?.Invoke();
+        //}
 
         protected virtual void Update()
         {
-            StatusManager.ProcessStatus(Time.deltaTime);
-            int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, Time.deltaTime);
-            if (index != -1)
-            {
-                var statuses = GetStatuses();
-                var allyStatuses = GetAllyStatuses();
-                StartCoroutine(AbilityExecutor.ExecuteAbility(index, allyStatuses, statuses));
-            }
+            //battleManager.Tick(Time.deltaTime);
+            //
+            //StatusManager.ProcessStatus(Time.deltaTime);
+            //int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, Time.deltaTime);
+            //if (index != -1)
+            //{
+            //    var statuses = GetStatuses();
+            //    var allyStatuses = GetAllyStatuses();
+            //    StartCoroutine(AbilityExecutor.ExecuteAbility(index, allyStatuses, statuses));
+            //}
         }
 
-        private BattleStatusManager[] GetStatuses()
+        protected virtual BattleStatusManager[] GetStatuses()
         {
             var enemies = GetEnemies();
             BattleStatusManager[] statuses = new BattleStatusManager[enemies.Length];

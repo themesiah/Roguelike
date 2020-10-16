@@ -7,9 +7,9 @@ namespace Laresistance.Battle
     public class PlayerAbilityExecutor : IAbilityExecutor
     {
         private Player player;
-        private AnimatorWrapperBehaviour animator;
+        private IBattleAnimator animator;
 
-        public PlayerAbilityExecutor(Player p, AnimatorWrapperBehaviour animator)
+        public PlayerAbilityExecutor(Player p, IBattleAnimator animator)
         {
             player = p;
             this.animator = animator;

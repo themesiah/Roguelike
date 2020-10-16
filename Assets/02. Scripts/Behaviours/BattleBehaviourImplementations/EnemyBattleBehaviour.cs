@@ -1,5 +1,4 @@
 ﻿using Laresistance.Battle;
-using System.Collections.Generic;
 using Laresistance.Data;
 using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.Values;

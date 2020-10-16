@@ -36,17 +36,11 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Color selectedColor = default;
 
-        private bool inputDone = false;
         private int minionIndexSelected = -2;
 
         private void Awake()
         {
             instance = this;
-        }
-
-        public void AnyInput(InputAction.CallbackContext context)
-        {
-            inputDone = true;
         }
 
         protected override IEnumerator StartingTween(RewardData rewardData, Player player)
