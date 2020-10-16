@@ -1,8 +1,6 @@
-﻿using ICSharpCode.NRefactory.PrettyPrinter;
-using Laresistance.Battle;
+﻿using Laresistance.Battle;
 using Laresistance.Behaviours;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Core
