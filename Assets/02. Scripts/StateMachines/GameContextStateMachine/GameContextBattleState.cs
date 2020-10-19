@@ -52,7 +52,6 @@ namespace Laresistance.StateMachines
             // Move characters
             MoveCharacters();
             Debug.Log("Entering battle state");
-            //playerObject.GetComponent<PlayerBattleBehaviour>().ChangeTargetToFirstNotDead();
             yield return null;
         }
 

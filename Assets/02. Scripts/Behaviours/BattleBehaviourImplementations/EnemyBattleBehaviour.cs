@@ -42,6 +42,11 @@ namespace Laresistance.Behaviours
             }
         }
 
+        protected override void SetupTargetSelector()
+        {
+            TargetSelector = new DummyTargetSelection();
+        }
+
         public virtual RewardData GetReward()
         {
             RewardData rewardData = new RewardData(enemyData.BaseBloodReward * currentLevel.GetValue(), null, null);

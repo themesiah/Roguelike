@@ -31,6 +31,11 @@ namespace Laresistance.Behaviours
             StatusManager = new BattleStatusManager(new CharacterHealth(100));
         }
 
+        protected override void SetupTargetSelector()
+        {
+            TargetSelector = new PlayerTargetSelection();
+        }
+
         protected override void ConfigurePrefab()
         {
 
@@ -64,7 +69,11 @@ namespace Laresistance.Behaviours
         public void PerformConsumableAbility3(InputAction.CallbackContext context) => PerformAbility(context, 6);
         public void PerformChangeTarget(InputAction.CallbackContext context)
         {
-
+            if (context.performed)
+            {
+                float val = context.ReadValue<float>();
+                ((PlayerTargetSelection)TargetSelector).DoTargetSelection(val > 0f ? true : false);
+            }
         }
 
         public void PerformAbility(InputAction.CallbackContext context, int abilityIndex)

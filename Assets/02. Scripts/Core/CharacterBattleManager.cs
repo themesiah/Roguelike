@@ -1,7 +1,9 @@
 ﻿using Laresistance.Battle;
 using Laresistance.Behaviours;
+using Laresistance.Systems;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Laresistance.Core
 {
@@ -10,22 +12,33 @@ namespace Laresistance.Core
         public BattleStatusManager StatusManager { get; protected set; }
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
         public IAbilityExecutor AbilityExecutor { get; protected set; }
+        public ITargetSelection TargetSelector { get; protected set; }
+
+        public bool selected { get; protected set; }
         protected IBattleAnimator animator;
 
         private CharacterBattleManager[] allies;
         private CharacterBattleManager[] enemies;
+        private BattleSystem battleSystem;
 
         public delegate void OnBattleStartHandler();
         public event OnBattleStartHandler OnBattleStart;
         public delegate void OnBattleEndHandler();
         public event OnBattleEndHandler OnBattleEnd;
+        public delegate void OnSelectedHandler(bool selected);
+        public event OnSelectedHandler OnSelected;
 
-        public CharacterBattleManager(BattleStatusManager statusManager, IAbilityInputProcessor inputProcessor, IAbilityExecutor abilityExecutor, IBattleAnimator animator)
+        public bool dead { get; private set; }
+
+        public CharacterBattleManager(BattleStatusManager statusManager, IAbilityInputProcessor inputProcessor, IAbilityExecutor abilityExecutor, ITargetSelection targetSelector, IBattleAnimator animator)
         {
             StatusManager = statusManager;
             AbilityInputProcessor = inputProcessor;
             AbilityExecutor = abilityExecutor;
+            TargetSelector = targetSelector;
             this.animator = animator;
+            selected = false;
+            dead = false;
         }
 
         public void StartBattle()
@@ -36,6 +49,35 @@ namespace Laresistance.Core
         public void EndBattle()
         {
             OnBattleEnd.Invoke();
+        }
+
+        public bool Select()
+        {
+            if (dead)
+                return false;
+            OnSelected.Invoke(true);
+            selected = true;
+            return true;
+        }
+
+        public void Unselect()
+        {
+            OnSelected.Invoke(false);
+            selected = false;
+        }
+
+        public void Die()
+        {
+            dead = true;
+            if (selected == true)
+            {
+                battleSystem.Reselect();
+            }
+        }
+
+        public void SetBattleSystem(BattleSystem battleSystem)
+        {
+            this.battleSystem = battleSystem;
         }
 
         public void SetEnemies(CharacterBattleManager[] enemies)
@@ -65,7 +107,12 @@ namespace Laresistance.Core
 
         public int Tick(float delta)
         {
+            if (dead)
+                return -1;
             StatusManager.ProcessStatus(Time.deltaTime);
+            int targetSelectionInput = TargetSelector.GetTargetSelection();
+            if (targetSelectionInput == -1) battleSystem.SelectPrevious();
+            if (targetSelectionInput == 1) battleSystem.SelectNext();
             int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, Time.deltaTime);
             return index;
         }
@@ -79,10 +126,27 @@ namespace Laresistance.Core
 
         protected virtual BattleStatusManager[] GetStatuses()
         {
+            CharacterBattleManager cbm = battleSystem.GetSelected();
+            
             BattleStatusManager[] statuses = new BattleStatusManager[enemies.Length];
             for (int i = 0; i < statuses.Length; ++i)
             {
                 statuses[i] = enemies[i].StatusManager;
+            }
+            if (cbm != null && !IsAlly(cbm))
+            {
+                if (statuses[0] != cbm.StatusManager)
+                {
+                    var temp = statuses[0];
+                    statuses[0] = cbm.StatusManager;
+                    for (int i = 1; i < statuses.Length; ++i)
+                    {
+                        if (statuses[i] == cbm.StatusManager)
+                        {
+                            statuses[i] = temp;
+                        }
+                    }
+                }
             }
             return statuses;
         }
@@ -98,7 +162,7 @@ namespace Laresistance.Core
             {
                 var temp = statuses[0];
                 statuses[0] = this.StatusManager;
-                for (int i = 0; i < statuses.Length; ++i)
+                for (int i = 1; i < statuses.Length; ++i)
                 {
                     if (statuses[i] == this.StatusManager)
                     {
@@ -107,6 +171,16 @@ namespace Laresistance.Core
                 }
             }
             return statuses;
+        }
+
+        private bool IsAlly(CharacterBattleManager cbm)
+        {
+            foreach(CharacterBattleManager manager in allies)
+            {
+                if (manager == cbm)
+                    return true;
+            }
+            return false;
         }
     }
 }

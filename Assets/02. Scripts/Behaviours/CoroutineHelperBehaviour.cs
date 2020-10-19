@@ -18,7 +18,7 @@ namespace Laresistance.Behaviours
         {
             if (instance == null)
             {
-                GameObject go = new GameObject();
+                GameObject go = new GameObject("Coroutine Helper");
                 instance = go.AddComponent<CoroutineHelperBehaviour>();
             }
             return instance;

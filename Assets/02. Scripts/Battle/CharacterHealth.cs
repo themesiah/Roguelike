@@ -68,6 +68,8 @@ namespace Laresistance.Battle
 
         public void Heal(int power)
         {
+            if (currentHealth <= 0)
+                return;
             currentHealth += power;
             currentHealth = System.Math.Min(currentHealth, maxHealth);
             OnHealed?.Invoke(this, power, currentHealth);
@@ -75,6 +77,8 @@ namespace Laresistance.Battle
 
         public void TakeDamage(int power)
         {
+            if (currentHealth <= 0)
+                return;
             int remainingPower = power;
             
             for (int i = currentShields.Count-1; i >= 0; --i)
@@ -119,6 +123,8 @@ namespace Laresistance.Battle
 
         public void AddShield(int power)
         {
+            if (currentHealth <= 0)
+                return;
             currentShields.Add(new Shield() { remainingAmount = power, timer = 0f });
             OnShieldsChanged?.Invoke(this, power, TotalShields());
         }
