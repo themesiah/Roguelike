@@ -19,7 +19,7 @@ namespace Laresistance.Behaviours
 
 
         [SerializeField]
-        private PlayerBattleBehaviour battleBehaviour = default;
+        private PlayerDataBehaviour dataBehaviour = default;
         [SerializeField]
         private List<AbilitySubscription> suscriptions = default;
 
@@ -29,7 +29,7 @@ namespace Laresistance.Behaviours
 
         private void OnEnable()
         {
-            BattleAbility[] abilities = battleBehaviour.player.GetAbilities();
+            BattleAbility[] abilities = dataBehaviour.player.GetAbilities();
             foreach (var suscription in suscriptions)
             {
                 if (suscription.abilityIndex < 0 || suscription.abilityIndex >= abilities.Length || abilities[suscription.abilityIndex] == null)
@@ -46,7 +46,7 @@ namespace Laresistance.Behaviours
 
         private void OnDisable()
         {
-            BattleAbility[] abilities = battleBehaviour.player.GetAbilities();
+            BattleAbility[] abilities = dataBehaviour.player.GetAbilities();
             foreach (var suscription in suscriptions)
             {
                 if (suscription.abilityIndex < 0 || suscription.abilityIndex >= abilities.Length || abilities[suscription.abilityIndex] == null)

@@ -1,5 +1,4 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
-using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections.Generic;
 
@@ -11,13 +10,9 @@ namespace Laresistance.Systems
         private ScriptableIntReference hardCurrencyReference = default;
         private List<ShopOffer> offers = default;
 
-        public ShopSystem()
+        public ShopSystem(ScriptableIntReference blood, ScriptableIntReference hardCurrency)
         {
             offers = new List<ShopOffer>();
-        }
-
-        public void SetCurrencyReference(ScriptableIntReference blood, ScriptableIntReference hardCurrency)
-        {
             bloodReference = blood;
             hardCurrencyReference = hardCurrency;
         }
@@ -38,7 +33,12 @@ namespace Laresistance.Systems
             }
         }
 
-        public ISlot BuyOffer(ShopOffer offer)
+        public List<ShopOffer> GetOffers()
+        {
+            return offers;
+        }
+
+        public RewardData BuyOffer(ShopOffer offer)
         {
             if (offers.Contains(offer))
             {
@@ -47,10 +47,22 @@ namespace Laresistance.Systems
                 {
                     RemoveOffer(offer);
                     referenceToUse.SetValue(referenceToUse.GetValue() - offer.Cost);
-                    return offer.SlotableItem;
+                    return offer.Reward;
                 }
             }
             return null;
+        }
+
+        public RewardData BuyOffer(int offerIndex)
+        {
+            if (offers.Count >= offerIndex + 1)
+            {
+                return BuyOffer(offers[offerIndex]);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

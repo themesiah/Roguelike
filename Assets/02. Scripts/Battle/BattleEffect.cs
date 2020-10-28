@@ -20,6 +20,11 @@ namespace Laresistance.Battle
             SelfStatus = selfStatus;
         }
 
+        public void SetStatusManager(BattleStatusManager selfStatus)
+        {
+            SelfStatus = selfStatus;
+        }
+
         public virtual int GetPower(int level, EquipmentEvents equipmentEvents)
         {
             if (level <= 0)

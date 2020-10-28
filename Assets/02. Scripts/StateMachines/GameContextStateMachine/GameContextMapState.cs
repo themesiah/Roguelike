@@ -12,7 +12,7 @@ namespace Laresistance.StateMachines
         private GameObject playerObject;
         private Camera playerCamera;
         private PlayerInput playerInput;
-        private bool goToBattle = false;
+        private string signal = null;
 
         public GameContextMapState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput)
         {
@@ -33,7 +33,7 @@ namespace Laresistance.StateMachines
             ObjectActivationAndDesactivation(true);
             playerObject.GetComponent<PlayerMapBehaviour>().ResumeMapBehaviour();
             // Move camera
-            Debug.Log("Entering map state");
+            GamedevsToolbox.Utils.Logger.Logger.Log("Entering map state");
             yield return null;
         }
 
@@ -41,7 +41,7 @@ namespace Laresistance.StateMachines
         {
             ObjectActivationAndDesactivation(false);
             playerObject.GetComponent<PlayerMapBehaviour>().PauseMapBehaviour();
-            goToBattle = false;
+            signal = null;
             yield return null;
         }
 
@@ -51,9 +51,9 @@ namespace Laresistance.StateMachines
 
         public void ReceiveSignal(string signal)
         {
-            if (signal == "Battle")
+            if (signal != null)
             {
-                goToBattle = true;
+                this.signal = signal;
             }
         }
 
@@ -63,9 +63,9 @@ namespace Laresistance.StateMachines
 
         public IEnumerator Update(Action<string> resolve)
         {
-            if (goToBattle)
+            if (signal != null)
             {
-                resolve("Battle");
+                resolve(signal);
             }
             yield return null;
         }

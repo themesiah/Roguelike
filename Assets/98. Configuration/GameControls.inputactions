@@ -343,7 +343,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "SelectMinionA",
+                    "name": "SelectOption3",
                     "type": "Button",
                     "id": "23180072-79a4-4501-a2c7-1875d59abd5e",
                     "expectedControlType": "Button",
@@ -351,7 +351,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "SelectMinionS",
+                    "name": "SelectOption2",
                     "type": "Button",
                     "id": "e490a06f-672b-434e-b2eb-601047de8e6a",
                     "expectedControlType": "Button",
@@ -359,7 +359,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "SelectMinionD",
+                    "name": "SelectOption1",
                     "type": "Button",
                     "id": "0b7769c0-f57d-4908-9a8c-e0b727940261",
                     "expectedControlType": "Button",
@@ -367,7 +367,39 @@
                     "interactions": ""
                 },
                 {
-                    "name": "IgnoreMinion",
+                    "name": "SelectOption4",
+                    "type": "Button",
+                    "id": "b1dce6b7-40b6-4e89-a22b-c734b14fd152",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "SelectOption5",
+                    "type": "Button",
+                    "id": "175f8f99-d359-4b57-b308-5cc6b7430b09",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "SelectOption6",
+                    "type": "Button",
+                    "id": "e8fea02e-c469-4688-aca2-4c02db3661ca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ChangeShopContext",
+                    "type": "Button",
+                    "id": "5f780b51-e787-433c-a432-dcce76004001",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "CloseUI",
                     "type": "Button",
                     "id": "a655f9f3-b4a1-49b0-833a-f239586e90f4",
                     "expectedControlType": "Button",
@@ -878,7 +910,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SelectMinionA",
+                    "action": "SelectOption3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -889,7 +921,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "SelectMinionA",
+                    "action": "SelectOption3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -900,7 +932,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SelectMinionS",
+                    "action": "SelectOption2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -911,7 +943,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "SelectMinionS",
+                    "action": "SelectOption2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -922,7 +954,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SelectMinionD",
+                    "action": "SelectOption1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -933,29 +965,117 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "SelectMinionD",
+                    "action": "SelectOption1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "2a69c4e5-cfcb-4166-ab16-06e60654be39",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "IgnoreMinion",
+                    "action": "CloseUI",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "98a6e45f-fc67-4a5e-997d-3442a2a333aa",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "CloseUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "85fe7766-bc9a-45fd-a167-b4f7931bcd49",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SelectOption4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0dfc4e1d-e6b1-4305-a078-dc83df32263e",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "IgnoreMinion",
+                    "action": "SelectOption4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "40659657-29d5-49b8-8b20-7a027b373493",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SelectOption5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e317fe5-219b-4cec-ba70-6b4c07fea45e",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SelectOption5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a15d865-31a5-4138-bf2e-d455d10aabf4",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SelectOption6",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "335cbad8-c77c-4feb-982f-a7966ba0c9a9",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SelectOption6",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4a7fd0c-90d4-46a1-8e0b-e0c8beade5a5",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ChangeShopContext",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1b2243a-83f9-4217-ae2c-090d058a1e0b",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ChangeShopContext",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

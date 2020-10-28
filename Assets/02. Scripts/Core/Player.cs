@@ -1,4 +1,5 @@
 ﻿using Laresistance.Battle;
+using System.Collections.Generic;
 
 namespace Laresistance.Core
 {
@@ -9,16 +10,20 @@ namespace Laresistance.Core
         private static int MAX_CONSUMABLES = 3;
 
         private Minion[] minions;
+        private List<Minion> reservedMinions;
         private Equipment[] equipments;
         private Consumable[] consumables;
         private EquipmentEvents equipmentEvents = null;
+        public BattleStatusManager statusManager { get; private set; }
         public BattleAbility characterAbility { get; private set; }
 
-        public Player()
+        public Player(BattleStatusManager statusManager)
         {
             minions = new Minion[MAX_MINIONS];
+            reservedMinions = new List<Minion>();
             equipments = new Equipment[MAX_EQUIPS];
             consumables = new Consumable[MAX_CONSUMABLES];
+            this.statusManager = statusManager;
             InitEquipmentEvents();
         }
 
@@ -57,6 +62,8 @@ namespace Laresistance.Core
                 if (minions[i] == null)
                 {
                     minions[i] = minion;
+                    minion.SetStatusManager(statusManager);
+                    minion.SetEquipmentEvents(equipmentEvents);
                     return true;
                 }
             }
@@ -81,14 +88,38 @@ namespace Laresistance.Core
                 if (minions[i] == minion)
                 {
                     minions[i] = null;
+                    AddMinionToReserve(minion);
                     return true;
                 }
             }
             return false;
         }
+
+        public void AddMinionToReserve(Minion minion)
+        {
+            if (!reservedMinions.Contains(minion))
+                reservedMinions.Add(minion);
+        }
+
+        public int ClearMinionReserve()
+        {
+            int quantity = reservedMinions.Count;
+            reservedMinions.Clear();
+            return quantity;
+        }
+
+        public List<Minion> GetMinionReserve()
+        {
+            return reservedMinions;
+        }
         #endregion
 
         #region Equipments
+        public Equipment[] GetEquipments()
+        {
+            return equipments;
+        }
+
         public EquipmentEvents GetEquipmentEvents()
         {
             return equipmentEvents;
@@ -199,7 +230,6 @@ namespace Laresistance.Core
             {
                 if (consumables[i] == consumable)
                 {
-                    consumables[i].Use();
                     return DisposeConsumable(consumable);
                 }
             }

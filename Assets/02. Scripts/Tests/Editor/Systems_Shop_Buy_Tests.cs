@@ -23,19 +23,18 @@ namespace Laresistance.Tests
         }
 
         private List<ShopOffer> offers = new List<ShopOffer>() {
-            new ShopOffer(1000, false, new Minion(null, GetAbility(), 1)),
-            new ShopOffer(500, false, new Minion(null, GetAbility(), 1)),
-            new ShopOffer(50, true, new Equipment(0)),
-            new ShopOffer(5, true, new Consumable())
+            new ShopOffer(1000, false, new RewardData(0, 0, new Minion(null, GetAbility(), 1), null, null, null)),
+            new ShopOffer(500, false, new RewardData(0, 0, new Minion(null, GetAbility(), 1), null, null, null)),
+            new ShopOffer(50, true, new RewardData(0, 0, null, null, new Equipment(0, null), null)),
+            new ShopOffer(5, true, new RewardData(0, 0, null, new Consumable(null, GetAbility()), null, null))
         };
 
 
         private ShopSystem GetTestShop(int startingBlood, int startingHardCurrency)
         {
-            ShopSystem shop = new ShopSystem();
             var blood = GetCurrencyWithValue(startingBlood);
             var hardCurrency = GetCurrencyWithValue(startingHardCurrency);
-            shop.SetCurrencyReference(blood, hardCurrency);
+            ShopSystem shop = new ShopSystem(blood, hardCurrency);
             foreach(var offer in offers)
             {
                 shop.AddOffer(offer);
@@ -57,26 +56,26 @@ namespace Laresistance.Tests
         public void When_BuyingOfferCorrect()
         {
             var shop = GetTestShop(1000, 0);
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.NotNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.NotNull(reward);
         }
 
         [Test]
         public void When_BuyingOfferIncorrect()
         {
             var shop = GetTestShop(500, 5000);
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.IsNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.IsNull(reward);
         }
 
         [Test]
         public void When_BuyingOfferCorrectAndEquipping()
         {
             var shop = GetTestShop(1000, 0);
-            Player player = new Player();
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.NotNull(slotable);
-            bool equipped = slotable.SetInSlot(player);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.NotNull(reward);
+            bool equipped = reward.minion.SetInSlot(player);
             Assert.IsTrue(equipped);
         }
 
@@ -84,60 +83,60 @@ namespace Laresistance.Tests
         public void When_BuyingMultipleSoftOffersCorrect()
         {
             var shop = GetTestShop(1500, 0);
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.NotNull(slotable);
-            slotable = shop.BuyOffer(offers[1]);
-            Assert.NotNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.NotNull(reward);
+            reward = shop.BuyOffer(offers[1]);
+            Assert.NotNull(reward);
         }
 
         [Test]
         public void When_BuyingMultipleSoftOffersIncorrect()
         {
             var shop = GetTestShop(1300, 0);
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.NotNull(slotable);
-            slotable = shop.BuyOffer(offers[1]);
-            Assert.IsNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.NotNull(reward);
+            reward = shop.BuyOffer(offers[1]);
+            Assert.IsNull(reward);
         }
 
         [Test]
         public void When_BuyingMultipleTimesSameOffer()
         {
             var shop = GetTestShop(1300, 0);
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.NotNull(slotable);
-            slotable = shop.BuyOffer(offers[0]);
-            Assert.IsNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.NotNull(reward);
+            reward = shop.BuyOffer(offers[0]);
+            Assert.IsNull(reward);
         }
 
         [Test]
         public void When_BuyingMultipleHardOffersCorrect()
         {
             var shop = GetTestShop(0, 100);
-            ISlot slotable = shop.BuyOffer(offers[2]);
-            Assert.NotNull(slotable);
-            slotable = shop.BuyOffer(offers[3]);
-            Assert.NotNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[2]);
+            Assert.NotNull(reward);
+            reward = shop.BuyOffer(offers[3]);
+            Assert.NotNull(reward);
         }
 
         [Test]
         public void When_BuyingMultipleHardOffersIncorrect()
         {
             var shop = GetTestShop(0, 50);
-            ISlot slotable = shop.BuyOffer(offers[2]);
-            Assert.NotNull(slotable);
-            slotable = shop.BuyOffer(offers[3]);
-            Assert.IsNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[2]);
+            Assert.NotNull(reward);
+            reward = shop.BuyOffer(offers[3]);
+            Assert.IsNull(reward);
         }
 
         [Test]
         public void When_BuyingMixedOffersCorrect()
         {
             var shop = GetTestShop(1000, 50);
-            ISlot slotable = shop.BuyOffer(offers[0]);
-            Assert.NotNull(slotable);
-            slotable = shop.BuyOffer(offers[2]);
-            Assert.NotNull(slotable);
+            RewardData reward = shop.BuyOffer(offers[0]);
+            Assert.NotNull(reward);
+            reward = shop.BuyOffer(offers[2]);
+            Assert.NotNull(reward);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Laresistance.Movement
         private Animator animator;
         private ScriptableFloatReference speed;
         private float currentSpeed = 0f;
+        private bool turn = false;
 
         public PlayerHorizontalMovement(Transform transform, Rigidbody2D body, PlayerMovementStatus status, Animator animator, ScriptableFloatReference speed)
         {
@@ -25,6 +26,13 @@ namespace Laresistance.Movement
         public void Tick(float delta)
         {
             body.velocity = Vector2.right * currentSpeed + Vector2.up * body.velocity.y;
+            if (turn)
+            {
+                Vector3 scale = transform.localScale;
+                scale.x *= -1;
+                transform.localScale = scale;
+                turn = false;
+            }
         }
 
         public void Move(InputAction.CallbackContext context)
@@ -39,9 +47,7 @@ namespace Laresistance.Movement
             }
             if ((currentSpeed < 0 && transform.localScale.x > 0) || (currentSpeed > 0 && transform.localScale.x < 0))
             {
-                Vector3 scale = transform.localScale;
-                scale.x *= -1;
-                transform.localScale = scale;
+                turn = true;
             }
         }
 

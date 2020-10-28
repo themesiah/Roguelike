@@ -13,15 +13,14 @@ namespace Laresistance.Systems
         private Player player;
         private ScriptableIntReference bloodReference;
         private ScriptableIntReference hardCurrencyReference;
+        private RewardUILibrary rewardUILibrary;
 
-
-        private GameObject bloodObtainedPanel;
-
-        public RewardSystem(Player player, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference)
+        public RewardSystem(Player player, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, RewardUILibrary rewardUILibrary)
         {
             this.player = player;
             this.bloodReference = bloodReference;
             this.hardCurrencyReference = hardCurrencyReference;
+            this.rewardUILibrary = rewardUILibrary;
             UnityEngine.Assertions.Assert.IsNotNull(player, "Player value in Reward System can not be null");
             UnityEngine.Assertions.Assert.IsNotNull(bloodReference, "Blood reference in Reward System can not be null");
             UnityEngine.Assertions.Assert.IsNotNull(hardCurrencyReference, "Hard currency reference in Reward System can not be null");
@@ -31,57 +30,60 @@ namespace Laresistance.Systems
         {
             if (reward.bloodAmount > 0)
             {
+                // Show message telling you obtained blood
                 bloodReference.SetValue(bloodReference.GetValue() + reward.bloodAmount);
-                yield return BloodObtainedBehaviour.instance.StartPanel(reward, player);
+                yield return rewardUILibrary?.GetBehaviour(RewardUIType.Blood).StartPanel(reward);
+            }
+
+            if (reward.hardCurrencyAmount > 0)
+            {
+                // Show message telling you obtained hard currency
+                hardCurrencyReference.SetValue(hardCurrencyReference.GetValue() + reward.hardCurrencyAmount);
+                yield return rewardUILibrary?.GetBehaviour(RewardUIType.HardCurrency).StartPanel(reward);
             }
 
             if (reward.minion != null)
             {
-                var minions = player.GetMinions();
-                bool autoEquipped = false;
-                for (int i = 0; i < minions.Length; ++i)
-                {
-                    if (minions[i] == null)
-                    {
-                        //player.EquipMinion(reward.minion);
-                        autoEquipped = true;
-                        break;
-                    }
-                }
+                bool autoEquipped = reward.minion.SetInSlot(player);
 
                 if (autoEquipped)
                 {
                     // Show message telling you obtained the minion
-                    yield return MinionObtainedBehaviour.instance.StartPanel(reward, player);
+                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.Minion).StartPanel(reward);
                 }
                 else
                 {
                     // Show options to switch minions
-                    yield return MinionsFullObtainedBehaviour.instance.StartPanel(reward, player);
+                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.MinionFull).StartPanel(reward);
                 }
             }
 
             if (reward.consumable != null)
             {
-                var consumables = player.GetConsumables();
-                bool autoEquipped = false;
-                for (int i = 0; i < consumables.Length; ++i)
-                {
-                    if (consumables[i] == null)
-                    {
-                        player.AddConsumable(reward.consumable);
-                        autoEquipped = true;
-                    }
-                }
+                bool autoEquipped = reward.consumable.SetInSlot(player);
 
                 if (autoEquipped)
                 {
                     // Show message telling you obtained the consumable
+                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.Consumable).StartPanel(reward);
                 }
                 else
                 {
                     // Show options to switch consumables
+                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.ConsumableFull).StartPanel(reward);
                 }
+            }
+
+            if (reward.equip != null)
+            {
+                // Equips are never autoequipped, as they may not be always good
+                yield return rewardUILibrary?.GetBehaviour(RewardUIType.Equip).StartPanel(reward);
+            }
+
+            if (reward.mapAbilityData != null)
+            {
+                reward.mapAbilityData.AbilityObtainedReference.SetValue(true);
+                yield return rewardUILibrary?.GetBehaviour(RewardUIType.MapAbility).StartPanel(reward);
             }
             yield return null;
         }

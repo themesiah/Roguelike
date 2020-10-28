@@ -25,6 +25,16 @@ namespace Laresistance.Core
             Level = level;
         }
 
+        public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
+        {
+            this.ability.SetEquipmentEvents(equipmentEvents);
+        }
+
+        public void SetStatusManager(BattleStatusManager selfStatus)
+        {
+            this.ability.SetStatusManager(selfStatus);
+        }
+
         public int GetEffectPower(int index)
         {
             return ability.GetEffectPower(index, Level);
@@ -44,6 +54,20 @@ namespace Laresistance.Core
         public string GetAbilityText()
         {
             return Abilities[0].GetAbilityText(Level);
+        }
+        public string GetNextLevelAbilityText()
+        {
+            return Abilities[0].GetAbilityText(Level+1);
+        }
+
+        public int GetUpgradeCost()
+        {
+            return Data.BaseBloodPrice + Data.BaseBloodPrice / 100 * (Level-1);
+        }
+
+        public void Upgrade()
+        {
+            Level++;
         }
     } 
 }

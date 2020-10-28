@@ -22,7 +22,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingMinionWithNoMinions()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion);
             Assert.AreEqual(true, equipped);
@@ -32,7 +32,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_Equipping3MinionsWithNoMinions()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
@@ -48,7 +48,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingSameMinionTwoTimes()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion);
             Assert.AreEqual(true, equipped);
@@ -58,7 +58,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingMoreMinionsThanMaximum()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
@@ -77,7 +77,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingAndUnequippingMinionWithReference()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
@@ -89,7 +89,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingAndUnequippingMinionWithIndex()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
@@ -101,7 +101,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingMinionAndTryingToUnequipInvalidReferenceOrIndex()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
@@ -114,7 +114,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingMinionAndTryingToUnequipInvalidReferenceOrIndexAndEquippingAgain()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);
@@ -127,7 +127,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingAllMaximumMinionsAndUnequippingOneToEquipAnotherNewOne()
         {
-            Player player = new Player();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
             Minion minion1 = new Minion(null, GetAbility(), 1);
             bool equipped = player.EquipMinion(minion1);
             Assert.AreEqual(true, equipped);

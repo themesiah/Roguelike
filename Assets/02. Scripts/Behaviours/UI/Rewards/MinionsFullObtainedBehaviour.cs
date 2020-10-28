@@ -10,8 +10,6 @@ namespace Laresistance.Behaviours
 {
     public class MinionsFullObtainedBehaviour : RewardPanelBehaviour
     {
-        public static MinionsFullObtainedBehaviour instance = null;
-
         [SerializeField]
         private LocalizedStringTextBehaviour minionRewardText1 = default;
         [SerializeField]
@@ -38,13 +36,9 @@ namespace Laresistance.Behaviours
 
         private int minionIndexSelected = -2;
 
-        private void Awake()
+        protected override IEnumerator StartingTween(RewardData rewardData)
         {
-            instance = this;
-        }
-
-        protected override IEnumerator StartingTween(RewardData rewardData, Player player)
-        {
+            Player player = playerDataReference.Get().player;
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
 
@@ -72,11 +66,12 @@ namespace Laresistance.Behaviours
             }
             // End show 3 current minions
 
-            yield return base.StartingTween(rewardData, player);
+            yield return base.StartingTween(rewardData);
         }
 
-        protected override IEnumerator ExecutePanelProcess(RewardData rewardData, Player player)
+        protected override IEnumerator ExecutePanelProcess(RewardData rewardData)
         {
+            Player player = playerDataReference.Get().player;
             minionIndexSelected = -2;
             while (minionIndexSelected < -1)
             {
@@ -90,6 +85,7 @@ namespace Laresistance.Behaviours
             } else
             {
                 panels[3].color = selectedColor;
+                player.AddMinionToReserve(rewardData.minion);
             }
         }
 
@@ -112,5 +108,7 @@ namespace Laresistance.Behaviours
         {
             minionIndexSelected = -1;
         }
+
+        public override RewardUIType RewardType => RewardUIType.MinionFull;
     }
 }

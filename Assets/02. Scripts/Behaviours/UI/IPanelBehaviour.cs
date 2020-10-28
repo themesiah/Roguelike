@@ -6,6 +6,6 @@ namespace Laresistance.Behaviours
 {
     public interface IPanelBehaviour
     {
-        IEnumerator StartPanel(RewardData rewardData, Player player);
+        IEnumerator StartPanel(RewardData rewardData);
     }
 }

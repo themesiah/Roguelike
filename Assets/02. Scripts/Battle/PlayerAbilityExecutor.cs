@@ -25,7 +25,9 @@ namespace Laresistance.Battle
                 yield return player.GetMinions()[abilityIndex-1].ExecuteAbility(allies, enemies, animator);
             } else
             {
-                yield return player.GetConsumables()[abilityIndex - 4].Ability.ExecuteAbility(allies, enemies, 1, animator);
+                Consumable c = player.GetConsumables()[abilityIndex - 4];
+                yield return c.Ability.ExecuteAbility(allies, enemies, 1, animator);
+                player.UseConsumable(c);
             }
         }
     }

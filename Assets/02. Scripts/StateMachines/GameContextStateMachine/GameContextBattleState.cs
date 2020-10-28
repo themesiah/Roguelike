@@ -51,7 +51,7 @@ namespace Laresistance.StateMachines
             // Move camera
             // Move characters
             MoveCharacters();
-            Debug.Log("Entering battle state");
+            GamedevsToolbox.Utils.Logger.Logger.Log("Entering battle state");
             yield return null;
         }
 
@@ -99,14 +99,14 @@ namespace Laresistance.StateMachines
             rewardData = enemyObjects[0].GetComponent<IRewardable>().GetReward();
         }
 
-        public GameContextBattleState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask)
+        public GameContextBattleState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
             this.playerInput = playerInput;
             this.centerCheckLayerMask = centerCheckLayerMask;
-            Player player = playerObject.GetComponent<PlayerBattleBehaviour>().player;
-            this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference);
+            Player player = playerObject.GetComponent<PlayerDataBehaviour>().player;
+            this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             this.companionSpawner = new PlayerMinionCompanionSpawner(player);
             this.battleSystem = new BattleSystem();
         }

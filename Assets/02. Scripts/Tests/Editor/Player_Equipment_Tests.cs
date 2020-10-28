@@ -8,8 +8,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingEquipment()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
             Assert.AreEqual(1, player.EquippedEquipmentsQuantity);
@@ -18,11 +18,11 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingTwoEquipmentsOfSameSlot()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
-            Equipment equipment2 = new Equipment(0);
+            Equipment equipment2 = new Equipment(0, null);
             Assert.Catch(()=>player.EquipEquipment(equipment2));
             Assert.AreEqual(1, player.EquippedEquipmentsQuantity);
         }
@@ -30,11 +30,11 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingTwoEquipmentsOfDifferentSlot()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
-            Equipment equipment2 = new Equipment(1);
+            Equipment equipment2 = new Equipment(1, null);
             equipped = player.EquipEquipment(equipment2);
             Assert.AreEqual(true, equipped);
             Assert.AreEqual(2, player.EquippedEquipmentsQuantity);
@@ -43,8 +43,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingEquipmentAndUnequip()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
             bool unequiped = player.UnequipEquipment(equipment);
@@ -55,11 +55,11 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingEquipmentAndTryToUnequipNonEquippedEquipmentOfSameSlot()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
-            Equipment equipment2 = new Equipment(0);
+            Equipment equipment2 = new Equipment(0, null);
             Assert.Catch(()=> { player.UnequipEquipment(equipment2); });
             Assert.AreEqual(1, player.EquippedEquipmentsQuantity);
         }
@@ -67,11 +67,11 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingEquipmentAndTryToUnequipNonEquippedEquipmentOfDifferentSlot()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
-            Equipment equipment2 = new Equipment(1);
+            Equipment equipment2 = new Equipment(1, null);
             Assert.Catch(()=> { player.UnequipEquipment(equipment2); });
             Assert.AreEqual(1, player.EquippedEquipmentsQuantity);
         }
@@ -79,17 +79,17 @@ namespace Laresistance.Tests
         [Test]
         public void When_EquippingMaxEquipments()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(0);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(0, null);
             bool equipped = player.EquipEquipment(equipment);
             Assert.AreEqual(true, equipped);
-            Equipment equipment2 = new Equipment(1);
+            Equipment equipment2 = new Equipment(1, null);
             equipped = player.EquipEquipment(equipment2);
             Assert.AreEqual(true, equipped);
-            Equipment equipment3 = new Equipment(2);
+            Equipment equipment3 = new Equipment(2, null);
             equipped = player.EquipEquipment(equipment3);
             Assert.AreEqual(true, equipped);
-            Equipment equipment4 = new Equipment(3);
+            Equipment equipment4 = new Equipment(3, null);
             equipped = player.EquipEquipment(equipment4);
             Assert.AreEqual(true, equipped);
             Assert.AreEqual(4, player.EquippedEquipmentsQuantity);
@@ -98,10 +98,10 @@ namespace Laresistance.Tests
         [Test]
         public void When_TryingToEquipEquipmentWithIncorrectSlot()
         {
-            Player player = new Player();
-            Equipment equipment = new Equipment(-1);
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Equipment equipment = new Equipment(-1, null);
             Assert.Catch(()=>player.EquipEquipment(equipment));
-            Equipment equipment2 = new Equipment(4);
+            Equipment equipment2 = new Equipment(4, null);
             Assert.Catch(()=>player.EquipEquipment(equipment));
             Assert.AreEqual(0, player.EquippedEquipmentsQuantity);
         }

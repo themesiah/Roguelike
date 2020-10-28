@@ -6,13 +6,13 @@ namespace Laresistance.Data
     {
         public int Cost { get; private set; }
         public bool UseHardCurrency { get; private set; }
-        public ISlot SlotableItem { get; private set; }
+        public RewardData Reward { get; private set; }
 
-        public ShopOffer(int cost, bool useHardCurrency, ISlot slotableItem)
+        public ShopOffer(int cost, bool useHardCurrency, RewardData reward)
         {
             Cost = cost;
             UseHardCurrency = useHardCurrency;
-            SlotableItem = slotableItem;
+            Reward = reward;
         }
     }
 }

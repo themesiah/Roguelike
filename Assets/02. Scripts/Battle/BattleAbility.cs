@@ -30,6 +30,19 @@ namespace Laresistance.Battle
             this.equipmentEvents = equipmentEvents;
         }
 
+        public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
+        {
+            this.equipmentEvents = equipmentEvents;
+        }
+
+        public void SetStatusManager(BattleStatusManager selfStatus)
+        {
+            foreach(var effect in effects)
+            {
+                effect.SetStatusManager(selfStatus);
+            }
+        }
+
         public BattleAbility Copy()
         {
             BattleAbility ba = new BattleAbility(effects, GetCooldown(), equipmentEvents);
@@ -51,7 +64,8 @@ namespace Laresistance.Battle
                 builder.Append(effect.GetEffectString(level, equipmentEvents));
                 builder.Append(" ");
             }
-            builder.Append(Texts.GetText("ABILITY_COOLDOWN", GetCooldown()));
+            if (GetCooldown() > 0f)
+                builder.Append(Texts.GetText("ABILITY_COOLDOWN", GetCooldown()));
             return builder.ToString();
         }
 
@@ -60,7 +74,7 @@ namespace Laresistance.Battle
             if (!BattleAbilityManager.currentlyExecuting)
             {
                 timer += deltaTime;
-                OnAbilityTimerChanged?.Invoke(timer, cooldown, timer / cooldown);
+                OnAbilityTimerChanged?.Invoke(timer, GetCooldown(), timer / GetCooldown());
             }
         }
 
@@ -84,6 +98,7 @@ namespace Laresistance.Battle
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
                 yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger());
+                OnAbilityTimerChanged?.Invoke(0f, GetCooldown(), 0f);
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }

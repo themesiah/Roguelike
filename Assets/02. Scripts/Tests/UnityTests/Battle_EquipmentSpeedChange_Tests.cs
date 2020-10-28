@@ -46,7 +46,7 @@ namespace Laresistance.Tests {
             Assert.IsTrue(ability.CanBeUsed());
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
-            Equipment e = new Equipment(0);
+            Equipment e = new Equipment(0, null);
             e.SetCooldownModifier(events, 2f);
             e.EquipEquipment();
             ability.Tick(1.1f * player.GetSpeedModifier());
@@ -63,10 +63,10 @@ namespace Laresistance.Tests {
             Assert.IsTrue(ability.CanBeUsed());
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
-            Equipment e = new Equipment(0);
+            Equipment e = new Equipment(0, null);
             e.SetCooldownModifier(events, 2f);
             e.EquipEquipment();
-            Equipment e2 = new Equipment(1);
+            Equipment e2 = new Equipment(1, null);
             e2.SetCooldownModifier(events, 0.5f);
             e2.EquipEquipment();
             ability.Tick(1.1f * player.GetSpeedModifier());
@@ -83,7 +83,7 @@ namespace Laresistance.Tests {
             Assert.IsTrue(ability.CanBeUsed());
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
-            Equipment e2 = new Equipment(1);
+            Equipment e2 = new Equipment(1, null);
             e2.SetCooldownModifier(events, 0.5f);
             e2.EquipEquipment();
             ability.Tick(0.55f * player.GetSpeedModifier());

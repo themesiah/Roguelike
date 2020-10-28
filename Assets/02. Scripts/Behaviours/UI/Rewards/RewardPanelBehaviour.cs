@@ -10,12 +10,26 @@ namespace Laresistance.Behaviours
     {
         [SerializeField]
         protected GameObject panel = default;
+        [SerializeField]
+        protected RuntimePlayerDataBehaviourSingle playerDataReference = default;
+        [SerializeField]
+        private RewardUILibrary rewardUILibrary = default;
 
         private bool finished = false;
 
         private void Awake()
         {
             panel.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            rewardUILibrary.RegisterBehaviour(this);
+        }
+
+        private void OnDisable()
+        {
+            rewardUILibrary.UnregisterBehaviour(this);
         }
 
         private void UpdatePanelSize(ITween<Vector2> t)
@@ -28,20 +42,20 @@ namespace Laresistance.Behaviours
             finished = true;
         }
 
-        protected virtual IEnumerator StartingTween(RewardData rewardData, Player player)
+        protected virtual IEnumerator StartingTween(RewardData rewardData)
         {
             panel.SetActive(true);
             finished = false;
-            TweenFactory.Tween("PanelSize", Vector3.zero, Vector3.one, 1f, TweenScaleFunctions.CubicEaseIn, UpdatePanelSize, ResizeCompleted);
+            TweenFactory.Tween("PanelSize", Vector3.zero, Vector3.one, 0.5f, TweenScaleFunctions.CubicEaseIn, UpdatePanelSize, ResizeCompleted);
             while (!finished)
             {
                 yield return null;
             }
         }
 
-        protected virtual IEnumerator FinishingTween(RewardData rewardData, Player player)
+        protected virtual IEnumerator FinishingTween(RewardData rewardData)
         {
-            panel.Tween("PanelSize", Vector3.one, Vector2.zero, 1f, TweenScaleFunctions.CubicEaseIn, UpdatePanelSize, ResizeCompleted);
+            panel.Tween("PanelSize", Vector3.one, Vector2.zero, 0.5f, TweenScaleFunctions.CubicEaseIn, UpdatePanelSize, ResizeCompleted);
             finished = false;
             while (!finished)
             {
@@ -50,13 +64,14 @@ namespace Laresistance.Behaviours
             panel.SetActive(false);
         }
 
-        public IEnumerator StartPanel(RewardData rewardData, Player player)
+        public IEnumerator StartPanel(RewardData rewardData)
         {
-            yield return StartingTween(rewardData, player);
-            yield return ExecutePanelProcess(rewardData, player);
-            yield return FinishingTween(rewardData, player);
+            yield return StartingTween(rewardData);
+            yield return ExecutePanelProcess(rewardData);
+            yield return FinishingTween(rewardData);
         }
 
-        protected abstract IEnumerator ExecutePanelProcess(RewardData rewardData, Player player);
+        protected abstract IEnumerator ExecutePanelProcess(RewardData rewardData);
+        public abstract RewardUIType RewardType { get; }
     }
 }

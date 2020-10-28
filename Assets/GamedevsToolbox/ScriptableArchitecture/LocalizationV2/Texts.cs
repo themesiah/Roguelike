@@ -55,7 +55,14 @@ namespace GamedevsToolbox.ScriptableArchitecture.LocalizationV2
 
         public static string GetText(string id)
         {
-            return GetText(id, new object[] { });
+            if (localizer[currentLanguage].ContainsKey(id))
+            {
+                return localizer[currentLanguage][id];
+            }
+            else
+            {
+                return id;
+            }
         }
 
         public static string GetText(string id, object param)

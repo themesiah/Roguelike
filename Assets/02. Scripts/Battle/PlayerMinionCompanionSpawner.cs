@@ -19,6 +19,11 @@ namespace Laresistance.Battle
 
         public void Spawn(Vector3 center, GameObject playerObject)
         {
+            float modifier = 1f;
+            if (playerObject.transform.localScale.x < 0f)
+            {
+                modifier = -1f;
+            }
             for(int i = 0; i < player.GetMinions().Length; ++i)
             {
                 if (player.GetMinions()[i] != null)
@@ -27,13 +32,13 @@ namespace Laresistance.Battle
                     switch (i)
                     {
                         case 0:
-                            go.transform.localPosition = go.transform.localPosition + Vector3.right * MINION_HORIZONTAL_OFFSET;
+                            go.transform.localPosition = go.transform.localPosition + Vector3.right * MINION_HORIZONTAL_OFFSET * modifier;
                             break;
                         case 1:
                             go.transform.localPosition = go.transform.localPosition + Vector3.down * MINION_VERTICAL_OFFSET;
                             break;
                         case 2:
-                            go.transform.localPosition = go.transform.localPosition + Vector3.left * MINION_HORIZONTAL_OFFSET;
+                            go.transform.localPosition = go.transform.localPosition + Vector3.left * MINION_HORIZONTAL_OFFSET * modifier;
                             break;
                     }
                     minionObjects.Add(go);

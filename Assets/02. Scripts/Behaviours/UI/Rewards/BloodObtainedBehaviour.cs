@@ -12,30 +12,23 @@ namespace Laresistance.Behaviours
 {
     public class BloodObtainedBehaviour : RewardPanelBehaviour
     {
-        public static BloodObtainedBehaviour instance = null;
-
         [SerializeField]
         private LocalizedIntTextBehaviour textBehaviour = default;
 
         private bool inputDone = false;
-
-        private void Awake()
-        {
-            instance = this;
-        }
 
         public void AnyInput(InputAction.CallbackContext context)
         {
             inputDone = true;
         }
 
-        protected override IEnumerator StartingTween(RewardData rewardData, Player player)
+        protected override IEnumerator StartingTween(RewardData rewardData)
         {
             textBehaviour.ChangeVariable(rewardData.bloodAmount);
-            yield return base.StartingTween(rewardData, player);
+            yield return base.StartingTween(rewardData);
         }
 
-        protected override IEnumerator ExecutePanelProcess(RewardData rewardData, Player player)
+        protected override IEnumerator ExecutePanelProcess(RewardData rewardData)
         {
             inputDone = false;
             while (!inputDone)
@@ -43,5 +36,7 @@ namespace Laresistance.Behaviours
                 yield return null;
             }
         }
+
+        public override RewardUIType RewardType => RewardUIType.Blood;
     }
 }

@@ -8,8 +8,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingConsumable()
         {
-            Player player = new Player();
-            Consumable consumable = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable = new Consumable(null, null);
             bool added = player.AddConsumable(consumable);
             Assert.AreEqual(true, added);
             Assert.AreEqual(1, player.ConsumablesAmount);
@@ -18,8 +18,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingSameConsumableTwoTimes()
         {
-            Player player = new Player();
-            Consumable consumable = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable = new Consumable(null, null);
             bool added = player.AddConsumable(consumable);
             Assert.AreEqual(true, added);
             added = player.AddConsumable(consumable);
@@ -30,14 +30,14 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingMaxConsumables()
         {
-            Player player = new Player();
-            Consumable consumable1 = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable1 = new Consumable(null, null);
             bool added = player.AddConsumable(consumable1);
             Assert.AreEqual(true, added);
-            Consumable consumable2 = new Consumable();
+            Consumable consumable2 = new Consumable(null, null);
             added = player.AddConsumable(consumable2);
             Assert.AreEqual(true, added);
-            Consumable consumable3 = new Consumable();
+            Consumable consumable3 = new Consumable(null, null);
             added = player.AddConsumable(consumable3);
             Assert.AreEqual(true, added);
             Assert.AreEqual(3, player.ConsumablesAmount);
@@ -46,17 +46,17 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingMoreThanMaxConsumables()
         {
-            Player player = new Player();
-            Consumable consumable1 = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable1 = new Consumable(null, null);
             bool added = player.AddConsumable(consumable1);
             Assert.AreEqual(true, added);
-            Consumable consumable2 = new Consumable();
+            Consumable consumable2 = new Consumable(null, null);
             added = player.AddConsumable(consumable2);
             Assert.AreEqual(true, added);
-            Consumable consumable3 = new Consumable();
+            Consumable consumable3 = new Consumable(null, null);
             added = player.AddConsumable(consumable3);
             Assert.AreEqual(true, added);
-            Consumable consumable4 = new Consumable();
+            Consumable consumable4 = new Consumable(null, null);
             added = player.AddConsumable(consumable4);
             Assert.AreEqual(false, added);
             Assert.AreEqual(3, player.ConsumablesAmount);
@@ -65,8 +65,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingConsumableAndDisposingFromReference()
         {
-            Player player = new Player();
-            Consumable consumable = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable = new Consumable(null, null);
             bool added = player.AddConsumable(consumable);
             Assert.AreEqual(true, added);
             bool disposed = player.DisposeConsumable(consumable);
@@ -77,8 +77,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingConsumableAndDisposingFromIndex()
         {
-            Player player = new Player();
-            Consumable consumable = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable = new Consumable(null, null);
             bool added = player.AddConsumable(consumable);
             Assert.AreEqual(true, added);
             bool disposed = player.DisposeConsumable(0);
@@ -89,14 +89,14 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingConsumableAndDisposingFromInvalidIndexOrReference()
         {
-            Player player = new Player();
-            Consumable consumable = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable = new Consumable(null, null);
             bool added = player.AddConsumable(consumable);
             Assert.AreEqual(true, added);
             Assert.Catch(() => { player.DisposeConsumable(2); });
             Assert.Catch(()=> { player.DisposeConsumable(-1); });
             Assert.Catch(() => { player.DisposeConsumable(null); });
-            Consumable consumable2 = new Consumable();
+            Consumable consumable2 = new Consumable(null, null);
             Assert.Catch(() => { player.DisposeConsumable(consumable2); });
             Assert.AreEqual(1, player.ConsumablesAmount);
         }
@@ -104,8 +104,8 @@ namespace Laresistance.Tests
         [Test]
         public void When_AddingConsumableAndUsing()
         {
-            Player player = new Player();
-            Consumable consumable = new Consumable();
+            Player player = new Player(new Battle.BattleStatusManager(new Battle.CharacterHealth(100)));
+            Consumable consumable = new Consumable(null, null);
             bool added = player.AddConsumable(consumable);
             Assert.AreEqual(true, added);
             bool used = player.UseConsumable(consumable);
