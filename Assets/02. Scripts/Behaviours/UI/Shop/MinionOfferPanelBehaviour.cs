@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,18 +7,14 @@ using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
-    public class MinionOfferPanelBehaviour : MonoBehaviour, IShopOfferUI
+    public class MinionOfferPanelBehaviour : ShopOfferUIBehaviour
     {
-        [SerializeField]
-        private Image panelImage = default;
         [SerializeField]
         private Text bloodTextReference = default;
         [SerializeField]
         private Text minionNameReference = default;
         [SerializeField]
         private Text abilityTextReference = default;
-        [SerializeField]
-        private Image keyImageReference = default;
         [SerializeField]
         private Transform minionPrefabHolder = default;
 
@@ -28,20 +25,7 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Material unlitMaterial = default;
 
-        public void SetOfferKey(Sprite offerKey)
-        {
-            if (offerKey == null)
-            {
-                keyImageReference.enabled = false;
-            }
-            else
-            {
-                keyImageReference.enabled = true;
-                keyImageReference.sprite = offerKey;
-            }
-        }
-
-        public void SetupOffer(ShopOffer offer)
+        public override void SetupOffer(ShopOffer offer)
         {
             if (offer.Cost > 0)
             {
@@ -59,11 +43,6 @@ namespace Laresistance.Behaviours
             SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
             renderer.sortingOrder = sortingOrder;
             renderer.material = unlitMaterial;
-        }
-
-        public void SetPanelColor(Color color)
-        {
-            panelImage.color = color;
         }
     }
 }

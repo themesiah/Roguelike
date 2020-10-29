@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,10 +7,8 @@ using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
-    public class ConsumableOfferPanelBehaviour : MonoBehaviour, IShopOfferUI
+    public class ConsumableOfferPanelBehaviour : ShopOfferUIBehaviour
     {
-        [SerializeField]
-        private Image panelImage = default;
         [SerializeField]
         private Text bloodTextReference = default;
         [SerializeField]
@@ -17,24 +16,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Text abilityTextReference = default;
         [SerializeField]
-        private Image keyImageReference = default;
-        [SerializeField]
         private Image consumableSprite = default;
 
-        public void SetOfferKey(Sprite offerKey)
-        {
-            if (offerKey == null)
-            {
-                keyImageReference.enabled = false;
-            }
-            else
-            {
-                keyImageReference.enabled = true;
-                keyImageReference.sprite = offerKey;
-            }
-        }
-
-        public void SetupOffer(ShopOffer offer)
+        public override void SetupOffer(ShopOffer offer)
         {
             if (offer.Cost > 0)
             {
@@ -47,11 +31,6 @@ namespace Laresistance.Behaviours
             consumableNameReference.text = Texts.GetText(offer.Reward.consumable.Name);
             abilityTextReference.text = offer.Reward.consumable.GetAbilityText();
             consumableSprite.sprite = offer.Reward.consumable.Data.SpriteReference;
-        }
-
-        public void SetPanelColor(Color color)
-        {
-            panelImage.color = color;
         }
     }
 }

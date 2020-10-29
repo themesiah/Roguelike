@@ -47,7 +47,7 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform upgradeCanvas = default;
         [SerializeField]
-        private Sprite[] offerKeys = default;
+        private KeySetSelector[] offerKeys = default;
         [SerializeField]
         private Image exitShopPanel = default;
         [Header("Selection")]
@@ -160,7 +160,7 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private IShopOfferUI CreateOfferPanel(ShopOffer offer, Sprite offerKey)
+        private IShopOfferUI CreateOfferPanel(ShopOffer offer, KeySetSelector offerKey)
         {
             GameObject prefab = GetPrefabFromOffer(offer);
             GameObject panel = Instantiate(prefab, gridCanvas);

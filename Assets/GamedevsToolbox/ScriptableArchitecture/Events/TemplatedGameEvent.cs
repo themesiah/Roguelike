@@ -9,8 +9,8 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
         /// <summary>
         /// The list of listeners that this event will notify if it is raised.
         /// </summary>
-        private readonly List<TemplatedGameEventListener<T>> eventListeners =
-            new List<TemplatedGameEventListener<T>>();
+        private readonly List<IGameEventListener<T>> eventListeners =
+            new List<IGameEventListener<T>>();
 
         public void Raise(T data)
         {
@@ -18,13 +18,13 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
                 eventListeners[i].OnEventRaised(data);
         }
 
-        public void RegisterListener(TemplatedGameEventListener<T> listener)
+        public void RegisterListener(IGameEventListener<T> listener)
         {
             if (!eventListeners.Contains(listener))
                 eventListeners.Add(listener);
         }
 
-        public void UnregisterListener(TemplatedGameEventListener<T> listener)
+        public void UnregisterListener(IGameEventListener<T> listener)
         {
             if (eventListeners.Contains(listener))
                 eventListeners.Remove(listener);

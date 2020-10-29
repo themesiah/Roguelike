@@ -4,12 +4,12 @@ using System;
 using System.Collections;
 using Laresistance.Behaviours;
 using Laresistance.Battle;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using Laresistance.Systems;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using Laresistance.Core;
+using GamedevsToolbox.ScriptableArchitecture.Events;
 
 namespace Laresistance.StateMachines
 {
@@ -24,7 +24,7 @@ namespace Laresistance.StateMachines
 
         private GameObject playerObject;
         private Camera playerCamera;
-        private PlayerInput playerInput;
+        private StringGameEvent actionMapSwitchEvent;
         private int centerCheckLayerMask;
         private bool goToMap = false;
         private RewardSystem rewardSystem;
@@ -39,7 +39,7 @@ namespace Laresistance.StateMachines
         public IEnumerator EnterState()
         {
             deathCount = 0;
-            playerInput.SwitchCurrentActionMap("PlayerBattle");
+            actionMapSwitchEvent.Raise("PlayerBattle");
             ConfigureEnemyObjects();
             SpawnPlayerCompanions();
             // Init battle system
@@ -62,6 +62,7 @@ namespace Laresistance.StateMachines
             companionSpawner.Despawn();
             battleSystem.EndBattle();
             // Yield end battle screen and give rewards
+            actionMapSwitchEvent.Raise("UI");
             yield return rewardSystem.GetReward(rewardData);
             goToMap = false;
             yield return null;
@@ -107,11 +108,11 @@ namespace Laresistance.StateMachines
             rewardData = enemyObjects[0].GetComponent<IRewardable>().GetReward();
         }
 
-        public GameContextBattleState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary)
+        public GameContextBattleState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
-            this.playerInput = playerInput;
+            this.actionMapSwitchEvent = actionMapSwitchEvent;
             this.centerCheckLayerMask = centerCheckLayerMask;
             Player player = playerObject.GetComponent<PlayerDataBehaviour>().player;
             this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);

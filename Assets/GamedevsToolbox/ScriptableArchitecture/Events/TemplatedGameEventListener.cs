@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace GamedevsToolbox.ScriptableArchitecture.Events
 {
-    public abstract class TemplatedGameEventListener<T> : MonoBehaviour
+    public abstract class TemplatedGameEventListener<T> : MonoBehaviour, IGameEventListener<T>
     {
         [Tooltip("Event to register with.")]
         [SerializeField]
@@ -18,10 +18,20 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
 
         private void OnEnable()
         {
-            Event.RegisterListener(this);
+            Register();
         }
 
         private void OnDisable()
+        {
+            Unregister();
+        }
+
+        public void Register()
+        {
+            Event.RegisterListener(this);
+        }
+
+        public void Unregister()
         {
             Event.UnregisterListener(this);
         }

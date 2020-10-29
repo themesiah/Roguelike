@@ -3,7 +3,7 @@ using GamedevsToolbox.StateMachine;
 using System;
 using System.Collections;
 using Laresistance.Behaviours;
-using UnityEngine.InputSystem;
+using GamedevsToolbox.ScriptableArchitecture.Events;
 
 namespace Laresistance.StateMachines
 {
@@ -11,17 +11,17 @@ namespace Laresistance.StateMachines
     {
         private GameObject playerObject;
         private Camera playerCamera;
-        private PlayerInput playerInput;
         private string signal = null;
         private PlayerMapBehaviour playerMapBehaviour;
         private Rigidbody2D playerBody;
         private bool paused = false;
+        private StringGameEvent actionMapSwitchEvent;
 
-        public GameContextMapState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput)
+        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
-            this.playerInput = playerInput;
+            this.actionMapSwitchEvent = actionMapSwitchEvent;
             playerMapBehaviour = playerObject.GetComponent<PlayerMapBehaviour>();
             playerBody = playerObject.GetComponent<Rigidbody2D>();
         }
@@ -34,7 +34,7 @@ namespace Laresistance.StateMachines
 
         public IEnumerator EnterState()
         {
-            playerInput.SwitchCurrentActionMap("PlayerMap");
+            actionMapSwitchEvent.Raise("PlayerMap");
             ObjectActivationAndDesactivation(true);
             playerObject.GetComponent<PlayerMapBehaviour>().ResumeMapBehaviour();
             // Move camera

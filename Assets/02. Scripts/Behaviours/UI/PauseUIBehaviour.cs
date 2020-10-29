@@ -32,7 +32,7 @@ namespace Laresistance.Behaviours
         private Text hardCurrencyTextRef = default;
 
         [SerializeField]
-        private List<Sprite> keyList = default;
+        private List<KeySetSelector> keyList = default;
 
         public void OpenPauseUI()
         {
@@ -86,6 +86,9 @@ namespace Laresistance.Behaviours
                     offerUI.SetOfferKey(keyList[i + 4]);
                 }
             }
+
+            bloodTextRef.text = bloodReference.GetValue().ToString();
+            hardCurrencyTextRef.text = hardCurrencyReference.GetValue().ToString();
         }
 
         public void ClosePauseUI()

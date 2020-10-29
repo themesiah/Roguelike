@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,10 +7,8 @@ using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
-    public class EquipmentOfferPanelBehaviour : MonoBehaviour, IShopOfferUI
+    public class EquipmentOfferPanelBehaviour : ShopOfferUIBehaviour
     {
-        [SerializeField]
-        private Image panelImage = default;
         [SerializeField]
         private Text hardCurrencyTextReference = default;
         [SerializeField]
@@ -19,24 +18,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Text slotTextReference = default;
         [SerializeField]
-        private Image keyImageReference = default;
-        [SerializeField]
         private Image equipmentSprite = default;
 
-        public void SetOfferKey(Sprite offerKey)
-        {
-            if (offerKey == null)
-            {
-                keyImageReference.enabled = false;
-            }
-            else
-            {
-                keyImageReference.enabled = true;
-                keyImageReference.sprite = offerKey;
-            }
-        }
-
-        public void SetupOffer(ShopOffer offer)
+        public override void SetupOffer(ShopOffer offer)
         {
             if (offer.Cost > 0)
             {
@@ -50,11 +34,6 @@ namespace Laresistance.Behaviours
             abilityTextReference.text = offer.Reward.equip.GetEquipmentEffectDescription();
             slotTextReference.text = offer.Reward.equip.SlotName;
             equipmentSprite.sprite = offer.Reward.equip.Data.SpriteReference;
-        }
-
-        public void SetPanelColor(Color color)
-        {
-            panelImage.color = color;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Laresistance.Behaviours
     public interface IShopOfferUI
     {
         void SetupOffer(ShopOffer offer);
-        void SetOfferKey(Sprite offerKey);
+        void SetOfferKey(KeySetSelector offerKey);
         void SetPanelColor(Color color);
     }
 }

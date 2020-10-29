@@ -3,19 +3,19 @@ using GamedevsToolbox.StateMachine;
 using Laresistance.StateMachines;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEngine.InputSystem;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine.Assertions;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
 using GamedevsToolbox.Utils;
+using GamedevsToolbox.ScriptableArchitecture.Events;
 
 namespace Laresistance.Behaviours
 {
     public class PlayerContextBehaviour : MonoBehaviour, IPausable
     {
         [SerializeField]
-        private PlayerInput playerInput = default;
+        private StringGameEvent actionMapSwitchEvent = default;
         [SerializeField]
         private LayerMask centerCheckLayerMask = default;
         [SerializeField]
@@ -38,12 +38,12 @@ namespace Laresistance.Behaviours
             Camera camera = cameraReference.Get();
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
-            states.Add("Map", new GameContextMapState(gameObject, camera, playerInput));
-            battleState = new GameContextBattleState(gameObject, camera, playerInput, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary);
+            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent));
+            battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary);
             states.Add("Battle", battleState);
             roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData);
             states.Add("RoomChange", roomChangeState);
-            states.Add("UI", new GameContextUIState());
+            states.Add("UI", new GameContextUIState(actionMapSwitchEvent));
 
             stateMachine.SetStates(states);
             StartCoroutine(StateMachineCoroutine());

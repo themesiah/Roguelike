@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 1364089919}
   - component: {fileID: 1364089918}
   - component: {fileID: 1364089917}
+  - component: {fileID: 1055314223}
   m_Layer: 9
   m_Name: A
   m_TagString: Untagged
@@ -431,6 +432,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1055314223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364089916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 1364089917}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: 193b091ebe699ac44945000dec57f3d4, type: 2}
 --- !u!1 &1425635840
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +458,7 @@ GameObject:
   - component: {fileID: 1425635841}
   - component: {fileID: 1425635843}
   - component: {fileID: 1425635842}
+  - component: {fileID: 2128860676}
   m_Layer: 9
   m_Name: S
   m_TagString: Untagged
@@ -506,6 +523,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2128860676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425635840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 1425635842}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: ed996fd2138f8664ebd33d65e4c2d4ea, type: 2}
 --- !u!1 &1441620913
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +549,7 @@ GameObject:
   - component: {fileID: 1441620914}
   - component: {fileID: 1441620916}
   - component: {fileID: 1441620915}
+  - component: {fileID: 1466456966}
   m_Layer: 9
   m_Name: W
   m_TagString: Untagged
@@ -581,6 +614,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1466456966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441620913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 1441620915}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: a26d5819d4f0f4740a5acd44fa85a0d6, type: 2}
 --- !u!1 &1443685696
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +764,7 @@ GameObject:
   - component: {fileID: 1450065437}
   - component: {fileID: 1450065439}
   - component: {fileID: 1450065438}
+  - component: {fileID: 2072536827}
   m_Layer: 9
   m_Name: D
   m_TagString: Untagged
@@ -780,6 +829,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2072536827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450065436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 1450065438}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: 139f3189ff4be22439aaf7dbe7b08b8c, type: 2}
 --- !u!1 &1458205218
 GameObject:
   m_ObjectHideFlags: 0
@@ -5753,13 +5817,13 @@ GameObject:
   - component: {fileID: 1591657531686456967}
   - component: {fileID: 1591657531686456960}
   - component: {fileID: 1591657531686456961}
-  - component: {fileID: 1591657531686456966}
   - component: {fileID: 1591657531686456965}
   - component: {fileID: 23771295}
   - component: {fileID: 23771290}
   - component: {fileID: 23771297}
   - component: {fileID: 3704770702281637061}
   - component: {fileID: 3811345349916794757}
+  - component: {fileID: 675899200}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -5822,316 +5886,6 @@ MonoBehaviour:
   mapBehaviours: {fileID: 11400000, guid: 0582eea4fb828034e978bc4d82173239, type: 2}
   movementData: {fileID: 11400000, guid: 1c9885111a5c0244cbfbdda082fc1084, type: 2}
   platformFallEvent: {fileID: 11400000, guid: 7be75befcf2f44e43a1e6a909da07890, type: 2}
---- !u!114 &1591657531686456966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591657531686456962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 20bc970747563ea44bd7f98c8ed8e527, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1591657531686456961}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
-        m_MethodName: Move
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 79c0ac86-c776-4a68-95fc-1509ffd89068
-    m_ActionName: PlayerMap/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1591657531686456961}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
-        m_MethodName: Jump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 2f6c36ad-76cb-4c70-b48f-f7046568bf48
-    m_ActionName: PlayerMap/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4c453ed1-7daa-46f5-b261-98c92f92b814
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9d518b38-e49e-48d8-865e-74a68d9049a4
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 21d7f55c-ae21-4bca-a0ee-ae740ae48aa2
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 054a5658-de05-425c-b253-54886eaa3283
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d685e195-0598-4df1-a1c0-4cdd2f0cc821
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4045573b-e0e9-4504-b0b2-a1b571705368
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d442ba04-1bd6-451b-a521-b01c7b150e9d
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b15f89a5-f47a-4b3c-b62e-5ceb78f5deac
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6a5419b9-2f2d-4634-b1ec-e767e31f36be
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7424a3c0-d079-4ab3-9db0-caa11ad29acf
-    m_ActionName: UI/TrackedDeviceOrientation
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1591657531686456961}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
-        m_MethodName: PlatformFall
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 680c262c-f181-41d5-903a-d5d3ef3ccb79
-    m_ActionName: PlayerMap/Fall[/Keyboard/s,/Keyboard/downArrow]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1591657531686456961}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
-        m_MethodName: Interact
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0ce57ebd-20c0-4ef2-9db1-f055ff012058
-    m_ActionName: PlayerMap/Interact[/Keyboard/z]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformPlayerAction
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: cf7869db-725a-4f61-ba8e-936ec40b676a
-    m_ActionName: PlayerBattle/PlayerAbility[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformMinionAbility1
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ff5c180a-fb1c-420a-b01c-293cb065ca0e
-    m_ActionName: PlayerBattle/MinionAbility1[/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformMinionAbility2
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0567348f-f59e-46d2-9d55-5cde28e36fcc
-    m_ActionName: PlayerBattle/MinionAbility2[/Keyboard/s]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformMinionAbility3
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 59c5b7dc-cbfc-4ca0-90cc-84b469d6f6a8
-    m_ActionName: PlayerBattle/MinionAbility3[/Keyboard/a]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformConsumableAbility1
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 04bbe76b-32b1-4594-b816-6ffc14b33bc7
-    m_ActionName: PlayerBattle/Consumable1[/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformConsumableAbility2
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 7e80e9df-8347-4ca3-83f4-b25e6c82bbe7
-    m_ActionName: PlayerBattle/Consumable2[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformConsumableAbility3
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ffa51b87-54b0-4d96-8f16-4fab6ea5c0c5
-    m_ActionName: PlayerBattle/Consumable3[/Keyboard/r]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fde6287d-0068-42b1-a8a7-576db493d1a1
-    m_ActionName: UI/AnyInput[/Keyboard/anyKey]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 23180072-79a4-4501-a2c7-1875d59abd5e
-    m_ActionName: UI/SelectMinionA[/Keyboard/a]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e490a06f-672b-434e-b2eb-601047de8e6a
-    m_ActionName: UI/SelectMinionS[/Keyboard/s]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0b7769c0-f57d-4908-9a8c-e0b727940261
-    m_ActionName: UI/SelectMinionD[/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a655f9f3-b4a1-49b0-833a-f239586e90f4
-    m_ActionName: UI/IgnoreMinion[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771295}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
-          GameScripts
-        m_MethodName: PerformChangeTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: c3fc690d-4d1d-40d9-8fbb-9ef06084d1f1
-    m_ActionName: PlayerBattle/TargetSelection[/Keyboard/leftArrow,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b1dce6b7-40b6-4e89-a22b-c734b14fd152
-    m_ActionName: UI/SelectMinionW[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 175f8f99-d359-4b57-b308-5cc6b7430b09
-    m_ActionName: UI/SelectOption5[/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 65063e44-5de5-44c4-ac38-c2ca8d44e4fc
-    m_ActionName: PlayerMap/Pause[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e8fea02e-c469-4688-aca2-4c02db3661ca
-    m_ActionName: UI/SelectOption6[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5f780b51-e787-433c-a432-dcce76004001
-    m_ActionName: UI/ChangeShopContext[/Keyboard/z]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: PlayerMap
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!70 &1591657531686456965
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6321,7 +6075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146934d39bb1739498e75df7ebdc63f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 1591657531686456966}
+  actionMapSwitchEvent: {fileID: 11400000, guid: 2f9fa807aa3a8e347899a1ca266e9589, type: 2}
   centerCheckLayerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -6409,6 +6163,219 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
+--- !u!114 &675899200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591657531686456962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad113c9affbcc094fbf35ba14b3b1378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputEventList:
+  - Event: {fileID: 11400000, guid: 7373945bfa885064586e03daab652b95, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1591657531686456961}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
+          m_MethodName: Move
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: ec25bcbc783fbc74698250edbbf94a97, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1591657531686456961}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
+          m_MethodName: Jump
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: a68aa52286f0a8947a60966cf2362fe0, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1591657531686456961}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
+          m_MethodName: PlatformFall
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 0d1a2c18108b5504d823c58bdeffb45b, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1591657531686456961}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
+          m_MethodName: Interact
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 416628139dfed68488606a7c09feb1e9, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformPlayerAction
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 91627dc0e5bc70249b0d074a2634ba04, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformMinionAbility1
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: db64e93d828343d4187a33eef56f0a8b, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformMinionAbility2
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: ebb39f3a05229ba408e24d32be9949e6, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformMinionAbility3
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 0a86a55b3a2a6dc429d8e5179621dff3, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformConsumableAbility1
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: db1763c0f8d2a4846b25b89f51fd5fe6, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformConsumableAbility2
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: e2deb0ee20fa23a45b31be6f30f00da1, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformConsumableAbility3
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 47a174c67f5d64d4c9888013d0d31425, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 23771295}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerBattleBehaviour,
+            GameScripts
+          m_MethodName: PerformChangeTarget
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!95 &1591657531704718878
 Animator:
   serializedVersion: 3
@@ -6523,6 +6490,7 @@ GameObject:
   - component: {fileID: 3029803932340478510}
   - component: {fileID: 295941418661779716}
   - component: {fileID: 4025022695373793559}
+  - component: {fileID: 1307545874}
   m_Layer: 9
   m_Name: E
   m_TagString: Untagged
@@ -6587,6 +6555,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1307545874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950804211655481094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 4025022695373793559}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: abc0551a20a5855498f194f2a21e38f9, type: 2}
 --- !u!1 &3295105538582640299
 GameObject:
   m_ObjectHideFlags: 0
@@ -7293,6 +7276,7 @@ GameObject:
   - component: {fileID: 7038634906015561556}
   - component: {fileID: 6138030128317802893}
   - component: {fileID: 1780019937501946022}
+  - component: {fileID: 1935554722}
   m_Layer: 9
   m_Name: R
   m_TagString: Untagged
@@ -7357,6 +7341,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1935554722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453657816508063156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 1780019937501946022}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: ec673b24124ff6b45a6e546b00f490fb, type: 2}
 --- !u!1 &6321865290189862700
 GameObject:
   m_ObjectHideFlags: 0
@@ -7368,6 +7367,7 @@ GameObject:
   - component: {fileID: 6728525550921229569}
   - component: {fileID: 6181494240822105024}
   - component: {fileID: 925609616187139389}
+  - component: {fileID: 1553284278094519806}
   m_Layer: 9
   m_Name: Q
   m_TagString: Untagged
@@ -7432,6 +7432,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1553284278094519806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321865290189862700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 925609616187139389}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: ebbf02c610c69e14da5f1c116402c8dc, type: 2}
 --- !u!1 &6900697379921534233
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,8 +30,6 @@ RectTransform:
   - {fileID: 1111772138}
   - {fileID: 8614562434313147269}
   - {fileID: 889600531}
-  - {fileID: 684309808}
-  - {fileID: 985238033611629255}
   - {fileID: 5836934695630862729}
   - {fileID: 122445588782622461}
   - {fileID: 5485144901963174609}
@@ -217,83 +215,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!1 &684309807
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 684309808}
-  - component: {fileID: 684309810}
-  - component: {fileID: 684309809}
-  m_Layer: 5
-  m_Name: GoUpgradePanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &684309808
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684309807}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1681931158}
-  - {fileID: 1614063619}
-  m_Father: {fileID: 535172288}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 451.7}
-  m_SizeDelta: {x: 394.75415, y: 148.08594}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &684309810
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684309807}
-  m_CullTransparentMesh: 0
---- !u!114 &684309809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684309807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.59607846}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &889600530
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1218864711}
-  textId: SHOP_EXIT
+  textId: SHOP_BUY
 --- !u!1 &1341608609
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +489,7 @@ GameObject:
   - component: {fileID: 1341608610}
   - component: {fileID: 1341608612}
   - component: {fileID: 1341608611}
+  - component: {fileID: 8381822968336881607}
   m_Layer: 5
   m_Name: ButtonSprite
   m_TagString: Untagged
@@ -632,268 +554,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &1614063618
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1614063619}
-  - component: {fileID: 1614063623}
-  - component: {fileID: 1614063622}
-  - component: {fileID: 1614063621}
-  - component: {fileID: 1614063620}
-  m_Layer: 5
-  m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1614063619
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614063618}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 89.99986}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 684309808}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 85, y: -15}
-  m_SizeDelta: {x: -100, y: -30}
-  m_Pivot: {x: 0, y: 1}
---- !u!222 &1614063623
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614063618}
-  m_CullTransparentMesh: 0
---- !u!114 &1614063622
+--- !u!114 &8381822968336881607
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614063618}
+  m_GameObject: {fileID: 1341608609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 22
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 40
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: SHOP_UPGRADE
---- !u!114 &1614063621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614063618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
---- !u!114 &1614063620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614063618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3115168774e41e3449b948ba0922edce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 1614063622}
-  textId: SHOP_EXIT
---- !u!1 &1681931157
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1681931158}
-  - component: {fileID: 1681931160}
-  - component: {fileID: 1681931159}
-  m_Layer: 5
-  m_Name: ButtonSprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1681931158
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1681931157}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 89.99986}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 684309808}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: -0.000061035156}
-  m_SizeDelta: {x: 37, y: 39}
-  m_Pivot: {x: 0, y: 0.5}
---- !u!222 &1681931160
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1681931157}
-  m_CullTransparentMesh: 0
---- !u!114 &1681931159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1681931157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: -2248371898726000278, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!1 &1000557057035847872
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 985238033611629255}
-  - component: {fileID: 2076250743654051743}
-  - component: {fileID: 7477673245944424471}
-  m_Layer: 5
-  m_Name: GoShopPanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &985238033611629255
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000557057035847872}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4340223971782893620}
-  - {fileID: 7329153923137192599}
-  m_Father: {fileID: 535172288}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 451.7}
-  m_SizeDelta: {x: 394.75415, y: 148.08594}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2076250743654051743
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000557057035847872}
-  m_CullTransparentMesh: 0
---- !u!114 &7477673245944424471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000557057035847872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.59607846}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  spriteReference: {fileID: 1341608611}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: 0aa50d892d570d4429ca5bed853856f5, type: 2}
 --- !u!1 &3868258773235373054
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,6 +580,7 @@ GameObject:
   - component: {fileID: 238510865365141707}
   - component: {fileID: 1063449560590268408}
   - component: {fileID: 6220355070521312939}
+  - component: {fileID: 8897624001802712023}
   m_Layer: 5
   m_Name: ButtonSprite
   m_TagString: Untagged
@@ -969,6 +645,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8897624001802712023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3868258773235373054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 6220355070521312939}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: 791b31e8aa0445d4890cb97719111a7f, type: 2}
 --- !u!1 &4021018083142228676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +692,7 @@ RectTransform:
   - {fileID: 6832521005895398244}
   - {fileID: 7022935743238017351}
   m_Father: {fileID: 535172288}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1077,7 +768,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 535172288}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -1177,7 +868,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 535172288}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -1366,6 +1057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8872292433844673197}
   - component: {fileID: 5413580266911354685}
+  - component: {fileID: 8476160472926736485}
   m_Layer: 0
   m_Name: ButtonY
   m_TagString: Untagged
@@ -1438,6 +1130,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8476160472926736485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5530757634292297540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 0}
+  spriteRenderer: {fileID: 5413580266911354685}
+  keySetSelector: {fileID: 11400000, guid: 0ad3c179d93d1ac4292e345970272d57, type: 2}
 --- !u!1 &6278630773109238180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,7 +1331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 5850777365542867659}
-  textId: SHOP_EXIT
+  textId: SHOP_UPGRADE
 --- !u!1 &7220640635820912153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,6 +1425,7 @@ GameObject:
   - component: {fileID: 6832521005895398244}
   - component: {fileID: 8398529740931295632}
   - component: {fileID: 157232955704133816}
+  - component: {fileID: 199938989527017777}
   m_Layer: 5
   m_Name: ButtonSprite
   m_TagString: Untagged
@@ -1782,116 +1490,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &8155498428618602898
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7329153923137192599}
-  - component: {fileID: 6654654854804814501}
-  - component: {fileID: 8470627999102998293}
-  - component: {fileID: 2593896491796980949}
-  - component: {fileID: 6457937934343678924}
-  m_Layer: 5
-  m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7329153923137192599
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155498428618602898}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 89.99986}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 985238033611629255}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 85, y: -15}
-  m_SizeDelta: {x: -100, y: -30}
-  m_Pivot: {x: 0, y: 1}
---- !u!222 &6654654854804814501
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155498428618602898}
-  m_CullTransparentMesh: 0
---- !u!114 &8470627999102998293
+--- !u!114 &199938989527017777
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155498428618602898}
+  m_GameObject: {fileID: 8143128956821773520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 22
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 40
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: SHOP_BUY
---- !u!114 &2593896491796980949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155498428618602898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
---- !u!114 &6457937934343678924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155498428618602898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3115168774e41e3449b948ba0922edce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 8470627999102998293}
-  textId: SHOP_EXIT
+  spriteReference: {fileID: 157232955704133816}
+  spriteRenderer: {fileID: 0}
+  keySetSelector: {fileID: 11400000, guid: 0aa50d892d570d4429ca5bed853856f5, type: 2}
 --- !u!1 &8558180539617554437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1904,7 +1517,7 @@ GameObject:
   - component: {fileID: 3882083002687251402}
   - component: {fileID: 7085072137812109006}
   - component: {fileID: 4248127086323305579}
-  - component: {fileID: 9092163344764226201}
+  - component: {fileID: 7935117799409412235}
   m_Layer: 0
   m_Name: Pilgrim
   m_TagString: Untagged
@@ -2034,12 +1647,12 @@ MonoBehaviour:
   gridCanvas: {fileID: 122445588782622461}
   upgradeCanvas: {fileID: 5485144901963174609}
   offerKeys:
-  - {fileID: 3643243010867867535, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  - {fileID: 1836571632104722114, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  - {fileID: -5221031191145572345, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  - {fileID: -5690122954830693929, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  - {fileID: 1084870471915973256, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  - {fileID: -8200298928030360504, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
+  - {fileID: 11400000, guid: 139f3189ff4be22439aaf7dbe7b08b8c, type: 2}
+  - {fileID: 11400000, guid: ed996fd2138f8664ebd33d65e4c2d4ea, type: 2}
+  - {fileID: 11400000, guid: 193b091ebe699ac44945000dec57f3d4, type: 2}
+  - {fileID: 11400000, guid: a26d5819d4f0f4740a5acd44fa85a0d6, type: 2}
+  - {fileID: 11400000, guid: ebbf02c610c69e14da5f1c116402c8dc, type: 2}
+  - {fileID: 11400000, guid: abc0551a20a5855498f194f2a21e38f9, type: 2}
   exitShopPanel: {fileID: 855317264315743360}
   unselectedColor: {r: 1, g: 0.9137255, b: 0.34509805, a: 1}
   selectedColor: {r: 0.43137255, g: 1, b: 0.44705883, a: 1}
@@ -2050,9 +1663,7 @@ MonoBehaviour:
   shopUpgradeObjects:
   - {fileID: 889600530}
   - {fileID: 5101311527470022589}
-  goShopBuyPanel: {fileID: 889600532}
-  goShopUpgradePanel: {fileID: 3474013860723260429}
---- !u!114 &9092163344764226201
+--- !u!114 &7935117799409412235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2061,319 +1672,135 @@ MonoBehaviour:
   m_GameObject: {fileID: 8558180539617554437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: ad113c9affbcc094fbf35ba14b3b1378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 20bc970747563ea44bd7f98c8ed8e527, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 79c0ac86-c776-4a68-95fc-1509ffd89068
-    m_ActionName: PlayerMap/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2f6c36ad-76cb-4c70-b48f-f7046568bf48
-    m_ActionName: PlayerMap/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 680c262c-f181-41d5-903a-d5d3ef3ccb79
-    m_ActionName: PlayerMap/Fall[/Keyboard/s,/Keyboard/downArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0ce57ebd-20c0-4ef2-9db1-f055ff012058
-    m_ActionName: PlayerMap/Interact[/Keyboard/z]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4c453ed1-7daa-46f5-b261-98c92f92b814
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9d518b38-e49e-48d8-865e-74a68d9049a4
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 21d7f55c-ae21-4bca-a0ee-ae740ae48aa2
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 054a5658-de05-425c-b253-54886eaa3283
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d685e195-0598-4df1-a1c0-4cdd2f0cc821
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4045573b-e0e9-4504-b0b2-a1b571705368
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d442ba04-1bd6-451b-a521-b01c7b150e9d
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b15f89a5-f47a-4b3c-b62e-5ceb78f5deac
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6a5419b9-2f2d-4634-b1ec-e767e31f36be
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7424a3c0-d079-4ab3-9db0-caa11ad29acf
-    m_ActionName: UI/TrackedDeviceOrientation
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fde6287d-0068-42b1-a8a7-576db493d1a1
-    m_ActionName: UI/AnyInput[/Keyboard/anyKey]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: Option3Selected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 23180072-79a4-4501-a2c7-1875d59abd5e
-    m_ActionName: UI/SelectMinionA[/Keyboard/a]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: Option2Selected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: e490a06f-672b-434e-b2eb-601047de8e6a
-    m_ActionName: UI/SelectMinionS[/Keyboard/s]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: Option1Selected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0b7769c0-f57d-4908-9a8c-e0b727940261
-    m_ActionName: UI/SelectMinionD[/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: OptionCancelSelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: -2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a655f9f3-b4a1-49b0-833a-f239586e90f4
-    m_ActionName: UI/IgnoreMinion[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: cf7869db-725a-4f61-ba8e-936ec40b676a
-    m_ActionName: PlayerBattle/PlayerAbility[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ff5c180a-fb1c-420a-b01c-293cb065ca0e
-    m_ActionName: PlayerBattle/MinionAbility1[/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0567348f-f59e-46d2-9d55-5cde28e36fcc
-    m_ActionName: PlayerBattle/MinionAbility2[/Keyboard/s]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 59c5b7dc-cbfc-4ca0-90cc-84b469d6f6a8
-    m_ActionName: PlayerBattle/MinionAbility3[/Keyboard/a]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 04bbe76b-32b1-4594-b816-6ffc14b33bc7
-    m_ActionName: PlayerBattle/Consumable1[/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7e80e9df-8347-4ca3-83f4-b25e6c82bbe7
-    m_ActionName: PlayerBattle/Consumable2[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ffa51b87-54b0-4d96-8f16-4fab6ea5c0c5
-    m_ActionName: PlayerBattle/Consumable3[/Keyboard/r]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c3fc690d-4d1d-40d9-8fbb-9ef06084d1f1
-    m_ActionName: PlayerBattle/TargetSelection[/Keyboard/leftArrow,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: Option4Selected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: b1dce6b7-40b6-4e89-a22b-c734b14fd152
-    m_ActionName: UI/SelectMinionW[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: Option5Selected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 175f8f99-d359-4b57-b308-5cc6b7430b09
-    m_ActionName: UI/SelectMinionQ[/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: Option6Selected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: e8fea02e-c469-4688-aca2-4c02db3661ca
-    m_ActionName: UI/SelectOption6[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4248127086323305579}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
-        m_MethodName: OptionChangeContextSelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: -3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 5f780b51-e787-433c-a432-dcce76004001
-    m_ActionName: UI/ChangeShopContext[/Keyboard/z]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: UI
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!1 &8981241434139758691
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4340223971782893620}
-  - component: {fileID: 1277783198899928016}
-  - component: {fileID: 5092150172462394363}
-  m_Layer: 5
-  m_Name: ButtonSprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &4340223971782893620
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8981241434139758691}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 89.99986}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 985238033611629255}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: -0.000061035156}
-  m_SizeDelta: {x: 37, y: 39}
-  m_Pivot: {x: 0, y: 0.5}
---- !u!222 &1277783198899928016
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8981241434139758691}
-  m_CullTransparentMesh: 0
---- !u!114 &5092150172462394363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8981241434139758691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: -2248371898726000278, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  inputEventList:
+  - Event: {fileID: 11400000, guid: cf5992efdd1dffc4687241acc62ce0ab, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: Option1Selected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: f3950ae2055eefc4a9fe454668981088, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: Option2Selected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 89830060e8ad4e74aa6e15dc48624660, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: Option3Selected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: ff9ffc6502025f9499628157d60db9d7, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: Option4Selected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 1e2fef4fd6d7cd6469b0f2e3cb655916, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: Option5Selected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 3ec29dfd5769c96408c476e9c703d93a, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: Option6Selected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 786ee0d7d37b29545b80f822f393defc, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: OptionChangeContextSelected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 89b111a7273415549a2f0d7b459b7eba, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4248127086323305579}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PilgrimBehaviour, GameScripts
+          m_MethodName: OptionCancelSelected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2

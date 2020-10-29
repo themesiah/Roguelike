@@ -12,6 +12,7 @@ namespace GamedevsToolbox.ScriptableArchitecture.Selectors
         [SerializeField]
         [Tooltip("This integer will be the index that the Get function will use to return a element.")]
         private Values.ScriptableIntReference indexForSelection = default;
+        public Values.ScriptableIntReference IndexForSelection { get { return indexForSelection; } }
 
         public T Get()
         {
