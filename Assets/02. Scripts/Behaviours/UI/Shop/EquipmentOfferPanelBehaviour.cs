@@ -25,12 +25,27 @@ namespace Laresistance.Behaviours
 
         public void SetOfferKey(Sprite offerKey)
         {
-            keyImageReference.sprite = offerKey;
+            if (offerKey == null)
+            {
+                keyImageReference.enabled = false;
+            }
+            else
+            {
+                keyImageReference.enabled = true;
+                keyImageReference.sprite = offerKey;
+            }
         }
 
         public void SetupOffer(ShopOffer offer)
         {
-            hardCurrencyTextReference.text = Texts.GetText("EQUIPMENT_PANEL_001", offer.Reward.equip.Data.HardCurrencyCost);
+            if (offer.Cost > 0)
+            {
+                hardCurrencyTextReference.enabled = true;
+                hardCurrencyTextReference.text = Texts.GetText("EQUIPMENT_PANEL_001", offer.Cost);
+            } else
+            {
+                hardCurrencyTextReference.enabled = false;
+            }
             equipmentNameReference.text = Texts.GetText(offer.Reward.equip.Name);
             abilityTextReference.text = offer.Reward.equip.GetEquipmentEffectDescription();
             slotTextReference.text = offer.Reward.equip.SlotName;

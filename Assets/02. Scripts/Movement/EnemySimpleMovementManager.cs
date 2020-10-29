@@ -39,7 +39,7 @@ namespace Laresistance.Movement
             Move();
         }
 
-        public void Stop()
+        public void Pause()
         {
             body.velocity = Vector2.zero;
             stopped = true;

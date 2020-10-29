@@ -13,18 +13,23 @@ namespace Laresistance.StateMachines
         private Camera playerCamera;
         private PlayerInput playerInput;
         private string signal = null;
+        private PlayerMapBehaviour playerMapBehaviour;
+        private Rigidbody2D playerBody;
+        private bool paused = false;
 
         public GameContextMapState(GameObject playerObject, Camera playerCamera, PlayerInput playerInput)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
             this.playerInput = playerInput;
+            playerMapBehaviour = playerObject.GetComponent<PlayerMapBehaviour>();
+            playerBody = playerObject.GetComponent<Rigidbody2D>();
         }
 
         private void ObjectActivationAndDesactivation(bool enter)
         {
-            playerObject.GetComponent<PlayerMapBehaviour>().enabled = enter;
-            playerObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            playerMapBehaviour.enabled = enter;
+            playerBody.velocity = Vector2.zero;
         }
 
         public IEnumerator EnterState()
@@ -47,6 +52,9 @@ namespace Laresistance.StateMachines
 
         public void Pause()
         {
+            playerMapBehaviour.PauseMapBehaviour();
+            playerBody.simulated = false;
+            paused = true;
         }
 
         public void ReceiveSignal(string signal)
@@ -59,13 +67,19 @@ namespace Laresistance.StateMachines
 
         public void Resume()
         {
+            playerMapBehaviour.ResumeMapBehaviour();
+            playerBody.simulated = true;
+            paused = false;
         }
 
         public IEnumerator Update(Action<string> resolve)
         {
-            if (signal != null)
+            if (!paused)
             {
-                resolve(signal);
+                if (signal != null)
+                {
+                    resolve(signal);
+                }
             }
             yield return null;
         }

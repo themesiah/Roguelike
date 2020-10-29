@@ -252,6 +252,8 @@ GameObject:
   - component: {fileID: 2320645775852034817}
   - component: {fileID: 7977501592227898785}
   - component: {fileID: 6252518509512114618}
+  - component: {fileID: 2625714541003188601}
+  - component: {fileID: 446708115831583630}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -712,6 +714,64 @@ MonoBehaviour:
   partyHolder: {fileID: 8478128905058416120}
   partyPrefabs:
   - {fileID: 7161766185300077890, guid: f4f5e76a79d068c43b1c310233ad3922, type: 3}
+--- !u!114 &2625714541003188601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7909678482288377995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: e8e9fd60096d9004eac9a239b17be398, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7909678482288378005}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.MapBehaviour, GameScripts
+        m_MethodName: PauseMapBehaviour
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &446708115831583630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7909678482288377995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: b38a83e699b52e74ab8ca81f60ba10c9, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7909678482288378005}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.MapBehaviour, GameScripts
+        m_MethodName: ResumeMapBehaviour
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7909678482502529855
 GameObject:
   m_ObjectHideFlags: 0

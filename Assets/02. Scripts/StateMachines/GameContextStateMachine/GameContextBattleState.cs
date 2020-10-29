@@ -33,6 +33,7 @@ namespace Laresistance.StateMachines
         private GameObject[] enemyObjects;
         private int deathCount;
         private RewardData rewardData = null;
+        private bool paused = false;
 
         #region ICoroutineState Implementation
         public IEnumerator EnterState()
@@ -68,6 +69,8 @@ namespace Laresistance.StateMachines
 
         public void Pause()
         {
+            battleSystem.Pause();
+            paused = true;
         }
 
         public void ReceiveSignal(string signal)
@@ -80,13 +83,18 @@ namespace Laresistance.StateMachines
 
         public void Resume()
         {
+            battleSystem.Resume();
+            paused = false;
         }
 
         public IEnumerator Update(Action<string> resolve)
         {
-            if(goToMap)
+            if (!paused)
             {
-                resolve("Map");
+                if (goToMap)
+                {
+                    resolve("Map");
+                }
             }
             yield return battleSystem.Tick(Time.deltaTime);
         }

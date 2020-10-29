@@ -19,6 +19,7 @@ namespace Laresistance.Movement
         private Rigidbody2D body;
         private Animator animator;
         private GameEvent platformFallEvent;
+        private bool paused = false;
 
         public PlayerMovementManager(PlayerMovementData movementData, Transform transform, Rigidbody2D body, Animator animator, GameEvent platformFallEvent)
         {
@@ -36,20 +37,24 @@ namespace Laresistance.Movement
 
         public void Tick(float delta)
         {
+            if (paused)
+                return;
             HorizontalMovement.Tick(delta);
             Jump.Tick(delta);
         }
 
-        public void Stop()
+        public void Pause()
         {
             body.simulated = false;
             body.velocity = Vector3.zero;
             HorizontalMovement.Stop();
+            paused = true;
         }
 
         public void Resume()
         {
             body.simulated = true;
+            paused = false;
         }
     }
 }

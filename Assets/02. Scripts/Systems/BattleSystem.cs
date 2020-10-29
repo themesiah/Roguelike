@@ -1,15 +1,17 @@
-﻿using Laresistance.Battle;
+﻿using GamedevsToolbox.Utils;
+using Laresistance.Battle;
 using Laresistance.Core;
 using System.Collections;
 
 namespace Laresistance.Systems
 {
-    public class BattleSystem
+    public class BattleSystem : IPausable
     {
         private CharacterBattleManager playerBattleManager;
         private CharacterBattleManager[] enemiesBattleManager;
 
         private CharacterBattleManager selectedEnemy;
+        private bool paused = false;
 
         public BattleSystem()
         {
@@ -157,19 +159,32 @@ namespace Laresistance.Systems
 
         public IEnumerator Tick(float delta)
         {
-            int playerAbilityIndex = playerBattleManager.Tick(delta);
-            if (playerAbilityIndex != -1)
+            if (!paused)
             {
-                yield return playerBattleManager.ExecuteSkill(playerAbilityIndex);
-            }
-            foreach(var bm in enemiesBattleManager)
-            {
-                int enemyAbilityIndex = bm.Tick(delta);
-                if (enemyAbilityIndex != -1)
+                int playerAbilityIndex = playerBattleManager.Tick(delta);
+                if (playerAbilityIndex != -1)
                 {
-                    yield return bm.ExecuteSkill(enemyAbilityIndex);
+                    yield return playerBattleManager.ExecuteSkill(playerAbilityIndex);
+                }
+                foreach (var bm in enemiesBattleManager)
+                {
+                    int enemyAbilityIndex = bm.Tick(delta);
+                    if (enemyAbilityIndex != -1)
+                    {
+                        yield return bm.ExecuteSkill(enemyAbilityIndex);
+                    }
                 }
             }
+        }
+
+        public void Pause()
+        {
+            paused = true;
+        }
+
+        public void Resume()
+        {
+            paused = false;
         }
     }
 }

@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using GamedevsToolbox.Utils;
 
 namespace Laresistance.Movement
 {
-    public interface IMovementManager
+    public interface IMovementManager : IPausable
     {
         void Tick(float delta);
-        void Stop();
-        void Resume();
     }
 }

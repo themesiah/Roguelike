@@ -32,7 +32,15 @@ namespace Laresistance.Behaviours
 
         public void SetOfferKey(Sprite offerKey)
         {
-            keyImageReference.sprite = offerKey;
+            if (offerKey == null)
+            {
+                keyImageReference.enabled = false;
+            }
+            else
+            {
+                keyImageReference.enabled = true;
+                keyImageReference.sprite = offerKey;
+            }
         }
 
         public void SetupOffer(ShopOffer offer)

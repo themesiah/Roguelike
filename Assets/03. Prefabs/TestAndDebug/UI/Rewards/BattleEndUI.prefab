@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1140979491932689446}
   - component: {fileID: 1140979491932689445}
   - component: {fileID: 1140979491932689444}
+  - component: {fileID: 3488245497665252366}
   m_Layer: 5
   m_Name: BattleEndUI
   m_TagString: Untagged
@@ -106,6 +107,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3488245497665252366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140979491932689443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b552dbcb671322740a2ce17f7f3392d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraRef: {fileID: 11400000, guid: 6abec616b80ebaf4c8a9a8ac516f0749, type: 2}
+  canvasRef: {fileID: 1140979491932689446}
 --- !u!114 &872819529830671389
 MonoBehaviour:
   m_ObjectHideFlags: 0

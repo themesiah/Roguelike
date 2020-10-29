@@ -6115,6 +6115,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 175f8f99-d359-4b57-b308-5cc6b7430b09
     m_ActionName: UI/SelectOption5[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 65063e44-5de5-44c4-ac38-c2ca8d44e4fc
+    m_ActionName: PlayerMap/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e8fea02e-c469-4688-aca2-4c02db3661ca
+    m_ActionName: UI/SelectOption6[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5f780b51-e787-433c-a432-dcce76004001
+    m_ActionName: UI/ChangeShopContext[/Keyboard/z]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMap
@@ -6626,6 +6638,8 @@ GameObject:
   - component: {fileID: 1368093070343346270}
   - component: {fileID: 6612159721804979159}
   - component: {fileID: 8200218794505864924}
+  - component: {fileID: 9121599824974081652}
+  - component: {fileID: 7518730485009172032}
   m_Layer: 9
   m_Name: EventsAndSubscriptions
   m_TagString: Untagged
@@ -7208,6 +7222,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runtimeSingle: {fileID: 11400000, guid: 592c7c3261045fe44b4af251f2235ef2, type: 2}
   component: {fileID: 1591657531686456962}
+--- !u!114 &9121599824974081652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3897970144034760309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: e8e9fd60096d9004eac9a239b17be398, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 23771290}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerContextBehaviour,
+          GameScripts
+        m_MethodName: Pause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Pause
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7518730485009172032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3897970144034760309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: b38a83e699b52e74ab8ca81f60ba10c9, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 23771290}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerContextBehaviour,
+          GameScripts
+        m_MethodName: Resume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Map
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4453657816508063156
 GameObject:
   m_ObjectHideFlags: 0
@@ -12362,13 +12436,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
---- !u!4 &1637300251313996865 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 49099726596751823, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
-  m_PrefabInstance: {fileID: 1591657532091581838}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1637300251313996864 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 49099726596751822, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
+  m_PrefabInstance: {fileID: 1591657532091581838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1637300251313996865 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 49099726596751823, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
   m_PrefabInstance: {fileID: 1591657532091581838}
   m_PrefabAsset: {fileID: 0}

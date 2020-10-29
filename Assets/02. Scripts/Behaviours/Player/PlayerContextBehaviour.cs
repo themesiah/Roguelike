@@ -8,10 +8,11 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using UnityEngine.Assertions;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
+using GamedevsToolbox.Utils;
 
 namespace Laresistance.Behaviours
 {
-    public class PlayerContextBehaviour : MonoBehaviour
+    public class PlayerContextBehaviour : MonoBehaviour, IPausable
     {
         [SerializeField]
         private PlayerInput playerInput = default;
@@ -95,6 +96,16 @@ namespace Laresistance.Behaviours
                 roomChangeState.SetRoomData(rcd);
                 stateMachine.ReceiveSignal("RoomChange");
             }
+        }
+
+        public void Pause()
+        {
+            stateMachine.Pause();
+        }
+
+        public void Resume()
+        {
+            stateMachine.Resume();
         }
     }
 }

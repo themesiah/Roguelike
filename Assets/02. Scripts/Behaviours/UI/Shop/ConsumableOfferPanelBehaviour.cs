@@ -23,12 +23,27 @@ namespace Laresistance.Behaviours
 
         public void SetOfferKey(Sprite offerKey)
         {
-            keyImageReference.sprite = offerKey;
+            if (offerKey == null)
+            {
+                keyImageReference.enabled = false;
+            }
+            else
+            {
+                keyImageReference.enabled = true;
+                keyImageReference.sprite = offerKey;
+            }
         }
 
         public void SetupOffer(ShopOffer offer)
         {
-            bloodTextReference.text = Texts.GetText("CONSUMABLE_PANEL_001", offer.Reward.consumable.Data.BaseBloodPrice);
+            if (offer.Cost > 0)
+            {
+                bloodTextReference.enabled = true;
+                bloodTextReference.text = Texts.GetText("CONSUMABLE_PANEL_001", offer.Cost);
+            } else
+            {
+                bloodTextReference.enabled = false;
+            }
             consumableNameReference.text = Texts.GetText(offer.Reward.consumable.Name);
             abilityTextReference.text = offer.Reward.consumable.GetAbilityText();
             consumableSprite.sprite = offer.Reward.consumable.Data.SpriteReference;

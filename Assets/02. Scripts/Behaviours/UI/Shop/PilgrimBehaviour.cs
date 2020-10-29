@@ -62,10 +62,6 @@ namespace Laresistance.Behaviours
         private GameObject[] shopBuyObjects = default;
         [SerializeField]
         private GameObject[] shopUpgradeObjects = default;
-        [SerializeField]
-        private Image goShopBuyPanel = default;
-        [SerializeField]
-        private Image goShopUpgradePanel = default;
 
         private ShopSystem shopSystem;
         private RewardSystem rewardSystem;
