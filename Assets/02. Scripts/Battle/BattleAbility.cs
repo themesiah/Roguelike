@@ -4,6 +4,7 @@ using Laresistance.Core;
 using System.Text;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Battle
 {
@@ -81,34 +82,37 @@ namespace Laresistance.Battle
         public void ResetTimer()
         {
             timer = 0f;
+            float currentCooldown = 0f;
+            equipmentEvents.OnGetStartingCooldowns?.Invoke(ref currentCooldown);
+            timer = GetCooldown() * currentCooldown;
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             // We need to actually start a new coroutine here because prioritary abilities can and should be processed BEFORE non prioritary abilities.
-            CoroutineHelperBehaviour.GetInstance().StartCoroutine(ExecuteAbilityCoroutine(allies, targets, level, animator));
+            CoroutineHelperBehaviour.GetInstance().StartCoroutine(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
             yield return null;
         }
 
-        public IEnumerator ExecuteAbilityCoroutine(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator)
+        public IEnumerator ExecuteAbilityCoroutine(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             if (CanBeUsed())
             {
                 timer = 0f;
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
-                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger());
+                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
                 OnAbilityTimerChanged?.Invoke(0f, GetCooldown(), 0f);
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }
         }
 
-        public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level)
+        public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, ScriptableIntReference bloodRef = null)
         {
             foreach (var effect in effects)
             {
-                effect.PerformEffect(allies, targets, level, equipmentEvents);
+                effect.PerformEffect(allies, targets, level, equipmentEvents, bloodRef);
             }
         }
 
@@ -126,7 +130,7 @@ namespace Laresistance.Battle
         public float GetCooldown()
         {
             float temp = cooldown;
-            equipmentEvents?.InvokeOnGetCooldown(ref temp);
+            equipmentEvents?.OnGetCooldown?.Invoke(ref temp);
             return temp;
         }
 

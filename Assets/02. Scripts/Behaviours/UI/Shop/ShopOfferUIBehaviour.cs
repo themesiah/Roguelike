@@ -57,6 +57,8 @@ namespace Laresistance.Behaviours
             panelImage.color = color;
         }
 
+        public abstract void SetCost(int cost);
+
         public abstract void SetupOffer(ShopOffer offer);
     }
 }

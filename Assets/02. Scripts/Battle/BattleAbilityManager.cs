@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Laresistance.Behaviours;
 using UnityEngine.Analytics;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Battle
 {
@@ -13,7 +14,7 @@ namespace Laresistance.Battle
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
         private static IBattleAnimator currentAnimator = null;
 
-        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger)
+        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
         {
             if (abilityQueue == null)
                 abilityQueue = new List<BattleAbility>();
@@ -33,7 +34,7 @@ namespace Laresistance.Battle
             currentlyExecuting = true;
             currentAnimator = animator;
             yield return animator?.PlayAnimation(animationTrigger);
-            abilityToExecute.Perform(allies, targets, level);
+            abilityToExecute.Perform(allies, targets, level, bloodRef);
             abilityQueue.Remove(abilityToExecute);
             currentlyExecuting = false;
             if (abilityToExecute.IsPrioritary() && needPause)

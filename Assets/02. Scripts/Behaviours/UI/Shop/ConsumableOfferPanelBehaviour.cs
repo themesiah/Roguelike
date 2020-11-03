@@ -20,17 +20,23 @@ namespace Laresistance.Behaviours
 
         public override void SetupOffer(ShopOffer offer)
         {
-            if (offer.Cost > 0)
-            {
-                bloodTextReference.enabled = true;
-                bloodTextReference.text = Texts.GetText("CONSUMABLE_PANEL_001", offer.Cost);
-            } else
-            {
-                bloodTextReference.enabled = false;
-            }
+            SetCost(offer.Cost);
             consumableNameReference.text = Texts.GetText(offer.Reward.consumable.Name);
             abilityTextReference.text = offer.Reward.consumable.GetAbilityText();
             consumableSprite.sprite = offer.Reward.consumable.Data.SpriteReference;
+        }
+
+        public override void SetCost(int cost)
+        {
+            if (cost > 0)
+            {
+                bloodTextReference.enabled = true;
+                bloodTextReference.text = Texts.GetText("CONSUMABLE_PANEL_001", cost);
+            }
+            else
+            {
+                bloodTextReference.enabled = false;
+            }
         }
     }
 }

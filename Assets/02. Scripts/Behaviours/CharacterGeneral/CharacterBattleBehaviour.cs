@@ -70,7 +70,7 @@ namespace Laresistance.Behaviours
 
         public void OutsideBattleDamage(int damage)
         {
-            StatusManager.health.TakeDamage(damage);
+            StatusManager.health.TakeDamage(damage, null);
         }
     }
 }

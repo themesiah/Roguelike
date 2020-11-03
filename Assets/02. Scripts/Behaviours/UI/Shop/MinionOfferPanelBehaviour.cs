@@ -27,14 +27,7 @@ namespace Laresistance.Behaviours
 
         public override void SetupOffer(ShopOffer offer)
         {
-            if (offer.Cost > 0)
-            {
-                bloodTextReference.enabled = true;
-                bloodTextReference.text = Texts.GetText("MINION_PANEL_001", offer.Cost);
-            } else
-            {
-                bloodTextReference.enabled = false;
-            }
+            SetCost(offer.Cost);
             minionNameReference.text = Texts.GetText(offer.Reward.minion.Name);
             abilityTextReference.text = offer.Reward.minion.GetAbilityText();
             GameObject go = Instantiate(offer.Reward.minion.Data.Prefab, minionPrefabHolder);
@@ -43,6 +36,19 @@ namespace Laresistance.Behaviours
             SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
             renderer.sortingOrder = sortingOrder;
             renderer.material = unlitMaterial;
+        }
+
+        public override void SetCost(int cost)
+        {
+            if (cost > 0)
+            {
+                bloodTextReference.enabled = true;
+                bloodTextReference.text = Texts.GetText("MINION_PANEL_001", cost);
+            }
+            else
+            {
+                bloodTextReference.enabled = false;
+            }
         }
     }
 }

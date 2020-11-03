@@ -40,6 +40,8 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnHealed -= OnHealed;
             battleBehaviour.StatusManager.health.OnShieldsChanged -= OnShieldsChanged;
             battleBehaviour.StatusManager.health.OnDeath -= OnDeath;
+            battleBehaviour.StatusManager.health.OnMaxHealthChanged -= MaxHealthChanged;
+            battleBehaviour.StatusManager.health.OnHealthChanged -= HealthChanged;
         }
 
         private void EnableSuscriptions()
@@ -48,6 +50,8 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnHealed += OnHealed;
             battleBehaviour.StatusManager.health.OnShieldsChanged += OnShieldsChanged;
             battleBehaviour.StatusManager.health.OnDeath += OnDeath;
+            battleBehaviour.StatusManager.health.OnMaxHealthChanged += MaxHealthChanged;
+            battleBehaviour.StatusManager.health.OnHealthChanged += HealthChanged;
             OnMaxHealth?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth());
             OnHealthChanged?.Invoke(battleBehaviour.StatusManager.health.GetCurrentHealth());
             OnHealthChangedPercent?.Invoke(battleBehaviour.StatusManager.health.GetPercentHealth());
@@ -79,6 +83,18 @@ namespace Laresistance.Behaviours
 
         private void HealthPercent(CharacterHealth sender)
         {
+            OnHealthChangedPercent?.Invoke(sender.GetPercentHealth());
+        }
+
+        private void MaxHealthChanged(CharacterHealth sender, int maxHealth)
+        {
+            OnMaxHealth?.Invoke(maxHealth);
+            OnHealthChangedPercent?.Invoke(sender.GetPercentHealth());
+        }
+
+        private void HealthChanged(CharacterHealth sender, int health)
+        {
+            OnHealthChanged?.Invoke(health);
             OnHealthChangedPercent?.Invoke(sender.GetPercentHealth());
         }
     }

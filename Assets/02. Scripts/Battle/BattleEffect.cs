@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Battle
 {
@@ -37,12 +38,12 @@ namespace Laresistance.Battle
             Power = power;
         }
 
-        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentEvents equipmentEvents)
+        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
         {
-            GetTargets(allies, enemies).ForEach((target) => PerformEffectOnTarget(target, level, equipmentEvents));
+            GetTargets(allies, enemies).ForEach((target) => PerformEffectOnTarget(target, level, equipmentEvents, bloodRef));
         }
 
-        protected abstract void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents);
+        protected abstract void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef);
 
         public abstract EffectType EffectType { get; }
 

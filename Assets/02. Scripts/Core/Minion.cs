@@ -3,6 +3,7 @@ using System.Collections;
 using Laresistance.Data;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Core
 {
@@ -45,9 +46,9 @@ namespace Laresistance.Core
             return player.EquipMinion(this);
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies, IBattleAnimator animator)
+        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies, IBattleAnimator animator, ScriptableIntReference bloodRef)
         {
-            yield return ability.ExecuteAbility(allies, enemies, Level, animator);
+            yield return ability.ExecuteAbility(allies, enemies, Level, animator, bloodRef);
         }
 
         public BattleAbility[] Abilities => new BattleAbility[] { ability };

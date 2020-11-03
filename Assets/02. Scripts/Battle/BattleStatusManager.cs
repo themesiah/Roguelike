@@ -23,10 +23,17 @@ namespace Laresistance.Battle
         {
             public float coeficient;
         }
+
+        public class TempDamageChange
+        {
+            public float modifier;
+            public float setupTime;
+        }
         #endregion
 
         #region Constants
         public static float SPEED_MODIFIER_DURATION = 3f;
+        public static float DAMAGE_MODIFIER_DURATION = 3f;
         public static float DAMAGE_OVER_TIME_DURATION = 3f;
         public static float DAMAGE_OVER_TIME_TICK_DELAY = 0.5f;
         #endregion
@@ -35,6 +42,7 @@ namespace Laresistance.Battle
         private List<SpeedEffect> speedModifiers;
         private List<DamageOverTime> damageOverTimes;
         private List<DamageImprovement> damageImprovements;
+        private List<TempDamageChange> tempDamageModifications;
         // Damage, heal and shield modifiers
         #endregion
 
@@ -49,6 +57,10 @@ namespace Laresistance.Battle
         public event OnDamageOverTimeAppliedHandler OnDamageOverTimeApplied;
         public delegate void OnDamageImprovementAppliedHandler(BattleStatusManager sender, float coeficient, float currentDamageImprovement);
         public event OnDamageImprovementAppliedHandler OnDamageImprovementApplied;
+        public delegate void OnStunHandler(BattleStatusManager sender);
+        public event OnStunHandler OnStun;
+        public delegate void OnCooldownsAdvanceHandler(BattleStatusManager sender);
+        public event OnCooldownsAdvanceHandler OnCooldownsAdvance;
         #endregion
 
         #region Public methods
@@ -58,6 +70,7 @@ namespace Laresistance.Battle
             speedModifiers = new List<SpeedEffect>();
             damageOverTimes = new List<DamageOverTime>();
             damageImprovements = new List<DamageImprovement>();
+            tempDamageModifications = new List<TempDamageChange>();
         }
 
         public void ProcessStatus(float delta)
@@ -80,7 +93,7 @@ namespace Laresistance.Battle
             }
             if (totalDamage > 0)
             {
-                health.TakeDamage(totalDamage);
+                health.TakeDamage(totalDamage, null);
             }
             health.Tick(delta);
         }
@@ -101,6 +114,12 @@ namespace Laresistance.Battle
         {
             damageImprovements.Add(new DamageImprovement() { coeficient = coeficient });
             OnDamageImprovementApplied?.Invoke(this, coeficient, GetDamageModifier());
+        }
+
+        public void ApplyTempDamageModification(float coeficient)
+        {
+            tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, setupTime = Time.time });
+            OnDamageImprovementApplied?.Invoke(this, -coeficient, GetDamageModifier());
         }
 
         public float GetSpeedModifier()
@@ -128,8 +147,21 @@ namespace Laresistance.Battle
             {
                 damageModifier *= modifier.coeficient;
             }
+            float totalModifier = 0f;
+            for (int i = tempDamageModifications.Count -1; i >= 0; --i)
+            {
+                var modifier = tempDamageModifications[i];
+                if (Time.time < modifier.setupTime + DAMAGE_MODIFIER_DURATION)
+                {
+                    totalModifier += modifier.modifier;
+                } else
+                {
+                    tempDamageModifications.Remove(modifier);
+                }
+            }
 
-            // Temp improvements and reductions here
+            // Total modifier adds the damage after damage improvement, which is infinite and "special"
+            damageModifier += totalModifier;
 
             return damageModifier;
         }
@@ -139,6 +171,16 @@ namespace Laresistance.Battle
             damageImprovements.Clear();
             speedModifiers.Clear();
             damageOverTimes.Clear();
+        }
+
+        public void Stun()
+        {
+            OnStun.Invoke(this);
+        }
+
+        public void AdvanceCooldowns()
+        {
+            OnCooldownsAdvance.Invoke(this);
         }
         #endregion
     }

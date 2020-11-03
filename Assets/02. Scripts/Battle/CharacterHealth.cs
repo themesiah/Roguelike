@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Laresistance.Core;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Battle
@@ -18,6 +19,7 @@ namespace Laresistance.Battle
         #endregion
 
         #region Private Variables
+        private int originalMaxHealth = 0;
         private int maxHealth = 0;
         private int currentHealth = 0;
         private List<Shield> currentShields = default;
@@ -32,6 +34,10 @@ namespace Laresistance.Battle
         public event OnShieldsChangedHandler OnShieldsChanged;
         public delegate void OnDeathHandler(CharacterHealth sender);
         public event OnDeathHandler OnDeath;
+        public delegate void OnMaxHealthChangedHandler(CharacterHealth sender, int maxHealth);
+        public event OnMaxHealthChangedHandler OnMaxHealthChanged;
+        public delegate void OnHealthChangedHandler(CharacterHealth sender, int health);
+        public event OnHealthChangedHandler OnHealthChanged;
         #endregion
 
         #region Public API
@@ -62,6 +68,7 @@ namespace Laresistance.Battle
         public CharacterHealth(int health)
         {
             maxHealth = health;
+            originalMaxHealth = health;
             currentHealth = health;
             currentShields = new List<Shield>();
         }
@@ -75,7 +82,7 @@ namespace Laresistance.Battle
             OnHealed?.Invoke(this, power, currentHealth);
         }
 
-        public void TakeDamage(int power)
+        public void TakeDamage(int power, EquipmentEvents equipmentEvents)
         {
             if (currentHealth <= 0)
                 return;
@@ -107,6 +114,8 @@ namespace Laresistance.Battle
                 }
             }
 
+            equipmentEvents?.OnDamageReceivedModifier?.Invoke(ref remainingPower);
+            equipmentEvents?.OnDamageReceivedModifierFlat?.Invoke(ref remainingPower);
             currentHealth -= remainingPower;
             currentHealth = System.Math.Max(currentHealth, 0);
 
@@ -142,6 +151,18 @@ namespace Laresistance.Battle
                     currentShields.RemoveAt(i);
                 }
             }
+        }
+
+        public void RecalculateMaxHealth(EquipmentEvents equipmentEvents)
+        {
+            maxHealth = originalMaxHealth;
+            equipmentEvents.OnGetMaxHealth(ref maxHealth);
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+                OnHealthChanged?.Invoke(this, currentHealth);
+            }
+            OnMaxHealthChanged?.Invoke(this, maxHealth);
         }
         #endregion
     }

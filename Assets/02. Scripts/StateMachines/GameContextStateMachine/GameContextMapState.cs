@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Events;
+using Laresistance.Systems;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.StateMachines
 {
@@ -16,14 +18,16 @@ namespace Laresistance.StateMachines
         private Rigidbody2D playerBody;
         private bool paused = false;
         private StringGameEvent actionMapSwitchEvent;
+        private BloodLossSystem bloodLossSystem;
 
-        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent)
+        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
             playerMapBehaviour = playerObject.GetComponent<PlayerMapBehaviour>();
             playerBody = playerObject.GetComponent<Rigidbody2D>();
+            bloodLossSystem = new BloodLossSystem(playerObject.GetComponent<PlayerDataBehaviour>().player.GetEquipmentEvents(), bloodReference);
         }
 
         private void ObjectActivationAndDesactivation(bool enter)
@@ -74,6 +78,7 @@ namespace Laresistance.StateMachines
 
         public IEnumerator Update(Action<string> resolve)
         {
+            bloodLossSystem.Tick(Time.deltaTime);
             if (!paused)
             {
                 if (signal != null)

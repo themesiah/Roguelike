@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
@@ -19,14 +20,28 @@ namespace Laresistance.Battle
         {
             base.GetPower(level, equipmentEvents);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.InvokeOnGetPower(ref power);
+            equipmentEvents?.OnGetPower?.Invoke(ref power);
+            equipmentEvents?.OnGetAttackPower?.Invoke(ref power);
+            equipmentEvents?.OnGetAttackPowerFlat?.Invoke(ref power);
             power = (int)(power * SelfStatus.GetDamageModifier());
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
         {
-            target.health.TakeDamage(GetPower(level, equipmentEvents));
+            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
+            equipmentEvents?.OnGetAttackAbilityBloodCost?.Invoke(bloodRef);
+            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
+            equipmentEvents?.OnGetAttackAbilityBloodCostFlat?.Invoke(bloodRef);
+            int damage = GetPower(level, equipmentEvents);
+            target.health.TakeDamage(damage, equipmentEvents);
+            int retaliation = 0;
+            equipmentEvents?.OnRetaliationDamage?.Invoke(ref damage, ref retaliation);
+            equipmentEvents?.OnRetaliationDamageFlat?.Invoke(ref damage, ref retaliation);
+            if (retaliation > 0)
+            {
+                SelfStatus.health.TakeDamage(damage, null);
+            }
         }
 
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)

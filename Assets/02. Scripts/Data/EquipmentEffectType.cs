@@ -2,7 +2,35 @@
 {
     public enum EquipmentEffectType
     {
+        PowerFlat,
         Power,
-        Cooldown
+        AttackPowerFlat,
+        AttackPower,
+        HealPowerFlat,
+        HealPower,
+        ShieldPowerFlat,
+        ShieldPower,
+        EffectPowerFlat,
+        EffectPower,
+        Cooldown,
+        StartingCooldowns,
+        AbilityBloodCost,
+        AbilityBloodCostFlat,
+        AttackAbilityBloodCostFlat,
+        AttackAbilityBloodCost,
+        ShieldAbilityBloodCostFlat,
+        ShieldAbilityBloodCost,
+        HealAbilityBloodCostFlat,
+        HealAbilityBloodCost,
+        EffectAbilityBloodCost,
+        MaxHealthModifier,
+        ExtraBlood,
+        BloodLoss,
+        UpgradePriceModifier,
+        ShopBloodPriceModifier,
+        RetaliationFlat,
+        Retaliation,
+        DamageReceivedModifierFlat,
+        DamageReceivedModifier
     }
 }

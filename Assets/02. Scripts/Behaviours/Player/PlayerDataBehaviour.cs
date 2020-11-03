@@ -45,7 +45,7 @@ namespace Laresistance.Behaviours
 
             foreach (var eq in startingEquipments)
             {
-                Equipment e = EquipmentFactory.GetEquipment(eq, player.GetEquipmentEvents());
+                Equipment e = EquipmentFactory.GetEquipment(eq, player.GetEquipmentEvents(), StatusManager);
                 player.EquipEquipment(e);
             }
         }

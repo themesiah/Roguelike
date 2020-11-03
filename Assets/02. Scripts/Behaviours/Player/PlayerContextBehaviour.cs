@@ -38,7 +38,7 @@ namespace Laresistance.Behaviours
             Camera camera = cameraReference.Get();
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
-            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent));
+            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference));
             battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary);
             states.Add("Battle", battleState);
             roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData);

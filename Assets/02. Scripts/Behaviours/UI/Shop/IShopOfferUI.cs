@@ -8,5 +8,6 @@ namespace Laresistance.Behaviours
         void SetupOffer(ShopOffer offer);
         void SetOfferKey(KeySetSelector offerKey);
         void SetPanelColor(Color color);
+        void SetCost(int cost);
     }
 }

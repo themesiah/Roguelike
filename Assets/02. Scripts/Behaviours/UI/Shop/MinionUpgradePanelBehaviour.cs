@@ -29,7 +29,7 @@ namespace Laresistance.Behaviours
 
         public override void SetupOffer(ShopOffer offer)
         {
-            bloodTextReference.text = Texts.GetText("MINION_PANEL_001", offer.Reward.minion.GetUpgradeCost());
+            SetCost(offer.Cost);
             minionNameReference.text = Texts.GetText(offer.Reward.minion.Name);
             abilityTextReference.text = offer.Reward.minion.GetAbilityText();
             abilityAfterTextReference.text = offer.Reward.minion.GetNextLevelAbilityText();
@@ -39,6 +39,11 @@ namespace Laresistance.Behaviours
             SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
             renderer.sortingOrder = sortingOrder;
             renderer.material = unlitMaterial;
+        }
+
+        public override void SetCost(int cost)
+        {
+            bloodTextReference.text = Texts.GetText("MINION_PANEL_001", cost);
         }
     }
 }

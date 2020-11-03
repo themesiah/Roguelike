@@ -10,7 +10,7 @@ namespace Laresistance.Tests
         [Test]
         public void When_RegisteringEquipmentEvent()
         {
-            Equipment e = new Equipment(0, null);
+            Equipment e = new Equipment(0, null, null);
             EquipmentEvents events = new EquipmentEvents();
             e.SetPowerModifier(events, 1f);
             e.EquipEquipment();
@@ -26,13 +26,13 @@ namespace Laresistance.Tests
 
         private void TestEquipmentWithEvent(int initialPower, float modifier, float expected)
         {
-            Equipment e = new Equipment(0, null);
+            Equipment e = new Equipment(0, null, null);
             EquipmentEvents events = new EquipmentEvents();
 
             int power = initialPower;
             e.SetPowerModifier(events, modifier);
             e.EquipEquipment();
-            events.InvokeOnGetPower(ref power);
+            events.OnGetPower(ref power);
             Assert.AreEqual(expected, power);
             e.UnequipEquipment();
         }
@@ -52,12 +52,12 @@ namespace Laresistance.Tests
             List<Equipment> equips = new List<Equipment>();
             foreach (float modifier in modifiers)
             {
-                Equipment e = new Equipment(0, null);
+                Equipment e = new Equipment(0, null, null);
                 e.SetPowerModifier(events, modifier);
                 e.EquipEquipment();
                 equips.Add(e);
             }
-            events.InvokeOnGetPower(ref power);
+            events.OnGetPower(ref power);
             Assert.AreEqual(expected, power);
             equips.ForEach((e) => { e.UnequipEquipment(); });
         }

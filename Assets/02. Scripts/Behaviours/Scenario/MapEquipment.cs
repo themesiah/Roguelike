@@ -44,7 +44,7 @@ namespace Laresistance.Behaviours
 
         public void Interact()
         {
-            Equipment e = EquipmentFactory.GetEquipment(data, playerDataRef.Get().player.GetEquipmentEvents());
+            Equipment e = EquipmentFactory.GetEquipment(data, playerDataRef.Get().player.GetEquipmentEvents(), playerDataRef.Get().StatusManager);
             StartCoroutine(RewardCoroutine(e));
         }
 

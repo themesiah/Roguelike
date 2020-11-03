@@ -10,6 +10,8 @@
         Speed,
         Stun,
         ImproveDamage,
-        Cure
+        Cure,
+        AdvanceCooldowns,
+        DamageModification
     }
 }

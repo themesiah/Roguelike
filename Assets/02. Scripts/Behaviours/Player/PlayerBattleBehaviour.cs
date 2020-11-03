@@ -1,9 +1,7 @@
 ﻿using Laresistance.Battle;
-using Laresistance.Core;
-using System.Collections.Generic;
 using UnityEngine;
-using Laresistance.Data;
 using UnityEngine.InputSystem;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Behaviours
 {
@@ -13,6 +11,8 @@ namespace Laresistance.Behaviours
         private PlayerDataBehaviour playerDataBehaviour = default;
         [SerializeField]
         private AnimatorWrapperBehaviour animatorReference = default;
+        [SerializeField]
+        private ScriptableIntReference bloodReference = default;
 
         protected override void SetupAbilityInputProcessor()
         {
@@ -21,7 +21,7 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputExecutor()
         {
-            AbilityExecutor = new PlayerAbilityExecutor(playerDataBehaviour.player, animator);
+            AbilityExecutor = new PlayerAbilityExecutor(playerDataBehaviour.player, animator, bloodReference);
         }
 
         protected override void SetupStatusManager()

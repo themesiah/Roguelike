@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
@@ -19,12 +20,18 @@ namespace Laresistance.Battle
         {
             base.GetPower(level, equipmentEvents);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.InvokeOnGetPower(ref power);
+            equipmentEvents?.OnGetPower?.Invoke(ref power);
+            equipmentEvents?.OnGetHealPower?.Invoke(ref power);
+            equipmentEvents?.OnGetHealPowerFlat?.Invoke(ref power);
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
         {
+            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
+            equipmentEvents?.OnGetHealAbilityBloodCost?.Invoke(bloodRef);
+            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
+            equipmentEvents?.OnGetHealAbilityBloodCostFlat?.Invoke(bloodRef);
             target.health.Heal(GetPower(level, equipmentEvents));
         }
 

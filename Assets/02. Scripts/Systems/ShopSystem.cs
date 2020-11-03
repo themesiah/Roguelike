@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections.Generic;
 
@@ -62,6 +63,14 @@ namespace Laresistance.Systems
             else
             {
                 return null;
+            }
+        }
+
+        public void UpdateOfferCosts(EquipmentEvents equipmentEvents)
+        {
+            foreach(var offer in offers)
+            {
+                offer.SetNewCost(equipmentEvents.OnShopPrice);
             }
         }
     }

@@ -25,7 +25,7 @@ namespace Laresistance.Tests
         private List<ShopOffer> offers = new List<ShopOffer>() {
             new ShopOffer(1000, false, new RewardData(0, 0, new Minion(null, GetAbility(), 1), null, null, null)),
             new ShopOffer(500, false, new RewardData(0, 0, new Minion(null, GetAbility(), 1), null, null, null)),
-            new ShopOffer(50, true, new RewardData(0, 0, null, null, new Equipment(0, null), null)),
+            new ShopOffer(50, true, new RewardData(0, 0, null, null, new Equipment(0, null, null), null)),
             new ShopOffer(5, true, new RewardData(0, 0, null, new Consumable(null, GetAbility()), null, null))
         };
 

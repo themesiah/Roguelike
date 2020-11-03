@@ -95,7 +95,7 @@ namespace Laresistance.Behaviours
             shopSystem.AddOffer(new ShopOffer(m1.Data.BaseBloodPrice, false, new RewardData(0, 0, m2, null, null, null)));
             Consumable c = ConsumableFactory.GetConsumable(consumableDatas[0], player.GetEquipmentEvents(), statusManager);
             shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null)));
-            Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[0], player.GetEquipmentEvents());
+            Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[0], player.GetEquipmentEvents(), playerDataBehaviourReference.Get().StatusManager);
             shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null)));
             shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[0])));
 
@@ -111,6 +111,7 @@ namespace Laresistance.Behaviours
         {
             Init();
             UpdateMinionUpgradePanel();
+            UpdateShopPanelPrices();
             StartCoroutine(OpenShopCoroutine());
         }
 
@@ -128,7 +129,9 @@ namespace Laresistance.Behaviours
                 IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
                 shopUpgradeUIList.Add(shopOfferUI);
                 shopOfferUI.SetOfferKey(offerKeys[index]);
-                shopOfferUI.SetupOffer(new ShopOffer(0, false, new RewardData(0, 0, m, null, null, null)));
+                int upgradeCost = m.GetUpgradeCost();
+                player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
+                shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
                 index++;
             }
         }
@@ -136,9 +139,19 @@ namespace Laresistance.Behaviours
         private void UpdateSingleMinionUpgradePanel(int index, Minion m)
         {
             IShopOfferUI shopOfferUI = shopUpgradeUIList[index];
-            shopOfferUI.SetupOffer(new ShopOffer(0, false, new RewardData(0, 0, m, null, null, null)));
+            int upgradeCost = m.GetUpgradeCost();
+            player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
+            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
+        }        
+
+        private void UpdateShopPanelPrices()
+        {
+            shopSystem.UpdateOfferCosts(player.GetEquipmentEvents());
+            for(int i = 0; i < shopSystem.GetOffers().Count; ++i)
+            {
+                shopOfferUIList[i].SetCost(shopSystem.GetOffers()[i].Cost);
+            }
         }
-        
 
         private GameObject GetPrefabFromOffer(ShopOffer offer)
         {

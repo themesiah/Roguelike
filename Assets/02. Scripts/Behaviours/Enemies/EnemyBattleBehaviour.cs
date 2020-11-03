@@ -11,6 +11,8 @@ namespace Laresistance.Behaviours
         protected EnemyData enemyData = default;
         [SerializeField]
         protected ScriptableIntReference currentLevel = default;
+        [SerializeField]
+        protected RuntimePlayerDataBehaviourSingle playerDataRef = default;
 
         protected override void SetupStatusManager()
         {
@@ -49,7 +51,9 @@ namespace Laresistance.Behaviours
 
         public virtual RewardData GetReward()
         {
-            RewardData rewardData = new RewardData(enemyData.BaseBloodReward * currentLevel.GetValue(), 0, null, null, null, null);
+            int bloodToGet = enemyData.BaseBloodReward * currentLevel.GetValue();
+            playerDataRef.Get().player.GetEquipmentEvents().OnGetExtraBlood?.Invoke(ref bloodToGet);
+            RewardData rewardData = new RewardData(bloodToGet, 0, null, null, null, null);
             return rewardData;
         }
     }
