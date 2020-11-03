@@ -547,7 +547,7 @@ namespace Laresistance.Core
         {
             if (equipmentEvents == null)
                 return;
-            EquipmentEvents.OnDamageReceivedModifierHandler handler = ((ref int received) => { received = (received - (int)modifier); });
+            EquipmentEvents.OnDamageReceivedModifierHandler handler = ((ref int received) => { received = (received + (int)modifier); });
             onEquip += () =>
             {
                 equipmentEvents.OnDamageReceivedModifierFlat += handler;
