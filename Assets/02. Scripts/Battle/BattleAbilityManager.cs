@@ -51,5 +51,7 @@ namespace Laresistance.Battle
 
             abilityQueue.Remove(abilityToCancel);
         }
+
+        public static bool Executing => currentlyExecuting;
     }
 }

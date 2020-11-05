@@ -140,9 +140,13 @@ namespace Laresistance.Battle
 
         public void Tick(float delta)
         {
-            currentShields.ForEach((s) => {
-                s.timer += delta;
-            });
+            if (BattleAbilityManager.currentlyExecuting == false)
+            {
+                currentShields.ForEach((s) =>
+                {
+                    s.timer += delta;
+                });
+            }
 
             for (int i = currentShields.Count-1; i >= 0; --i)
             {

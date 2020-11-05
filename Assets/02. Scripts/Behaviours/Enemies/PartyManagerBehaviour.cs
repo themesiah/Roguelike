@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GamedevsToolbox.ScriptableArchitecture.Selectors;
+using System.Collections;
 using UnityEngine;
 
 namespace Laresistance.Behaviours
@@ -8,13 +9,17 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform partyHolder = default;
         [SerializeField]
-        private GameObject[] partyPrefabs = default;
+        private ScriptableGameObjectSelector[] partyMemberSelectors = default;
 
         private void Awake()
         {
-            foreach(GameObject prefab in partyPrefabs)
+            foreach(ScriptableGameObjectSelector selector in partyMemberSelectors)
             {
-                Instantiate(prefab, partyHolder);
+                GameObject prefab = selector.Get();
+                if (prefab != null)
+                {
+                    Instantiate(prefab, partyHolder);
+                }
             }
         }
 

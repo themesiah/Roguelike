@@ -38,9 +38,21 @@ namespace Laresistance.Behaviours
             hits.Clear();
             var pos = transform.position;
             Vector3 targetPosition = playerPosition;
+            
             targetPosition.x += offset.x;
             targetPosition.y += offset.y;
             targetPosition.z = depth;
+
+            float xdis = Mathf.Abs(targetPosition.x - pos.x);
+            float ydis = Mathf.Abs(targetPosition.y - pos.y);
+            if (xdis <= minMaxDistanceToCamera.x)
+            {
+                targetPosition.x = pos.x;
+            }
+            if (ydis <= minMaxDistanceToCamera.x)
+            {
+                targetPosition.y = pos.y;
+            }
 
             var leftHit = Physics2D.Raycast(playerPosition, Vector2.left, limitsDistance.x, layerMask);
             var rightHit = Physics2D.Raycast(playerPosition, Vector2.right, limitsDistance.x, layerMask);
