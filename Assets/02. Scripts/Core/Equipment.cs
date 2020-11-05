@@ -64,10 +64,17 @@ namespace Laresistance.Core
         public string GetEquipmentEffectDescription()
         {
             StringBuilder builder = new StringBuilder();
+            int index = 0;
             foreach(string effectDescriptionFormat in descriptionReferences)
             {
-                builder.Append(Texts.GetText(effectDescriptionFormat));
-                builder.Append("");
+                string format = Texts.GetText(effectDescriptionFormat);
+                if (format.Contains("{x}"))
+                {
+                    format = format.Replace("{x}", "{"+index.ToString()+"}");
+                    index++;
+                }
+                builder.Append(format);
+                builder.Append(" ");
             }
             return string.Format(builder.ToString(), (string[])descriptionVariables.ToArray());
         }
@@ -91,12 +98,12 @@ namespace Laresistance.Core
             if (modifier > 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0101-A");
-                descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
+                descriptionVariables.Add(modifier.ToString());
             }
             else if (modifier < 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0101-B");
-                descriptionVariables.Add(((1f - modifier) * 100f).ToString());
+                descriptionVariables.Add((-modifier).ToString());
             }
         }
 
@@ -115,11 +122,11 @@ namespace Laresistance.Core
                 equipmentEvents.OnGetPower -= handler;
             };
 
-            if (modifier > 0f)
+            if (modifier > 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0102-A");
                 descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
-            } else  if (modifier < 0f)
+            } else  if (modifier < 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0102-B");
                 descriptionVariables.Add(((1f - modifier) * 100f).ToString());
@@ -144,12 +151,12 @@ namespace Laresistance.Core
             if (modifier > 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0103-A");
-                descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
+                descriptionVariables.Add(modifier.ToString());
             }
             else if (modifier < 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0103-B");
-                descriptionVariables.Add(((1f - modifier) * 100f).ToString());
+                descriptionVariables.Add((-modifier).ToString());
             }
         }
 
@@ -168,11 +175,11 @@ namespace Laresistance.Core
                 equipmentEvents.OnGetAttackPower -= handler;
             };
 
-            if (modifier > 0f)
+            if (modifier > 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0104-A");
                 descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
-            } else  if (modifier < 0f)
+            } else  if (modifier < 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0104-B");
                 descriptionVariables.Add(((1f - modifier) * 100f).ToString());
@@ -197,12 +204,12 @@ namespace Laresistance.Core
             if (modifier > 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0105-A");
-                descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
+                descriptionVariables.Add(modifier.ToString());
             }
             else if (modifier < 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0105-B");
-                descriptionVariables.Add(((1f - modifier) * 100f).ToString());
+                descriptionVariables.Add((-modifier).ToString());
             }
         }
 
@@ -221,11 +228,11 @@ namespace Laresistance.Core
                 equipmentEvents.OnGetHealPower -= handler;
             };
 
-            if (modifier > 0f)
+            if (modifier > 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0106-A");
                 descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
-            } else  if (modifier < 0f)
+            } else  if (modifier < 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0106-B");
                 descriptionVariables.Add(((1f - modifier) * 100f).ToString());
@@ -250,12 +257,12 @@ namespace Laresistance.Core
             if (modifier > 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0107-A");
-                descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
+                descriptionVariables.Add(modifier.ToString());
             }
             else if (modifier < 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0107-B");
-                descriptionVariables.Add(((1f - modifier) * 100f).ToString());
+                descriptionVariables.Add((-modifier).ToString());
             }
         }
 
@@ -274,11 +281,11 @@ namespace Laresistance.Core
                 equipmentEvents.OnGetShieldPower -= handler;
             };
 
-            if (modifier > 0f)
+            if (modifier > 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0108-A");
                 descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
-            } else  if (modifier < 0f)
+            } else  if (modifier < 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0108-B");
                 descriptionVariables.Add(((1f - modifier) * 100f).ToString());
@@ -303,12 +310,12 @@ namespace Laresistance.Core
             if (modifier > 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0109-A");
-                descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
+                descriptionVariables.Add(modifier.ToString());
             }
             else if (modifier < 0f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0109-B");
-                descriptionVariables.Add(((1f - modifier) * 100f).ToString());
+                descriptionVariables.Add((-modifier).ToString());
             }
         }
 
@@ -327,11 +334,11 @@ namespace Laresistance.Core
                 equipmentEvents.OnGetEffectPower -= handler;
             };
 
-            if (modifier > 0f)
+            if (modifier > 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0110-A");
                 descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
-            } else  if (modifier < 0f)
+            } else  if (modifier < 1f)
             {
                 descriptionReferences.Add("EQUIPMENT_EFFECT_0110-B");
                 descriptionVariables.Add(((1f - modifier) * 100f).ToString());

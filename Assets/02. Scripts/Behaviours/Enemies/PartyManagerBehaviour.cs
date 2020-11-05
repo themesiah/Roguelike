@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Laresistance.Behaviours
 {
@@ -20,11 +21,10 @@ namespace Laresistance.Behaviours
         private void Start()
         {
             SpriteRenderer[] renderers = partyHolder.GetComponentsInChildren<SpriteRenderer>();
-            foreach(SpriteRenderer renderer in renderers)
+            foreach (SpriteRenderer renderer in renderers)
             {
                 renderer.sortingOrder -= 1;
             }
-            //partyHolder.gameObject.SetActive(false);
         }
 
         public GameObject[] GetFullParty()

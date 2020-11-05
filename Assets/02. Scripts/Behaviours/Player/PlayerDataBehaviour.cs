@@ -25,10 +25,11 @@ namespace Laresistance.Behaviours
         {
             StatusManager = new BattleStatusManager(new CharacterHealth(100));
             player = new Player(StatusManager);
+            StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 
             List<BattleEffect> testEffects = new List<BattleEffect>();
             testEffects.Add(new BattleEffectDamage(15, EffectTargetType.Enemy, StatusManager));
-            BattleAbility testAbility = new BattleAbility(testEffects, 3f, player.GetEquipmentEvents());
+            BattleAbility testAbility = new BattleAbility(testEffects, 3f, StatusManager, player.GetEquipmentEvents());
             player.SetMainAbility(testAbility);
 
             foreach (var md in startingMinions)

@@ -10,7 +10,7 @@ namespace Laresistance.Core
     public class Minion : ISlot
     {
         private static int MAX_MINION_LEVEL = 10;
-        public string Name { get { return Texts.GetText(Data.name); }}
+        public string Name { get { return Texts.GetText(Data.NameRef); }}
         public MinionData Data { get; private set; }
         private BattleAbility ability = default;
         public int Level { get; private set; }

@@ -54,6 +54,7 @@ namespace Laresistance.Movement
                 }
                 else
                 {
+                    body.velocity = Vector3.zero;
                     body.AddForce(Vector2.up * jumpForce.GetValue(), ForceMode2D.Impulse);
                     movementStatus.jumping = true;
                     movementStatus.falling = false;

@@ -34,13 +34,13 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
             equipmentEvents?.OnGetAttackAbilityBloodCostFlat?.Invoke(bloodRef);
             int damage = GetPower(level, equipmentEvents);
-            target.health.TakeDamage(damage, equipmentEvents);
+            target.health.TakeDamage(damage, target.GetEquipmentEvents());
             int retaliation = 0;
-            equipmentEvents?.OnRetaliationDamage?.Invoke(ref damage, ref retaliation);
-            equipmentEvents?.OnRetaliationDamageFlat?.Invoke(ref damage, ref retaliation);
+            target.GetEquipmentEvents()?.OnRetaliationDamage?.Invoke(ref damage, ref retaliation);
+            target.GetEquipmentEvents()?.OnRetaliationDamageFlat?.Invoke(ref damage, ref retaliation);
             if (retaliation > 0)
             {
-                SelfStatus.health.TakeDamage(damage, null);
+                SelfStatus.health.TakeDamage(retaliation, equipmentEvents);
             }
         }
 

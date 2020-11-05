@@ -15,12 +15,13 @@ namespace Laresistance.Battle
         private List<BattleEffect> effects = default;
         private float timer = 0f;
         private EquipmentEvents equipmentEvents;
+        private BattleStatusManager statusManager;
         private bool executingAbility = false;
 
         public delegate void OnAbilityTimerChangedHandler(float currentTimer, float cooldown, float percent);
         public event OnAbilityTimerChangedHandler OnAbilityTimerChanged;
 
-        public BattleAbility(List<BattleEffect> effectsToSet, float cooldown, EquipmentEvents equipmentEvents = null)
+        public BattleAbility(List<BattleEffect> effectsToSet, float cooldown, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null)
         {
             if (effectsToSet == null || effectsToSet.Count == 0)
                 throw new System.Exception("Abilities should have at least one effect");
@@ -29,6 +30,9 @@ namespace Laresistance.Battle
             effects = effectsToSet;
             this.cooldown = cooldown;
             this.equipmentEvents = equipmentEvents;
+            this.statusManager = statusManager;
+            statusManager.OnStun += Stun;
+            statusManager.OnCooldownsAdvance += AdvanceCooldowns;
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
@@ -46,7 +50,7 @@ namespace Laresistance.Battle
 
         public BattleAbility Copy()
         {
-            BattleAbility ba = new BattleAbility(effects, GetCooldown(), equipmentEvents);
+            BattleAbility ba = new BattleAbility(effects, GetCooldown(), statusManager, equipmentEvents);
             return ba;
         }
 
@@ -83,7 +87,7 @@ namespace Laresistance.Battle
         {
             timer = 0f;
             float currentCooldown = 0f;
-            equipmentEvents.OnGetStartingCooldowns?.Invoke(ref currentCooldown);
+            equipmentEvents?.OnGetStartingCooldowns?.Invoke(ref currentCooldown);
             timer = GetCooldown() * currentCooldown;
         }
 
@@ -147,6 +151,16 @@ namespace Laresistance.Battle
                     return true;
             }
             return false;
+        }
+
+        private void Stun(BattleStatusManager sender)
+        {
+            timer = 0f;
+        }
+
+        private void AdvanceCooldowns(BattleStatusManager sender)
+        {
+            timer = GetCooldown();
         }
     }
 }

@@ -147,7 +147,12 @@ namespace Laresistance.Systems
             return selectedEnemy;
         }
 
-        private bool AllEnemiesDead()
+        public CharacterBattleManager GetPlayer()
+        {
+            return playerBattleManager;
+        }
+
+        public bool AllEnemiesDead()
         {
             foreach(var enemy in enemiesBattleManager)
             {
@@ -155,6 +160,11 @@ namespace Laresistance.Systems
                     return false;
             }
             return true;
+        }
+
+        public bool PlayerDead()
+        {
+            return playerBattleManager.dead;
         }
 
         public IEnumerator Tick(float delta)

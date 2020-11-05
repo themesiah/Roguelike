@@ -27,7 +27,7 @@ namespace Laresistance.Tests {
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cooldown, events);
+            BattleAbility ability = new BattleAbility(effects, cooldown, null, events);
             ability.Tick(1.1f);
             return ability;
         }

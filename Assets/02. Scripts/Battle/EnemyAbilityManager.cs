@@ -21,7 +21,14 @@ namespace Laresistance.Battle
         {
             for(int i = 0; i < abilities.Length; ++i)
             {
+                if (abilities[i] == null)
+                    continue;
                 abilities[i].Tick(delta * battleStatus.GetSpeedModifier());
+            }
+            for (int i = 0; i < abilities.Length; ++i)
+            {
+                if (abilities[i] == null)
+                    continue;
                 if (abilities[i].CanBeUsed())
                 {
                     return i;
@@ -35,6 +42,15 @@ namespace Laresistance.Battle
             if (abilityIndex < 0 || abilityIndex > abilities.Length - 1)
                 throw new System.Exception("Invalid index for executing ability");
             yield return abilities[abilityIndex].ExecuteAbility(allies, enemies, level, animator);
+        }
+
+        public void ResetAbilities()
+        {
+            foreach(var ability in abilities)
+            {
+                if (ability != null)
+                    ability.ResetTimer();
+            }
         }
     }
 }

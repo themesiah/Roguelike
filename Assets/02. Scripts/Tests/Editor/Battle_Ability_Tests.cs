@@ -16,7 +16,7 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 1);
+            BattleAbility ability = new BattleAbility(effects, 1, null);
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace Laresistance.Tests
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 1);
+            BattleAbility ability = new BattleAbility(effects, 1, null);
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Laresistance.Tests
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            Assert.Catch(()=> { BattleAbility ability = new BattleAbility(effects, 1); });
+            Assert.Catch(()=> { BattleAbility ability = new BattleAbility(effects, 1, null); });
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 1);
+            BattleAbility ability = new BattleAbility(effects, 1, null);
             Assert.AreEqual(5, ability.GetEffectPower(0, 1));
             Assert.AreEqual(6, ability.GetEffectPower(0, 2));
         }
@@ -54,7 +54,7 @@ namespace Laresistance.Tests
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             effects.Add(new BattleEffectDamage(7, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 1);
+            BattleAbility ability = new BattleAbility(effects, 1, null);
             Assert.AreEqual(5, ability.GetEffectPower(0, 1));
             Assert.AreEqual(6, ability.GetEffectPower(0, 2));
             Assert.AreEqual(7, ability.GetEffectPower(1, 1));
@@ -66,7 +66,7 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 1);
+            BattleAbility ability = new BattleAbility(effects, 1, null);
             Assert.Catch(()=>ability.GetEffectPower(1, 0));
             Assert.Catch(()=>ability.GetEffectPower(2, 0));
             Assert.Catch(()=>ability.GetEffectPower(-1, 0));
@@ -77,7 +77,7 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 1);
+            BattleAbility ability = new BattleAbility(effects, 1, null);
             Assert.Catch(()=>ability.GetEffectPower(0, 0));
             Assert.Catch(()=>ability.GetEffectPower(0, -1));
         }

@@ -43,17 +43,17 @@ namespace Laresistance.Battle
         {
             float modifier = GetModifier(level, equipmentEvents);
             string textId = "";
-            if (modifier > 100f)
+            if (modifier > 1f)
             {
                 textId = "EFF_ACCEL_DESC";
-                modifier -= 100f;
+                modifier -= 1f;
                 
             } else
             {
                 textId = "EFF_SLOW_DESC";
-                modifier = 100f - modifier;
+                modifier = 1f - modifier;
             }
-            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.SPEED_MODIFIER_DURATION });
+            return Texts.GetText(textId, new object[] { GetTargetString(), modifier * 100f, BattleStatusManager.SPEED_MODIFIER_DURATION });
         }
 
         public override string GetAnimationTrigger()

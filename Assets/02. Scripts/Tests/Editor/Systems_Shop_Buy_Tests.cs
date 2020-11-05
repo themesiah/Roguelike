@@ -19,7 +19,7 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy, GetStatus()));
-            return new BattleAbility(effects, 0f);
+            return new BattleAbility(effects, 0f, null);
         }
 
         private List<ShopOffer> offers = new List<ShopOffer>() {

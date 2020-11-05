@@ -43,26 +43,27 @@ namespace Laresistance.Core
 
         public void StartBattle()
         {
-            OnBattleStart.Invoke();
+            AbilityInputProcessor.ResetAbilities();
+            OnBattleStart?.Invoke();
         }
 
         public void EndBattle()
         {
-            OnBattleEnd.Invoke();
+            OnBattleEnd?.Invoke();
         }
 
         public bool Select()
         {
             if (dead)
                 return false;
-            OnSelected.Invoke(true);
+            OnSelected?.Invoke(true);
             selected = true;
             return true;
         }
 
         public void Unselect()
         {
-            OnSelected.Invoke(false);
+            OnSelected?.Invoke(false);
             selected = false;
         }
 
@@ -109,11 +110,11 @@ namespace Laresistance.Core
         {
             if (dead)
                 return -1;
-            StatusManager.ProcessStatus(Time.deltaTime);
+            StatusManager.ProcessStatus(delta);
             int targetSelectionInput = TargetSelector.GetTargetSelection();
             if (targetSelectionInput == -1) battleSystem.SelectPrevious();
             if (targetSelectionInput == 1) battleSystem.SelectNext();
-            int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, Time.deltaTime);
+            int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, delta);
             return index;
         }
 

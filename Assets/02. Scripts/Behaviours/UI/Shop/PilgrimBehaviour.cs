@@ -16,6 +16,11 @@ namespace Laresistance.Behaviours
 {
     public class PilgrimBehaviour : MonoBehaviour
     {
+        private static int OFFER_MINIONS_QUANTITY = 2;
+        private static int OFFER_CONSUMABLES_QUANTITY = 2;
+        private static int OFFER_EQUIPMENTS_QUANTITY = 1;
+        private static int OFFER_MAP_ABILITIES_QUANTITY = 1;
+
         [Header("Buy lists")]
         [SerializeField]
         private MinionList buyableMinionList = default;
@@ -89,15 +94,60 @@ namespace Laresistance.Behaviours
             rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             BattleStatusManager statusManager = playerDataBehaviourReference.Get().StatusManager;
             // TEST
-            Minion m1 = MinionFactory.GetMinion(buyableMinionList.minionList[0], 1, player.GetEquipmentEvents(), statusManager);
-            shopSystem.AddOffer(new ShopOffer(m1.Data.BaseBloodPrice, false, new RewardData(0, 0, m1, null, null, null)));
-            Minion m2 = MinionFactory.GetMinion(buyableMinionList.minionList[1], 5, player.GetEquipmentEvents(), statusManager);
-            shopSystem.AddOffer(new ShopOffer(m1.Data.BaseBloodPrice, false, new RewardData(0, 0, m2, null, null, null)));
-            Consumable c = ConsumableFactory.GetConsumable(consumableDatas[0], player.GetEquipmentEvents(), statusManager);
-            shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null)));
-            Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[0], player.GetEquipmentEvents(), playerDataBehaviourReference.Get().StatusManager);
-            shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null)));
-            shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[0])));
+            //Minion m1 = MinionFactory.GetMinion(buyableMinionList.minionList[0], 1, player.GetEquipmentEvents(), statusManager);
+            //shopSystem.AddOffer(new ShopOffer(m1.Data.BaseBloodPrice, false, new RewardData(0, 0, m1, null, null, null)));
+            //Minion m2 = MinionFactory.GetMinion(buyableMinionList.minionList[1], 5, player.GetEquipmentEvents(), statusManager);
+            //shopSystem.AddOffer(new ShopOffer(m1.Data.BaseBloodPrice, false, new RewardData(0, 0, m2, null, null, null)));
+            //Consumable c = ConsumableFactory.GetConsumable(consumableDatas[0], player.GetEquipmentEvents(), statusManager);
+            //shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null)));
+            //Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[0], player.GetEquipmentEvents(), playerDataBehaviourReference.Get().StatusManager);
+            //shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null)));
+            //shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[0])));
+
+            List<int> selectedMinionIndexes = new List<int>();
+            List<int> selectedConsumableIndexes = new List<int>();
+            List<int> selectedEquipmentIndexes = new List<int>();
+            List<int> selectedMapAbilityIndexes = new List<int>();
+            while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY)
+            {
+                int index = Random.Range(0, buyableMinionList.minionList.Count - 1);
+                if (!selectedMinionIndexes.Contains(index))
+                {
+                    Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], 1, player.GetEquipmentEvents(), statusManager);
+                    shopSystem.AddOffer(new ShopOffer(minion.Data.BaseBloodPrice, false, new RewardData(0, 0, minion, null, null, null)));
+                    selectedMinionIndexes.Add(index);
+                }
+            }
+            while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY)
+            {
+                int index = Random.Range(0, consumableDatas.Count - 1);
+                if (!selectedConsumableIndexes.Contains(index))
+                {
+                    Consumable c = ConsumableFactory.GetConsumable(consumableDatas[index], player.GetEquipmentEvents(), statusManager);
+                    shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null)));
+                    selectedConsumableIndexes.Add(index);
+                }
+            }
+            while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY + OFFER_EQUIPMENTS_QUANTITY)
+            {
+                int index = Random.Range(0, equipmentDatas.Count - 1);
+                if (!selectedEquipmentIndexes.Contains(index))
+                {
+                    Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[index], player.GetEquipmentEvents(), playerDataBehaviourReference.Get().StatusManager);
+                    shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null)));
+                    selectedEquipmentIndexes.Add(index);
+                }
+            }
+            while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY + OFFER_EQUIPMENTS_QUANTITY + OFFER_MAP_ABILITIES_QUANTITY)
+            {
+                int index = Random.Range(0, mapAbilityDatas.Count - 1);
+                if (!selectedMapAbilityIndexes.Contains(index))
+                {
+                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index])));
+                    selectedMapAbilityIndexes.Add(index);
+                }
+            }
+
 
             // Initialize UI depending on offers, one panel per offer
             for (int i = 0; i < shopSystem.GetOffers().Count; ++i)
@@ -125,14 +175,17 @@ namespace Laresistance.Behaviours
             int index = 0;
             foreach (Minion m in player.GetMinions())
             {
-                GameObject go = Instantiate(offerPanelPrefabs[4], upgradeCanvas);
-                IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
-                shopUpgradeUIList.Add(shopOfferUI);
-                shopOfferUI.SetOfferKey(offerKeys[index]);
-                int upgradeCost = m.GetUpgradeCost();
-                player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
-                shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
-                index++;
+                if (m != null)
+                {
+                    GameObject go = Instantiate(offerPanelPrefabs[4], upgradeCanvas);
+                    IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
+                    shopUpgradeUIList.Add(shopOfferUI);
+                    shopOfferUI.SetOfferKey(offerKeys[index]);
+                    int upgradeCost = m.GetUpgradeCost();
+                    player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
+                    shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
+                    index++;
+                }
             }
         }
 
@@ -302,6 +355,8 @@ namespace Laresistance.Behaviours
                             yield return FinishingTween();
                             RemoveOffer(offerSelected);
                             yield return rewardSystem.GetReward(rd);
+                            UpdateShopPanelPrices();
+                            UpdateMinionUpgradePanel();
                             yield return StartingTween();
                         }
                     }

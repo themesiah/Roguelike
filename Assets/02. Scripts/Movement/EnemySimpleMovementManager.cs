@@ -25,6 +25,10 @@ namespace Laresistance.Movement
             this.movementSpeed = movementSpeed;
             this.raycastLayerMask = raycastLayerMask;
             this.raycastPivot = raycastPivot;
+            if (body.transform.localScale.x > 0f)
+            {
+                right = false;
+            }
         }
 
         public void Tick(float delta)

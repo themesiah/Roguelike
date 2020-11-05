@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Laresistance.Core;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Battle
@@ -43,6 +44,7 @@ namespace Laresistance.Battle
         private List<DamageOverTime> damageOverTimes;
         private List<DamageImprovement> damageImprovements;
         private List<TempDamageChange> tempDamageModifications;
+        private EquipmentEvents equipmentEvents;
         // Damage, heal and shield modifiers
         #endregion
 
@@ -175,12 +177,41 @@ namespace Laresistance.Battle
 
         public void Stun()
         {
-            OnStun.Invoke(this);
+            OnStun?.Invoke(this);
+        }
+
+        public void Cure()
+        {
+            damageOverTimes.Clear();
+            for(int i = tempDamageModifications.Count-1; i >= 0; --i)
+            {
+                if (tempDamageModifications[i].modifier < 0f)
+                {
+                    tempDamageModifications.RemoveAt(i);
+                }
+            }
+            for(int i = speedModifiers.Count-1; i >= 0; --i)
+            {
+                if (speedModifiers[i].speedCoeficient < 100f)
+                {
+                    speedModifiers.RemoveAt(i);
+                }
+            }
         }
 
         public void AdvanceCooldowns()
         {
-            OnCooldownsAdvance.Invoke(this);
+            OnCooldownsAdvance?.Invoke(this);
+        }
+
+        public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
+        {
+            this.equipmentEvents = equipmentEvents;
+        }
+
+        public EquipmentEvents GetEquipmentEvents()
+        {
+            return this.equipmentEvents;
         }
         #endregion
     }

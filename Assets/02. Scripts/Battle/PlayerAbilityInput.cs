@@ -37,5 +37,13 @@ namespace Laresistance.Battle
                 }
             }
         }
+
+        public void ResetAbilities()
+        {
+            foreach(var ability in player.GetAbilities())
+            {
+                ability?.ResetTimer();
+            }
+        }
     }
 }

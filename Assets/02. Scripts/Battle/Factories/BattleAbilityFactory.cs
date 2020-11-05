@@ -16,7 +16,7 @@ namespace Laresistance.Battle
                 effects.Add(BattleEffectFactory.GetBattleEffect(effectData, battleStatus));
             }
 
-            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cooldown, events);
+            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cooldown, battleStatus, events);
             return battleAbility;
         }
     }
