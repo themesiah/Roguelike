@@ -5,6 +5,10 @@ using System.Text;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+#if UNITY_EDITOR
+using Unity.EditorCoroutines.Editor;
+using UnityEditor;
+#endif
 
 namespace Laresistance.Battle
 {
@@ -31,8 +35,11 @@ namespace Laresistance.Battle
             this.cooldown = cooldown;
             this.equipmentEvents = equipmentEvents;
             this.statusManager = statusManager;
-            statusManager.OnStun += Stun;
-            statusManager.OnCooldownsAdvance += AdvanceCooldowns;
+            if (statusManager != null)
+            {
+                statusManager.OnStun += Stun;
+                statusManager.OnCooldownsAdvance += AdvanceCooldowns;
+            }
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
@@ -94,7 +101,11 @@ namespace Laresistance.Battle
         public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             // We need to actually start a new coroutine here because prioritary abilities can and should be processed BEFORE non prioritary abilities.
+#if UNITY_EDITOR
+            EditorCoroutineUtility.StartCoroutineOwnerless(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
+#else
             CoroutineHelperBehaviour.GetInstance().StartCoroutine(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
+#endif
             yield return null;
         }
 

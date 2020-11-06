@@ -152,6 +152,11 @@ namespace Laresistance.Systems
             return playerBattleManager;
         }
 
+        public CharacterBattleManager[] GetEnemies()
+        {
+            return enemiesBattleManager;
+        }
+
         public bool AllEnemiesDead()
         {
             foreach(var enemy in enemiesBattleManager)
