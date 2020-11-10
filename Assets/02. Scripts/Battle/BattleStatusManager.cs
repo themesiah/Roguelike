@@ -10,7 +10,7 @@ namespace Laresistance.Battle
         public class SpeedEffect
         {
             public float speedCoeficient;
-            public float setupTime;
+            public float timer;
         }
 
         public class DamageOverTime
@@ -28,7 +28,7 @@ namespace Laresistance.Battle
         public class TempDamageChange
         {
             public float modifier;
-            public float setupTime;
+            public float timer;
         }
         #endregion
 
@@ -93,6 +93,24 @@ namespace Laresistance.Battle
                     }
                 }
             }
+            for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
+            {
+                TempDamageChange tdm = tempDamageModifications[i];
+                tdm.timer += delta;
+                if (tdm.timer >= DAMAGE_MODIFIER_DURATION)
+                {
+                    tempDamageModifications.Remove(tdm);
+                }
+            }
+            for (int i = speedModifiers.Count - 1; i >= 0; --i)
+            {
+                SpeedEffect se = speedModifiers[i];
+                se.timer += delta;
+                if (se.timer >= SPEED_MODIFIER_DURATION)
+                {
+                    speedModifiers.Remove(se);
+                }
+            }
             if (totalDamage > 0)
             {
                 health.TakeDamage(totalDamage, null);
@@ -102,7 +120,7 @@ namespace Laresistance.Battle
 
         public void ApplySpeedModifier(float coeficient)
         {
-            speedModifiers.Add(new SpeedEffect() { speedCoeficient = coeficient, setupTime = Time.time });
+            speedModifiers.Add(new SpeedEffect() { speedCoeficient = coeficient, timer = 0f });
             OnSpeedModifierApplied?.Invoke(this, coeficient, GetSpeedModifier());
         }
 
@@ -120,8 +138,8 @@ namespace Laresistance.Battle
 
         public void ApplyTempDamageModification(float coeficient)
         {
-            tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, setupTime = Time.time });
-            OnDamageImprovementApplied?.Invoke(this, -coeficient, GetDamageModifier());
+            tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, timer = 0f });
+            OnDamageImprovementApplied?.Invoke(this, coeficient, GetDamageModifier());
         }
 
         public float GetSpeedModifier()
@@ -130,14 +148,7 @@ namespace Laresistance.Battle
             for (int i = speedModifiers.Count - 1; i >= 0; --i)
             {
                 SpeedEffect se = speedModifiers[i];
-                if (Time.time < se.setupTime + SPEED_MODIFIER_DURATION)
-                {
-                    speedModifier *= se.speedCoeficient;
-                }
-                else
-                {
-                    speedModifiers.Remove(se);
-                }
+                speedModifier *= se.speedCoeficient;
             }
             return speedModifier;
         }
@@ -153,13 +164,7 @@ namespace Laresistance.Battle
             for (int i = tempDamageModifications.Count -1; i >= 0; --i)
             {
                 var modifier = tempDamageModifications[i];
-                if (Time.time < modifier.setupTime + DAMAGE_MODIFIER_DURATION)
-                {
-                    totalModifier += modifier.modifier;
-                } else
-                {
-                    tempDamageModifications.Remove(modifier);
-                }
+                totalModifier += modifier.modifier;
             }
 
             // Total modifier adds the damage after damage improvement, which is infinite and "special"
@@ -173,6 +178,7 @@ namespace Laresistance.Battle
             damageImprovements.Clear();
             speedModifiers.Clear();
             damageOverTimes.Clear();
+            tempDamageModifications.Clear();
         }
 
         public void Stun()
@@ -192,7 +198,7 @@ namespace Laresistance.Battle
             }
             for(int i = speedModifiers.Count-1; i >= 0; --i)
             {
-                if (speedModifiers[i].speedCoeficient < 100f)
+                if (speedModifiers[i].speedCoeficient < 1f)
                 {
                     speedModifiers.RemoveAt(i);
                 }

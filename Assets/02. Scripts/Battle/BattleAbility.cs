@@ -5,6 +5,7 @@ using System.Text;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using System.Diagnostics;
 #if UNITY_EDITOR
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
@@ -21,6 +22,8 @@ namespace Laresistance.Battle
         private EquipmentEvents equipmentEvents;
         private BattleStatusManager statusManager;
         private bool executingAbility = false;
+        public bool IsShieldAbility { get; private set; }
+        public bool IsOffensiveAbility { get; private set; }
 
         public delegate void OnAbilityTimerChangedHandler(float currentTimer, float cooldown, float percent);
         public event OnAbilityTimerChangedHandler OnAbilityTimerChanged;
@@ -42,6 +45,16 @@ namespace Laresistance.Battle
             }
         }
 
+        public void SetShieldAbility()
+        {
+            IsShieldAbility = true;
+        }
+
+        public void SetOffensiveAbility()
+        {
+            IsOffensiveAbility = true;
+        }
+
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
         {
             this.equipmentEvents = equipmentEvents;
@@ -53,6 +66,11 @@ namespace Laresistance.Battle
             {
                 effect.SetStatusManager(selfStatus);
             }
+        }
+
+        public BattleStatusManager GetStatusManager()
+        {
+            return effects[0].GetStatusManager();
         }
 
         public BattleAbility Copy()
@@ -96,17 +114,27 @@ namespace Laresistance.Battle
             float currentCooldown = 0f;
             equipmentEvents?.OnGetStartingCooldowns?.Invoke(ref currentCooldown);
             timer = GetCooldown() * currentCooldown;
+            OnAbilityTimerChanged?.Invoke(timer, GetCooldown(), timer / GetCooldown());
         }
 
         public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             // We need to actually start a new coroutine here because prioritary abilities can and should be processed BEFORE non prioritary abilities.
+            // If we are in unity editor and are NOT playing, we are using an editor simulation. In that case we need EditorCoroutineUtility.
+            // If we are not in the editor (a build) or we are playing (play mode or unity tests) we use the coroutine helper behaviour.
 #if UNITY_EDITOR
-            EditorCoroutineUtility.StartCoroutineOwnerless(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
-#else
-            CoroutineHelperBehaviour.GetInstance().StartCoroutine(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
+            if (!EditorApplication.isPlaying)
+            {
+                EditorCoroutineUtility.StartCoroutineOwnerless(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
+            }
+            else
+            {
 #endif
-            yield return null;
+                CoroutineHelperBehaviour.GetInstance().StartCoroutine(ExecuteAbilityCoroutine(allies, targets, level, animator, bloodRef));
+#if UNITY_EDITOR
+            }
+#endif
+                yield return null;
         }
 
         public IEnumerator ExecuteAbilityCoroutine(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)

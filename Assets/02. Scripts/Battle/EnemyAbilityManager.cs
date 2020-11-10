@@ -23,7 +23,7 @@ namespace Laresistance.Battle
             {
                 if (abilities[i] == null)
                     continue;
-                abilities[i].Tick(delta * battleStatus.GetSpeedModifier());
+                abilities[i].Tick(delta);
             }
             for (int i = 0; i < abilities.Length; ++i)
             {

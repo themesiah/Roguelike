@@ -4,6 +4,7 @@ using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Laresistance.Battle
 {
@@ -24,6 +25,7 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAttackPower?.Invoke(ref power);
             equipmentEvents?.OnGetAttackPowerFlat?.Invoke(ref power);
             power = (int)(power * SelfStatus.GetDamageModifier());
+            Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
         }
 

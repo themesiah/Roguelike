@@ -381,7 +381,7 @@ namespace Laresistance.Core
             {
                 equipmentEvents.OnGetStartingCooldowns += handler;
             };
-
+            
             onUnequip += () =>
             {
                 equipmentEvents.OnGetStartingCooldowns -= handler;
@@ -579,7 +579,7 @@ namespace Laresistance.Core
         {
             if (equipmentEvents == null)
                 return;
-            EquipmentEvents.OnDamageReceivedModifierHandler handler = ((ref int received) => { received = (int)(received * modifier); });
+            EquipmentEvents.OnDamageReceivedModifierHandler handler = ((ref int received) => { received = modifier > 1f ? Mathf.CeilToInt(received * modifier) : Mathf.FloorToInt(received * modifier); });
             onEquip += () =>
             {
                 equipmentEvents.OnDamageReceivedModifier += handler;

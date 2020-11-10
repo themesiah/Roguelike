@@ -143,10 +143,10 @@ namespace Laresistance.Tests
             BattleSystem battleSystem = GetBattleSystem(new string[] { "Minion_003" }, new string[] { "EQUIPMENT_008" }, null);
             int playerStartingHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(75, playerStartingHealth);
-            yield return battleSystem.Tick(5.1f);
+            yield return battleSystem.Tick(7.1f);
             yield return battleSystem.Tick(0.1f);
             int currentHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
-            Assert.AreEqual(playerStartingHealth - 3, currentHealth);
+            Assert.AreEqual(playerStartingHealth - 1, currentHealth);
         }
 
         [UnityTest]
@@ -155,11 +155,11 @@ namespace Laresistance.Tests
             BattleSystem battleSystem = GetBattleSystem(new string[] {  }, new string[] { "EQUIPMENT_014" }, null);
             int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
             int playerStartingHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
-            yield return battleSystem.Tick(5.1f);
+            yield return battleSystem.Tick(7.1f);
             int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
             int playerCurrentHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth - 20, currentHealth);
-            Assert.AreEqual(playerStartingHealth - 11, playerCurrentHealth);
+            Assert.AreEqual(playerStartingHealth - 9, playerCurrentHealth);
         }
 
         [UnityTest]
@@ -168,11 +168,11 @@ namespace Laresistance.Tests
             BattleSystem battleSystem = GetBattleSystem(new string[] {  }, new string[] { "EQUIPMENT_016" }, null);
             int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
             int playerStartingHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
-            yield return battleSystem.Tick(5.1f);
+            yield return battleSystem.Tick(7.1f);
             int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
             int playerCurrentHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth - 10, currentHealth);
-            Assert.AreEqual(playerStartingHealth - 7, playerCurrentHealth);
+            Assert.AreEqual(playerStartingHealth - 5, playerCurrentHealth);
         }
     }
 }

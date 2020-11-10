@@ -17,7 +17,7 @@ namespace Laresistance.Battle
         {
             foreach(var ability in player.GetAbilities())
             {
-                ability?.Tick(delta * battleStatus.GetSpeedModifier());
+                ability?.Tick(delta);
             }
             int temp = currentAbilityIndex;
             currentAbilityIndex = -1;

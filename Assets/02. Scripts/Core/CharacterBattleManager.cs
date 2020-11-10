@@ -114,7 +114,7 @@ namespace Laresistance.Core
             int targetSelectionInput = TargetSelector.GetTargetSelection();
             if (targetSelectionInput == -1) battleSystem.SelectPrevious();
             if (targetSelectionInput == 1) battleSystem.SelectNext();
-            int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, delta);
+            int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, StatusManager.GetSpeedModifier() * delta);
             return index;
         }
 

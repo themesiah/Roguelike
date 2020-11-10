@@ -28,29 +28,38 @@ namespace GamedevsToolbox.ScriptableArchitecture.LocalizationV2
         [SerializeField]
         private TextAsset textAsset = default;
 
-        private RootNode rootNode;
-
 
         private static Dictionary<string, Dictionary<string, string>> localizer;
         private static string currentLanguage;
+        private static bool initialized = false;
 
         private void Awake()
         {
-            string rawJson = textAsset.text;
-            rootNode = JsonUtility.FromJson(rawJson, typeof(RootNode)) as RootNode;
+            Init(textAsset.text);
+        }
+
+        public static void Init(TextAsset externalTextAsset)
+        {
+            Init(externalTextAsset.text);
+        }
+
+        private static void Init(string rawJson)
+        {
+            RootNode rootNode = JsonUtility.FromJson(rawJson, typeof(RootNode)) as RootNode;
             localizer = new Dictionary<string, Dictionary<string, string>>();
 
-            foreach(var language in rootNode.languages)
+            foreach (var language in rootNode.languages)
             {
                 if (string.IsNullOrEmpty(currentLanguage))
                     currentLanguage = language.id;
                 localizer.Add(language.id, new Dictionary<string, string>());
-                foreach(var text in language.texts)
+                foreach (var text in language.texts)
                 {
                     localizer[language.id].Add(text.id, text.text);
                 }
             }
             rootNode = null;
+            initialized = true;
         }
 
         public static string GetText(string id)
@@ -79,6 +88,11 @@ namespace GamedevsToolbox.ScriptableArchitecture.LocalizationV2
             {
                 return id;
             }
+        }
+
+        public static bool IsInitialized()
+        {
+            return initialized;
         }
     }
 }

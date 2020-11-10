@@ -13,6 +13,7 @@ namespace Laresistance.Battle
         private static List<BattleAbility> abilityQueue;
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
         private static IBattleAnimator currentAnimator = null;
+        public static BattleAbility currentAbility;
 
         public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
         {
@@ -33,8 +34,10 @@ namespace Laresistance.Battle
             }
             currentlyExecuting = true;
             currentAnimator = animator;
+            currentAbility = abilityToExecute;
             yield return animator?.PlayAnimation(animationTrigger);
             abilityToExecute.Perform(allies, targets, level, bloodRef);
+            currentAbility = null;
             abilityQueue.Remove(abilityToExecute);
             currentlyExecuting = false;
             if (abilityToExecute.IsPrioritary() && needPause)

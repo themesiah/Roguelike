@@ -4,7 +4,7 @@ using Laresistance.Data;
 
 namespace Laresistance.Simulator
 {
-    [CreateAssetMenu(menuName = "Laresistance/Editor/Battle Simulator Data")]
+    [CreateAssetMenu(menuName = "Laresistance/Simulator/Battle Simulator Data")]
     public class BattleSimulatorData : ScriptableObject
     {
         [Header("Player")]

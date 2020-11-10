@@ -26,5 +26,9 @@ namespace Laresistance.Data
         [SerializeField]
         private List<EquipmentEffectData> equipmentEffects = default;
         public List<EquipmentEffectData> EquipmentEffects { get { return equipmentEffects; } }
+
+        [SerializeField]
+        private bool corrupted = default;
+        public bool Corrupted { get { return corrupted; } }
     }
 }

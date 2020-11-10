@@ -10,13 +10,31 @@ namespace Laresistance.Battle
         public static BattleAbility GetBattleAbility(AbilityData abilityData, EquipmentEvents events, BattleStatusManager battleStatus)
         {
             List<BattleEffect> effects = new List<BattleEffect>();
+            bool shield = false;
+            bool offensive = false;
 
             foreach(EffectData effectData in abilityData.EffectsData)
             {
                 effects.Add(BattleEffectFactory.GetBattleEffect(effectData, battleStatus));
+                if (effectData.EffectType == EffectType.Shield)
+                {
+                    shield = true;
+                }
+                if (effectData.EffectType == EffectType.Damage)
+                {
+                    offensive = true;
+                }
             }
 
             BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cooldown, battleStatus, events);
+            if (shield)
+            {
+                battleAbility.SetShieldAbility();
+            }
+            if (offensive)
+            {
+                battleAbility.SetOffensiveAbility();
+            }
             return battleAbility;
         }
     }

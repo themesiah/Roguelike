@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Laresistance.Tests {
     public class Battle_Damage_Tests
     {
+        private static int STARTING_HEALTH = 100;
         private BattleStatusManager GetStatus()
         {
             return new BattleStatusManager(new CharacterHealth(100));
@@ -51,104 +52,104 @@ namespace Laresistance.Tests {
         [UnityTest]
         public IEnumerator When_DealingDamage()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_DealingDamageTwiceWithoutWaiting()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_DealingDamageTwiceWithWaiting()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             ability.Tick(1.1f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(80, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-20, enemy.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_DealingDamageAndHealing()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(1);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(100, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH, enemy.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_HealingMoreThanMax()
         {
-            BattleStatusManager player = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(1);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
-            Assert.AreEqual(100, player.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH, player.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_DealingDamageWithShield()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
             yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(100, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH, enemy.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_DealingDamageAfterShield()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
             yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
             enemy.ProcessStatus(CharacterHealth.SHIELD_DURATION+0.1f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(90, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator When_DealingDoubleDamageWithSmallShield()
         {
-            BattleStatusManager player = GetStatusManager(100);
-            BattleStatusManager enemy = GetStatusManager(100);
+            BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
+            BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(0);
             var ability3 = GetAbilityByIndex(3);
             yield return ability3.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             yield return ability2.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
-            Assert.AreEqual(85, enemy.health.GetCurrentHealth());
+            Assert.AreEqual(STARTING_HEALTH-15, enemy.health.GetCurrentHealth());
             yield return null;
         }
     }

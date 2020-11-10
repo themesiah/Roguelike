@@ -28,6 +28,10 @@ namespace Laresistance.Systems
             playerBattleManager.SetAllies(new CharacterBattleManager[] { player });
             playerBattleManager.SetEnemies(enemies);
             playerBattleManager.StartBattle();
+            playerBattleManager.StatusManager.health.OnDeath += (CharacterHealth h) =>
+            {
+                playerBattleManager.Die();
+            };
             foreach(var enemy in enemiesBattleManager)
             {
                 enemy.SetBattleSystem(this);
