@@ -3,6 +3,7 @@ using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
@@ -14,6 +15,8 @@ namespace Laresistance.Behaviours
         protected RuntimePlayerDataBehaviourSingle playerDataReference = default;
         [SerializeField]
         private RewardUILibrary rewardUILibrary = default;
+        [SerializeField]
+        private Button startingButton = default;
 
         private bool finished = false;
 
@@ -66,6 +69,7 @@ namespace Laresistance.Behaviours
 
         public IEnumerator StartPanel(RewardData rewardData)
         {
+            startingButton?.Select();
             yield return StartingTween(rewardData);
             yield return ExecutePanelProcess(rewardData);
             yield return FinishingTween(rewardData);

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,8 @@ namespace Laresistance.Behaviours
         private LocalizedStringTextBehaviour minionRewardText1 = default;
         [SerializeField]
         private Text minionRewardText2 = default;
+        [SerializeField]
+        private Button[] minionButtons = default;
 
         [SerializeField]
         private Text[] currentMinionNames = default;
@@ -42,13 +43,15 @@ namespace Laresistance.Behaviours
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
 
-            foreach(Image panel in panels)
+            foreach (Image panel in panels)
             {
                 panel.color = unselectedColor;
             }
 
+            minionButtons[0].onClick.RemoveAllListeners();
+            minionButtons[0].onClick.AddListener(() => { minionIndexSelected = -1; });
             // Show 3 current minions
-            for(int i = 0; i < player.GetMinions().Length; ++i)
+            for (int i = 0; i < player.GetMinions().Length; ++i)
             {
                 Minion m = player.GetMinions()[i];
                 currentMinionNames[i].text = m.Name;
@@ -63,6 +66,10 @@ namespace Laresistance.Behaviours
                 SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
                 renderer.sortingOrder = sortingOrder;
                 renderer.material = unlitMaterial;
+
+                int currentIndex = i;
+                minionButtons[currentIndex + 1].onClick.RemoveAllListeners();
+                minionButtons[currentIndex + 1].onClick.AddListener(() => { minionIndexSelected = currentIndex; });
             }
             // End show 3 current minions
 
@@ -89,25 +96,25 @@ namespace Laresistance.Behaviours
             }
         }
 
-        public void MinionASelected(InputAction.CallbackContext context)
-        {
-            minionIndexSelected = 2;
-        }
-
-        public void MinionSSelected(InputAction.CallbackContext context)
-        {
-            minionIndexSelected = 1;
-        }
-
-        public void MinionDSelected(InputAction.CallbackContext context)
-        {
-            minionIndexSelected = 0;
-        }
-
-        public void IgnoreSelected(InputAction.CallbackContext context)
-        {
-            minionIndexSelected = -1;
-        }
+        //public void MinionASelected(InputAction.CallbackContext context)
+        //{
+        //    minionIndexSelected = 2;
+        //}
+        //
+        //public void MinionSSelected(InputAction.CallbackContext context)
+        //{
+        //    minionIndexSelected = 1;
+        //}
+        //
+        //public void MinionDSelected(InputAction.CallbackContext context)
+        //{
+        //    minionIndexSelected = 0;
+        //}
+        //
+        //public void IgnoreSelected(InputAction.CallbackContext context)
+        //{
+        //    minionIndexSelected = -1;
+        //}
 
         public override RewardUIType RewardType => RewardUIType.MinionFull;
     }
