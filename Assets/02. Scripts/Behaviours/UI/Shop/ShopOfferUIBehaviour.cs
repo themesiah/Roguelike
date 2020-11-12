@@ -3,6 +3,7 @@ using Laresistance.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
@@ -15,6 +16,8 @@ namespace Laresistance.Behaviours
         private ScriptableIntReference currentControlScheme = default;
         [SerializeField]
         private Image keyImageReference = default;
+        [SerializeField]
+        private Button selectableButton = default;
 
         private KeySetSelector keySetSelector;
 
@@ -60,5 +63,16 @@ namespace Laresistance.Behaviours
         public abstract void SetCost(int cost);
 
         public abstract void SetupOffer(ShopOffer offer);
+
+        public void SetButtonAction(UnityAction action)
+        {
+            selectableButton.onClick.RemoveAllListeners();
+            selectableButton.onClick.AddListener(action);
+        }
+
+        public void SelectButton()
+        {
+            selectableButton.Select();
+        }
     }
 }

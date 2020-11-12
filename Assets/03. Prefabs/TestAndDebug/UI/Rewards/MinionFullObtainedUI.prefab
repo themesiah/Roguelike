@@ -62,7 +62,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5375015622391784213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -843,6 +843,7 @@ GameObject:
   - component: {fileID: 5375015623311354798}
   - component: {fileID: 5375015623311354796}
   - component: {fileID: 5375015623311354797}
+  - component: {fileID: 8291889441426392229}
   m_Layer: 5
   m_Name: MinionPanelA
   m_TagString: Untagged
@@ -912,6 +913,49 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8291889441426392229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5375015623311354799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 4
+    m_SelectOnUp: {fileID: 6272819950625563427}
+    m_SelectOnDown: {fileID: 951770346728999122}
+    m_SelectOnLeft: {fileID: 8291889441426392229}
+    m_SelectOnRight: {fileID: 6631110242524074649}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.5310609, g: 0.9622642, b: 0.56046385, a: 1}
+    m_PressedColor: {r: 0.12541805, g: 1, b: 0.10849059, a: 1}
+    m_SelectedColor: {r: 0.6633875, g: 1, b: 0.6462264, a: 1}
+    m_DisabledColor: {r: 0.9716981, g: 0.55460125, b: 0.55460125, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5375015623311354797}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5375015623326809707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,6 +1119,12 @@ MonoBehaviour:
   panel: {fileID: 5375015622931339917}
   playerDataReference: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   rewardUILibrary: {fileID: 11400000, guid: a3ecab3626909ed479217658a13d6457, type: 2}
+  startingButton: {fileID: 6272819950625563427}
+  selectableButtons:
+  - {fileID: 6272819950625563427}
+  - {fileID: 6631110242524074649}
+  - {fileID: 951770346728999122}
+  - {fileID: 8291889441426392229}
   minionRewardText1: {fileID: 5375015623129970447}
   minionRewardText2: {fileID: 5375015624479999551}
   currentMinionNames:
@@ -1089,16 +1139,9 @@ MonoBehaviour:
   - {fileID: 5375015622380854765}
   - {fileID: 5375015624014021844}
   - {fileID: 5375015624319297772}
-  panels:
-  - {fileID: 5375015624156265679}
-  - {fileID: 5375015624174764847}
-  - {fileID: 5375015623311354797}
-  - {fileID: 5375015624224277305}
   sortingOrder: 101
   scaleMultiplier: 40
   unlitMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-  unselectedColor: {r: 0.98963654, g: 1, b: 0.2783019, a: 1}
-  selectedColor: {r: 0.43137255, g: 1, b: 0.44705883, a: 1}
 --- !u!114 &5919055179069214036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1293,7 +1336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5375015623796535612
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1516,6 +1559,7 @@ GameObject:
   - component: {fileID: 5375015624156265672}
   - component: {fileID: 5375015624156265678}
   - component: {fileID: 5375015624156265679}
+  - component: {fileID: 6631110242524074649}
   m_Layer: 5
   m_Name: MinionPanelD
   m_TagString: Untagged
@@ -1585,6 +1629,49 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6631110242524074649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5375015624156265673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 4
+    m_SelectOnUp: {fileID: 6272819950625563427}
+    m_SelectOnDown: {fileID: 951770346728999122}
+    m_SelectOnLeft: {fileID: 8291889441426392229}
+    m_SelectOnRight: {fileID: 6631110242524074649}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.5310609, g: 0.9622642, b: 0.56046385, a: 1}
+    m_PressedColor: {r: 0.12541805, g: 1, b: 0.10849059, a: 1}
+    m_SelectedColor: {r: 0.6633875, g: 1, b: 0.6462264, a: 1}
+    m_DisabledColor: {r: 0.9716981, g: 0.55460125, b: 0.55460125, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5375015624156265679}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5375015624174764841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1596,6 +1683,7 @@ GameObject:
   - component: {fileID: 5375015624174764840}
   - component: {fileID: 5375015624174764846}
   - component: {fileID: 5375015624174764847}
+  - component: {fileID: 951770346728999122}
   m_Layer: 5
   m_Name: MinionPanelS
   m_TagString: Untagged
@@ -1665,6 +1753,49 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &951770346728999122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5375015624174764841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 4
+    m_SelectOnUp: {fileID: 6272819950625563427}
+    m_SelectOnDown: {fileID: 951770346728999122}
+    m_SelectOnLeft: {fileID: 8291889441426392229}
+    m_SelectOnRight: {fileID: 6631110242524074649}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.5310609, g: 0.9622642, b: 0.56046385, a: 1}
+    m_PressedColor: {r: 0.12541805, g: 1, b: 0.10849059, a: 1}
+    m_SelectedColor: {r: 0.6633875, g: 1, b: 0.6462264, a: 1}
+    m_DisabledColor: {r: 0.9716981, g: 0.55460125, b: 0.55460125, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5375015624174764847}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5375015624224277307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,6 +1807,7 @@ GameObject:
   - component: {fileID: 5375015624224277306}
   - component: {fileID: 5375015624224277304}
   - component: {fileID: 5375015624224277305}
+  - component: {fileID: 6272819950625563427}
   m_Layer: 5
   m_Name: IgnorePanel
   m_TagString: Untagged
@@ -1742,6 +1874,49 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6272819950625563427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5375015624224277307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 4
+    m_SelectOnUp: {fileID: 6272819950625563427}
+    m_SelectOnDown: {fileID: 951770346728999122}
+    m_SelectOnLeft: {fileID: 8291889441426392229}
+    m_SelectOnRight: {fileID: 6631110242524074649}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.5310609, g: 0.9622642, b: 0.56046385, a: 1}
+    m_PressedColor: {r: 0.12541805, g: 1, b: 0.10849059, a: 1}
+    m_SelectedColor: {r: 0.6633875, g: 1, b: 0.6462264, a: 1}
+    m_DisabledColor: {r: 0.9716981, g: 0.55460125, b: 0.55460125, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5375015624224277305}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5375015624286002604
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,7 +1935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5375015624286002595
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2195,7 +2370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5375015624488098958
 RectTransform:
   m_ObjectHideFlags: 0

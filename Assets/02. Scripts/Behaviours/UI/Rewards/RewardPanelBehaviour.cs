@@ -17,12 +17,32 @@ namespace Laresistance.Behaviours
         private RewardUILibrary rewardUILibrary = default;
         [SerializeField]
         private Button startingButton = default;
+        [SerializeField]
+        protected Button[] selectableButtons = default;
 
         private bool finished = false;
+        protected int selectedOptionIndex = -2;
 
         private void Awake()
         {
             panel.SetActive(false);
+            SetButtonCallbacks();
+        }
+
+        protected virtual void SetButtonCallbacks()
+        {
+            for (int i = 0; i < selectableButtons.Length; ++i)
+            {
+                if (i == 0)
+                {
+                    selectableButtons[i].onClick.AddListener(() => { selectedOptionIndex = -1; });
+                }
+                else
+                {
+                    int currentIndex = i;
+                    selectableButtons[i].onClick.AddListener(() => { selectedOptionIndex = currentIndex - 1; });
+                }
+            }
         }
 
         private void OnEnable()
@@ -69,8 +89,8 @@ namespace Laresistance.Behaviours
 
         public IEnumerator StartPanel(RewardData rewardData)
         {
-            startingButton?.Select();
             yield return StartingTween(rewardData);
+            startingButton?.Select();
             yield return ExecutePanelProcess(rewardData);
             yield return FinishingTween(rewardData);
         }

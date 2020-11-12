@@ -34,17 +34,18 @@ namespace Laresistance.Behaviours
         [Header("General")]
         [SerializeField]
         private Image[] panels = default;
-        [SerializeField]
-        private Color unselectedColor = default;
-        [SerializeField]
-        private Color selectedColor = default;
         [Header("Droped equipment")]
         [SerializeField]
         private GameObject mapEquipmentPrefab = default;
         [SerializeField]
         private float force = 10f;
 
-        private int equipSelectedIndex = -2;
+        protected override void SetButtonCallbacks()
+        {
+            selectableButtons[0].onClick.AddListener(() => { selectedOptionIndex = -1; });
+            selectableButtons[1].onClick.AddListener(() => { selectedOptionIndex = -1; });
+            selectableButtons[2].onClick.AddListener(() => { selectedOptionIndex = 0; });
+        }
 
         protected override IEnumerator StartingTween(RewardData rewardData)
         {
@@ -54,11 +55,6 @@ namespace Laresistance.Behaviours
             newEquipSlotText.text = rewardData.equip.SlotName;
             newEquipImage.sprite = rewardData.equip.Data.SpriteReference;
             noEquipSlotText.text = rewardData.equip.SlotName;
-
-            foreach (Image panel in panels)
-            {
-                panel.color = unselectedColor;
-            }
 
             // Show current equipment
             Equipment currentEquip = player.GetEquipments()[rewardData.equip.Slot];
@@ -82,24 +78,22 @@ namespace Laresistance.Behaviours
         protected override IEnumerator ExecutePanelProcess(RewardData rewardData)
         {
             Player player = playerDataReference.Get().player;
-            equipSelectedIndex = -2;
+            selectedOptionIndex = -2;
             Equipment dropedEquipment = null;
-            while (equipSelectedIndex < -1)
+            while (selectedOptionIndex < -1)
             {
                 yield return null;
             }
-            if (equipSelectedIndex >= 0)
+            if (selectedOptionIndex >= 0)
             {
                 dropedEquipment = player.GetEquipments()[rewardData.equip.Slot];
                 if (dropedEquipment != null)
                     player.UnequipEquipment(dropedEquipment);
                 player.EquipEquipment(rewardData.equip);
-                panels[equipSelectedIndex].color = selectedColor;
             }
             else
             {
                 dropedEquipment = rewardData.equip;
-                panels[1].color = selectedColor;
             }
 
             if (dropedEquipment != null)
@@ -109,16 +103,6 @@ namespace Laresistance.Behaviours
                 go.GetComponent<Rigidbody2D>().AddForce(Vector2.up * force, ForceMode2D.Impulse);
                 go.GetComponent<MapEquipment>().SetData(dropedEquipment.Data);
             }
-        }
-
-        public void NewEquipSelected(InputAction.CallbackContext context)
-        {
-            equipSelectedIndex = 0;
-        }
-
-        public void CurrentEquipSelected(InputAction.CallbackContext context)
-        {
-            equipSelectedIndex = -1;
         }
 
         public override RewardUIType RewardType => RewardUIType.Equip;

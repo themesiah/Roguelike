@@ -13,8 +13,6 @@ namespace Laresistance.Behaviours
         private LocalizedStringTextBehaviour minionRewardText1 = default;
         [SerializeField]
         private Text minionRewardText2 = default;
-        [SerializeField]
-        private Button[] minionButtons = default;
 
         [SerializeField]
         private Text[] currentMinionNames = default;
@@ -23,19 +21,11 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform[] currentMinionPrefabHolders = default;
         [SerializeField]
-        private Image[] panels = default;
-        [SerializeField]
         private int sortingOrder = 101;
         [SerializeField]
         private float scaleMultiplier = 40f;
         [SerializeField]
         private Material unlitMaterial = default;
-        [SerializeField]
-        private Color unselectedColor = default;
-        [SerializeField]
-        private Color selectedColor = default;
-
-        private int minionIndexSelected = -2;
 
         protected override IEnumerator StartingTween(RewardData rewardData)
         {
@@ -43,13 +33,6 @@ namespace Laresistance.Behaviours
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
 
-            foreach (Image panel in panels)
-            {
-                panel.color = unselectedColor;
-            }
-
-            minionButtons[0].onClick.RemoveAllListeners();
-            minionButtons[0].onClick.AddListener(() => { minionIndexSelected = -1; });
             // Show 3 current minions
             for (int i = 0; i < player.GetMinions().Length; ++i)
             {
@@ -66,10 +49,6 @@ namespace Laresistance.Behaviours
                 SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
                 renderer.sortingOrder = sortingOrder;
                 renderer.material = unlitMaterial;
-
-                int currentIndex = i;
-                minionButtons[currentIndex + 1].onClick.RemoveAllListeners();
-                minionButtons[currentIndex + 1].onClick.AddListener(() => { minionIndexSelected = currentIndex; });
             }
             // End show 3 current minions
 
@@ -79,42 +58,20 @@ namespace Laresistance.Behaviours
         protected override IEnumerator ExecutePanelProcess(RewardData rewardData)
         {
             Player player = playerDataReference.Get().player;
-            minionIndexSelected = -2;
-            while (minionIndexSelected < -1)
+            selectedOptionIndex = -2;
+            while (selectedOptionIndex < -1)
             {
                 yield return null;
             }
-            if (minionIndexSelected >= 0)
+            if (selectedOptionIndex >= 0)
             {
-                player.UnequipMinion(minionIndexSelected);
+                player.UnequipMinion(selectedOptionIndex);
                 player.EquipMinion(rewardData.minion);
-                panels[minionIndexSelected].color = selectedColor;
             } else
             {
-                panels[3].color = selectedColor;
                 player.AddMinionToReserve(rewardData.minion);
             }
         }
-
-        //public void MinionASelected(InputAction.CallbackContext context)
-        //{
-        //    minionIndexSelected = 2;
-        //}
-        //
-        //public void MinionSSelected(InputAction.CallbackContext context)
-        //{
-        //    minionIndexSelected = 1;
-        //}
-        //
-        //public void MinionDSelected(InputAction.CallbackContext context)
-        //{
-        //    minionIndexSelected = 0;
-        //}
-        //
-        //public void IgnoreSelected(InputAction.CallbackContext context)
-        //{
-        //    minionIndexSelected = -1;
-        //}
 
         public override RewardUIType RewardType => RewardUIType.MinionFull;
     }

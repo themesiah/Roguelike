@@ -53,20 +53,18 @@ namespace Laresistance.Behaviours
         private Transform upgradeCanvas = default;
         [SerializeField]
         private KeySetSelector[] offerKeys = default;
-        [SerializeField]
-        private Image exitShopPanel = default;
-        [Header("Selection")]
-        [SerializeField]
-        private Color unselectedColor = default;
-        [SerializeField]
-        private Color selectedColor = default;
-        [SerializeField]
-        private Color cantBuyColor = default;
         [Header("Upgrade and shop")]
         [SerializeField]
         private GameObject[] shopBuyObjects = default;
         [SerializeField]
         private GameObject[] shopUpgradeObjects = default;
+        [Header("Context change")]
+        [SerializeField]
+        private Button goShopButton = default;
+        [SerializeField]
+        private Button goUpgradeButton = default;
+        [SerializeField]
+        private Button exitButton = default;
 
         private ShopSystem shopSystem;
         private RewardSystem rewardSystem;
@@ -93,6 +91,11 @@ namespace Laresistance.Behaviours
             shopSystem = new ShopSystem(bloodReference, hardCurrencyReference);
             rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             BattleStatusManager statusManager = playerDataBehaviourReference.Get().StatusManager;
+
+            goShopButton.onClick.AddListener(() => { offerSelected = -3; });
+            goUpgradeButton.onClick.AddListener(() => { offerSelected = -3; });
+            exitButton.onClick.AddListener(()=> { offerSelected = -2; });
+
             // TEST
             //Minion m1 = MinionFactory.GetMinion(buyableMinionList.minionList[0], 1, player.GetEquipmentEvents(), statusManager);
             //shopSystem.AddOffer(new ShopOffer(m1.Data.BaseBloodPrice, false, new RewardData(0, 0, m1, null, null, null)));
@@ -161,7 +164,7 @@ namespace Laresistance.Behaviours
         {
             Init();
             UpdateMinionUpgradePanel();
-            UpdateShopPanelPrices();
+            UpdateShopPanel();
             StartCoroutine(OpenShopCoroutine());
         }
 
@@ -172,19 +175,20 @@ namespace Laresistance.Behaviours
                 Destroy(t.gameObject);
             }
             shopUpgradeUIList.Clear();
-            int index = 0;
-            foreach (Minion m in player.GetMinions())
+            for (int i = 0; i < player.GetMinions().Length; ++i)
             {
+                Minion m = player.GetMinions()[i];
                 if (m != null)
                 {
                     GameObject go = Instantiate(offerPanelPrefabs[4], upgradeCanvas);
                     IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
                     shopUpgradeUIList.Add(shopOfferUI);
-                    shopOfferUI.SetOfferKey(offerKeys[index]);
+                    shopOfferUI.SetOfferKey(offerKeys[i]);
                     int upgradeCost = m.GetUpgradeCost();
                     player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
                     shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
-                    index++;
+                    int currentIndex = i;
+                    shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
                 }
             }
         }
@@ -197,12 +201,17 @@ namespace Laresistance.Behaviours
             shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
         }        
 
-        private void UpdateShopPanelPrices()
+        private void UpdateShopPanel()
         {
             shopSystem.UpdateOfferCosts(player.GetEquipmentEvents());
             for(int i = 0; i < shopSystem.GetOffers().Count; ++i)
             {
                 shopOfferUIList[i].SetCost(shopSystem.GetOffers()[i].Cost);
+            }
+            for (int i = 0; i < shopOfferUIList.Count; ++i)
+            {
+                int currentIndex = i;
+                shopOfferUIList[i].SetButtonAction(() => { offerSelected = currentIndex; });
             }
         }
 
@@ -238,54 +247,6 @@ namespace Laresistance.Behaviours
         #endregion
 
         #region Input
-        public void Option1Selected(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                offerSelected = 0;
-            }
-        }
-
-        public void Option2Selected(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                offerSelected = 1;
-            }
-        }
-
-        public void Option3Selected(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                offerSelected = 2;
-            }
-        }
-
-        public void Option4Selected(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                offerSelected = 3;
-            }
-        }
-
-        public void Option5Selected(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                offerSelected = 4;
-            }
-        }
-
-        public void Option6Selected(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                offerSelected = 5;
-            }
-        }
-
         public void OptionCancelSelected(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -333,9 +294,12 @@ namespace Laresistance.Behaviours
         private IEnumerator OpenShopUI()
         {
             ActivateDeactivateContext(true);
-            exitShopPanel.color = unselectedColor;
             yield return StartingTween();
             offerSelected = -1;
+            if (shopOfferUIList.Count > 0)
+            {
+                shopOfferUIList[0].SelectButton();
+            }
             while (offerSelected > -2)
             {
                 // If inputted an offer, try to buy.
@@ -351,11 +315,10 @@ namespace Laresistance.Behaviours
                         RewardData rd = shopSystem.BuyOffer(offerSelected);
                         if (rd != null)
                         {
-                            shopOfferUIList[offerSelected].SetPanelColor(selectedColor);
                             yield return FinishingTween();
                             RemoveOffer(offerSelected);
                             yield return rewardSystem.GetReward(rd);
-                            UpdateShopPanelPrices();
+                            UpdateShopPanel();
                             UpdateMinionUpgradePanel();
                             yield return StartingTween();
                         }
@@ -369,7 +332,6 @@ namespace Laresistance.Behaviours
                 yield return FinishingTween();
                 yield return OpenShopUpgradeUI();
             }
-            exitShopPanel.color = selectedColor;
             // If bought something, do reward manager thing.
             // Wait for exit or more buy.
             yield return FinishingTween();
@@ -380,6 +342,10 @@ namespace Laresistance.Behaviours
             ActivateDeactivateContext(false);
             yield return StartingTween();
             offerSelected = -1;
+            if (shopUpgradeUIList.Count > 0)
+            {
+                shopUpgradeUIList[0].SelectButton();
+            }
             while (offerSelected > -2)
             {
                 if (offerSelected >= 0 && offerSelected < player.EquippedMinionsQuantity)
@@ -415,16 +381,12 @@ namespace Laresistance.Behaviours
 
         private IEnumerator ShopCantBuy(List<IShopOfferUI> shopOfferList, int index)
         {
-            shopOfferList[index].SetPanelColor(cantBuyColor);
-            yield return new WaitForSeconds(1f);
-            shopOfferList[index].SetPanelColor(unselectedColor);
+            yield return null; // Maybe a sound?
         }
 
         private IEnumerator ShopCanBuy(List<IShopOfferUI> shopOfferList, int index)
         {
-            shopOfferList[index].SetPanelColor(selectedColor);
-            yield return new WaitForSeconds(1f);
-            shopOfferList[index].SetPanelColor(unselectedColor);
+            yield return null; // Maybe a sound?
         }
 
         protected virtual IEnumerator StartingTween()

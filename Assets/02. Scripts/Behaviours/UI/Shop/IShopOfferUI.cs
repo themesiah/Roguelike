@@ -1,5 +1,6 @@
 ﻿using Laresistance.Data;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -9,5 +10,7 @@ namespace Laresistance.Behaviours
         void SetOfferKey(KeySetSelector offerKey);
         void SetPanelColor(Color color);
         void SetCost(int cost);
+        void SetButtonAction(UnityAction action);
+        void SelectButton();
     }
 }
