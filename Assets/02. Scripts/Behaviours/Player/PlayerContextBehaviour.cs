@@ -17,6 +17,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private StringGameEvent actionMapSwitchEvent = default;
         [SerializeField]
+        private RuntimeMapBehaviourSet mapBehavioursRef = default;
+        [SerializeField]
         private LayerMask centerCheckLayerMask = default;
         [SerializeField]
         private ScriptableIntReference bloodReference = default;
@@ -38,7 +40,7 @@ namespace Laresistance.Behaviours
             Camera camera = cameraReference.Get();
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
-            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference));
+            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef));
             battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary);
             states.Add("Battle", battleState);
             roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData);

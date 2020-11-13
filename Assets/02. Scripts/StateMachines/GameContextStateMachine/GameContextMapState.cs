@@ -6,6 +6,7 @@ using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using Laresistance.Systems;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Data;
 
 namespace Laresistance.StateMachines
 {
@@ -19,12 +20,14 @@ namespace Laresistance.StateMachines
         private bool paused = false;
         private StringGameEvent actionMapSwitchEvent;
         private BloodLossSystem bloodLossSystem;
+        private RuntimeMapBehaviourSet mapBehavioursRef;
 
-        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference)
+        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference, RuntimeMapBehaviourSet mapBehavioursRef)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
+            this.mapBehavioursRef = mapBehavioursRef;
             playerMapBehaviour = playerObject.GetComponent<PlayerMapBehaviour>();
             playerBody = playerObject.GetComponent<Rigidbody2D>();
             bloodLossSystem = new BloodLossSystem(playerObject.GetComponent<PlayerDataBehaviour>().player.GetEquipmentEvents(), bloodReference);
@@ -34,6 +37,16 @@ namespace Laresistance.StateMachines
         {
             playerMapBehaviour.enabled = enter;
             playerBody.velocity = Vector2.zero;
+            mapBehavioursRef.ForEach((MapBehaviour mb) =>
+            {
+                if (enter)
+                {
+                    mb.ResumeMapBehaviour();
+                } else
+                {
+                    mb.PauseMapBehaviour();
+                }
+            });
         }
 
         public IEnumerator EnterState()
