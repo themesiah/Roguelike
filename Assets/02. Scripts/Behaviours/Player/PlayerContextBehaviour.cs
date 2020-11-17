@@ -94,10 +94,15 @@ namespace Laresistance.Behaviours
             {
                 RoomChangeBehaviour rcb = collider.gameObject.GetComponent<RoomChangeBehaviour>();
                 Assert.IsNotNull(rcb);
-                RoomChangeData rcd = rcb.GetRoomChangeData();
-                roomChangeState.SetRoomData(rcd);
-                stateMachine.ReceiveSignal("RoomChange");
+                RoomChange(rcb);
             }
+        }
+
+        public void RoomChange(RoomChangeBehaviour rcb)
+        {
+            RoomChangeData rcd = rcb.GetRoomChangeData();
+            roomChangeState.SetRoomData(rcd);
+            stateMachine.ReceiveSignal("RoomChange");
         }
 
         public void Pause()

@@ -35,6 +35,7 @@ namespace Laresistance.StateMachines
             // Move character to border
             Vector3 targetPoint = playerTransform.position;
             targetPoint.x = currentRoomData.exitPoint.position.x;
+            targetPoint.y = currentRoomData.exitPoint.position.y;
             while (playerTransform.position != targetPoint)
             {
                 playerTransform.position = Vector3.MoveTowards(playerTransform.position, targetPoint, playerMovementData.HorizontalSpeed.GetValue() * Time.deltaTime);
@@ -52,6 +53,7 @@ namespace Laresistance.StateMachines
             // Move character from border
             Vector3 targetPoint = playerTransform.position;
             targetPoint.x = currentRoomData.nextRoom.GetRoomChangeData().enterPoint.position.x;
+            targetPoint.y = currentRoomData.nextRoom.GetRoomChangeData().enterPoint.position.y;
             while (playerTransform.position != targetPoint)
             {
                 playerTransform.position = Vector3.MoveTowards(playerTransform.position, targetPoint, playerMovementData.HorizontalSpeed.GetValue() * Time.deltaTime);

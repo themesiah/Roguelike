@@ -6,6 +6,8 @@ namespace Laresistance.Movement
 {
     public class PlayerHorizontalMovement
     {
+        private static float MOVEMENT_THRESHOLD = 0.3f;
+
         private Transform transform;
         private Rigidbody2D body;
         private PlayerMovementStatus status;
@@ -37,13 +39,12 @@ namespace Laresistance.Movement
 
         public void Move(InputAction.CallbackContext context)
         {
-            float axisValue = context.ReadValue<Vector2>().x * speed.GetValue();
-            if (context.canceled && axisValue == 0f)
+            float axisValue = context.ReadValue<Vector2>().x;
+            currentSpeed = 0f;
+            if (context.performed && (axisValue > MOVEMENT_THRESHOLD || axisValue < -MOVEMENT_THRESHOLD))
             {
-                currentSpeed = 0f;
-            } else if (context.started && axisValue != 0f)
-            {
-                currentSpeed = context.ReadValue<Vector2>().x * speed.GetValue();
+                //currentSpeed = context.ReadValue<Vector2>().x * speed.GetValue();
+                currentSpeed = speed.GetValue() * Mathf.Sign(axisValue);
             }
             if ((currentSpeed < 0 && transform.localScale.x > 0) || (currentSpeed > 0 && transform.localScale.x < 0))
             {

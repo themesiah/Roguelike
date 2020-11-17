@@ -23,6 +23,11 @@ namespace Laresistance.Behaviours
 
         private List<Vector3> hits = new List<Vector3>();
 
+        private void Start()
+        {
+            transform.position = GetTargetPosition(playerReference.Get().transform.position);
+        }
+
         private void Update()
         {
             Vector3 targetPosition = GetTargetPosition(playerReference.Get().transform.position);

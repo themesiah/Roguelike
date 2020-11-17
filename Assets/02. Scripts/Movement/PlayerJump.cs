@@ -2,6 +2,7 @@
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 namespace Laresistance.Movement
 {
@@ -43,14 +44,14 @@ namespace Laresistance.Movement
                 body.velocity = Vector2.right * body.velocity.x;
                 movementStatus.jumping = false;
                 movementStatus.falling = true;
-                movementStatus.platformFalling = false;
+                //movementStatus.platformFalling = false;
             }
             else if (context.started && jumpsDone < jumpsLimit.GetValue())
             {
-                if (movementStatus.platformFalling)
+                if (movementStatus.platformFalling && !movementStatus.falling && !movementStatus.jumping && CheckGroundedOnEffector())
                 {
                     platformFallEvent.Raise();
-                    movementStatus.platformFalling = false;
+                    //movementStatus.platformFalling = false;
                 }
                 else
                 {
@@ -63,9 +64,28 @@ namespace Laresistance.Movement
             }
         }
 
+        private bool CheckGroundedOnEffector()
+        {
+            ContactFilter2D filter = new ContactFilter2D();
+            List<RaycastHit2D> hits = new List<RaycastHit2D>();
+            int numberOfHits = Physics2D.Raycast(transform.position, Vector2.down, filter, hits, 1f);
+            if (numberOfHits != 0)
+            {
+                foreach(var hit in hits)
+                {
+                    var effector = hit.collider.gameObject.GetComponent<PlatformEffector2D>();
+                    if (effector != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public void Fall(InputAction.CallbackContext context)
         {
-            if (context.started && !movementStatus.jumping && !movementStatus.falling)
+            if (context.started/* && !movementStatus.jumping && !movementStatus.falling*/)
                 movementStatus.platformFalling = true;
             if (context.canceled)
                 movementStatus.platformFalling = false;
@@ -75,7 +95,7 @@ namespace Laresistance.Movement
         {
             movementStatus.falling = false;
             movementStatus.jumping = false;
-            movementStatus.platformFalling = false;
+            //movementStatus.platformFalling = false;
             jumpsDone = 0;
         }
     }

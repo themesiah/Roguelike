@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 602242725}
   - component: {fileID: 602242724}
   - component: {fileID: 602242723}
+  - component: {fileID: 5833007420823087980}
   m_Layer: 5
   m_Name: PilgrimUI
   m_TagString: Untagged
@@ -215,6 +216,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5833007420823087980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602242721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b552dbcb671322740a2ce17f7f3392d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraRef: {fileID: 11400000, guid: 6abec616b80ebaf4c8a9a8ac516f0749, type: 2}
+  canvasRef: {fileID: 602242725}
 --- !u!1 &889600530
 GameObject:
   m_ObjectHideFlags: 0

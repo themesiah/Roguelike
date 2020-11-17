@@ -4,7 +4,6 @@ using Laresistance.Core;
 using Laresistance.Data;
 using Laresistance.Systems;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Behaviours
@@ -24,6 +23,10 @@ namespace Laresistance.Behaviours
         private EquipmentData data = default;
         [SerializeField]
         private StringGameEvent gameContextSignal = default;
+        [SerializeField]
+        private EquipmentData[] possibleDatas = default;
+        [SerializeField]
+        private bool randomDataFromDatas = false;
 
         [Header("Object")]
         [SerializeField]
@@ -34,6 +37,10 @@ namespace Laresistance.Behaviours
         private void Start()
         {
             rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, rewardUILibrary);
+            if (randomDataFromDatas)
+            {
+                SetData(possibleDatas[Random.Range(0, possibleDatas.Length)]);
+            }
         }
 
         public void SetData(EquipmentData data)

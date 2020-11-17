@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Behaviours.Platforms
 {
     [RequireComponent(typeof(PlatformEffector2D))]
     public class OneWayPlatform : MonoBehaviour
     {
-        private static float STATUS_RETURN_TIME = 0.5f;
-
-        private PlatformEffector2D platformEffector;
+        [SerializeField]
+        private ScriptableFloatReference statusReturnTime = default;
 
         [SerializeField]
         private float targetAngle = 180f;
+
+        private PlatformEffector2D platformEffector;
         private float startingAngle;
 
         
@@ -29,7 +31,7 @@ namespace Laresistance.Behaviours.Platforms
 
         private IEnumerator ReturnToStartingStatus()
         {
-            yield return new WaitForSeconds(STATUS_RETURN_TIME);
+            yield return new WaitForSeconds(statusReturnTime.GetValue());
             platformEffector.rotationalOffset = startingAngle;
         }
     }
