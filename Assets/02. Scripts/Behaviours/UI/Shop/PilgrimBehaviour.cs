@@ -320,6 +320,10 @@ namespace Laresistance.Behaviours
                             yield return rewardSystem.GetReward(rd);
                             UpdateShopPanel();
                             UpdateMinionUpgradePanel();
+                            if (shopOfferUIList.Count > 0)
+                            {
+                                shopOfferUIList[0].SelectButton();
+                            }
                             yield return StartingTween();
                         }
                     }

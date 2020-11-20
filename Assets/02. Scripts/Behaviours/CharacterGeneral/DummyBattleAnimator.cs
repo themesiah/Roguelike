@@ -6,8 +6,7 @@ namespace Laresistance.Behaviours
     public class DummyBattleAnimator : IBattleAnimator
     {
         public void Pause()
-        {
-        }
+        {}
 
         public IEnumerator PlayAnimation(string trigger)
         {
@@ -15,7 +14,9 @@ namespace Laresistance.Behaviours
         }
 
         public void Resume()
-        {
-        }
+        {}
+
+        public void Stop()
+        {}
     }
 }

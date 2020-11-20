@@ -6,6 +6,7 @@ using GamedevsToolbox.ScriptableArchitecture.Events;
 using Laresistance.Interaction;
 using Laresistance.Behaviours.Platforms;
 using Laresistance.Data;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -29,9 +30,9 @@ namespace Laresistance.Behaviours
             base.Awake();
         }
 
-        protected override IMovementManager CreateMovementManager()
+        protected override IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction)
         {
-            return new PlayerMovementManager(movementData, transform, body, animator, platformFallEvent);
+            return new PlayerMovementManager(movementData, transform, body, animator, platformFallEvent, onTurnAction);
         }
 
         public void Move(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).HorizontalMovement.Move(context);

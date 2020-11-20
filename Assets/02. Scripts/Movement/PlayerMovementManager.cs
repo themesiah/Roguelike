@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Laresistance.Data;
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using Laresistance.Interaction;
@@ -21,7 +22,7 @@ namespace Laresistance.Movement
         private GameEvent platformFallEvent;
         private bool paused = false;
 
-        public PlayerMovementManager(PlayerMovementData movementData, Transform transform, Rigidbody2D body, Animator animator, GameEvent platformFallEvent)
+        public PlayerMovementManager(PlayerMovementData movementData, Transform transform, Rigidbody2D body, Animator animator, GameEvent platformFallEvent, UnityAction<bool> onTurn)
         {
             this.MovementData = movementData;
             this.transform = transform;
@@ -30,7 +31,7 @@ namespace Laresistance.Movement
             this.platformFallEvent = platformFallEvent;
 
             MovementStatus = new PlayerMovementStatus();
-            HorizontalMovement = new PlayerHorizontalMovement(transform, body, MovementStatus, animator, MovementData.HorizontalSpeed);
+            HorizontalMovement = new PlayerHorizontalMovement(transform, body, MovementStatus, animator, MovementData.HorizontalSpeed, onTurn);
             Jump = new PlayerJump(transform, body, MovementStatus, animator, MovementData.JumpForce, platformFallEvent, MovementData.JumpsLimit);
             ScenarioInteraction = new PlayerScenarioInteraction();
         }
@@ -55,6 +56,16 @@ namespace Laresistance.Movement
         {
             body.simulated = true;
             paused = false;
+        }
+
+        public void Turn()
+        {
+            HorizontalMovement.Turn();
+        }
+
+        public void Turn(bool r)
+        {
+            HorizontalMovement.Turn(r);
         }
     }
 }

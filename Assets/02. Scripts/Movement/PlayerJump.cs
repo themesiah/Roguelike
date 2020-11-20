@@ -48,7 +48,7 @@ namespace Laresistance.Movement
             }
             else if (context.started && jumpsDone < jumpsLimit.GetValue())
             {
-                if (movementStatus.platformFalling && !movementStatus.falling && !movementStatus.jumping && CheckGroundedOnEffector())
+                if (movementStatus.platformFalling && !movementStatus.falling && !movementStatus.jumping && CheckGroundedOnEffector() && Mathf.Abs(body.velocity.x) == 0f)
                 {
                     platformFallEvent.Raise();
                     //movementStatus.platformFalling = false;

@@ -9,9 +9,20 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private List<GameObject> prefabList = default;
 
+        [SerializeField]
+        private bool manualSpawn = false;
+
         private void Start()
         {
-            GameObject go = Instantiate(prefabList[Random.Range(0, prefabList.Count - 1)], transform.parent);
+            if (!manualSpawn)
+            {
+                SpawnEnemy();
+            }
+        }
+
+        public void SpawnEnemy()
+        {
+            GameObject go = Instantiate(prefabList[Random.Range(0, prefabList.Count)], transform.parent);
             go.transform.position = transform.position;
             Vector3 scale = go.transform.localScale;
             if (Random.Range(0, 1) == 0)

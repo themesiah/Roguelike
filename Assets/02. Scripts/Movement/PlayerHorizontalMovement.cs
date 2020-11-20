@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 
@@ -15,14 +16,17 @@ namespace Laresistance.Movement
         private ScriptableFloatReference speed;
         private float currentSpeed = 0f;
         private bool turn = false;
+        private bool right = true;
+        private UnityAction<bool> onTurn;
 
-        public PlayerHorizontalMovement(Transform transform, Rigidbody2D body, PlayerMovementStatus status, Animator animator, ScriptableFloatReference speed)
+        public PlayerHorizontalMovement(Transform transform, Rigidbody2D body, PlayerMovementStatus status, Animator animator, ScriptableFloatReference speed, UnityAction<bool> onTurn)
         {
             this.transform = transform;
             this.body = body;
             this.status = status;
             this.speed = speed;
             this.animator = animator;
+            this.onTurn = onTurn;
         }
 
         public void Tick(float delta)
@@ -30,9 +34,10 @@ namespace Laresistance.Movement
             body.velocity = Vector2.right * currentSpeed + Vector2.up * body.velocity.y;
             if (turn)
             {
-                Vector3 scale = transform.localScale;
-                scale.x *= -1;
-                transform.localScale = scale;
+                Turn();
+                //Vector3 scale = transform.localScale;
+                //scale.x *= -1;
+                //transform.localScale = scale;
                 turn = false;
             }
         }
@@ -43,7 +48,6 @@ namespace Laresistance.Movement
             currentSpeed = 0f;
             if (context.performed && (axisValue > MOVEMENT_THRESHOLD || axisValue < -MOVEMENT_THRESHOLD))
             {
-                //currentSpeed = context.ReadValue<Vector2>().x * speed.GetValue();
                 currentSpeed = speed.GetValue() * Mathf.Sign(axisValue);
             }
             if ((currentSpeed < 0 && transform.localScale.x > 0) || (currentSpeed > 0 && transform.localScale.x < 0))
@@ -55,6 +59,28 @@ namespace Laresistance.Movement
         public void Stop()
         {
             currentSpeed = 0f;
+        }
+
+        public void Turn()
+        {
+            right = !right;
+            var scale = body.transform.localScale;
+            if (right == true)
+            {
+                scale.x = Mathf.Abs(scale.x);
+            }
+            else
+            {
+                scale.x = -Mathf.Abs(scale.x);
+            }
+            body.transform.localScale = scale;
+            onTurn?.Invoke(right);
+        }
+
+        public void Turn(bool r)
+        {
+            right = !r;
+            Turn();
         }
     }
 }

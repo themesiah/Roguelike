@@ -63,7 +63,8 @@ namespace Laresistance.Core
 
         public int GetUpgradeCost()
         {
-            return Data.BaseBloodPrice + Data.BaseBloodPrice / 100 * (Level-1);
+            //return Data.BaseBloodPrice + Data.BaseBloodPrice / 10 * (Level-1);
+            return Data.BaseBloodPrice * Level;
         }
 
         public void Upgrade()

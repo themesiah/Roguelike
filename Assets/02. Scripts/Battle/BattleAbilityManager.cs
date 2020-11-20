@@ -7,13 +7,15 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Battle
 {
-    public class BattleAbilityManager : MonoBehaviour
+    public class BattleAbilityManager
     {
         public static bool currentlyExecuting = false;
         private static List<BattleAbility> abilityQueue;
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
         private static IBattleAnimator currentAnimator = null;
         public static BattleAbility currentAbility;
+
+        private static bool battling = false;
 
         public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
         {
@@ -36,7 +38,8 @@ namespace Laresistance.Battle
             currentAnimator = animator;
             currentAbility = abilityToExecute;
             yield return animator?.PlayAnimation(animationTrigger);
-            abilityToExecute.Perform(allies, targets, level, bloodRef);
+            if (battling)
+                abilityToExecute.Perform(allies, targets, level, bloodRef);
             currentAbility = null;
             abilityQueue.Remove(abilityToExecute);
             currentlyExecuting = false;
@@ -45,6 +48,27 @@ namespace Laresistance.Battle
                 lastAnimator?.Resume();
                 currentAnimator = lastAnimator;
             }
+        }
+
+        public static void StartBattle()
+        {
+            battling = true;
+        }
+
+        public static void StopBattle()
+        {
+            CancelAllExecutions();
+            battling = false;
+            currentAnimator?.Stop();
+        }
+
+        public static void CancelAllExecutions()
+        {
+            if (currentAbility != null)
+            {
+                CancelExecution(currentAbility);
+            }
+            abilityQueue.Clear();
         }
 
         public static void CancelExecution(BattleAbility abilityToCancel)

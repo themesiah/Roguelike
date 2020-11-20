@@ -19,6 +19,8 @@ namespace Laresistance.Behaviours
         private Text abilityAfterTextReference = default;
         [SerializeField]
         private Transform minionPrefabHolder = default;
+        [SerializeField]
+        private Text levelTextReference = default;
 
         [SerializeField]
         private int sortingOrder = 101;
@@ -33,6 +35,7 @@ namespace Laresistance.Behaviours
             minionNameReference.text = Texts.GetText(offer.Reward.minion.Name);
             abilityTextReference.text = offer.Reward.minion.GetAbilityText();
             abilityAfterTextReference.text = offer.Reward.minion.GetNextLevelAbilityText();
+            levelTextReference.text = Texts.GetText("MINION_PANEL_003", new object[] { offer.Reward.minion.Level, offer.Reward.minion.Level + 1 });
             GameObject go = Instantiate(offer.Reward.minion.Data.Prefab, minionPrefabHolder);
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = go.transform.localScale * scaleMultiplier;

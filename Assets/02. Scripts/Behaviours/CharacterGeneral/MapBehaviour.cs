@@ -1,6 +1,7 @@
 ﻿using Laresistance.Movement;
 using Laresistance.Data;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -8,15 +9,17 @@ namespace Laresistance.Behaviours
     {
         [SerializeField]
         private RuntimeMapBehaviourSet mapBehaviours = default;
+        [SerializeField]
+        private UnityEvent<bool> onTurn = default;
 
         protected IMovementManager movementManager;
 
         protected virtual void Awake()
         {
-            movementManager = CreateMovementManager();
+            movementManager = CreateMovementManager((bool right)=> { onTurn?.Invoke(right); });
         }
 
-        protected abstract IMovementManager CreateMovementManager();
+        protected abstract IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction);
 
         private void Update()
         {
@@ -41,6 +44,11 @@ namespace Laresistance.Behaviours
         private void OnEnable()
         {
             mapBehaviours.Add(this);
+        }
+
+        public IMovementManager GetMovementManager()
+        {
+            return movementManager;
         }
     }
 }

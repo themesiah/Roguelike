@@ -18,11 +18,18 @@ namespace GamedevsToolbox.Utils
         [SerializeField]
         private bool checkTag = false;
 
+        [SerializeField]
+        private bool destroyOnTrigger = false;
+
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (!checkTag || other.tag == tagToCheck)
             {
                 onTriggerEnterEvent.Invoke();
+                if (destroyOnTrigger)
+                {
+                    Destroy(this);
+                }
             }
         }
 
@@ -31,6 +38,10 @@ namespace GamedevsToolbox.Utils
             if (!checkTag || other.tag == tagToCheck)
             {
                 onTriggerExitEvent.Invoke();
+                if (destroyOnTrigger)
+                {
+                    Destroy(this);
+                }
             }
         }
     }

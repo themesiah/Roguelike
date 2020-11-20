@@ -11,9 +11,14 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private ScriptableGameObjectSelector[] partyMemberSelectors = default;
 
-        private void Awake()
+        private void Start()
         {
-            foreach(ScriptableGameObjectSelector selector in partyMemberSelectors)
+            SpawnParty();
+        }
+
+        public void SpawnParty()
+        {
+            foreach (ScriptableGameObjectSelector selector in partyMemberSelectors)
             {
                 GameObject prefab = selector.Get();
                 if (prefab != null)
@@ -21,10 +26,7 @@ namespace Laresistance.Behaviours
                     Instantiate(prefab, partyHolder);
                 }
             }
-        }
 
-        private void Start()
-        {
             SpriteRenderer[] renderers = partyHolder.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer renderer in renderers)
             {

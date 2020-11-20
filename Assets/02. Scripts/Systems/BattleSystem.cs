@@ -2,16 +2,18 @@
 using Laresistance.Battle;
 using Laresistance.Core;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Laresistance.Systems
 {
     public class BattleSystem : IPausable
     {
         private CharacterBattleManager playerBattleManager;
-        private CharacterBattleManager[] enemiesBattleManager;
+        private List<CharacterBattleManager> enemiesBattleManager;
 
         private CharacterBattleManager selectedEnemy;
         private bool paused = false;
+        private bool battling = false;
 
         public BattleSystem()
         {
@@ -21,7 +23,7 @@ namespace Laresistance.Systems
         public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies)
         {
             this.playerBattleManager = player;
-            this.enemiesBattleManager = enemies;
+            this.enemiesBattleManager = new List<CharacterBattleManager>(enemies);
 
             playerBattleManager.SetBattleSystem(this);
 
@@ -43,10 +45,14 @@ namespace Laresistance.Systems
                 };
             }
             SelectNext();
+            battling = true;
+            BattleAbilityManager.StartBattle();
         }
 
         public void EndBattle()
         {
+            UnityEngine.Debug.Log("End battle!");
+            BattleAbilityManager.StopBattle();
             Unselect();
             playerBattleManager.EndBattle();
             foreach (var enemy in enemiesBattleManager)
@@ -56,6 +62,7 @@ namespace Laresistance.Systems
 
             playerBattleManager = null;
             enemiesBattleManager = null;
+            battling = false;
         }
 
         public void SelectNext()
@@ -66,11 +73,11 @@ namespace Laresistance.Systems
             }
             else
             {
-                for (int i = 0; i < enemiesBattleManager.Length; ++i)
+                for (int i = 0; i < enemiesBattleManager.Count; ++i)
                 {
                     if (selectedEnemy == enemiesBattleManager[i])
                     {
-                        if (i == enemiesBattleManager.Length-1)
+                        if (i == enemiesBattleManager.Count - 1)
                         {
                             Select(0);
                         } else
@@ -91,13 +98,13 @@ namespace Laresistance.Systems
             }
             else
             {
-                for (int i = 0; i < enemiesBattleManager.Length; ++i)
+                for (int i = 0; i < enemiesBattleManager.Count; ++i)
                 {
                     if (selectedEnemy == enemiesBattleManager[i])
                     {
                         if (i == 0)
                         {
-                            Select(enemiesBattleManager.Length-1);
+                            Select(enemiesBattleManager.Count - 1);
                         }
                         else
                         {
@@ -117,7 +124,7 @@ namespace Laresistance.Systems
             }
             else
             {
-                for (int i = 0; i < enemiesBattleManager.Length; ++i)
+                for (int i = 0; i < enemiesBattleManager.Count; ++i)
                 {
                     if (selectedEnemy == enemiesBattleManager[i])
                     {
@@ -158,7 +165,7 @@ namespace Laresistance.Systems
 
         public CharacterBattleManager[] GetEnemies()
         {
-            return enemiesBattleManager;
+            return enemiesBattleManager.ToArray();
         }
 
         public bool AllEnemiesDead()
@@ -176,9 +183,21 @@ namespace Laresistance.Systems
             return playerBattleManager.dead;
         }
 
+        public void RemoveEnemyAt(int indexToRemove)
+        {
+            UnityEngine.Assertions.Assert.IsTrue(indexToRemove >= 0);
+            UnityEngine.Assertions.Assert.IsTrue(indexToRemove < enemiesBattleManager.Count);
+            if (selectedEnemy == enemiesBattleManager[indexToRemove])
+            {
+                SelectNext();
+            }
+            enemiesBattleManager[indexToRemove].EndBattle();
+            enemiesBattleManager.RemoveAt(indexToRemove);
+        }
+
         public IEnumerator Tick(float delta)
         {
-            if (!paused)
+            if (!paused && battling)
             {
                 int playerAbilityIndex = playerBattleManager.Tick(delta);
                 if (playerAbilityIndex != -1)

@@ -27,6 +27,8 @@ namespace Laresistance.StateMachines
         private StringGameEvent actionMapSwitchEvent;
         private int centerCheckLayerMask;
         private bool goToMap = false;
+        private bool forcedStop = false;
+        private bool removeFirstEnemy = false;
         private RewardSystem rewardSystem;
         private PlayerMinionCompanionSpawner companionSpawner;
         private BattleSystem battleSystem;
@@ -62,9 +64,13 @@ namespace Laresistance.StateMachines
             companionSpawner.Despawn();
             battleSystem.EndBattle();
             // Yield end battle screen and give rewards
-            actionMapSwitchEvent.Raise("UI");
-            yield return rewardSystem.GetReward(rewardData);
+            if (!forcedStop)
+            {
+                actionMapSwitchEvent.Raise("UI");
+                yield return rewardSystem.GetReward(rewardData);
+            }
             goToMap = false;
+            forcedStop = false;
             yield return null;
         }
 
@@ -79,6 +85,9 @@ namespace Laresistance.StateMachines
             if (signal == "FinishBattle")
             {
                 goToMap = true;
+            } else if (signal == "RemoveFirstEnemy")
+            {
+                removeFirstEnemy = true;
             }
         }
 
@@ -95,6 +104,12 @@ namespace Laresistance.StateMachines
                 if (goToMap)
                 {
                     resolve("Map");
+                } else if (removeFirstEnemy)
+                {
+                    removeFirstEnemy = false;
+                    battleSystem.RemoveEnemyAt(0);
+                    rewardData = new RewardData(0, 0, null, null, null, null);
+                    deathCount++;
                 }
             }
             yield return battleSystem.Tick(Time.deltaTime);
@@ -139,7 +154,7 @@ namespace Laresistance.StateMachines
             }
 
             Vector3 originalCenter = GetCenter();
-            Vector3 center = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+            Vector3 center = GetCenter(playerObject.transform.position, originalCenter) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
 
             companionSpawner.Spawn(center, playerObject);
         }
@@ -159,6 +174,7 @@ namespace Laresistance.StateMachines
             Vector3 tempCenter = (this.playerObject.transform.position + this.enemyObjects[0].transform.position) / 2f;
             float offset = CalculateOffset(tempCenter);
             tempCenter.x += offset;
+            tempCenter.y = this.enemyObjects[0].transform.position.y;
 
             return tempCenter;
         }
@@ -256,21 +272,33 @@ namespace Laresistance.StateMachines
             Vector3 originalCenter = GetCenter();
             playerObject.transform.position = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
             enemyObjects[0].transform.position = GetCenter(enemyObjects[0].transform.position, originalCenter) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
+            var playerPos = playerObject.transform.position;
+            playerPos.y = enemyObjects[0].transform.position.y;
+            playerObject.transform.position = playerPos;
             for (int i = 1; i < enemyObjects.Length; ++i)
             {
-                enemyObjects[1].transform.position = enemyObjects[0].transform.position + Vector3.left * PARTY_HORIZONTAL_OFFSET * modifier * i + Vector3.up * PARTY_VERTICAL_OFFSET * i;
+                enemyObjects[i].transform.position = enemyObjects[0].transform.position + Vector3.left * PARTY_HORIZONTAL_OFFSET * modifier * i + Vector3.up * PARTY_VERTICAL_OFFSET * i;
+                Turn(enemyObjects[i], !playerLookingRight);
             }
         }
 
         private void Turn(GameObject character, bool right)
         {
-            Vector3 scale = character.transform.localScale;
-            scale.x = Mathf.Abs(scale.x);
-            if (!right)
+            MapBehaviour mb = character.GetComponent<MapBehaviour>();
+            if (mb != null)
             {
-                scale.x *= -1;
+                mb.GetMovementManager().Turn(right);
             }
-            character.transform.localScale = scale;
+            else
+            {
+                Vector3 scale = character.transform.localScale;
+                scale.x = Mathf.Abs(scale.x);
+                if (!right)
+                {
+                    scale.x *= -1;
+                }
+                character.transform.localScale = scale;
+            }
         }
         #endregion
     }

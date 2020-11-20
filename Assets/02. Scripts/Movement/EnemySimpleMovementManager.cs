@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Laresistance.Movement
 {
@@ -15,16 +16,19 @@ namespace Laresistance.Movement
         private ScriptableFloatReference movementSpeed;
         private int raycastLayerMask;
         private Transform raycastPivot;
+        private UnityAction<bool> onTurn;
 
         private bool right = true;
         private bool stopped = false;
+        private int pauseStack = 0;
 
-        public EnemySimpleMovementManager(Rigidbody2D body, ScriptableFloatReference movementSpeed, int raycastLayerMask, Transform raycastPivot)
+        public EnemySimpleMovementManager(Rigidbody2D body, ScriptableFloatReference movementSpeed, int raycastLayerMask, Transform raycastPivot, UnityAction<bool> onTurn)
         {
             this.body = body;
             this.movementSpeed = movementSpeed;
             this.raycastLayerMask = raycastLayerMask;
             this.raycastPivot = raycastPivot;
+            this.onTurn = onTurn;
             if (body.transform.localScale.x > 0f)
             {
                 right = false;
@@ -45,13 +49,20 @@ namespace Laresistance.Movement
 
         public void Pause()
         {
+            pauseStack++;
             body.velocity = Vector2.zero;
+            body.simulated = false;
             stopped = true;
         }
 
         public void Resume()
         {
-            stopped = false;
+            pauseStack--;
+            if (pauseStack == 0)
+            {
+                stopped = false;
+                body.simulated = true;
+            }
         }
 
         private bool CheckRaycastNeedToTurn()
@@ -85,12 +96,25 @@ namespace Laresistance.Movement
             return false;
         }
 
-        private void Turn()
+        public void Turn()
         {
             right = !right;
             var scale = body.transform.localScale;
-            scale.x *= -1f;
+            if (right == true)
+            {
+                scale.x = Mathf.Abs(scale.x);
+            } else
+            {
+                scale.x = -Mathf.Abs(scale.x);
+            }
             body.transform.localScale = scale;
+            onTurn?.Invoke(right);
+        }
+
+        public void Turn(bool r)
+        {
+            right = !r;
+            Turn();
         }
 
         private void Move()

@@ -10,6 +10,8 @@ namespace Laresistance.Behaviours
     public class PlayerDataBehaviour : MonoBehaviour
     {
         [SerializeField]
+        private bool useStartingData = false;
+        [SerializeField]
         private List<MinionData> startingMinions = default;
         [SerializeField]
         private List<ConsumableData> startingConsumables = default;
@@ -32,22 +34,25 @@ namespace Laresistance.Behaviours
             BattleAbility testAbility = new BattleAbility(testEffects, 3f, StatusManager, player.GetEquipmentEvents());
             player.SetMainAbility(testAbility);
 
-            foreach (var md in startingMinions)
+            if (useStartingData)
             {
-                Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentEvents(), StatusManager);
-                player.EquipMinion(m);
-            }
+                foreach (var md in startingMinions)
+                {
+                    Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentEvents(), StatusManager);
+                    player.EquipMinion(m);
+                }
 
-            foreach (var cd in startingConsumables)
-            {
-                Consumable c = ConsumableFactory.GetConsumable(cd, player.GetEquipmentEvents(), StatusManager);
-                player.AddConsumable(c);
-            }
+                foreach (var cd in startingConsumables)
+                {
+                    Consumable c = ConsumableFactory.GetConsumable(cd, player.GetEquipmentEvents(), StatusManager);
+                    player.AddConsumable(c);
+                }
 
-            foreach (var eq in startingEquipments)
-            {
-                Equipment e = EquipmentFactory.GetEquipment(eq, player.GetEquipmentEvents(), StatusManager);
-                player.EquipEquipment(e);
+                foreach (var eq in startingEquipments)
+                {
+                    Equipment e = EquipmentFactory.GetEquipment(eq, player.GetEquipmentEvents(), StatusManager);
+                    player.EquipEquipment(e);
+                }
             }
         }
 

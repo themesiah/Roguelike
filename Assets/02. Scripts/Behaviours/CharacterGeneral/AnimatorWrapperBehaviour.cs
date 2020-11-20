@@ -64,5 +64,10 @@ namespace Laresistance.Behaviours
         {
             animator.speed = lastAnimatorSpeed;
         }
+
+        public void Stop()
+        {
+            animator.SetTrigger("Stop");
+        }
     }
 }
