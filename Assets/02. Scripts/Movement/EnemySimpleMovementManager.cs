@@ -58,6 +58,7 @@ namespace Laresistance.Movement
         public void Resume()
         {
             pauseStack--;
+            pauseStack = System.Math.Max(0, pauseStack);
             if (pauseStack == 0)
             {
                 stopped = false;

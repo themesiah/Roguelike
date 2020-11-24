@@ -32,7 +32,14 @@ namespace Laresistance.Behaviours
             if (spriteReference != null)
             {
                 spriteReference.sprite = keySetSelector.Get();
-                ((RectTransform)spriteReference.transform).sizeDelta = keySetSelector.Get().rect.size;
+                if (spriteReference.sprite != null)
+                {
+                    spriteReference.enabled = true;
+                    ((RectTransform)spriteReference.transform).sizeDelta = keySetSelector.Get().rect.size;
+                } else
+                {
+                    spriteReference.enabled = false;
+                }
             }
             if (spriteRenderer != null)
                 spriteRenderer.sprite = keySetSelector.Get();

@@ -286,10 +286,12 @@ namespace Laresistance.Behaviours
         private IEnumerator OpenShopCoroutine()
         {
             gameContextSignal.Raise("UI");
+            int reserveSize = player.ClearMinionReserve();
+            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null));
             // Show all shop panels. Wait for input.
             yield return OpenShopUI();
             // If there are reserved minions, convert them into hard currency and do reward manager thing.
-            int reserveSize = player.ClearMinionReserve();
+            reserveSize = player.ClearMinionReserve();
             yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null));
             gameContextSignal.Raise("Map");
         }
