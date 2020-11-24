@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5827437557735759088}
   m_Layer: 0
   m_Name: Trigger
-  m_TagString: Untagged
+  m_TagString: Equip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,6 +159,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   controlsObject: {fileID: 4195167429193287584}
+  isEquip: 1
 --- !u!1 &4195167429193287584
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,8 +170,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8002935439048628719}
   - component: {fileID: 2267390497976795180}
+  - component: {fileID: 7348716179528023498}
   m_Layer: 0
-  m_Name: ButtonY
+  m_Name: ButtonX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,7 +186,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4195167429193287584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.03, y: 0.54, z: 0}
+  m_LocalPosition: {x: 1.311, y: 0.742, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 8062120022546674103}
@@ -230,7 +232,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 207
-  m_Sprite: {fileID: -2248371898726000278, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
+  m_Sprite: {fileID: 3563901739678532456, guid: 711c48ed6ead84c479875ed5816d9efb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -241,6 +243,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7348716179528023498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195167429193287584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b527958ab8b648247a17ca08cf82f3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteReference: {fileID: 0}
+  spriteRenderer: {fileID: 2267390497976795180}
+  keySetSelector: {fileID: 11400000, guid: 9bc17c4749d55cf42ae1fad074aa5d6c, type: 2}
 --- !u!1 &5811561286509978868
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +343,8 @@ MonoBehaviour:
       constantValue: {x: 0, y: 0}
   data: {fileID: 11400000, guid: e72cf9f1b8837af42ab1962938228877, type: 2}
   gameContextSignal: {fileID: 11400000, guid: 53ecdae93c93f2f42923896b5f5c9505, type: 2}
+  possibleDatas: []
+  randomDataFromDatas: 0
   spriteRenderer: {fileID: 8601095673514206154}
 --- !u!50 &476761725
 Rigidbody2D:

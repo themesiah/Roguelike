@@ -11,7 +11,7 @@ namespace Laresistance.Behaviours
         protected override void SetupStatusManager()
         {
             base.SetupStatusManager();
-            minion = MinionFactory.GetMinion((MinionData)enemyData, currentLevel.GetValue(), null, StatusManager);
+            minion = MinionFactory.GetMinion((MinionData)enemyData, enemyLevel, null, StatusManager);
         }
 
         protected override void SetupAbilityInputProcessor()

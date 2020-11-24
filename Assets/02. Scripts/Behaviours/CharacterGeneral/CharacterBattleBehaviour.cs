@@ -72,5 +72,7 @@ namespace Laresistance.Behaviours
         {
             StatusManager.health.TakeDamage(damage, null);
         }
+
+        public abstract BattleAbility[] GetAbilities();
     }
 }

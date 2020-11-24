@@ -147,16 +147,7 @@ namespace Laresistance.StateMachines
 
         private void SpawnPlayerCompanions()
         {
-            float modifier = -1f;
-            if (playerObject.transform.position.x < enemyObjects[0].transform.position.x)
-            {
-                modifier = 1f;
-            }
-
-            Vector3 originalCenter = GetCenter();
-            Vector3 center = GetCenter(playerObject.transform.position, originalCenter) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
-
-            companionSpawner.Spawn(center, playerObject);
+            companionSpawner.Spawn(playerObject.transform.position.x < enemyObjects[0].transform.position.x, playerObject);
         }
 
         private void EnemyDeath(CharacterHealth health)
@@ -190,24 +181,6 @@ namespace Laresistance.StateMachines
             List<RaycastHit2D> results = new List<RaycastHit2D>();
             int hits = 0;
 
-            // Left wall
-            hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.left, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
-            if (hits > 0)
-            {
-                offset += (CENTER_RAYCAST_THRESHOLD - results[0].distance);
-                horizontalHit = true;
-            }
-
-            // Right wall
-            if (!horizontalHit) {
-                hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.right, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
-                if (hits > 0)
-                {
-                    offset -= (CENTER_RAYCAST_THRESHOLD - results[0].distance);
-                    horizontalHit = true;
-                }
-            }
-
             // Left fall
             if (!horizontalHit)
             {
@@ -218,6 +191,7 @@ namespace Laresistance.StateMachines
                     {
                         offset += CENTER_RAYCAST_THRESHOLD;
                         horizontalHit = true;
+                        Debug.Log("Left fall");
                         break;
                     }
                 }
@@ -232,11 +206,35 @@ namespace Laresistance.StateMachines
                     if (hits == 0)
                     {
                         offset -= CENTER_RAYCAST_THRESHOLD;
+                        horizontalHit = true;
+                        Debug.Log("Right fall");
                         break;
                     }
                 }
             }
 
+            // Left wall
+            if (!horizontalHit)
+            {
+                hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.left, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
+                if (hits > 0)
+                {
+                    offset += (CENTER_RAYCAST_THRESHOLD - results[0].distance);
+                    horizontalHit = true;
+                    Debug.Log("Left wall");
+                }
+            }
+
+            // Right wall
+            if (!horizontalHit) {
+                hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.right, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
+                if (hits > 0)
+                {
+                    offset -= (CENTER_RAYCAST_THRESHOLD - results[0].distance);
+                    horizontalHit = true;
+                    Debug.Log("Right wall");
+                }
+            }
 
             return offset;
         }

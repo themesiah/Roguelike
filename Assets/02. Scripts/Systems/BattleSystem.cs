@@ -165,7 +165,10 @@ namespace Laresistance.Systems
 
         public CharacterBattleManager[] GetEnemies()
         {
-            return enemiesBattleManager.ToArray();
+            if (enemiesBattleManager == null)
+                return null;
+            else
+                return enemiesBattleManager.ToArray();
         }
 
         public bool AllEnemiesDead()

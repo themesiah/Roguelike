@@ -74,7 +74,8 @@ namespace Laresistance.Battle
         public static void CancelExecution(BattleAbility abilityToCancel)
         {
             if (abilityQueue == null || !abilityQueue.Contains(abilityToCancel))
-                throw new System.Exception("The ability has not been executed, so it can't be cancelled");
+                return;
+                //throw new System.Exception("The ability has not been executed, so it can't be cancelled");
 
             abilityQueue.Remove(abilityToCancel);
         }

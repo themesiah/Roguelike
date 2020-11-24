@@ -16,6 +16,11 @@ namespace Laresistance.Battle
             this.abilities = abilities;
         }
 
+        public BattleAbility[] GetAbilities()
+        {
+            return abilities;
+        }
+
         public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
         {
             for (int i = 0; i < abilities.Length; ++i)

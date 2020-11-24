@@ -160,7 +160,7 @@ namespace Laresistance.Battle
         public void RecalculateMaxHealth(EquipmentEvents equipmentEvents)
         {
             maxHealth = originalMaxHealth;
-            equipmentEvents.OnGetMaxHealth(ref maxHealth);
+            equipmentEvents?.OnGetMaxHealth(ref maxHealth);
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;

@@ -36,6 +36,18 @@ namespace Laresistance.Tests {
             return new BattleStatusManager(new CharacterHealth(health));
         }
 
+        [OneTimeSetUp]
+        public void TestSetup()
+        {
+            BattleAbilityManager.StartBattle();
+        }
+
+        [OneTimeTearDown]
+        public void TestTearDown()
+        {
+            BattleAbilityManager.StopBattle();
+        }
+
         [UnityTest]
         public IEnumerator When_ApplyingSingleDot()
         {
@@ -46,9 +58,9 @@ namespace Laresistance.Tests {
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
             enemy.ProcessStatus(0.1f);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.5f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
             Assert.AreEqual(97, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.5f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
             Assert.AreEqual(94, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -65,9 +77,9 @@ namespace Laresistance.Tests {
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
             enemy.ProcessStatus(0.1f);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.5f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
             Assert.AreEqual(94, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.5f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
             Assert.AreEqual(88, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -80,14 +92,14 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             ability.Tick(1.1f);
-            enemy.ProcessStatus(0.3f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY/2f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.3f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f);
             Assert.AreEqual(97, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.3f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f);
             Assert.AreEqual(94, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.3f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f);
             Assert.AreEqual(91, enemy.health.GetCurrentHealth());
             yield return null;
         }

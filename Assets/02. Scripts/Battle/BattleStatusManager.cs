@@ -35,8 +35,8 @@ namespace Laresistance.Battle
         #region Constants
         public static float SPEED_MODIFIER_DURATION = 3f;
         public static float DAMAGE_MODIFIER_DURATION = 3f;
-        public static float DAMAGE_OVER_TIME_DURATION = 3f;
-        public static float DAMAGE_OVER_TIME_TICK_DELAY = 0.5f;
+        public static float DAMAGE_OVER_TIME_DURATION = 9f;
+        public static float DAMAGE_OVER_TIME_TICK_DELAY = 1.5f;
         #endregion
 
         #region Private Variables

@@ -16,7 +16,7 @@ namespace Laresistance.Battle
 
         public override string GetAnimationTrigger()
         {
-            return "Attack";
+            return "Effect";
         }
 
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)

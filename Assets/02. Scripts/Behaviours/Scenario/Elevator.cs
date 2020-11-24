@@ -45,11 +45,22 @@ namespace Laresistance.Behaviours
 
         private IEnumerator MoveElevator(Vector3 targetPos)
         {
-            while(!Mathf.Approximately(transform.position.y, targetPos.y))
+            body.velocity = new Vector2(0f, elevatorSpeedReference.GetValue());
+            if (transform.position.y > targetPos.y)
             {
-                body.MovePosition(Vector2.MoveTowards(transform.position, targetPos, elevatorSpeedReference.GetValue() * Time.deltaTime));
-                yield return null;
+                body.velocity = -body.velocity;
+                while (transform.position.y > targetPos.y)
+                {
+                    yield return null;
+                }
+            } else
+            {
+                while (transform.position.y < targetPos.y)
+                {
+                    yield return null;
+                }
             }
+            body.velocity = Vector2.zero;
         }
     }
 }

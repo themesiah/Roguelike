@@ -44,6 +44,18 @@ namespace Laresistance.Tests {
             return new BattleStatusManager(new CharacterHealth(health));
         }
 
+        [OneTimeSetUp]
+        public void TestSetup()
+        {
+            BattleAbilityManager.StartBattle();
+        }
+
+        [OneTimeTearDown]
+        public void TestTearDown()
+        {
+            BattleAbilityManager.StopBattle();
+        }
+
         [UnityTest]
         public IEnumerator When_DoingMultipleAbilitiesNoSpeedChange()
         {

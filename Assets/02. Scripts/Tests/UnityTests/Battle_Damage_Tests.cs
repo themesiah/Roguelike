@@ -49,14 +49,28 @@ namespace Laresistance.Tests {
             return new BattleStatusManager(new CharacterHealth(health));
         }
 
+        [OneTimeSetUp]
+        public void TestSetup()
+        {
+            BattleAbilityManager.StartBattle();
+        }
+
+        [OneTimeTearDown]
+        public void TestTearDown()
+        {
+            BattleAbilityManager.StopBattle();
+        }
+
         [UnityTest]
         public IEnumerator When_DealingDamage()
         {
+            //BattleAbilityManager.StartBattle();
             BattleStatusManager player = GetStatusManager(STARTING_HEALTH);
             BattleStatusManager enemy = GetStatusManager(STARTING_HEALTH);
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
+            //BattleAbilityManager.StopBattle();
             yield return null;
         }
 

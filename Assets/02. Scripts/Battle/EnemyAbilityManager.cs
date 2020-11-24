@@ -52,5 +52,10 @@ namespace Laresistance.Battle
                     ability.ResetTimer();
             }
         }
+
+        public BattleAbility[] GetAbilities()
+        {
+            return abilities;
+        }
     }
 }

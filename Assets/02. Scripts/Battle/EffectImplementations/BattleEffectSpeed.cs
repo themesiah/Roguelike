@@ -19,10 +19,19 @@ namespace Laresistance.Battle
         public override int GetPower(int level, EquipmentEvents equipmentEvents)
         {
             base.GetPower(level, equipmentEvents);
-            int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.05f)));
+            int powerTemp = System.Math.Abs(100 - Power);
+            int power = Mathf.CeilToInt(powerTemp * (1 + ((level - 1) * 0.05f)));
             equipmentEvents?.OnGetPower?.Invoke(ref power);
             equipmentEvents?.OnGetEffectPower?.Invoke(ref power);
-            equipmentEvents?.OnGetEffectPowerFlat?.Invoke(ref power);
+            //equipmentEvents?.OnGetEffectPowerFlat?.Invoke(ref powerTemp);
+
+            if (Power > 100)
+            {
+                power += 100;
+            } else
+            {
+                power = 100 - power;
+            }
             return power;
         }
 

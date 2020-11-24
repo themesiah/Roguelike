@@ -9,6 +9,8 @@ namespace Laresistance.Behaviours.Platforms
         private UnityEvent interactionEvent = default;
         [SerializeField]
         private GameObject controlsObject = default;
+        [SerializeField]
+        private bool isEquip = false;
 
         public void Interact()
         {
@@ -24,5 +26,7 @@ namespace Laresistance.Behaviours.Platforms
         {
             controlsObject?.SetActive(false);
         }
+
+        public bool IsEquip => isEquip;
     }
 }

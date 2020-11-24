@@ -71,5 +71,10 @@ namespace Laresistance.Behaviours
             playerDataBehaviour.player.ResetAbilities();
             StatusManager.ResetModifiers();
         }
+
+        public override BattleAbility[] GetAbilities()
+        {
+            return playerDataBehaviour.player.GetAbilities();
+        }
     }
 }

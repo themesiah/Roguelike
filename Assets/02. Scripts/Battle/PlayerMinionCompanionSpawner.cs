@@ -17,10 +17,10 @@ namespace Laresistance.Battle
             minionObjects = new List<GameObject>();
         }
 
-        public void Spawn(Vector3 center, GameObject playerObject)
+        public void Spawn(bool right, GameObject playerObject)
         {
             float modifier = 1f;
-            if (playerObject.transform.localScale.x < 0f)
+            if (!right)
             {
                 modifier = -1f;
             }

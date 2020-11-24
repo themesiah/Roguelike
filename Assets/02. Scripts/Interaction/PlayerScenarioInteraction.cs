@@ -5,9 +5,9 @@ namespace Laresistance.Interaction
 {
     public class PlayerScenarioInteraction
     {
-        public void Interact(InputAction.CallbackContext context, ScenarioInteraction interaction)
+        public void Interact(InputAction.CallbackContext context, ScenarioInteraction interaction, bool isEquip)
         {
-            if (context.performed && interaction != null)
+            if (context.performed && interaction != null && interaction.IsEquip == isEquip)
             {
                 interaction.Interact();
             }

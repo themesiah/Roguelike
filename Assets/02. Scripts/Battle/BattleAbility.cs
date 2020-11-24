@@ -28,6 +28,8 @@ namespace Laresistance.Battle
         public delegate void OnAbilityTimerChangedHandler(float currentTimer, float cooldown, float percent);
         public event OnAbilityTimerChangedHandler OnAbilityTimerChanged;
 
+        private bool eventsRegistered = false;
+
         public BattleAbility(List<BattleEffect> effectsToSet, float cooldown, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null)
         {
             if (effectsToSet == null || effectsToSet.Count == 0)
@@ -40,9 +42,20 @@ namespace Laresistance.Battle
             this.statusManager = statusManager;
             if (statusManager != null)
             {
-                statusManager.OnStun += Stun;
-                statusManager.OnCooldownsAdvance += AdvanceCooldowns;
+                RegisterEvents(statusManager, null);
             }
+        }
+
+        private void RegisterEvents(BattleStatusManager statusManager, BattleStatusManager oldStatusManager)
+        {
+            if (eventsRegistered)
+            {
+                oldStatusManager.OnStun -= Stun;
+                oldStatusManager.OnCooldownsAdvance -= AdvanceCooldowns;
+            }
+            statusManager.OnStun += Stun;
+            statusManager.OnCooldownsAdvance += AdvanceCooldowns;
+            eventsRegistered = true;
         }
 
         public void SetShieldAbility()
@@ -66,11 +79,14 @@ namespace Laresistance.Battle
             {
                 effect.SetStatusManager(selfStatus);
             }
+            var oldStatus = this.statusManager;
+            this.statusManager = selfStatus;
+            RegisterEvents(selfStatus, oldStatus);
         }
 
         public BattleStatusManager GetStatusManager()
         {
-            return effects[0].GetStatusManager();
+            return this.statusManager;
         }
 
         public BattleAbility Copy()

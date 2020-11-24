@@ -13,10 +13,20 @@ namespace Laresistance.Behaviours
         protected ScriptableIntReference currentLevel = default;
         [SerializeField]
         protected RuntimePlayerDataBehaviourSingle playerDataRef = default;
+        [SerializeField]
+        protected ScriptableVector2Reference levelVarianceRef = default;
+
+        protected int enemyLevel;
+
+        protected void GenerateEnemyLevel()
+        {
+            enemyLevel = System.Math.Min(1, (int)(currentLevel.GetValue() * levelVarianceRef.GetValue().x) + Random.Range((int)-levelVarianceRef.GetValue().y, (int)levelVarianceRef.GetValue().y + 1));
+        }
 
         protected override void SetupStatusManager()
         {
-            StatusManager = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth * (int)(1f + (currentLevel.GetValue() - 1) * 0.1f)));
+            GenerateEnemyLevel();
+            StatusManager = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth * (int)(1f + (enemyLevel - 1) * 0.1f)));
         }
 
         protected override void SetupAbilityInputExecutor()
@@ -32,7 +42,7 @@ namespace Laresistance.Behaviours
                 abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], null, StatusManager);
             }
 
-            AbilityInputProcessor = new EnemyAbilityManager(abilities, currentLevel.GetValue(), animator);
+            AbilityInputProcessor = new EnemyAbilityManager(abilities, enemyLevel, animator);
         }
 
         protected override void ConfigurePrefab()
@@ -51,10 +61,15 @@ namespace Laresistance.Behaviours
 
         public virtual RewardData GetReward()
         {
-            int bloodToGet = enemyData.BaseBloodReward * currentLevel.GetValue();
+            int bloodToGet = enemyData.BaseBloodReward * enemyLevel;
             playerDataRef.Get().player.GetEquipmentEvents().OnGetExtraBlood?.Invoke(ref bloodToGet);
             RewardData rewardData = new RewardData(bloodToGet, 0, null, null, null, null);
             return rewardData;
+        }
+
+        public override BattleAbility[] GetAbilities()
+        {
+            return AbilityInputProcessor.GetAbilities();
         }
     }
 }

@@ -38,7 +38,8 @@ namespace Laresistance.Behaviours
         public void Move(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).HorizontalMovement.Move(context);
         public void Jump(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).Jump.Jump(context);
         public void PlatformFall(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).Jump.Fall(context);
-        public void Interact(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).ScenarioInteraction.Interact(context, currentInteraction);
+        public void Interact(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).ScenarioInteraction.Interact(context, currentInteraction, false);
+        public void InteractEquip(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).ScenarioInteraction.Interact(context, currentInteraction, true);
 
         public bool IsJumping => ((PlayerMovementManager)movementManager).MovementStatus.jumping;
         public bool IsFalling => ((PlayerMovementManager)movementManager).MovementStatus.falling;

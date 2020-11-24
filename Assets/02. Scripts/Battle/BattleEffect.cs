@@ -120,7 +120,7 @@ namespace Laresistance.Battle
                     textId = "EFF_TARGET_ENEMY";
                     break;
                 case EffectTargetType.AllAllies:
-                    textId = "NOTEXT";
+                    textId = "EFF_TARGET_SELF";
                     break;
                 case EffectTargetType.AllEnemies:
                     textId = "EFF_TARGET_ENEMIES";
