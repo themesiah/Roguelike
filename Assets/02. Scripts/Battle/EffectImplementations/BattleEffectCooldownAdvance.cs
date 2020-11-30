@@ -24,7 +24,7 @@ namespace Laresistance.Battle
 
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
-            string textId = "EFF_STUN_DESC";
+            string textId = "EFF_ADVANCE_DESC";
             return Texts.GetText(textId, new object[] { GetTargetString() });
         }
 

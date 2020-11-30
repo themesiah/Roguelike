@@ -164,7 +164,6 @@ namespace Laresistance.Behaviours
         {
             Init();
             UpdateMinionUpgradePanel();
-            UpdateShopPanel();
             StartCoroutine(OpenShopCoroutine());
         }
 
@@ -288,6 +287,7 @@ namespace Laresistance.Behaviours
             gameContextSignal.Raise("UI");
             int reserveSize = player.ClearMinionReserve();
             yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null));
+            UpdateShopPanel();
             // Show all shop panels. Wait for input.
             yield return OpenShopUI();
             // If there are reserved minions, convert them into hard currency and do reward manager thing.

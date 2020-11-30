@@ -49,6 +49,7 @@ namespace Laresistance.Core
 
         public void EndBattle()
         {
+            StatusManager.ResetModifiers();
             OnBattleEnd?.Invoke();
         }
 

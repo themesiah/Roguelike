@@ -59,7 +59,7 @@ namespace Laresistance.Battle
         public event OnDamageOverTimeAppliedHandler OnDamageOverTimeApplied;
         public delegate void OnDamageImprovementAppliedHandler(BattleStatusManager sender, float coeficient, float currentDamageImprovement);
         public event OnDamageImprovementAppliedHandler OnDamageImprovementApplied;
-        public delegate void OnStunHandler(BattleStatusManager sender);
+        public delegate void OnStunHandler(BattleStatusManager sender, float stunPercent);
         public event OnStunHandler OnStun;
         public delegate void OnCooldownsAdvanceHandler(BattleStatusManager sender);
         public event OnCooldownsAdvanceHandler OnCooldownsAdvance;
@@ -181,9 +181,9 @@ namespace Laresistance.Battle
             tempDamageModifications.Clear();
         }
 
-        public void Stun()
+        public void Stun(float percent)
         {
-            OnStun?.Invoke(this);
+            OnStun?.Invoke(this, percent);
         }
 
         public void Cure()

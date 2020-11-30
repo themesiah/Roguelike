@@ -6,6 +6,7 @@ using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using System.Diagnostics;
+using UnityEngine;
 #if UNITY_EDITOR
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
@@ -208,9 +209,9 @@ namespace Laresistance.Battle
             return false;
         }
 
-        private void Stun(BattleStatusManager sender)
+        private void Stun(BattleStatusManager sender, float stunPercent)
         {
-            timer = 0f;
+            timer = Mathf.Max(0f, timer- (stunPercent * GetCooldown()));
         }
 
         private void AdvanceCooldowns(BattleStatusManager sender)

@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
+using GamedevsToolbox.Utils;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -6,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace Laresistance.Behaviours
 {
     [RequireComponent(typeof(PlayerInput))]
-    public class ControlsChangedBehaviour : MonoBehaviour
+    public class ControlsChangedBehaviour : MonoBehaviour, IPausable
     {
         [SerializeField]
         private PlayerInput playerInput = default;
@@ -15,6 +16,7 @@ namespace Laresistance.Behaviours
         private ScriptableIntReference currentSchemeReference = default;
 
         private string currentControlScheme = null;
+        private string lastActionMap = null;
 
         private void Awake()
         {
@@ -37,6 +39,21 @@ namespace Laresistance.Behaviours
                         break;
                 }
             }
+        }
+
+        public void ActionMapChanged(string newActionMap)
+        {
+            lastActionMap = newActionMap;
+        }
+
+        public void Pause()
+        {
+            playerInput.SwitchCurrentActionMap("UI");
+        }
+
+        public void Resume()
+        {
+            playerInput.SwitchCurrentActionMap(lastActionMap);
         }
     }
 }

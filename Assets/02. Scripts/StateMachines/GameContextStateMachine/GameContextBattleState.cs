@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using Laresistance.Behaviours;
 using Laresistance.Battle;
-using System.Collections.Generic;
 using Laresistance.Systems;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
@@ -15,15 +14,7 @@ namespace Laresistance.StateMachines
 {
     public class GameContextBattleState : ICoroutineState
     {
-        private static float CHARACTERS_HORIZONTAL_OFFSET = 3f;
-        private static float CENTER_RAYCAST_THRESHOLD = 6f;
-        private static int CENTER_DOWN_RAYCAST_AMOUNT = 3;
-        private static float CENTER_DOWN_RAYCAST_DISTANCE = 1f;
-        private static float PARTY_HORIZONTAL_OFFSET = 0.4f;
-        private static float PARTY_VERTICAL_OFFSET = 0.4f;
-
         private GameObject playerObject;
-        private Camera playerCamera;
         private StringGameEvent actionMapSwitchEvent;
         private int centerCheckLayerMask;
         private bool goToMap = false;
@@ -53,7 +44,7 @@ namespace Laresistance.StateMachines
             battleSystem.InitBattle(playerObject.GetComponent<PlayerBattleBehaviour>().battleManager, enemies);
             // Move camera
             // Move characters
-            MoveCharacters();
+            BattlePosition.MoveCharacters(this.playerObject, this.enemyObjects, centerCheckLayerMask);
             GamedevsToolbox.Utils.Logger.Logger.Log("Entering battle state");
             yield return null;
         }
@@ -126,13 +117,13 @@ namespace Laresistance.StateMachines
         public GameContextBattleState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference, ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary)
         {
             this.playerObject = playerObject;
-            this.playerCamera = playerCamera;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
             this.centerCheckLayerMask = centerCheckLayerMask;
             Player player = playerObject.GetComponent<PlayerDataBehaviour>().player;
             this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             this.companionSpawner = new PlayerMinionCompanionSpawner(player);
             this.battleSystem = new BattleSystem();
+            playerObject.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += PlayerDeath;
         }
         #endregion
 
@@ -159,144 +150,9 @@ namespace Laresistance.StateMachines
             }
         }
 
-        private Vector3 GetCenter()
+        private void PlayerDeath(CharacterHealth health)
         {
-            
-            Vector3 tempCenter = (this.playerObject.transform.position + this.enemyObjects[0].transform.position) / 2f;
-            float offset = CalculateOffset(tempCenter);
-            tempCenter.x += offset;
-            tempCenter.y = this.enemyObjects[0].transform.position.y;
-
-            return tempCenter;
-        }
-
-        private float CalculateOffset(Vector3 center)
-        {
-            float offset = 0f;
-            ContactFilter2D raycastFilters = new ContactFilter2D();
-            raycastFilters.layerMask = centerCheckLayerMask;
-            raycastFilters.useTriggers = false;
-            raycastFilters.useLayerMask = true;
-            bool horizontalHit = false;
-            List<RaycastHit2D> results = new List<RaycastHit2D>();
-            int hits = 0;
-
-            // Left fall
-            if (!horizontalHit)
-            {
-                for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
-                {
-                    hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.left * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
-                    if (hits == 0)
-                    {
-                        offset += CENTER_RAYCAST_THRESHOLD;
-                        horizontalHit = true;
-                        Debug.Log("Left fall");
-                        break;
-                    }
-                }
-            }
-
-            // Right fall
-            if (!horizontalHit)
-            {
-                for (int i = 0; i < CENTER_DOWN_RAYCAST_AMOUNT; i++)
-                {
-                    hits = Physics2D.Raycast(center + Vector3.up * 0.5f + Vector3.right * CENTER_RAYCAST_THRESHOLD / (CENTER_DOWN_RAYCAST_AMOUNT - i), Vector2.down, raycastFilters, results, CENTER_DOWN_RAYCAST_DISTANCE);
-                    if (hits == 0)
-                    {
-                        offset -= CENTER_RAYCAST_THRESHOLD;
-                        horizontalHit = true;
-                        Debug.Log("Right fall");
-                        break;
-                    }
-                }
-            }
-
-            // Left wall
-            if (!horizontalHit)
-            {
-                hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.left, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
-                if (hits > 0)
-                {
-                    offset += (CENTER_RAYCAST_THRESHOLD - results[0].distance);
-                    horizontalHit = true;
-                    Debug.Log("Left wall");
-                }
-            }
-
-            // Right wall
-            if (!horizontalHit) {
-                hits = Physics2D.Raycast(center + Vector3.up * 0.5f, Vector2.right, raycastFilters, results, CENTER_RAYCAST_THRESHOLD);
-                if (hits > 0)
-                {
-                    offset -= (CENTER_RAYCAST_THRESHOLD - results[0].distance);
-                    horizontalHit = true;
-                    Debug.Log("Right wall");
-                }
-            }
-
-            return offset;
-        }
-
-        private Vector3 GetCenter(Vector3 originalPosition, Vector3 originalCenter)
-        {
-            ContactFilter2D raycastFilters = new ContactFilter2D();
-            raycastFilters.layerMask = centerCheckLayerMask;
-            raycastFilters.useTriggers = false;
-            raycastFilters.useLayerMask = true;
-            originalPosition.x = originalCenter.x;
-            List<RaycastHit2D> results = new List<RaycastHit2D>();
-            int hits = Physics2D.Raycast(originalPosition + Vector3.up * 0.5f, Vector2.down, raycastFilters, results);
-            if (hits > 0)
-            {
-                originalPosition = results[0].point;
-            }
-            return originalPosition;
-        }
-
-        private void MoveCharacters()
-        {
-            bool playerLookingRight = false;
-            float modifier = -1f;
-            if (playerObject.transform.position.x < enemyObjects[0].transform.position.x)
-            {
-                playerLookingRight = true;
-                modifier = 1f;
-            }
-            Turn(playerObject, playerLookingRight);
-            Turn(enemyObjects[0], !playerLookingRight);
-
-            Vector3 originalCenter = GetCenter();
-            playerObject.transform.position = GetCenter(playerObject.transform.position, originalCenter) - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
-            enemyObjects[0].transform.position = GetCenter(enemyObjects[0].transform.position, originalCenter) + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * modifier;
-            var playerPos = playerObject.transform.position;
-            playerPos.y = enemyObjects[0].transform.position.y;
-            playerObject.transform.position = playerPos;
-            for (int i = 1; i < enemyObjects.Length; ++i)
-            {
-                enemyObjects[i].transform.position = enemyObjects[0].transform.position + Vector3.left * PARTY_HORIZONTAL_OFFSET * modifier * i + Vector3.up * PARTY_VERTICAL_OFFSET * i;
-                Turn(enemyObjects[i], !playerLookingRight);
-            }
-        }
-
-        private void Turn(GameObject character, bool right)
-        {
-            MapBehaviour mb = character.GetComponent<MapBehaviour>();
-            if (mb != null)
-            {
-                mb.GetMovementManager().Turn(right);
-            }
-            else
-            {
-                Vector3 scale = character.transform.localScale;
-                scale.x = Mathf.Abs(scale.x);
-                if (!right)
-                {
-                    scale.x *= -1;
-                }
-                character.transform.localScale = scale;
-            }
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Scenario2");
         }
         #endregion
     }

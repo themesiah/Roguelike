@@ -61,7 +61,10 @@ namespace Laresistance.StateMachines
 
         public IEnumerator ExitState()
         {
-            ObjectActivationAndDesactivation(false);
+            if (signal != "RoomChange")
+            {
+                ObjectActivationAndDesactivation(false);
+            }
             playerObject.GetComponent<PlayerMapBehaviour>().PauseMapBehaviour();
             signal = null;
             yield return null;

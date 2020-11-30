@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using Laresistance.Movement;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Battle;
 
 namespace Laresistance.Behaviours
 {
@@ -17,6 +18,15 @@ namespace Laresistance.Behaviours
         protected override IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction)
         {
             return new EnemySimpleMovementManager(GetComponent<Rigidbody2D>(), speedReference, raycastLayerMask.value, raycastPivot, onTurnAction);
+        }
+
+        private void Start()
+        {
+            bool enoughSpace = BattlePosition.CheckSpace(transform.position, raycastLayerMask.value);
+            if (!enoughSpace)
+            {
+                Debug.LogErrorFormat(gameObject, "Enemy {0} have no space to battle", name);
+            }
         }
 
         public void Turn()

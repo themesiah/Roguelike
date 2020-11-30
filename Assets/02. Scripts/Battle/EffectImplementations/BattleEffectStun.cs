@@ -2,6 +2,8 @@
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Core;
 using Laresistance.Data;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Laresistance.Battle
 {
@@ -14,6 +16,23 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Stun;
 
+        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        {
+            base.GetPower(level, equipmentEvents);
+            int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
+            equipmentEvents?.OnGetPower?.Invoke(ref power);
+            equipmentEvents?.OnGetEffectPower?.Invoke(ref power);
+            equipmentEvents?.OnGetEffectPowerFlat?.Invoke(ref power);
+            power = (int)(power * SelfStatus.GetDamageModifier());
+            Assert.IsTrue(power >= 0, "Power should not be negative.");
+            return power;
+        }
+
+        private float GetModifier(int level, EquipmentEvents equipmentEvents)
+        {
+            return GetPower(level, equipmentEvents) / 100f;
+        }
+
         public override string GetAnimationTrigger()
         {
             return "Effect";
@@ -22,7 +41,7 @@ namespace Laresistance.Battle
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
             string textId = "EFF_STUN_DESC";
-            return Texts.GetText(textId, new object[] { GetTargetString() });
+            return Texts.GetText(textId, new object[] { GetPower(level, equipmentEvents), GetTargetString() });
         }
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
@@ -30,7 +49,7 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.Stun();
+            target.Stun(GetModifier(level, equipmentEvents));
         }
     }
 }
