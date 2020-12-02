@@ -10,6 +10,8 @@ namespace Laresistance.Behaviours
     public class PlayerDataBehaviour : MonoBehaviour
     {
         [SerializeField]
+        private AbilityData playerAbilityData = default;
+        [SerializeField]
         private bool useStartingData = false;
         [SerializeField]
         private List<MinionData> startingMinions = default;
@@ -29,11 +31,9 @@ namespace Laresistance.Behaviours
             player = new Player(StatusManager);
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 
-            List<BattleEffect> testEffects = new List<BattleEffect>();
-            testEffects.Add(new BattleEffectDamage(10, EffectTargetType.Enemy, StatusManager));
-            BattleAbility testAbility = new BattleAbility(testEffects, 2, 0, StatusManager, player.GetEquipmentEvents());
-            testAbility.SetOffensiveAbility();
-            player.SetMainAbility(testAbility);
+            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentEvents(), StatusManager);
+
+            player.SetMainAbility(playerAbility);
 
             if (useStartingData)
             {
