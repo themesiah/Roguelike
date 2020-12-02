@@ -53,11 +53,11 @@ namespace Laresistance.Core
                     case EquipmentEffectType.EffectPower:
                         equip.SetEffectPowerModifier(events, effectData.EffectModifier1);
                         break;
-                    case EquipmentEffectType.Cooldown:
-                        equip.SetCooldownModifier(events, effectData.EffectModifier1);
+                    case EquipmentEffectType.EnergyProduction:
+                        equip.SetEnergyProduction(events, effectData.EffectModifier1);
                         break;
-                    case EquipmentEffectType.StartingCooldowns:
-                        equip.SetStartingCooldown(events, effectData.EffectModifier1);
+                    case EquipmentEffectType.StartingEnergy:
+                        equip.SetStartingEnergy(events, effectData.EffectModifier1);
                         break;
                     case EquipmentEffectType.AttackAbilityBloodCost:
                         equip.SetAttackAbilityBloodCost(events, effectData.EffectModifier1);

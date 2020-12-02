@@ -20,7 +20,7 @@ namespace Laresistance.Behaviours
 
         protected void GenerateEnemyLevel()
         {
-            enemyLevel = System.Math.Min(1, (int)(currentLevel.GetValue() * levelVarianceRef.GetValue().x) + Random.Range((int)-levelVarianceRef.GetValue().y, (int)levelVarianceRef.GetValue().y + 1));
+            enemyLevel = System.Math.Max(1, (int)((currentLevel.GetValue() * levelVarianceRef.GetValue().x) + Random.Range(-levelVarianceRef.GetValue().y, levelVarianceRef.GetValue().y)));
         }
 
         protected override void SetupStatusManager()

@@ -345,50 +345,56 @@ namespace Laresistance.Core
             }
         }
 
-        public void SetCooldownModifier(EquipmentEvents equipmentEvents, float modifier)
+        public void SetEnergyProduction(EquipmentEvents equipmentEvents, float modifier)
         {
             if (equipmentEvents == null)
                 return;
-            EquipmentEvents.OnGetCooldownHandler handler = ((ref float currentCooldown) => { currentCooldown = currentCooldown * modifier; });
+            EquipmentEvents.OnGetEnergyProductionHandler handler = ((ref float energyProduction) => { energyProduction = energyProduction * modifier; });
             onEquip += () =>
             {
-                equipmentEvents.OnGetCooldown += handler;
+                equipmentEvents.OnGetEnergyProduction += handler;
             };
 
             onUnequip += () =>
             {
-                equipmentEvents.OnGetCooldown -= handler;
+                equipmentEvents.OnGetEnergyProduction -= handler;
             };
 
             if (modifier > 1f)
             {
-                descriptionReferences.Add("EQUIPMENT_EFFECT_0201-B");
+                descriptionReferences.Add("EQUIPMENT_EFFECT_0201-A");
                 descriptionVariables.Add(((modifier - 1f) * 100f).ToString());
             }
             else if (modifier < 1f)
             {
-                descriptionReferences.Add("EQUIPMENT_EFFECT_0201-A");
+                descriptionReferences.Add("EQUIPMENT_EFFECT_0201-B");
                 descriptionVariables.Add(((1f - modifier) * 100f).ToString());
             }
         }
 
-        public void SetStartingCooldown(EquipmentEvents equipmentEvents, float modifier)
+        public void SetStartingEnergy(EquipmentEvents equipmentEvents, float modifier)
         {
             if (equipmentEvents == null)
                 return;
-            EquipmentEvents.OnGetCooldownHandler handler = ((ref float currentCooldown) => { currentCooldown = modifier; });
+            EquipmentEvents.OnGetStartingEnergyHandler handler = ((ref float startingEnergy) => { startingEnergy += modifier; });
             onEquip += () =>
             {
-                equipmentEvents.OnGetStartingCooldowns += handler;
+                equipmentEvents.OnGetStartingEnergy += handler;
             };
             
             onUnequip += () =>
             {
-                equipmentEvents.OnGetStartingCooldowns -= handler;
+                equipmentEvents.OnGetStartingEnergy -= handler;
             };
 
-            descriptionReferences.Add("EQUIPMENT_EFFECT_0202-A");
-            descriptionVariables.Add((modifier * 100f).ToString());
+            if (modifier > 0f)
+            {
+                descriptionReferences.Add("EQUIPMENT_EFFECT_0202-A");
+            } else
+            {
+                descriptionReferences.Add("EQUIPMENT_EFFECT_0202-B");
+            }
+            descriptionVariables.Add(((int)modifier).ToString());
         }
 
         public void SetAttackAbilityBloodCost(EquipmentEvents equipmentEvents, float modifier)

@@ -17,46 +17,41 @@ namespace Laresistance.Battle
     public class BattleAbility
     {
         private static int MAX_EFFECTS = 2;
-        private float cooldown;
+        private int energyCost;
         private List<BattleEffect> effects = default;
-        private float timer = 0f;
         private EquipmentEvents equipmentEvents;
         private BattleStatusManager statusManager;
         private bool executingAbility = false;
+        public int Weight { get; private set; }
         public bool IsShieldAbility { get; private set; }
         public bool IsOffensiveAbility { get; private set; }
 
-        public delegate void OnAbilityTimerChangedHandler(float currentTimer, float cooldown, float percent);
-        public event OnAbilityTimerChangedHandler OnAbilityTimerChanged;
-
-        private bool eventsRegistered = false;
-
-        public BattleAbility(List<BattleEffect> effectsToSet, float cooldown, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null)
+        public BattleAbility(List<BattleEffect> effectsToSet, int energyCost, int weight, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null)
         {
             if (effectsToSet == null || effectsToSet.Count == 0)
                 throw new System.Exception("Abilities should have at least one effect");
             if (effectsToSet.Count > MAX_EFFECTS)
                 throw new System.Exception("Abilities can only have up to " + MAX_EFFECTS + " effects");
             effects = effectsToSet;
-            this.cooldown = cooldown;
             this.equipmentEvents = equipmentEvents;
             this.statusManager = statusManager;
-            if (statusManager != null)
-            {
-                RegisterEvents(statusManager, null);
-            }
+            this.energyCost = energyCost;
+            this.Weight = weight;
         }
 
-        private void RegisterEvents(BattleStatusManager statusManager, BattleStatusManager oldStatusManager)
+        public BattleAbility Copy()
         {
-            if (eventsRegistered)
+            var ability = new BattleAbility(effects, energyCost, Weight, statusManager, equipmentEvents);
+            if (IsShieldAbility)
             {
-                oldStatusManager.OnStun -= Stun;
-                oldStatusManager.OnCooldownsAdvance -= AdvanceCooldowns;
+                ability.SetShieldAbility();
             }
-            statusManager.OnStun += Stun;
-            statusManager.OnCooldownsAdvance += AdvanceCooldowns;
-            eventsRegistered = true;
+            if (IsOffensiveAbility)
+            {
+                ability.SetOffensiveAbility();
+            }
+
+            return ability;
         }
 
         public void SetShieldAbility()
@@ -82,18 +77,11 @@ namespace Laresistance.Battle
             }
             var oldStatus = this.statusManager;
             this.statusManager = selfStatus;
-            RegisterEvents(selfStatus, oldStatus);
         }
 
         public BattleStatusManager GetStatusManager()
         {
             return this.statusManager;
-        }
-
-        public BattleAbility Copy()
-        {
-            BattleAbility ba = new BattleAbility(effects, GetCooldown(), statusManager, equipmentEvents);
-            return ba;
         }
 
         public int GetEffectPower(int index, int level)
@@ -111,8 +99,8 @@ namespace Laresistance.Battle
                 builder.Append(effect.GetEffectString(level, equipmentEvents));
                 builder.Append(" ");
             }
-            if (GetCooldown() > 0f)
-                builder.Append(Texts.GetText("ABILITY_COOLDOWN", GetCooldown()));
+            if (GetCost() > 0)
+                builder.Append(Texts.GetText("ABILITY_COOLDOWN", GetCost()));
             return builder.ToString();
         }
 
@@ -120,18 +108,7 @@ namespace Laresistance.Battle
         {
             if (!BattleAbilityManager.currentlyExecuting)
             {
-                timer += deltaTime;
-                OnAbilityTimerChanged?.Invoke(timer, GetCooldown(), timer / GetCooldown());
             }
-        }
-
-        public void ResetTimer()
-        {
-            timer = 0f;
-            float currentCooldown = 0f;
-            equipmentEvents?.OnGetStartingCooldowns?.Invoke(ref currentCooldown);
-            timer = GetCooldown() * currentCooldown;
-            OnAbilityTimerChanged?.Invoke(timer, GetCooldown(), timer / GetCooldown());
         }
 
         public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
@@ -158,11 +135,10 @@ namespace Laresistance.Battle
         {
             if (CanBeUsed())
             {
-                timer = 0f;
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
-                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
-                OnAbilityTimerChanged?.Invoke(0f, GetCooldown(), 0f);
+                statusManager.ConsumeEnergy(energyCost);
+                yield return BattleAbilityManager.ExecuteAbility(this.Copy(), allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }
@@ -184,14 +160,12 @@ namespace Laresistance.Battle
 
         public bool CanBeUsed()
         {
-            return timer >= GetCooldown();
+            return statusManager.CanExecute(energyCost);
         }
 
-        public float GetCooldown()
+        public int GetCost()
         {
-            float temp = cooldown;
-            equipmentEvents?.OnGetCooldown?.Invoke(ref temp);
-            return temp;
+            return energyCost;
         }
 
         private string GetAnimationTrigger()
@@ -207,16 +181,6 @@ namespace Laresistance.Battle
                     return true;
             }
             return false;
-        }
-
-        private void Stun(BattleStatusManager sender, float stunPercent)
-        {
-            timer = Mathf.Max(0f, timer- (stunPercent * GetCooldown()));
-        }
-
-        private void AdvanceCooldowns(BattleStatusManager sender)
-        {
-            timer = GetCooldown();
         }
     }
 }

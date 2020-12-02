@@ -15,26 +15,26 @@ namespace Laresistance.Tests {
 
         private BattleAbility GetAbilityByIndex(int i)
         {
-            float cooldown = 0f;
+            int cost = 0;
             List<BattleEffect> effects = new List<BattleEffect>();
 
             switch(i)
             {
                 case 0:
                     effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
                 case 1:
                     effects.Add(new BattleEffectSpeed(50, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
                 case 2:
                     effects.Add(new BattleEffectSpeed(200, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cooldown, null);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, null);
             ability.Tick(1.1f);
             return ability;
         }

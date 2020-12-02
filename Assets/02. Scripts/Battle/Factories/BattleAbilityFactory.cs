@@ -26,7 +26,7 @@ namespace Laresistance.Battle
                 }
             }
 
-            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cooldown, battleStatus, events);
+            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cost, abilityData.Weight, battleStatus, events);
             if (shield)
             {
                 battleAbility.SetShieldAbility();

@@ -15,18 +15,18 @@ namespace Laresistance.Tests {
 
         private BattleAbility GetAbilityByIndex(int i)
         {
-            float cooldown = 0f;
+            int cost = 0;
             List<BattleEffect> effects = new List<BattleEffect>();
 
             switch(i)
             {
                 case 0:
                     effects.Add(new BattleEffectDamageOverTime(3, Data.EffectTargetType.Enemy, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cooldown, null);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, null);
             ability.Tick(1.1f);
             return ability;
         }
@@ -56,11 +56,11 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.1f);
+            enemy.ProcessStatus(0.1f, 1f);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, 1f);
             Assert.AreEqual(97, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, 1f);
             Assert.AreEqual(94, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -75,11 +75,11 @@ namespace Laresistance.Tests {
             ability.Tick(1.1f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(0.1f);
+            enemy.ProcessStatus(0.1f, 1f);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, 1f);
             Assert.AreEqual(94, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, 1f);
             Assert.AreEqual(88, enemy.health.GetCurrentHealth());
             yield return null;
         }
@@ -92,14 +92,14 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             ability.Tick(1.1f);
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY/2f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY/2f, 1f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(100, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f, 1f);
             Assert.AreEqual(97, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f, 1f);
             Assert.AreEqual(94, enemy.health.GetCurrentHealth());
-            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f);
+            enemy.ProcessStatus(BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY / 2f, 1f);
             Assert.AreEqual(91, enemy.health.GetCurrentHealth());
             yield return null;
         }

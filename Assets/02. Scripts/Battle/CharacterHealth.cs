@@ -15,7 +15,7 @@ namespace Laresistance.Battle
         #endregion
 
         #region Constants
-        public static float SHIELD_DURATION = 1f;
+        public static float SHIELD_DURATION = 0.5f;
         #endregion
 
         #region Private Variables

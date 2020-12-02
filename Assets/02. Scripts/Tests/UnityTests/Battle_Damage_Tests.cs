@@ -16,30 +16,30 @@ namespace Laresistance.Tests {
 
         private BattleAbility GetAbilityByIndex(int i)
         {
-            float cooldown = 0f;
+            int cost = 0;
             List<BattleEffect> effects = new List<BattleEffect>();
 
             switch(i)
             {
                 case 0:
                     effects.Add(new BattleEffectDamage(10, Data.EffectTargetType.Enemy, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
                 case 1:
                     effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
                 case 2:
                     effects.Add(new BattleEffectShield(10, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
                 case 3:
                     effects.Add(new BattleEffectShield(5, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cooldown, null);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, null);
             ability.Tick(1.1f);
             return ability;
         }
@@ -146,7 +146,7 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
             yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
-            enemy.ProcessStatus(CharacterHealth.SHIELD_DURATION+0.1f);
+            enemy.ProcessStatus(CharacterHealth.SHIELD_DURATION+0.1f, 1f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return null;

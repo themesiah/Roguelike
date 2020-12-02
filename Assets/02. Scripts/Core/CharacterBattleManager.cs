@@ -43,13 +43,13 @@ namespace Laresistance.Core
 
         public void StartBattle()
         {
-            AbilityInputProcessor.ResetAbilities();
+            StatusManager.ResetStatus();
             OnBattleStart?.Invoke();
         }
 
         public void EndBattle()
         {
-            StatusManager.ResetModifiers();
+            StatusManager.ResetStatus();
             OnBattleEnd?.Invoke();
         }
 
@@ -107,11 +107,11 @@ namespace Laresistance.Core
             }
         }
 
-        public int Tick(float delta)
+        public int Tick(float delta, float battleSpeedManager)
         {
             if (dead)
                 return -1;
-            StatusManager.ProcessStatus(delta);
+            StatusManager.ProcessStatus(delta, battleSpeedManager);
             int targetSelectionInput = TargetSelector.GetTargetSelection();
             if (targetSelectionInput == -1) battleSystem.SelectPrevious();
             if (targetSelectionInput == 1) battleSystem.SelectNext();

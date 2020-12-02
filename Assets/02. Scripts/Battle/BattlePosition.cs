@@ -47,7 +47,6 @@ namespace Laresistance.Battle
             if (hits > 0)
             {
                 distance = results[0].distance;
-                Debug.LogFormat("Hit: {0}", results[0].collider.gameObject.name);
             } else
             {
                 UnityEngine.Assertions.Assert.IsTrue(false, "Where the hell is the wall?");
@@ -69,14 +68,10 @@ namespace Laresistance.Battle
                     UnityEngine.Assertions.Assert.IsTrue(distance > DISTANCE_BETWEEN_VERTICAL_RAYCAST*i);
                     distance = DISTANCE_BETWEEN_VERTICAL_RAYCAST * i;
                     break;
-                } else
-                {
-                    Debug.LogFormat("Vertical hit: {0}", results[0].collider.gameObject.name);
                 }
                 i++;
                 if (i > 500)
                 {
-                    Debug.LogError("Breaking while");
                     break;
                 }
             }
@@ -98,9 +93,7 @@ namespace Laresistance.Battle
 
             Vector3 center = enemyObjects[0].transform.position;
             float distanceToLeft = GetDistanceToLeft(center, centerCheckLayerMask);
-            Debug.LogFormat("Distance to left: {0}", distanceToLeft);
             float distanceToRight = GetDistanceToRight(center, centerCheckLayerMask);
-            Debug.LogFormat("Distance to right: {0}", distanceToRight);
             UnityEngine.Assertions.Assert.IsTrue(distanceToLeft + distanceToRight >= MIN_DISTANCE_FOR_SETUP, string.Format("No space to battle. Available space is {0} and {1} is required", distanceToRight+distanceToLeft, MIN_DISTANCE_FOR_SETUP));
             float offset = 0f;
             if (distanceToLeft < MIN_HALF_DISTANCE_FOR_SETUP)

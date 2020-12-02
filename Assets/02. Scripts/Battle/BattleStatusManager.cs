@@ -37,6 +37,10 @@ namespace Laresistance.Battle
         public static float DAMAGE_MODIFIER_DURATION = 3f;
         public static float DAMAGE_OVER_TIME_DURATION = 9f;
         public static float DAMAGE_OVER_TIME_TICK_DELAY = 1.5f;
+        public static float ENERGY_PER_SECOND = 1f;
+        public static float STARTING_ENERGY = 3f;
+        public static float MAX_ENERGY = 10f;
+        public static float STUN_TIME = 3f;
         #endregion
 
         #region Private Variables
@@ -45,11 +49,15 @@ namespace Laresistance.Battle
         private List<DamageImprovement> damageImprovements;
         private List<TempDamageChange> tempDamageModifications;
         private EquipmentEvents equipmentEvents;
+        private bool stunned = false;
+        private float stunTimer;
         // Damage, heal and shield modifiers
         #endregion
 
         #region Public variables
         public CharacterHealth health { get; private set; }
+        public float CurrentEnergy { get; private set; }
+        public int UsableEnergy { get { return Mathf.FloorToInt(CurrentEnergy); } }
         #endregion
 
         #region Events
@@ -61,8 +69,8 @@ namespace Laresistance.Battle
         public event OnDamageImprovementAppliedHandler OnDamageImprovementApplied;
         public delegate void OnStunHandler(BattleStatusManager sender, float stunPercent);
         public event OnStunHandler OnStun;
-        public delegate void OnCooldownsAdvanceHandler(BattleStatusManager sender);
-        public event OnCooldownsAdvanceHandler OnCooldownsAdvance;
+        public delegate void OnEnergyChangedHandler(float currentEnergy, int usableEnergy);
+        public event OnEnergyChangedHandler OnEnergyChanged;
         #endregion
 
         #region Public methods
@@ -75,13 +83,13 @@ namespace Laresistance.Battle
             tempDamageModifications = new List<TempDamageChange>();
         }
 
-        public void ProcessStatus(float delta)
+        public void ProcessStatus(float delta, float energySpeedModifier)
         {
             int totalDamage = 0;
             for(int i = damageOverTimes.Count-1; i >= 0; --i)
             {
                 DamageOverTime dot = damageOverTimes[i];
-                dot.timer += delta;
+                dot.timer += delta * energySpeedModifier;
                 if (dot.timer >= DAMAGE_OVER_TIME_TICK_DELAY)
                 {
                     totalDamage += dot.power;
@@ -96,7 +104,7 @@ namespace Laresistance.Battle
             for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
             {
                 TempDamageChange tdm = tempDamageModifications[i];
-                tdm.timer += delta;
+                tdm.timer += delta * energySpeedModifier;
                 if (tdm.timer >= DAMAGE_MODIFIER_DURATION)
                 {
                     tempDamageModifications.Remove(tdm);
@@ -105,7 +113,7 @@ namespace Laresistance.Battle
             for (int i = speedModifiers.Count - 1; i >= 0; --i)
             {
                 SpeedEffect se = speedModifiers[i];
-                se.timer += delta;
+                se.timer += delta * energySpeedModifier;
                 if (se.timer >= SPEED_MODIFIER_DURATION)
                 {
                     speedModifiers.Remove(se);
@@ -116,6 +124,24 @@ namespace Laresistance.Battle
                 health.TakeDamage(totalDamage, null);
             }
             health.Tick(delta);
+            if (!BattleAbilityManager.currentlyExecuting)
+            {
+                if (stunned)
+                {
+                    stunTimer -= delta * energySpeedModifier;
+                    if (stunTimer <= 0f)
+                    {
+                        stunned = false;
+                    }
+                }
+                else
+                {
+                    float currentProduction = ENERGY_PER_SECOND;
+                    equipmentEvents?.OnGetEnergyProduction?.Invoke(ref currentProduction);
+                    CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
+                    OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
+                }
+            }
         }
 
         public void ApplySpeedModifier(float coeficient)
@@ -173,17 +199,23 @@ namespace Laresistance.Battle
             return damageModifier;
         }
 
-        public void ResetModifiers()
+        public void ResetStatus()
         {
             damageImprovements.Clear();
             speedModifiers.Clear();
             damageOverTimes.Clear();
             tempDamageModifications.Clear();
+            stunned = false;
+            float startingEnergy = STARTING_ENERGY;
+            equipmentEvents?.OnGetStartingEnergy?.Invoke(ref startingEnergy);
+            CurrentEnergy = startingEnergy;
         }
 
-        public void Stun(float percent)
+        public void Stun(float time)
         {
-            OnStun?.Invoke(this, percent);
+            OnStun?.Invoke(this, time);
+            stunned = true;
+            stunTimer = time;
         }
 
         public void Cure()
@@ -203,11 +235,7 @@ namespace Laresistance.Battle
                     speedModifiers.RemoveAt(i);
                 }
             }
-        }
-
-        public void AdvanceCooldowns()
-        {
-            OnCooldownsAdvance?.Invoke(this);
+            stunned = false;
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
@@ -218,6 +246,34 @@ namespace Laresistance.Battle
         public EquipmentEvents GetEquipmentEvents()
         {
             return this.equipmentEvents;
+        }
+
+        public void AddEnergy(float energy)
+        {
+            CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + energy);
+            OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
+        }
+
+        public bool ConsumeEnergy(int energy)
+        {
+            if (!CanExecute(energy))
+            {
+                return false;
+            }
+            CurrentEnergy -= (float)energy;
+            OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
+            return true;
+        }
+
+        public bool CanExecute(int energy)
+        {
+            return UsableEnergy >= energy && !stunned;
+        }
+
+        public void RemoveEnergy(float energy)
+        {
+            CurrentEnergy = Mathf.Max(0f, CurrentEnergy + energy);
+            OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
         }
         #endregion
     }

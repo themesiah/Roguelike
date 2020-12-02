@@ -18,11 +18,11 @@ namespace Laresistance.Tests
 
         private BattleAbility GetAbility()
         {
-            float cooldown = 5f;
+            int cost = 5;
             BattleStatusManager status = GetStatus();
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamageModification(-20, Data.EffectTargetType.AllEnemies, status));
-            BattleAbility ability = new BattleAbility(effects, cooldown, status);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, status);
             return ability;
         }
 
@@ -34,9 +34,9 @@ namespace Laresistance.Tests
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(5f);
+            enemyStatus.ProcessStatus(5f, 1f);
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
         }
 
@@ -48,21 +48,21 @@ namespace Laresistance.Tests
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(5f);
+            enemyStatus.ProcessStatus(5f, 1f);
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(5f);
+            enemyStatus.ProcessStatus(5f, 1f);
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(5f);
+            enemyStatus.ProcessStatus(5f, 1f);
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
         }
 
@@ -74,17 +74,17 @@ namespace Laresistance.Tests
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.6f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             damageModAbility.Perform(new BattleStatusManager[] { damageModAbility.GetStatusManager() }, new BattleStatusManager[] { enemyStatus }, 1, null);
             Assert.IsTrue(Mathf.Approximately(0.4f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(0.6f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(0.8f, enemyStatus.GetDamageModifier()));
-            enemyStatus.ProcessStatus(1f);
+            enemyStatus.ProcessStatus(1f, 1f);
             Assert.IsTrue(Mathf.Approximately(1f, enemyStatus.GetDamageModifier()));
         }
 

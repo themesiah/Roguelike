@@ -32,7 +32,7 @@ namespace Laresistance.Tests
             int power = 10;
             float cooldown = 5f;
             ee.OnGetPower.Invoke(ref power);
-            ee.OnGetCooldown.Invoke(ref cooldown);
+            ee.OnGetEnergyProduction.Invoke(ref cooldown);
             Assert.AreEqual(8, power);
             Assert.AreEqual(4f, cooldown);
         }
@@ -43,12 +43,12 @@ namespace Laresistance.Tests
             EquipmentEvents ee = new EquipmentEvents();
             BattleStatusManager statusManager = new BattleStatusManager(new CharacterHealth(100));
             Equipment e = GetEquipment(ee, statusManager, "EQUIPMENT_004");
-            float cooldown = 0f;
-            float cooldown2 = 5f;
-            ee.OnGetStartingCooldowns.Invoke(ref cooldown);
-            ee.OnGetCooldown.Invoke(ref cooldown2);
-            Assert.AreEqual(1f, cooldown);
-            Assert.AreEqual(6f, cooldown2);
+            float energy = 0f;
+            float energyProduction = 5f;
+            ee.OnGetStartingEnergy.Invoke(ref energy);
+            ee.OnGetEnergyProduction.Invoke(ref energyProduction);
+            Assert.AreEqual(1f, energy);
+            Assert.AreEqual(6f, energyProduction);
         }
 
         [Test]

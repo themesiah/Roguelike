@@ -451,62 +451,6 @@ MonoBehaviour:
   sliderValue: 1
   fill: {fileID: 6996750109798286225}
   background: {fileID: 5267731872877471956}
---- !u!114 &6990578884978323959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4413027019837448054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90ba7489c0383b545b0f45b11e2d5531, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  percentDifferenceToFlee: 0.1
-  bossMapBehaviour: {fileID: 4413027019837448040}
-  bossColliders:
-  - {fileID: 4413027019837448051}
-  contextSignal: {fileID: 11400000, guid: 53ecdae93c93f2f42923896b5f5c9505, type: 2}
-  bossBarriers: {fileID: 11400000, guid: 56c400706e1f7e048a9a439b6e8f18a3, type: 2}
-  mapBehaviuour: {fileID: 4413027019837448040}
-  partyManager: {fileID: 450221872471301703}
-  disappearSpeed:
-    useConstant: 1
-    value: {fileID: 0}
-    constantValue: 20
-    useRandom: 0
-    minMax:
-      useConstant: 1
-      value: {fileID: 0}
-      constantValue: {x: 0, y: 0}
-  disappearDistance:
-    useConstant: 1
-    value: {fileID: 0}
-    constantValue: 30
-    useRandom: 0
-    minMax:
-      useConstant: 1
-      value: {fileID: 0}
-      constantValue: {x: 0, y: 0}
-  floorLocations:
-  - {fileID: 11400000, guid: a7913ba1cf5f70b408f80871a56c902b, type: 2}
-  - {fileID: 11400000, guid: b84772f78ae73aa4c866ae2bbe7ca1c9, type: 2}
-  - {fileID: 11400000, guid: faa011f5d1e2c6e47a750dc890669a71, type: 2}
---- !u!114 &9129993839021216739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4413027019837448054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9bec5134f352d3438adba38e6a3ca42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healPerTick: 10
-  battleBehaviourRef: {fileID: 8128571906378876156}
 --- !u!1 &4689652444243597321
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +661,62 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6990578884978323959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413027019837448054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ba7489c0383b545b0f45b11e2d5531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percentDifferenceToFlee: 0.1
+  bossMapBehaviour: {fileID: 4413027019837448040}
+  bossColliders:
+  - {fileID: 4413027019837448051}
+  contextSignal: {fileID: 11400000, guid: 53ecdae93c93f2f42923896b5f5c9505, type: 2}
+  bossBarriers: {fileID: 11400000, guid: 56c400706e1f7e048a9a439b6e8f18a3, type: 2}
+  mapBehaviuour: {fileID: 4413027019837448040}
+  partyManager: {fileID: 450221872471301703}
+  disappearSpeed:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 20
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  disappearDistance:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 30
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  floorLocations:
+  - {fileID: 11400000, guid: a7913ba1cf5f70b408f80871a56c902b, type: 2}
+  - {fileID: 11400000, guid: b84772f78ae73aa4c866ae2bbe7ca1c9, type: 2}
+  - {fileID: 11400000, guid: faa011f5d1e2c6e47a750dc890669a71, type: 2}
+--- !u!114 &9129993839021216739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413027019837448054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9bec5134f352d3438adba38e6a3ca42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healPerTick: 10
+  battleBehaviourRef: {fileID: 8128571906378876156}
 --- !u!1 &9114044750324924370
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,11 +829,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2320645775852034817, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnBattleBehaviourEnable.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2320645775852034817, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnBattleBehaviourDisable.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2320645775852034817, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: enemyData
@@ -1113,6 +1113,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 348e2590273cb004ca19090d24446c90, type: 3}
+--- !u!70 &4413027019837448051 stripped
+CapsuleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 7909678482288377998, guid: 348e2590273cb004ca19090d24446c90, type: 3}
+  m_PrefabInstance: {fileID: 5835233679060049917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4413027019837448049 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7909678482288377996, guid: 348e2590273cb004ca19090d24446c90, type: 3}
+  m_PrefabInstance: {fileID: 5835233679060049917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4413027019837448054 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7909678482288377995, guid: 348e2590273cb004ca19090d24446c90, type: 3}
@@ -1151,16 +1161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e76ff45007ea4a478d38ceaf5f06708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!70 &4413027019837448051 stripped
-CapsuleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 7909678482288377998, guid: 348e2590273cb004ca19090d24446c90, type: 3}
-  m_PrefabInstance: {fileID: 5835233679060049917}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4413027019837448049 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7909678482288377996, guid: 348e2590273cb004ca19090d24446c90, type: 3}
-  m_PrefabInstance: {fileID: 5835233679060049917}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2502344856825881230 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8232852243488243059, guid: 348e2590273cb004ca19090d24446c90, type: 3}

@@ -63,7 +63,7 @@ namespace Laresistance.Tests
 
             List<BattleEffect> testEffects = new List<BattleEffect>();
             testEffects.Add(new BattleEffectDamage(15, EffectTargetType.Enemy, playerStatus));
-            BattleAbility testAbility = new BattleAbility(testEffects, 3f, null, player.GetEquipmentEvents());
+            BattleAbility testAbility = new BattleAbility(testEffects, 3, 0, null, player.GetEquipmentEvents());
             player.SetMainAbility(testAbility);
 
             foreach (var mn in minions)

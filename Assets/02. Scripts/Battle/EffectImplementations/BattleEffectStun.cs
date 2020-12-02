@@ -28,11 +28,6 @@ namespace Laresistance.Battle
             return power;
         }
 
-        private float GetModifier(int level, EquipmentEvents equipmentEvents)
-        {
-            return GetPower(level, equipmentEvents) / 100f;
-        }
-
         public override string GetAnimationTrigger()
         {
             return "Effect";
@@ -49,7 +44,7 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.Stun(GetModifier(level, equipmentEvents));
+            target.Stun(GetPower(level, equipmentEvents));
         }
     }
 }

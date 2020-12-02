@@ -843,18 +843,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8232852243488243059}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   OnBattleBehaviourDisable:
     m_PersistentCalls:
       m_Calls:
@@ -881,18 +869,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 8232852243488243059}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
   selectionArrowReference: {fileID: 11400000, guid: 21e5e288afb6f934f9ee103988f87d7e, type: 2}
   selectionArrowPivot: {fileID: 5407031122583928072}
@@ -1422,145 +1398,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleBehaviour: {fileID: 2320645775852034817}
-  suscriptions:
-  - abilityIndex: 0
-    OnAbilityDoesNotExist:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2970752671477274990}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnAbilityExists:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2970752671477274990}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-    OnAbilityTimerChanged:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6606066557950093927}
-          m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-          m_MethodName: set_fillAmount
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - abilityIndex: 1
-    OnAbilityDoesNotExist:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8249352790927689240}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnAbilityExists:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8249352790927689240}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-    OnAbilityTimerChanged:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8617737284071097588}
-          m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-          m_MethodName: set_fillAmount
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - abilityIndex: 2
-    OnAbilityDoesNotExist:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3644349809675919268}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnAbilityExists:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3644349809675919268}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-    OnAbilityTimerChanged:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2305992825808319820}
-          m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-          m_MethodName: set_fillAmount
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  subscriptions: []
+  OnRemainingEnergy:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUsableEnergy:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUsableEnergyStr:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8249352790927689240
 GameObject:
   m_ObjectHideFlags: 0

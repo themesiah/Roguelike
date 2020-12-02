@@ -14,6 +14,7 @@ namespace Laresistance.Battle
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
         private static IBattleAnimator currentAnimator = null;
         public static BattleAbility currentAbility;
+        public static BattleStatusManager[] currentTargets;
 
         private static bool battling = false;
 
@@ -24,29 +25,45 @@ namespace Laresistance.Battle
 
             abilityQueue.Add(abilityToExecute);
 
+            bool stillExecuting = true;
             while (abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
             {
+                if (abilityQueue.Count == 0)
+                {
+                    stillExecuting = false;
+                }
                 yield return null;
             }
-            IBattleAnimator lastAnimator = currentAnimator;
-            bool needPause = abilityQueue[0] != abilityToExecute;
-            if (abilityToExecute.IsPrioritary() && needPause)
+            if (stillExecuting)
             {
-                lastAnimator?.Pause();
-            }
-            currentlyExecuting = true;
-            currentAnimator = animator;
-            currentAbility = abilityToExecute;
-            yield return animator?.PlayAnimation(animationTrigger);
-            if (battling)
-                abilityToExecute.Perform(allies, targets, level, bloodRef);
-            currentAbility = null;
-            abilityQueue.Remove(abilityToExecute);
-            currentlyExecuting = false;
-            if (abilityToExecute.IsPrioritary() && needPause)
-            {
-                lastAnimator?.Resume();
-                currentAnimator = lastAnimator;
+                IBattleAnimator lastAnimator = currentAnimator;
+                bool needPause = abilityQueue[0] != abilityToExecute;
+                if (abilityToExecute.IsPrioritary() && needPause)
+                {
+                    lastAnimator?.Pause();
+                }
+                currentlyExecuting = true;
+                if (abilityToExecute.IsOffensiveAbility)
+                {
+                    currentTargets = targets;
+                }
+                currentAnimator = animator;
+                currentAbility = abilityToExecute;
+                yield return animator?.PlayAnimation(animationTrigger);
+                if (battling)
+                {
+                    abilityToExecute.Perform(allies, targets, level, bloodRef);
+                }
+                currentAbility = null;
+                abilityQueue.Remove(abilityToExecute);
+                currentTargets = null;
+                currentlyExecuting = false;
+                if (abilityToExecute.IsPrioritary() && needPause)
+                {
+                    lastAnimator?.Resume();
+                    currentlyExecuting = true;
+                    currentAnimator = lastAnimator;
+                }
             }
         }
 

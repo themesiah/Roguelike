@@ -51,14 +51,5 @@ namespace Laresistance.Battle
             }
             return -1;
         }
-
-        public void ResetAbilities()
-        {
-            foreach (var ability in abilities)
-            {
-                if (ability != null)
-                    ability.ResetTimer();
-            }
-        }
     }
 }

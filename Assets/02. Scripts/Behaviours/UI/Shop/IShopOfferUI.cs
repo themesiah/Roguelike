@@ -13,5 +13,6 @@ namespace Laresistance.Behaviours
         void SetButtonAction(UnityAction action);
         void SelectButton();
         void SetInteractable(bool interactable);
+        bool IsInteractable();
     }
 }

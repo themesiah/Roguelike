@@ -11,7 +11,8 @@
         Stun,
         ImproveDamage,
         Cure,
-        AdvanceCooldowns,
-        DamageModification
+        AdvanceCooldowns, // Unused, now obtain energy
+        DamageModification,
+        ObtainEnergy
     }
 }

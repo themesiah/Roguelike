@@ -3,6 +3,7 @@ using Laresistance.Battle;
 using Laresistance.Core;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Laresistance.Systems
 {
@@ -15,6 +16,10 @@ namespace Laresistance.Systems
         private bool paused = false;
         private bool battling = false;
 
+        private static float BATTLE_ENERGY_SPEED_ACCELERATION = 0.01f;
+        private static float MAX_BATTLE_ENERGY_SPEED_MODIFIER = 4f;
+        private float currentEnergySpeedModifier;
+
         public BattleSystem()
         {
             selectedEnemy = null;
@@ -22,6 +27,7 @@ namespace Laresistance.Systems
 
         public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies)
         {
+            currentEnergySpeedModifier = 1f;
             this.playerBattleManager = player;
             this.enemiesBattleManager = new List<CharacterBattleManager>(enemies);
 
@@ -202,19 +208,20 @@ namespace Laresistance.Systems
         {
             if (!paused && battling)
             {
-                int playerAbilityIndex = playerBattleManager.Tick(delta);
+                int playerAbilityIndex = playerBattleManager.Tick(delta, currentEnergySpeedModifier);
                 if (playerAbilityIndex != -1)
                 {
                     yield return playerBattleManager.ExecuteSkill(playerAbilityIndex);
                 }
                 foreach (var bm in enemiesBattleManager)
                 {
-                    int enemyAbilityIndex = bm.Tick(delta);
+                    int enemyAbilityIndex = bm.Tick(delta, currentEnergySpeedModifier);
                     if (enemyAbilityIndex != -1)
                     {
                         yield return bm.ExecuteSkill(enemyAbilityIndex);
                     }
                 }
+                currentEnergySpeedModifier = Mathf.Min(MAX_BATTLE_ENERGY_SPEED_MODIFIER, currentEnergySpeedModifier + BATTLE_ENERGY_SPEED_ACCELERATION * delta);
             }
         }
 

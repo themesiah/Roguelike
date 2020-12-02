@@ -66,11 +66,6 @@ namespace Laresistance.Behaviours
             if (context.performed) ((PlayerAbilityInput)AbilityInputProcessor).TryToExecuteAbility(abilityIndex);
         }
 
-        public void ResetAbilities()
-        {
-            playerDataBehaviour.player.ResetAbilities();
-        }
-
         public override BattleAbility[] GetAbilities()
         {
             return playerDataBehaviour.player.GetAbilities();

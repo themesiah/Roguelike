@@ -55,6 +55,15 @@ namespace Laresistance.Core
                 {
                     throw new System.Exception("Minion already equipped");
                 }
+                if (minions[i] != null && minions[i].Data.name == minion.Data.name)
+                {
+                    if (minion.Level > minions[i].Level)
+                    {
+                        minions[i] = minion;
+                    }
+                    minions[i].Upgrade();
+                    return true;
+                }
             }
 
             for(int i = 0; i < minions.Length; ++i)
@@ -281,14 +290,6 @@ namespace Laresistance.Core
                 }
             }
             return abilities;
-        }
-
-        public void ResetAbilities()
-        {
-            foreach(var ability in GetAbilities())
-            {
-                ability?.ResetTimer();
-            }
         }
 
         public void SetMainAbility(BattleAbility ability)

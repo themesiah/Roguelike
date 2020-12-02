@@ -79,5 +79,10 @@ namespace Laresistance.Behaviours
         {
             selectableButton.interactable = interactable;
         }
+
+        public bool IsInteractable()
+        {
+            return selectableButton.interactable;
+        }
     }
 }

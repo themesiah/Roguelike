@@ -14,14 +14,20 @@ namespace Laresistance.Behaviours
             public int abilityIndex = -1;
             public UnityEvent OnAbilityDoesNotExist = default;
             public UnityEvent OnAbilityExists = default;
-            public UnityEvent<float> OnAbilityTimerChanged = default;
+            public UnityEvent<bool> OnAvailabilityChanged = default;
         }
 
 
         [SerializeField]
         private CharacterBattleBehaviour battleBehaviour = default;
         [SerializeField]
-        private List<AbilitySubscription> suscriptions = default;
+        private List<AbilitySubscription> subscriptions = default;
+        [SerializeField]
+        private UnityEvent<float> OnRemainingEnergy = default;
+        [SerializeField]
+        private UnityEvent<int> OnUsableEnergy = default;
+        [SerializeField]
+        private UnityEvent<string> OnUsableEnergyStr = default;
 
         private void Start()
         {
@@ -30,7 +36,7 @@ namespace Laresistance.Behaviours
         private void OnEnable()
         {
             BattleAbility[] abilities = battleBehaviour.GetAbilities();
-            foreach (var suscription in suscriptions)
+            foreach (var suscription in subscriptions)
             {
                 if (suscription.abilityIndex < 0 || suscription.abilityIndex >= abilities.Length || abilities[suscription.abilityIndex] == null)
                 {
@@ -39,30 +45,31 @@ namespace Laresistance.Behaviours
                 else
                 {
                     suscription.OnAbilityExists?.Invoke();
-                    abilities[suscription.abilityIndex].OnAbilityTimerChanged += (current, cooldown, percent)=> { AbilityTimerChanged(suscription.abilityIndex, current, cooldown, percent); };
                 }
             }
+
+            EnergyChanged(battleBehaviour.StatusManager.CurrentEnergy, battleBehaviour.StatusManager.UsableEnergy);
+            battleBehaviour.StatusManager.OnEnergyChanged += EnergyChanged;
         }
 
         private void OnDisable()
         {
-            BattleAbility[] abilities = battleBehaviour.GetAbilities();
-            foreach (var suscription in suscriptions)
-            {
-                if (suscription.abilityIndex < 0 || suscription.abilityIndex >= abilities.Length || abilities[suscription.abilityIndex] == null)
-                {
-
-                }
-                else
-                {
-                    abilities[suscription.abilityIndex].OnAbilityTimerChanged -= (current, cooldown, percent) => { AbilityTimerChanged(suscription.abilityIndex, current, cooldown, percent); };
-                }
-            }
+            battleBehaviour.StatusManager.OnEnergyChanged -= EnergyChanged;
         }
 
-        private void AbilityTimerChanged(int index, float currentTimer, float cooldown, float percent)
+        private void EnergyChanged(float currentEnergy, int usableEnergy)
         {
-            suscriptions[index].OnAbilityTimerChanged?.Invoke(percent);
+            OnUsableEnergy?.Invoke(usableEnergy);
+            OnRemainingEnergy?.Invoke(currentEnergy - (float)usableEnergy);
+            OnUsableEnergyStr?.Invoke(usableEnergy.ToString());
+            BattleAbility[] abilities = battleBehaviour.GetAbilities();
+            foreach (var suscription in subscriptions)
+            {
+                if (suscription.abilityIndex >= 0 && suscription.abilityIndex < abilities.Length && abilities[suscription.abilityIndex] != null)
+                {
+                    suscription.OnAvailabilityChanged?.Invoke(battleBehaviour.StatusManager.CanExecute(abilities[suscription.abilityIndex].GetCost()));
+                }
+            }
         }
     }
 }

@@ -67,9 +67,19 @@ namespace Laresistance.Core
             return Data.BaseBloodPrice * Level;
         }
 
-        public void Upgrade()
+        public bool Upgrade()
         {
-            Level++;
+            if (CanUpgrade())
+            {
+                Level++;
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanUpgrade()
+        {
+            return Level < MAX_MINION_LEVEL;
         }
     } 
 }

@@ -163,7 +163,6 @@ namespace Laresistance.Behaviours
         public void OpenShop()
         {
             Init();
-            UpdateMinionUpgradePanel();
             StartCoroutine(OpenShopCoroutine());
         }
 
@@ -188,6 +187,7 @@ namespace Laresistance.Behaviours
                     shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
                     int currentIndex = i;
                     shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
+                    shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace Laresistance.Behaviours
             int upgradeCost = m.GetUpgradeCost();
             player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
             shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
-            shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost);
+            shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
         }        
 
         private void UpdateShopPanel()
@@ -324,7 +324,6 @@ namespace Laresistance.Behaviours
                             RemoveOffer(offerSelected);
                             yield return rewardSystem.GetReward(rd);
                             UpdateShopPanel();
-                            UpdateMinionUpgradePanel();
                             if (shopOfferUIList.Count > 0)
                             {
                                 shopOfferUIList[0].SelectButton();
@@ -349,6 +348,7 @@ namespace Laresistance.Behaviours
         private IEnumerator OpenShopUpgradeUI()
         {
             ActivateDeactivateContext(false);
+            UpdateMinionUpgradePanel();
             yield return StartingTween();
             offerSelected = -1;
             if (shopUpgradeUIList.Count > 0)
@@ -365,16 +365,34 @@ namespace Laresistance.Behaviours
                         int cost = player.GetMinions()[offerSelected].GetUpgradeCost();
                         if (bloodReference.GetValue() < cost)
                         {
-                            //StartCoroutine(ShopCantBuy(shopUpgradeUIList, offerSelected));
                         }
                         else
                         {
-                            bloodReference.SetValue(bloodReference.GetValue() - cost);
                             minionToUpgrade = player.GetMinions()[offerSelected];
-                            minionToUpgrade.Upgrade();
-                            UpdateSingleMinionUpgradePanel(offerSelected, minionToUpgrade);
+                            if (minionToUpgrade.Upgrade())
+                            {
+                                bloodReference.SetValue(bloodReference.GetValue() - cost);
+                            }
+                            for(int i = 0; i < player.EquippedMinionsQuantity; ++i)
+                            {
+                                UpdateSingleMinionUpgradePanel(i, player.GetMinions()[i]);
+                            }
+                            if (shopUpgradeUIList[offerSelected].IsInteractable())
+                            {
+                                shopUpgradeUIList[offerSelected].SelectButton();
+                            } else
+                            {
+                                foreach(var upgradeUI in shopUpgradeUIList)
+                                {
+                                    if (upgradeUI.IsInteractable())
+                                    {
+                                        upgradeUI.SelectButton();
+                                        break;
+                                    }
+                                }
+                            }
+                            
                             UpdateShopPanel();
-                            //StartCoroutine(ShopCanBuy(shopUpgradeUIList, offerSelected));
                         }
                     }
                     offerSelected = -1;

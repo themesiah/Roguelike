@@ -30,8 +30,9 @@ namespace Laresistance.Behaviours
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 
             List<BattleEffect> testEffects = new List<BattleEffect>();
-            testEffects.Add(new BattleEffectDamage(15, EffectTargetType.Enemy, StatusManager));
-            BattleAbility testAbility = new BattleAbility(testEffects, 3f, StatusManager, player.GetEquipmentEvents());
+            testEffects.Add(new BattleEffectDamage(10, EffectTargetType.Enemy, StatusManager));
+            BattleAbility testAbility = new BattleAbility(testEffects, 2, 0, StatusManager, player.GetEquipmentEvents());
+            testAbility.SetOffensiveAbility();
             player.SetMainAbility(testAbility);
 
             if (useStartingData)

@@ -27,11 +27,12 @@ namespace Laresistance.Core
         public OnGetPowerHandler OnGetEffectPowerFlat;
         // Effect power
         public OnGetPowerHandler OnGetEffectPower;
-        // Cooldown
-        public delegate void OnGetCooldownHandler(ref float currentCooldown);
-        public OnGetCooldownHandler OnGetCooldown;
-        // Starting cooldowns
-        public OnGetCooldownHandler OnGetStartingCooldowns;
+        // Energy production
+        public delegate void OnGetEnergyProductionHandler(ref float energyProduction);
+        public OnGetEnergyProductionHandler OnGetEnergyProduction;
+        // Starting energy
+        public delegate void OnGetStartingEnergyHandler(ref float startingEnergy);
+        public OnGetStartingEnergyHandler OnGetStartingEnergy;
         // Ability blood cost
         public delegate void OnGetAbilityBloodCostHandler(ScriptableIntReference bloodRef);
         public OnGetAbilityBloodCostHandler OnGetAbilityBloodCost;

@@ -16,18 +16,18 @@ namespace Laresistance.Tests {
 
         private BattleAbility GetAbilityByIndex(int i, EquipmentEvents events)
         {
-            float cooldown = 0f;
+            int cost = 0;
             List<BattleEffect> effects = new List<BattleEffect>();
 
             switch (i)
             {
                 case 0:
                     effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self, GetStatus()));
-                    cooldown = 1f;
+                    cost = 1;
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cooldown, null, events);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, null, events);
             ability.Tick(1.1f);
             return ability;
         }
@@ -47,7 +47,7 @@ namespace Laresistance.Tests {
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             Equipment e = new Equipment(0, null, null);
-            e.SetCooldownModifier(events, 2f);
+            e.SetEnergyProduction(events, 2f);
             e.EquipEquipment();
             ability.Tick(1.1f * player.GetSpeedModifier());
             Assert.IsFalse(ability.CanBeUsed());
@@ -64,10 +64,10 @@ namespace Laresistance.Tests {
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             Equipment e = new Equipment(0, null, null);
-            e.SetCooldownModifier(events, 2f);
+            e.SetEnergyProduction(events, 2f);
             e.EquipEquipment();
             Equipment e2 = new Equipment(1, null, null);
-            e2.SetCooldownModifier(events, 0.5f);
+            e2.SetEnergyProduction(events, 0.5f);
             e2.EquipEquipment();
             ability.Tick(1.1f * player.GetSpeedModifier());
             Assert.IsTrue(ability.CanBeUsed());
@@ -84,7 +84,7 @@ namespace Laresistance.Tests {
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
             Assert.IsFalse(ability.CanBeUsed());
             Equipment e2 = new Equipment(1, null, null);
-            e2.SetCooldownModifier(events, 0.5f);
+            e2.SetEnergyProduction(events, 0.5f);
             e2.EquipEquipment();
             ability.Tick(0.55f * player.GetSpeedModifier());
             Assert.IsTrue(ability.CanBeUsed());
