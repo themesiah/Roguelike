@@ -202,6 +202,10 @@ namespace Laresistance.Systems
             }
             enemiesBattleManager[indexToRemove].EndBattle();
             enemiesBattleManager.RemoveAt(indexToRemove);
+            if (AllEnemiesDead())
+            {
+                EndBattle();
+            }
         }
 
         public IEnumerator Tick(float delta)
