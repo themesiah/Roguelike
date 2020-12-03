@@ -16,5 +16,9 @@ namespace Laresistance.Data
         [SerializeField]
         private int weight = default;
         public int Weight { get { return weight; } }
+
+        [SerializeField]
+        private bool isBasicSkill = false;
+        public bool IsBasicSkill { get { return isBasicSkill; } }
     }
 }

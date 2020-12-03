@@ -9,11 +9,12 @@ namespace Laresistance.Battle
 {
     public class BattleAbilityManager
     {
-        public static bool currentlyExecuting = false;
+        private static bool currentlyExecuting = false;
         private static List<BattleAbility> abilityQueue;
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
         private static IBattleAnimator currentAnimator = null;
         public static BattleAbility currentAbility;
+        public static bool executingBasicSkill = false;
         public static BattleStatusManager[] currentTargets;
 
         private static bool battling = false;
@@ -43,6 +44,10 @@ namespace Laresistance.Battle
                     lastAnimator?.Pause();
                 }
                 currentlyExecuting = true;
+                if (abilityToExecute.IsBasicSkill)
+                {
+                    executingBasicSkill = true;
+                }
                 if (abilityToExecute.IsOffensiveAbility)
                 {
                     currentTargets = targets;
@@ -58,6 +63,10 @@ namespace Laresistance.Battle
                 abilityQueue.Remove(abilityToExecute);
                 currentTargets = null;
                 currentlyExecuting = false;
+                if (abilityToExecute.IsBasicSkill)
+                {
+                    executingBasicSkill = false;
+                }
                 if (abilityToExecute.IsPrioritary() && needPause)
                 {
                     lastAnimator?.Resume();

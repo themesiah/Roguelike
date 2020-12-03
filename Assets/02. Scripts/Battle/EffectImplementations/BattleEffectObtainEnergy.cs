@@ -28,6 +28,11 @@ namespace Laresistance.Battle
             return power;
         }
 
+        public float GetEnergyAmount(int level, EquipmentEvents equipmentEvents)
+        {
+            return GetPower(level, equipmentEvents) / 100f;
+        }
+
         public override string GetAnimationTrigger()
         {
             return "Effect";
@@ -36,7 +41,7 @@ namespace Laresistance.Battle
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
             string textId = "EFF_OBTAIN_EN_DESC";
-            return Texts.GetText(textId, new object[] { GetPower(level, equipmentEvents), GetTargetString() });
+            return Texts.GetText(textId, new object[] { GetEnergyAmount(level, equipmentEvents), GetTargetString() });
         }
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
@@ -44,7 +49,7 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.AddEnergy(GetPower(level, equipmentEvents));
+            target.AddEnergy(GetEnergyAmount(level, equipmentEvents));
         }
     }
 }

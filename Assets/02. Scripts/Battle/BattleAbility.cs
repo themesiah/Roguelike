@@ -25,6 +25,7 @@ namespace Laresistance.Battle
         public int Weight { get; private set; }
         public bool IsShieldAbility { get; private set; }
         public bool IsOffensiveAbility { get; private set; }
+        public bool IsBasicSkill { get; private set; }
 
         public BattleAbility(List<BattleEffect> effectsToSet, int energyCost, int weight, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null)
         {
@@ -50,6 +51,10 @@ namespace Laresistance.Battle
             {
                 ability.SetOffensiveAbility();
             }
+            if (IsBasicSkill)
+            {
+                ability.SetBasicSkill();
+            }
 
             return ability;
         }
@@ -62,6 +67,11 @@ namespace Laresistance.Battle
         public void SetOffensiveAbility()
         {
             IsOffensiveAbility = true;
+        }
+
+        public void SetBasicSkill()
+        {
+            IsBasicSkill = true;
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
@@ -106,7 +116,7 @@ namespace Laresistance.Battle
 
         public void Tick(float deltaTime)
         {
-            if (!BattleAbilityManager.currentlyExecuting)
+            if (!BattleAbilityManager.Executing)
             {
             }
         }
@@ -160,7 +170,14 @@ namespace Laresistance.Battle
 
         public bool CanBeUsed()
         {
-            return statusManager.CanExecute(energyCost);
+            if (IsBasicSkill)
+            {
+                return statusManager.CanExecute(energyCost) && !BattleAbilityManager.Executing;
+            }
+            else
+            {
+                return statusManager.CanExecute(energyCost);
+            }
         }
 
         public int GetCost()

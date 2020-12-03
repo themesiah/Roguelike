@@ -20,7 +20,7 @@ namespace Laresistance.Battle
                 {
                     shield = true;
                 }
-                if (effectData.EffectType == EffectType.Damage)
+                if (effectData.EffectType == EffectType.Damage || effectData.EffectType == EffectType.BasicAttack)
                 {
                     offensive = true;
                 }
@@ -34,6 +34,10 @@ namespace Laresistance.Battle
             if (offensive)
             {
                 battleAbility.SetOffensiveAbility();
+            }
+            if (abilityData.IsBasicSkill)
+            {
+                battleAbility.SetBasicSkill();
             }
             return battleAbility;
         }

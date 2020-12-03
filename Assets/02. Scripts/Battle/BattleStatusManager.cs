@@ -37,10 +37,8 @@ namespace Laresistance.Battle
         public static float DAMAGE_MODIFIER_DURATION = 3f;
         public static float DAMAGE_OVER_TIME_DURATION = 9f;
         public static float DAMAGE_OVER_TIME_TICK_DELAY = 1.5f;
-        public static float ENERGY_PER_SECOND = 1f;
         public static float STARTING_ENERGY = 3f;
         public static float MAX_ENERGY = 10f;
-        public static float STUN_TIME = 3f;
         #endregion
 
         #region Private Variables
@@ -51,6 +49,7 @@ namespace Laresistance.Battle
         private EquipmentEvents equipmentEvents;
         private bool stunned = false;
         private float stunTimer;
+        private float energyPerSecond;
         // Damage, heal and shield modifiers
         #endregion
 
@@ -74,13 +73,14 @@ namespace Laresistance.Battle
         #endregion
 
         #region Public methods
-        public BattleStatusManager(CharacterHealth health)
+        public BattleStatusManager(CharacterHealth health, float energyPerSecond = 1f)
         {
             this.health = health;
             speedModifiers = new List<SpeedEffect>();
             damageOverTimes = new List<DamageOverTime>();
             damageImprovements = new List<DamageImprovement>();
             tempDamageModifications = new List<TempDamageChange>();
+            this.energyPerSecond = energyPerSecond;
         }
 
         public void ProcessStatus(float delta, float energySpeedModifier)
@@ -124,7 +124,7 @@ namespace Laresistance.Battle
                 health.TakeDamage(totalDamage, null);
             }
             health.Tick(delta);
-            if (!BattleAbilityManager.currentlyExecuting)
+            if (!BattleAbilityManager.Executing || BattleAbilityManager.executingBasicSkill)
             {
                 if (stunned)
                 {
@@ -136,7 +136,7 @@ namespace Laresistance.Battle
                 }
                 else
                 {
-                    float currentProduction = ENERGY_PER_SECOND;
+                    float currentProduction = energyPerSecond;
                     equipmentEvents?.OnGetEnergyProduction?.Invoke(ref currentProduction);
                     CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
@@ -250,7 +250,9 @@ namespace Laresistance.Battle
 
         public void AddEnergy(float energy)
         {
-            CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + energy);
+            float energyToWin = energy * GetSpeedModifier();
+            equipmentEvents?.OnGetEnergyProduction?.Invoke(ref energyToWin);
+            CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + energyToWin);
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
         }
 

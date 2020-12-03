@@ -13,6 +13,7 @@
         Cure,
         AdvanceCooldowns, // Unused, now obtain energy
         DamageModification,
-        ObtainEnergy
+        ObtainEnergy,
+        BasicAttack
     }
 }

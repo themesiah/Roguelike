@@ -27,7 +27,7 @@ namespace Laresistance.Behaviours
 
         private void Awake()
         {
-            StatusManager = new BattleStatusManager(new CharacterHealth(100));
+            StatusManager = new BattleStatusManager(new CharacterHealth(100), 0f);
             player = new Player(StatusManager);
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 

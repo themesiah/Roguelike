@@ -16,6 +16,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private KeySetSelector keySetSelector = default;
 
+        [SerializeField]
+        private bool activateOnChange = true;
+
         private void OnEnable()
         {
             keySetSelector.IndexForSelection.RegisterOnChangeAction(OnControlSchemeChanged);
@@ -34,11 +37,13 @@ namespace Laresistance.Behaviours
                 spriteReference.sprite = keySetSelector.Get();
                 if (spriteReference.sprite != null)
                 {
-                    spriteReference.enabled = true;
+                    if (activateOnChange)
+                        spriteReference.enabled = true;
                     ((RectTransform)spriteReference.transform).sizeDelta = keySetSelector.Get().rect.size;
                 } else
                 {
-                    spriteReference.enabled = false;
+                    if (activateOnChange)
+                        spriteReference.enabled = false;
                 }
             }
             if (spriteRenderer != null)
