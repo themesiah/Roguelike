@@ -25,6 +25,7 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAttackPower?.Invoke(ref power);
             equipmentEvents?.OnGetAttackPowerFlat?.Invoke(ref power);
             power = (int)(power * SelfStatus.GetDamageModifier());
+            power = System.Math.Max(1, power);
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
         }

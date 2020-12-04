@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Laresistance.Battle;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Behaviours
 {
@@ -23,13 +24,15 @@ namespace Laresistance.Behaviours
         private RuntimePlayerDataBehaviourSingle playerDataBehaviourReference = default;
         [SerializeField]
         protected Transform effectTargetPivot = default;
+        [SerializeField]
+        private ScriptableFloatReference energyProductionRef = default;
 
         public Player player { get; private set; }
         public BattleStatusManager StatusManager { get; private set; }
 
         private void Awake()
         {
-            StatusManager = new BattleStatusManager(new CharacterHealth(150), effectTargetPivot, 0f);
+            StatusManager = new BattleStatusManager(new CharacterHealth(150), effectTargetPivot, energyProductionRef.GetValue());
             player = new Player(StatusManager);
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 

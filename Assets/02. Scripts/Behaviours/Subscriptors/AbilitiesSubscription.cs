@@ -64,11 +64,13 @@ namespace Laresistance.Behaviours
 
             EnergyChanged(battleBehaviour.StatusManager.CurrentEnergy, battleBehaviour.StatusManager.UsableEnergy);
             battleBehaviour.StatusManager.OnEnergyChanged += EnergyChanged;
+            battleBehaviour.StatusManager.OnNextAbilityChanged += OnNextAbilityChanged;
         }
 
         private void OnDisable()
         {
             battleBehaviour.StatusManager.OnEnergyChanged -= EnergyChanged;
+            battleBehaviour.StatusManager.OnNextAbilityChanged -= OnNextAbilityChanged;
         }
 
         private void EnergyChanged(float currentEnergy, int usableEnergy)
@@ -77,12 +79,30 @@ namespace Laresistance.Behaviours
             OnRemainingEnergy?.Invoke(currentEnergy - (float)usableEnergy);
             OnUsableEnergyStr?.Invoke(usableEnergy.ToString());
             BattleAbility[] abilities = battleBehaviour.GetAbilities();
-            foreach (var suscription in subscriptions)
+            foreach (var subscription in subscriptions)
             {
-                if (suscription.abilityIndex >= 0 && suscription.abilityIndex < abilities.Length && abilities[suscription.abilityIndex] != null)
+                if (subscription.abilityIndex >= 0 && subscription.abilityIndex < abilities.Length && abilities[subscription.abilityIndex] != null)
                 {
-                    suscription.OnAvailabilityChanged?.Invoke(battleBehaviour.StatusManager.CanExecute(abilities[suscription.abilityIndex].GetCost()));
-                    suscription.OnProgress?.Invoke(currentEnergy / abilities[suscription.abilityIndex].GetCost());
+                    subscription.OnAvailabilityChanged?.Invoke(battleBehaviour.StatusManager.CanExecute(abilities[subscription.abilityIndex].GetCost()));
+                    subscription.OnProgress?.Invoke(currentEnergy / abilities[subscription.abilityIndex].GetCost());
+                }
+            }
+        }
+
+        private void OnNextAbilityChanged(BattleAbility nextAbility)
+        {
+            BattleAbility[] abilities = battleBehaviour.GetAbilities();
+            foreach (var subscription in subscriptions)
+            {
+                if (subscription.abilityIndex >= 0 && subscription.abilityIndex < abilities.Length && abilities[subscription.abilityIndex] != null)
+                {
+                    if (nextAbility == abilities[subscription.abilityIndex])
+                    {
+                        subscription.OnAbilityExists?.Invoke();
+                    } else
+                    {
+                        subscription.OnAbilityDoesNotExist?.Invoke();
+                    }
                 }
             }
         }

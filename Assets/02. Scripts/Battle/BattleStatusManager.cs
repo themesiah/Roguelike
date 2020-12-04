@@ -58,6 +58,7 @@ namespace Laresistance.Battle
         public float CurrentEnergy { get; private set; }
         public int UsableEnergy { get { return Mathf.FloorToInt(CurrentEnergy); } }
         public Transform TargetPivot { get; private set; }
+        public BattleAbility NextAbility { get; private set; }
         #endregion
 
         #region Events
@@ -71,6 +72,8 @@ namespace Laresistance.Battle
         public event OnStunHandler OnStun;
         public delegate void OnEnergyChangedHandler(float currentEnergy, int usableEnergy);
         public event OnEnergyChangedHandler OnEnergyChanged;
+        public delegate void OnNextAbilityChangedHandler(BattleAbility nextAbility);
+        public event OnNextAbilityChangedHandler OnNextAbilityChanged;
         #endregion
 
         #region Public methods
@@ -278,6 +281,12 @@ namespace Laresistance.Battle
         {
             CurrentEnergy = Mathf.Max(0f, CurrentEnergy + energy);
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
+        }
+
+        public void SetNextAbility(BattleAbility ability)
+        {
+            NextAbility = ability;
+            OnNextAbilityChanged?.Invoke(NextAbility);
         }
         #endregion
     }

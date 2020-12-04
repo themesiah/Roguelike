@@ -27,7 +27,10 @@ namespace Laresistance.Behaviours
             if (timer >= TICK_TIME)
             {
                 timer = timer - TICK_TIME;
-                characterHealth.Heal(healPerTick);
+                if (characterHealth.GetPercentHealth() < 1f)
+                {
+                    characterHealth.Heal(healPerTick);
+                }
             }
         }
     }
