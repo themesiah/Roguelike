@@ -1,5 +1,6 @@
 ﻿using GamedevsToolbox.Utils;
 using System.Collections;
+using UnityEngine;
 
 namespace Laresistance.Behaviours
 {
@@ -7,5 +8,6 @@ namespace Laresistance.Behaviours
     {
         IEnumerator PlayAnimation(string trigger);
         void Stop();
+        void SetAttackPosition(Vector3 position);
     }
 }

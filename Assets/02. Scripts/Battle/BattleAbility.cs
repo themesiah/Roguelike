@@ -154,11 +154,11 @@ namespace Laresistance.Battle
             }
         }
 
-        public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, ScriptableIntReference bloodRef = null)
+        public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             foreach (var effect in effects)
             {
-                effect.PerformEffect(allies, targets, level, equipmentEvents, bloodRef);
+                effect.PerformEffect(allies, targets, level, equipmentEvents, animator, bloodRef);
             }
         }
 

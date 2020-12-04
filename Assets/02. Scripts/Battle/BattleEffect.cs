@@ -13,6 +13,7 @@ namespace Laresistance.Battle
         protected int Power;
         protected EffectTargetType TargetType;
         protected BattleStatusManager SelfStatus;
+        private bool primaryEffect = false;
 
         public BattleEffect(int power, EffectTargetType targetType, BattleStatusManager selfStatus)
         {
@@ -31,6 +32,11 @@ namespace Laresistance.Battle
             return SelfStatus;
         }
 
+        public void SetAnimationPrimaryEffect()
+        {
+            primaryEffect = true;
+        }
+
         public virtual int GetPower(int level, EquipmentEvents equipmentEvents)
         {
             if (level <= 0)
@@ -43,9 +49,25 @@ namespace Laresistance.Battle
             Power = power;
         }
 
-        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentEvents equipmentEvents, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
-            GetTargets(allies, enemies).ForEach((target) => PerformEffectOnTarget(target, level, equipmentEvents, bloodRef));
+            List<BattleStatusManager> targets = GetTargets(allies, enemies);
+            if (primaryEffect)
+            {
+                Vector3 targetPoint = Vector3.zero;
+                targets.ForEach((target) =>
+                {
+                    if (target.TargetPivot != null)
+                    {
+                        targetPoint += target.TargetPivot.transform.position;
+                        Debug.LogFormat("Position for character {0} is {1}", target.TargetPivot.name, target.TargetPivot.transform.position);
+                    }
+                });
+
+                targetPoint = targetPoint / targets.Count;
+                animator.SetAttackPosition(targetPoint);
+            }
+            targets.ForEach((target) => PerformEffectOnTarget(target, level, equipmentEvents, bloodRef));
         }
 
         protected abstract void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef);

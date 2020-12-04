@@ -25,6 +25,7 @@ namespace Laresistance.Battle
                     offensive = true;
                 }
             }
+            effects[0].SetAnimationPrimaryEffect();
 
             BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cost, abilityData.Weight, battleStatus, events);
             if (shield)

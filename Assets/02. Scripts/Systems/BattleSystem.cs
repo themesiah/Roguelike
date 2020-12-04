@@ -16,7 +16,7 @@ namespace Laresistance.Systems
         private bool paused = false;
         private bool battling = false;
 
-        private static float BATTLE_ENERGY_SPEED_ACCELERATION = 0.01f;
+        private static float BATTLE_ENERGY_SPEED_ACCELERATION = 0.00f;
         private static float MAX_BATTLE_ENERGY_SPEED_MODIFIER = 4f;
         private float currentEnergySpeedModifier;
 

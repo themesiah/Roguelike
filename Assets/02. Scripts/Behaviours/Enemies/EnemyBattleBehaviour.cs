@@ -15,6 +15,8 @@ namespace Laresistance.Behaviours
         protected RuntimePlayerDataBehaviourSingle playerDataRef = default;
         [SerializeField]
         protected ScriptableVector2Reference levelVarianceRef = default;
+        [SerializeField]
+        protected Transform effectTargetPivot = default;
 
         protected int enemyLevel;
 
@@ -26,7 +28,7 @@ namespace Laresistance.Behaviours
         protected override void SetupStatusManager()
         {
             GenerateEnemyLevel();
-            StatusManager = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth * (int)(1f + (enemyLevel - 1) * 0.1f)));
+            StatusManager = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth * (int)(1f + (enemyLevel - 1) * 0.1f)), effectTargetPivot);
         }
 
         protected override void SetupAbilityInputExecutor()

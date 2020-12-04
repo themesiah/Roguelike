@@ -21,13 +21,15 @@ namespace Laresistance.Behaviours
         private List<EquipmentData> startingEquipments = default;
         [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataBehaviourReference = default;
+        [SerializeField]
+        protected Transform effectTargetPivot = default;
 
         public Player player { get; private set; }
         public BattleStatusManager StatusManager { get; private set; }
 
         private void Awake()
         {
-            StatusManager = new BattleStatusManager(new CharacterHealth(100), 0f);
+            StatusManager = new BattleStatusManager(new CharacterHealth(150), effectTargetPivot, 0f);
             player = new Player(StatusManager);
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 

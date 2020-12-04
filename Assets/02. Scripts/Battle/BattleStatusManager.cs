@@ -57,6 +57,7 @@ namespace Laresistance.Battle
         public CharacterHealth health { get; private set; }
         public float CurrentEnergy { get; private set; }
         public int UsableEnergy { get { return Mathf.FloorToInt(CurrentEnergy); } }
+        public Transform TargetPivot { get; private set; }
         #endregion
 
         #region Events
@@ -73,7 +74,7 @@ namespace Laresistance.Battle
         #endregion
 
         #region Public methods
-        public BattleStatusManager(CharacterHealth health, float energyPerSecond = 1f)
+        public BattleStatusManager(CharacterHealth health, Transform targetPivot = null, float energyPerSecond = 1f)
         {
             this.health = health;
             speedModifiers = new List<SpeedEffect>();
@@ -81,6 +82,7 @@ namespace Laresistance.Battle
             damageImprovements = new List<DamageImprovement>();
             tempDamageModifications = new List<TempDamageChange>();
             this.energyPerSecond = energyPerSecond;
+            this.TargetPivot = targetPivot;
         }
 
         public void ProcessStatus(float delta, float energySpeedModifier)

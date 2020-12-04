@@ -85,10 +85,14 @@ namespace Laresistance.Movement
 
         public void Fall(InputAction.CallbackContext context)
         {
-            if (context.started/* && !movementStatus.jumping && !movementStatus.falling*/)
+            if (context.started)
+            {
                 movementStatus.platformFalling = true;
+            }
             if (context.canceled)
+            {
                 movementStatus.platformFalling = false;
+            }
         }
 
         public void GroundContact()

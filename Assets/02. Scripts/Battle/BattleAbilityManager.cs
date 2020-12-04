@@ -57,7 +57,7 @@ namespace Laresistance.Battle
                 yield return animator?.PlayAnimation(animationTrigger);
                 if (battling)
                 {
-                    abilityToExecute.Perform(allies, targets, level, bloodRef);
+                    abilityToExecute.Perform(allies, targets, level, animator, bloodRef);
                 }
                 currentAbility = null;
                 abilityQueue.Remove(abilityToExecute);
