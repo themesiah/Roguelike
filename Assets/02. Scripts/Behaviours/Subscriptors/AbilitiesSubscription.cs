@@ -15,6 +15,8 @@ namespace Laresistance.Behaviours
             public UnityEvent OnAbilityDoesNotExist = default;
             public UnityEvent OnAbilityExists = default;
             public UnityEvent<bool> OnAvailabilityChanged = default;
+            public UnityEvent<string> OnAbilityCost = default;
+            public UnityEvent<bool> OnAbilityHaveCost = default;
         }
 
 
@@ -41,10 +43,21 @@ namespace Laresistance.Behaviours
                 if (suscription.abilityIndex < 0 || suscription.abilityIndex >= abilities.Length || abilities[suscription.abilityIndex] == null)
                 {
                     suscription.OnAbilityDoesNotExist?.Invoke();
+                    suscription.OnAbilityHaveCost?.Invoke(false);
                 }
                 else
                 {
                     suscription.OnAbilityExists?.Invoke();
+                    int cost = abilities[suscription.abilityIndex].GetCost();
+                    if (cost == 0)
+                    {
+                        suscription.OnAbilityHaveCost?.Invoke(false);
+                    }
+                    else
+                    {
+                        suscription.OnAbilityHaveCost?.Invoke(true);
+                        suscription.OnAbilityCost?.Invoke(cost.ToString());
+                    }
                 }
             }
 
