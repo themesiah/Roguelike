@@ -17,6 +17,7 @@ namespace Laresistance.Behaviours
             public UnityEvent<bool> OnAvailabilityChanged = default;
             public UnityEvent<string> OnAbilityCost = default;
             public UnityEvent<bool> OnAbilityHaveCost = default;
+            public UnityEvent<float> OnProgress = default;
         }
 
 
@@ -81,6 +82,7 @@ namespace Laresistance.Behaviours
                 if (suscription.abilityIndex >= 0 && suscription.abilityIndex < abilities.Length && abilities[suscription.abilityIndex] != null)
                 {
                     suscription.OnAvailabilityChanged?.Invoke(battleBehaviour.StatusManager.CanExecute(abilities[suscription.abilityIndex].GetCost()));
+                    suscription.OnProgress?.Invoke(currentEnergy / abilities[suscription.abilityIndex].GetCost());
                 }
             }
         }
