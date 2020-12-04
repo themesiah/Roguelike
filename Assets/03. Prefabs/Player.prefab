@@ -6559,6 +6559,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf6cb6ba65e5d674f87e722cd36900fe, type: 2}
   - {fileID: 11400000, guid: afd82dadfd8e8d849908af280fb76dc1, type: 2}
   playerDataBehaviourReference: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
+  energyProductionRef:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 1.3
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
 --- !u!114 &3811345349916794757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7369,6 +7378,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    OnProgress:
+      m_PersistentCalls:
+        m_Calls: []
   - abilityIndex: 1
     OnAbilityDoesNotExist:
       m_PersistentCalls:
@@ -7445,6 +7457,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    OnProgress:
+      m_PersistentCalls:
+        m_Calls: []
   - abilityIndex: 2
     OnAbilityDoesNotExist:
       m_PersistentCalls:
@@ -7521,6 +7536,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    OnProgress:
+      m_PersistentCalls:
+        m_Calls: []
   - abilityIndex: 3
     OnAbilityDoesNotExist:
       m_PersistentCalls:
@@ -7597,6 +7615,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    OnProgress:
+      m_PersistentCalls:
+        m_Calls: []
   - abilityIndex: 4
     OnAbilityDoesNotExist:
       m_PersistentCalls:
@@ -7647,6 +7668,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     OnAbilityHaveCost:
+      m_PersistentCalls:
+        m_Calls: []
+    OnProgress:
       m_PersistentCalls:
         m_Calls: []
   - abilityIndex: 5
@@ -7701,6 +7725,9 @@ MonoBehaviour:
     OnAbilityHaveCost:
       m_PersistentCalls:
         m_Calls: []
+    OnProgress:
+      m_PersistentCalls:
+        m_Calls: []
   - abilityIndex: 6
     OnAbilityDoesNotExist:
       m_PersistentCalls:
@@ -7751,6 +7778,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     OnAbilityHaveCost:
+      m_PersistentCalls:
+        m_Calls: []
+    OnProgress:
       m_PersistentCalls:
         m_Calls: []
   OnRemainingEnergy:

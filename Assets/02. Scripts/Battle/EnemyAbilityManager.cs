@@ -25,6 +25,7 @@ namespace Laresistance.Battle
             if (nextAbility == null)
             {
                 nextAbility = GetRandomAbilityFromWeights();
+                battleStatus.SetNextAbility(nextAbility);
             }
 
             for(int i = 0; i < abilities.Length; ++i)
@@ -56,6 +57,7 @@ namespace Laresistance.Battle
                                 {
                                     if (target == battleStatus) // An enemy must be targetted (or its team) to activate the shields
                                     {
+                                        battleStatus.SetNextAbility(null);
                                         return i;
                                     }
                                 }
