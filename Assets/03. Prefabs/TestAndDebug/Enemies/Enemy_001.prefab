@@ -1342,6 +1342,7 @@ GameObject:
   - component: {fileID: 3087844395295750509}
   - component: {fileID: 7149651432035688070}
   - component: {fileID: 5499251198591218855}
+  - component: {fileID: 8458415351010685671}
   m_Layer: 8
   m_Name: AbilitiesCanvas
   m_TagString: Untagged
@@ -1629,6 +1630,37 @@ MonoBehaviour:
   OnUsableEnergyStr:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8458415351010685671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8232852243488243059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f30bcf3eb48f08b4cba9927c213da84a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  valueReference:
+    useConstant: 0
+    value: {fileID: 11400000, guid: 674ba4a52ac94e94795b744e3321d642, type: 2}
+    constantValue: 0
+  OnValueChangedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4860731738587961371}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8249352790927689240
 GameObject:
   m_ObjectHideFlags: 0
