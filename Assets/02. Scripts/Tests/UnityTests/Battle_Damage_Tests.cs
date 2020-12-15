@@ -39,7 +39,7 @@ namespace Laresistance.Tests {
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cost, 0, null);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, 1f, null);
             ability.Tick(1.1f);
             return ability;
         }

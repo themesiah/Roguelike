@@ -16,7 +16,7 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputProcessor()
         {
-            AbilityInputProcessor = new PlayerAbilityInput(playerDataBehaviour.player);
+            AbilityInputProcessor = new PlayerAbilityInput(playerDataBehaviour.player, StatusManager);
         }
 
         protected override void SetupAbilityInputExecutor()
@@ -52,6 +52,14 @@ namespace Laresistance.Behaviours
         public void PerformConsumableAbility1(InputAction.CallbackContext context) => PerformAbility(context, 4);
         public void PerformConsumableAbility2(InputAction.CallbackContext context) => PerformAbility(context, 5);
         public void PerformConsumableAbility3(InputAction.CallbackContext context) => PerformAbility(context, 6);
+        public void PerformReshuffle(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                ((PlayerAbilityInput)AbilityInputProcessor).Reshuffle();
+            }
+        }
+
         public void PerformChangeTarget(InputAction.CallbackContext context)
         {
             if (context.performed)

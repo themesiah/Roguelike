@@ -15,7 +15,7 @@ namespace Laresistance.Core
         private Consumable[] consumables;
         private EquipmentEvents equipmentEvents = null;
         public BattleStatusManager statusManager { get; private set; }
-        public BattleAbility characterAbility { get; private set; }
+        public BattleAbility[] characterAbilities { get; private set; }
 
         public Player(BattleStatusManager statusManager)
         {
@@ -55,15 +55,15 @@ namespace Laresistance.Core
                 {
                     throw new System.Exception("Minion already equipped");
                 }
-                if (minions[i] != null && minions[i].Data.name == minion.Data.name)
-                {
-                    if (minion.Level > minions[i].Level)
-                    {
-                        minions[i] = minion;
-                    }
-                    minions[i].Upgrade();
-                    return true;
-                }
+                //if (minions[i] != null && minions[i].Data.name == minion.Data.name)
+                //{
+                //    if (minion.Level > minions[i].Level)
+                //    {
+                //        minions[i] = minion;
+                //    }
+                //    minions[i].Upgrade();
+                //    return true;
+                //}
             }
 
             for(int i = 0; i < minions.Length; ++i)
@@ -273,28 +273,34 @@ namespace Laresistance.Core
         #region Abilities
         public BattleAbility[] GetAbilities()
         {
-            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS + MAX_CONSUMABLES + 1];
-            abilities[0] = characterAbility;
+            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 4];
+            abilities[0] = characterAbilities[0];
+            abilities[1] = characterAbilities[1];
+            abilities[2] = characterAbilities[2];
+            abilities[3] = characterAbilities[3];
             for(int i = 0; i < MAX_MINIONS; ++i)
             {
                 if (minions.Length > i && minions[i] != null)
                 {
-                    abilities[i + 1] = minions[i].Abilities[0];
+                    for (int k = 0; k < 4; k++)
+                    {
+                        abilities[i * 4 + k + 4] = minions[i].Abilities[k];
+                    }
                 }
             }
             for(int i = 0; i < MAX_CONSUMABLES; ++i)
             {
                 if (consumables.Length > i && consumables[i] != null)
                 {
-                    abilities[i + 1 + MAX_MINIONS] = consumables[i].Ability;
+                    abilities[i + 4 + MAX_MINIONS * 4] = consumables[i].Ability;
                 }
             }
             return abilities;
         }
 
-        public void SetMainAbility(BattleAbility ability)
+        public void SetMainAbilities(BattleAbility[] abilities)
         {
-            characterAbility = ability;
+            characterAbilities = abilities;
         }
         #endregion
     }

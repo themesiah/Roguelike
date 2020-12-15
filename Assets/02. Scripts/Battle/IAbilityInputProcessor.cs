@@ -4,5 +4,6 @@
     {
         int GetAbilityToExecute(BattleStatusManager battleStatus, float delta);
         BattleAbility[] GetAbilities();
+        void BattleStart();
     }
 }

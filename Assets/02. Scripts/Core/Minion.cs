@@ -4,6 +4,7 @@ using Laresistance.Data;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using System.Text;
 
 namespace Laresistance.Core
 {
@@ -12,15 +13,15 @@ namespace Laresistance.Core
         private static int MAX_MINION_LEVEL = 10;
         public string Name { get { return Texts.GetText(Data.NameRef); }}
         public MinionData Data { get; private set; }
-        private BattleAbility ability = default;
+        private BattleAbility[] abilities = default;
         public int Level { get; private set; }
 
-        public Minion(MinionData data, BattleAbility ability, int level)
+        public Minion(MinionData data, BattleAbility[] abilities, int level)
         {
             Data = data;
-            if (ability == null)
+            if (abilities == null)
                 throw new System.Exception("A minion should have an ability");
-            this.ability = ability;
+            this.abilities = abilities;
             if (level <= 0 || level > MAX_MINION_LEVEL)
                 throw new System.Exception("A minion level must be at least 1 and " + MAX_MINION_LEVEL + " at max");
             Level = level;
@@ -28,17 +29,24 @@ namespace Laresistance.Core
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
         {
-            this.ability.SetEquipmentEvents(equipmentEvents);
+            foreach(var ability in abilities)
+            {
+                ability.SetEquipmentEvents(equipmentEvents);
+            }
         }
 
         public void SetStatusManager(BattleStatusManager selfStatus)
         {
-            this.ability.SetStatusManager(selfStatus);
+            foreach (var ability in abilities)
+            {
+                ability.SetStatusManager(selfStatus);
+            }
         }
 
         public int GetEffectPower(int index)
         {
-            return ability.GetEffectPower(index, Level);
+            return 0;
+            //return ability.GetEffectPower(index, Level);
         }
 
         public bool SetInSlot(Player player)
@@ -46,15 +54,23 @@ namespace Laresistance.Core
             return player.EquipMinion(this);
         }
 
-        public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] enemies, IBattleAnimator animator, ScriptableIntReference bloodRef)
+        public IEnumerator ExecuteAbility(int skillIndex, BattleStatusManager[] allies, BattleStatusManager[] enemies, IBattleAnimator animator, ScriptableIntReference bloodRef)
         {
-            yield return ability.ExecuteAbility(allies, enemies, Level, animator, bloodRef);
+            yield return abilities[skillIndex].ExecuteAbility(allies, enemies, Level, animator, bloodRef);
         }
 
-        public BattleAbility[] Abilities => new BattleAbility[] { ability };
+        public BattleAbility[] Abilities => abilities;
         public string GetAbilityText()
         {
-            return Abilities[0].GetAbilityText(Level);
+            //return Abilities[0].GetAbilityText(Level);
+            StringBuilder builder = new StringBuilder();
+            foreach (var ability in Abilities)
+            {
+                builder.Append("- ");
+                builder.Append(ability.GetShortAbilityText());
+                builder.Append("\n");
+            }
+            return builder.ToString();
         }
         public string GetNextLevelAbilityText()
         {

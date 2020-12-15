@@ -44,6 +44,7 @@ namespace Laresistance.Core
         public void StartBattle()
         {
             StatusManager.ResetStatus();
+            AbilityInputProcessor.BattleStart();
             OnBattleStart?.Invoke();
         }
 

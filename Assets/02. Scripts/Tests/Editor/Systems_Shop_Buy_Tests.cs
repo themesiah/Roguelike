@@ -19,12 +19,12 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(1, Data.EffectTargetType.Enemy, GetStatus()));
-            return new BattleAbility(effects, 0, 0, null);
+            return new BattleAbility(effects, 0, 0, 1f, null);
         }
 
         private List<ShopOffer> offers = new List<ShopOffer>() {
-            new ShopOffer(1000, false, new RewardData(0, 0, new Minion(null, GetAbility(), 1), null, null, null)),
-            new ShopOffer(500, false, new RewardData(0, 0, new Minion(null, GetAbility(), 1), null, null, null)),
+            new ShopOffer(1000, false, new RewardData(0, 0, new Minion(null, new BattleAbility[]{GetAbility() }, 1), null, null, null)),
+            new ShopOffer(500, false, new RewardData(0, 0, new Minion(null, new BattleAbility[]{GetAbility() }, 1), null, null, null)),
             new ShopOffer(50, true, new RewardData(0, 0, null, null, new Equipment(0, null, null), null)),
             new ShopOffer(5, true, new RewardData(0, 0, null, new Consumable(null, GetAbility()), null, null))
         };

@@ -27,7 +27,7 @@ namespace Laresistance.Battle
             }
             effects[0].SetAnimationPrimaryEffect();
 
-            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cost, abilityData.Weight, battleStatus, events);
+            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cost, abilityData.Weight, abilityData.Cooldown, battleStatus, events, abilityData.Icon, abilityData);
             if (shield)
             {
                 battleAbility.SetShieldAbility();

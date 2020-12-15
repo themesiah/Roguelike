@@ -23,7 +23,7 @@ namespace Laresistance.Tests
             BattleStatusManager status = GetStatus();
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamageModification(-20, Data.EffectTargetType.AllEnemies, status));
-            BattleAbility ability = new BattleAbility(effects, cost, 0, status);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, 1f, status);
             return ability;
         }
 

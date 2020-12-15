@@ -17,8 +17,8 @@ namespace Laresistance.Tests
         {
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 5, 0, null);
-            Minion minion = new Minion(null, ability, 1);
+            BattleAbility ability = new BattleAbility(effects, 5, 0, 1f, null);
+            Minion minion = new Minion(null, new BattleAbility[] { ability }, 1);
         }
 
         [Test]
@@ -27,10 +27,10 @@ namespace Laresistance.Tests
             List<BattleEffect> effects = new List<BattleEffect>();
             effects.Add(new BattleEffectDamage(5, Data.EffectTargetType.Enemy, GetStatus()));
             effects.Add(new BattleEffectDamage(7, Data.EffectTargetType.Enemy, GetStatus()));
-            BattleAbility ability = new BattleAbility(effects, 5, 0, null);
-            Minion minion = new Minion(null, ability, 1);
-            Minion minion2 = new Minion(null, ability, 2);
-            Minion minion3 = new Minion(null, ability, 3);
+            BattleAbility ability = new BattleAbility(effects, 5, 0, 1f, null);
+            Minion minion = new Minion(null, new BattleAbility[] { ability }, 1);
+            Minion minion2 = new Minion(null, new BattleAbility[] { ability }, 2);
+            Minion minion3 = new Minion(null, new BattleAbility[] { ability }, 3);
             Assert.AreEqual(5, minion.GetEffectPower(0));
             Assert.AreEqual(7, minion.GetEffectPower(1));
             Assert.AreEqual(6, minion2.GetEffectPower(0));

@@ -2,6 +2,7 @@
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Behaviours;
 using Laresistance.Core;
+using UnityEngine;
 
 namespace Laresistance.Battle
 {
@@ -20,12 +21,14 @@ namespace Laresistance.Battle
 
         public IEnumerator ExecuteAbility(int abilityIndex, BattleStatusManager[] allies, BattleStatusManager[] enemies)
         {
-            if (abilityIndex == 0)
+            if (abilityIndex >= 0 && abilityIndex < 4)
             {
-                yield return player.characterAbility.ExecuteAbility(allies, enemies, 1, animator, bloodRef);
-            } else if (abilityIndex > 0 && abilityIndex  < 4)
+                yield return player.characterAbilities[abilityIndex].ExecuteAbility(allies, enemies, 1, animator, bloodRef);
+            } else if (abilityIndex >= 4 && abilityIndex  < 16)
             {
-                yield return player.GetMinions()[abilityIndex-1].ExecuteAbility(allies, enemies, animator, bloodRef);
+                int minionIndex = Mathf.FloorToInt((abilityIndex - 4) / 4);
+                int minionAbility = (abilityIndex - 4) % 4;
+                yield return player.GetMinions()[minionIndex].ExecuteAbility(minionAbility, allies, enemies, animator, bloodRef);
             } else
             {
                 Consumable c = player.GetConsumables()[abilityIndex - 4];

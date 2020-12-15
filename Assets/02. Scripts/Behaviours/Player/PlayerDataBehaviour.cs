@@ -11,7 +11,7 @@ namespace Laresistance.Behaviours
     public class PlayerDataBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private AbilityData playerAbilityData = default;
+        private AbilityData[] playerAbilityData = default;
         [SerializeField]
         private bool useStartingData = false;
         [SerializeField]
@@ -36,9 +36,13 @@ namespace Laresistance.Behaviours
             player = new Player(StatusManager);
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 
-            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentEvents(), StatusManager);
+            BattleAbility[] playerAbilities = new BattleAbility[4];
+            playerAbilities[0] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[0], player.GetEquipmentEvents(), StatusManager);
+            playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[1], player.GetEquipmentEvents(), StatusManager);
+            playerAbilities[2] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[2], player.GetEquipmentEvents(), StatusManager);
+            playerAbilities[3] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[3], player.GetEquipmentEvents(), StatusManager);
 
-            player.SetMainAbility(playerAbility);
+            player.SetMainAbilities(playerAbilities);
 
             if (useStartingData)
             {

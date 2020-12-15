@@ -51,5 +51,10 @@ namespace Laresistance.Battle
             }
             return -1;
         }
+
+        public void BattleStart()
+        {
+
+        }
     }
 }

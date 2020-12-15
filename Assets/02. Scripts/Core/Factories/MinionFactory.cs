@@ -8,8 +8,13 @@ namespace Laresistance.Core
         public static Minion GetMinion(MinionData minionData, int level, EquipmentEvents events, BattleStatusManager battleStatus)
         {
             UnityEngine.Assertions.Assert.IsTrue(minionData.AbilitiesData.Length > 0);
-            BattleAbility ability = BattleAbilityFactory.GetBattleAbility(minionData.AbilitiesData[0], events, battleStatus);
-            Minion minion = new Minion(minionData, ability, level);
+            BattleAbility[] abilities = new BattleAbility[4];
+            for (int i = 0; i < 4; i++)
+            {
+                abilities[i] = BattleAbilityFactory.GetBattleAbility(minionData.AbilitiesData[i], events, battleStatus);
+            }
+            
+            Minion minion = new Minion(minionData, abilities, level);
             return minion;
         }
     }
