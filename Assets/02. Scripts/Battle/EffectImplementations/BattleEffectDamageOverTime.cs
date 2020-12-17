@@ -39,7 +39,7 @@ namespace Laresistance.Battle
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
             string textId = "EFF_DOT_DESC";
-            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), BattleStatusManager.DAMAGE_OVER_TIME_TICK_DELAY, BattleStatusManager.DAMAGE_OVER_TIME_DURATION });
+            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue(), GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() });
         }
 
         public override string GetAnimationTrigger()

@@ -27,13 +27,17 @@ namespace Laresistance.Battle
             abilityQueue.Add(abilityToExecute);
 
             bool stillExecuting = true;
-            while (abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
+            while (abilityQueue.Count > 0 && abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
             {
                 if (abilityQueue.Count == 0)
                 {
                     stillExecuting = false;
                 }
                 yield return null;
+            }
+            if (abilityQueue.Count == 0)
+            {
+                stillExecuting = false;
             }
             if (stillExecuting)
             {

@@ -41,8 +41,9 @@ namespace Laresistance.Behaviours
             playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[1], player.GetEquipmentEvents(), StatusManager);
             playerAbilities[2] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[2], player.GetEquipmentEvents(), StatusManager);
             playerAbilities[3] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[3], player.GetEquipmentEvents(), StatusManager);
+            BattleAbility ultimate = BattleAbilityFactory.GetBattleAbility(playerAbilityData[4], player.GetEquipmentEvents(), StatusManager);
 
-            player.SetMainAbilities(playerAbilities);
+            player.SetMainAbilities(playerAbilities, ultimate);
 
             if (useStartingData)
             {

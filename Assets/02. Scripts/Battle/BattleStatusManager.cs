@@ -1,4 +1,5 @@
-﻿using Laresistance.Core;
+﻿using Laresistance.Behaviours;
+using Laresistance.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,15 +31,6 @@ namespace Laresistance.Battle
             public float modifier;
             public float timer;
         }
-        #endregion
-
-        #region Constants
-        public static float SPEED_MODIFIER_DURATION = 3f;
-        public static float DAMAGE_MODIFIER_DURATION = 3f;
-        public static float DAMAGE_OVER_TIME_DURATION = 9f;
-        public static float DAMAGE_OVER_TIME_TICK_DELAY = 1.5f;
-        public static float STARTING_ENERGY = 3f;
-        public static float MAX_ENERGY = 10f;
         #endregion
 
         #region Private Variables
@@ -86,6 +78,7 @@ namespace Laresistance.Battle
             tempDamageModifications = new List<TempDamageChange>();
             this.energyPerSecond = energyPerSecond;
             this.TargetPivot = targetPivot;
+            CurrentEnergy = 0;
         }
 
         public void ProcessStatus(float delta, float energySpeedModifier)
@@ -95,12 +88,12 @@ namespace Laresistance.Battle
             {
                 DamageOverTime dot = damageOverTimes[i];
                 dot.timer += delta * energySpeedModifier;
-                if (dot.timer >= DAMAGE_OVER_TIME_TICK_DELAY)
+                if (dot.timer >= GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue())
                 {
                     totalDamage += dot.power;
                     dot.ticked++;
-                    dot.timer = dot.timer - DAMAGE_OVER_TIME_TICK_DELAY;
-                    if (dot.ticked >= Mathf.CeilToInt(DAMAGE_OVER_TIME_DURATION/DAMAGE_OVER_TIME_TICK_DELAY))
+                    dot.timer = dot.timer - GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue();
+                    if (dot.ticked >= Mathf.CeilToInt(GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
                     {
                         damageOverTimes.Remove(dot);
                     }
@@ -110,7 +103,7 @@ namespace Laresistance.Battle
             {
                 TempDamageChange tdm = tempDamageModifications[i];
                 tdm.timer += delta * energySpeedModifier;
-                if (tdm.timer >= DAMAGE_MODIFIER_DURATION)
+                if (tdm.timer >= GameConstantsBehaviour.Instance.damageModifierDuration.GetValue())
                 {
                     tempDamageModifications.Remove(tdm);
                 }
@@ -119,7 +112,7 @@ namespace Laresistance.Battle
             {
                 SpeedEffect se = speedModifiers[i];
                 se.timer += delta * energySpeedModifier;
-                if (se.timer >= SPEED_MODIFIER_DURATION)
+                if (se.timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
                 {
                     speedModifiers.Remove(se);
                 }
@@ -143,7 +136,7 @@ namespace Laresistance.Battle
                 {
                     float currentProduction = energyPerSecond;
                     equipmentEvents?.OnGetEnergyProduction?.Invoke(ref currentProduction);
-                    CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
+                    CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
                 }
             }
@@ -211,9 +204,6 @@ namespace Laresistance.Battle
             damageOverTimes.Clear();
             tempDamageModifications.Clear();
             stunned = false;
-            float startingEnergy = STARTING_ENERGY;
-            equipmentEvents?.OnGetStartingEnergy?.Invoke(ref startingEnergy);
-            CurrentEnergy = startingEnergy;
         }
 
         public void Stun(float time)
@@ -255,9 +245,9 @@ namespace Laresistance.Battle
 
         public void AddEnergy(float energy)
         {
-            float energyToWin = energy * GetSpeedModifier();
+            float energyToWin = energy * GameConstantsBehaviour.Instance.energyPerCardReference.GetValue();
             equipmentEvents?.OnGetEnergyProduction?.Invoke(ref energyToWin);
-            CurrentEnergy = Mathf.Min(MAX_ENERGY, CurrentEnergy + energyToWin);
+            CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + energyToWin);
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
         }
 

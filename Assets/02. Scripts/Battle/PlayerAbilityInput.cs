@@ -1,4 +1,5 @@
-﻿using Laresistance.Core;
+﻿using Laresistance.Behaviours;
+using Laresistance.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,20 +7,25 @@ namespace Laresistance.Battle
 {
     public class PlayerAbilityInput : IAbilityInputProcessor
     {
-        private static float RENEW_CARD_COOLDOWN = 3f;
-
         private Player player;
         private BattleStatusManager battleStatus;
 
         private int currentAbilityIndex = -1;
         private BattleAbility[] availableAbilities;
-        private float renewTimer = RENEW_CARD_COOLDOWN;
+        private float renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+        private float shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
 
         public BattleAbility[] AvailableAbilities { get { return availableAbilities; } }
+        public float NextCardProgress { get { return 1f-(renewTimer / GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue()); } }
+        public float NextShuffleProgress { get { return 1f - (shuffleTimer / GameConstantsBehaviour.Instance.shuffleCooldown.GetValue()); } }
 
 
         public delegate void OnAvailableSkillsChangedHandler(PlayerAbilityInput sender, BattleAbility[] availableAbilities);
         public event OnAvailableSkillsChangedHandler OnAvailableSkillsChanged;
+        public delegate void OnNextCardProgressHandler(PlayerAbilityInput sender, float progress);
+        public event OnNextCardProgressHandler OnNextCardProgress;
+        public delegate void OnNextShuffleProgressHandler(PlayerAbilityInput sender, float progress);
+        public event OnNextShuffleProgressHandler OnNextShuffleProgress;
 
         public PlayerAbilityInput(Player player, BattleStatusManager battleStatus)
         {
@@ -30,17 +36,25 @@ namespace Laresistance.Battle
         public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
         {
             UpdateAvailableAbilities(delta);
+            if (!BattleAbilityManager.Executing)
+            {
+                shuffleTimer -= delta;
+                OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
+            }
 
-            foreach(var ability in player.GetAbilities())
+            foreach (var ability in player.GetAbilities())
             {
                 ability?.Tick(delta);
             }
             int temp = -1;
-            if (currentAbilityIndex != -1)
+            if (currentAbilityIndex != -1 && currentAbilityIndex != 4)
             {
                 temp = IndexOfAbility(availableAbilities[currentAbilityIndex]);
                 availableAbilities[currentAbilityIndex] = null;
                 OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
+            } else if (currentAbilityIndex == 4)
+            {
+                temp = 4;
             }
             currentAbilityIndex = -1;
             return temp;
@@ -48,9 +62,18 @@ namespace Laresistance.Battle
 
         public void TryToExecuteAbility(int index)
         {
-            if (index < -1 || index > 4)
-                throw new System.Exception("Invalid index trying to execute ability. It must be 0 (character ability), 1,2,3 (minion abilities) or 4,5,6 (consumables)");
-            var ability = availableAbilities[index];
+            if (index < -1 || index > 5)
+                throw new System.Exception("Invalid index trying to execute ability. It must be 0,1,2,3 (abilities) or 4 (ultimate)");
+
+            BattleAbility ability;
+            if (index == 4)
+            {
+                ability = player.ultimateAbility;
+            }
+            else
+            {
+                ability = availableAbilities[index];
+            }
             if (ability != null && ability.CanBeUsed())
             {
                 currentAbilityIndex = index;
@@ -60,6 +83,7 @@ namespace Laresistance.Battle
         public void BattleStart()
         {
             InitializeCards();
+            shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
         }
 
         public BattleAbility[] GetAbilities()
@@ -69,14 +93,25 @@ namespace Laresistance.Battle
 
         public void Reshuffle()
         {
-            renewTimer = RENEW_CARD_COOLDOWN;
-            int discarded = DiscardAvailableAbilities();
-            battleStatus.AddEnergy(discarded);
-            RenewAllAbilities();
+            if (!BattleAbilityManager.Executing && shuffleTimer <= 0f)
+            {
+                renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+                OnNextCardProgress?.Invoke(this, NextCardProgress);
+                int discarded = DiscardAvailableAbilities();
+                battleStatus.AddEnergy(discarded);
+                RenewAllAbilities();
+                shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
+                OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
+            }
         }
 
         private void InitializeCards()
         {
+            var abilities = GetAbilities();
+            foreach(var ability in abilities)
+            {
+                ability?.ResetCooldown();
+            }
             UpdateAvailableAbilities(0f);
             RenewAllAbilities();
         }
@@ -101,7 +136,11 @@ namespace Laresistance.Battle
 
             // 1- Set which abilities have complete cooldown and are not in availableAbilities
             // 2- Get a random one for every null in availableAbilities. Remove it.
-            renewTimer -= delta;
+            if (!BattleAbilityManager.Executing)
+            {
+                renewTimer -= delta;
+                OnNextCardProgress?.Invoke(this, NextCardProgress);
+            }
 
             RenewAbility();
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
@@ -128,7 +167,8 @@ namespace Laresistance.Battle
                 {
                     int index = Random.Range(0, readyAbilities.Count);
                     availableAbilities[i] = readyAbilities[index];
-                    renewTimer = RENEW_CARD_COOLDOWN;
+                    renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+                    OnNextCardProgress?.Invoke(this, NextCardProgress);
                     break;
                 }
             }
@@ -167,6 +207,7 @@ namespace Laresistance.Battle
                     ability.SetCooldownAsUsed();
                 }
             }
+            availableAbilities = new BattleAbility[4];
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
             return amountDiscarded;
         }
@@ -190,7 +231,10 @@ namespace Laresistance.Battle
             {
                 if (abilities[i] == ability)
                 {
-                    return i;
+                    if (i < 4)
+                        return i;
+                    else
+                        return i + 1;
                 }
             }
             return -1;

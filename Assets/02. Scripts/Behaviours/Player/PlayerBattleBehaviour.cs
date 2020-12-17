@@ -49,9 +49,7 @@ namespace Laresistance.Behaviours
         public void PerformMinionAbility1(InputAction.CallbackContext context) => PerformAbility(context, 1);
         public void PerformMinionAbility2(InputAction.CallbackContext context) => PerformAbility(context, 2);
         public void PerformMinionAbility3(InputAction.CallbackContext context) => PerformAbility(context, 3);
-        public void PerformConsumableAbility1(InputAction.CallbackContext context) => PerformAbility(context, 4);
-        public void PerformConsumableAbility2(InputAction.CallbackContext context) => PerformAbility(context, 5);
-        public void PerformConsumableAbility3(InputAction.CallbackContext context) => PerformAbility(context, 6);
+        public void PerformUltimateAbility(InputAction.CallbackContext context) => PerformAbility(context, 4);
         public void PerformReshuffle(InputAction.CallbackContext context)
         {
             if (context.performed)

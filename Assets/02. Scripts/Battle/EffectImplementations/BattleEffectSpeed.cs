@@ -62,7 +62,7 @@ namespace Laresistance.Battle
                 textId = "EFF_SLOW_DESC";
                 modifier = 1f - modifier;
             }
-            return Texts.GetText(textId, new object[] { GetTargetString(), modifier * 100f, BattleStatusManager.SPEED_MODIFIER_DURATION });
+            return Texts.GetText(textId, new object[] { GetTargetString(), modifier * 100f, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue() });
         }
 
         public override string GetAnimationTrigger()

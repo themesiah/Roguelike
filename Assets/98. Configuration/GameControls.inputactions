@@ -1331,7 +1331,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Consumable1",
+                    "name": "Shuffle",
                     "type": "Button",
                     "id": "04bbe76b-32b1-4594-b816-6ffc14b33bc7",
                     "expectedControlType": "Button",
@@ -1339,17 +1339,9 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Consumable2",
+                    "name": "Ultimate",
                     "type": "Button",
                     "id": "7e80e9df-8347-4ca3-83f4-b25e6c82bbe7",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Consumable3",
-                    "type": "Button",
-                    "id": "ffa51b87-54b0-4d96-8f16-4fab6ea5c0c5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -1463,66 +1455,44 @@
                 {
                     "name": "",
                     "id": "248c8eb4-4c42-4285-83ba-597961226df6",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Consumable1",
+                    "action": "Shuffle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "8986a41e-dfc1-46a5-8fdf-d51d9281f957",
-                    "path": "<Gamepad>/dpad/right",
+                    "id": "a0867685-a2ad-4f44-b4b4-c6d0d7c12592",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Consumable1",
+                    "action": "Shuffle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "8a19ea29-b4f5-4431-ad6e-be0d05b624ea",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Consumable2",
+                    "action": "Ultimate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "6bc262db-cd3f-4f6e-9051-6d52db7c7cef",
-                    "path": "<Gamepad>/dpad/down",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Consumable2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0536ae8a-93f3-4b71-a1f4-49d5ae1b2570",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Consumable3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "589cb973-e815-4819-ac46-7360c6caf61b",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Consumable3",
+                    "action": "Ultimate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1549,9 +1519,31 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "negative",
+                    "id": "ee31044e-5e88-44b2-a83e-0fbb54c55f2c",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "TargetSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "positive",
                     "id": "ef8b6c5a-e706-430b-932a-ae8ae51f5f05",
                     "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "TargetSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d98948ef-a06a-42fa-a8ed-ac2ff8af0785",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -1582,9 +1574,31 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "negative",
+                    "id": "aa4b83de-aa2a-4cce-a411-26c198cf9764",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "TargetSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "positive",
                     "id": "694b14be-609a-4af6-a3eb-4e5f3721ace7",
                     "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "TargetSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "83a42e3d-d00e-454f-80e5-3fbc7014d98f",
+                    "path": "<Gamepad>/leftStick/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

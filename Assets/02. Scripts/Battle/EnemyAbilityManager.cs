@@ -69,7 +69,10 @@ namespace Laresistance.Battle
                     }
                 }
             }
-            nextAbilityTimer -= delta;
+            if (!BattleAbilityManager.Executing)
+            {
+                nextAbilityTimer -= delta;
+            }
             return -1;
         }
 

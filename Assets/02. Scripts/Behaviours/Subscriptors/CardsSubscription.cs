@@ -17,18 +17,28 @@ namespace Laresistance.Behaviours
         private CharacterBattleBehaviour battleBehaviour = default;
         [SerializeField]
         private List<CardSubscription> subscriptions = default;
+        [SerializeField]
+        private UnityEvent<float> OnNextCardProgress = default;
+        [SerializeField]
+        private UnityEvent<float> OnNextShuffleProgress = default;
 
         private void OnEnable()
         {
             PlayerAbilityInput playerInput = GetPlayerInput();
             playerInput.OnAvailableSkillsChanged += OnAvailableSkillsChanged;
+            playerInput.OnNextCardProgress += OnNextCardProgressChanged;
+            playerInput.OnNextShuffleProgress += OnNextShuffleProgressChanged;
             OnAvailableSkillsChanged(playerInput, playerInput.AvailableAbilities);
+            OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
+            OnNextShuffleProgressChanged(playerInput, playerInput.NextShuffleProgress);
         }
 
         private void OnDisable()
         {
             PlayerAbilityInput playerInput = GetPlayerInput();
             playerInput.OnAvailableSkillsChanged -= OnAvailableSkillsChanged;
+            playerInput.OnNextCardProgress -= OnNextCardProgressChanged;
+            playerInput.OnNextShuffleProgress -= OnNextShuffleProgressChanged;
         }
 
         private PlayerAbilityInput GetPlayerInput()
@@ -43,12 +53,22 @@ namespace Laresistance.Behaviours
                 if (availableAbilities[i] == null)
                 {
                     subscriptions[i].OnAvailabilityChanged?.Invoke(false);
-                } else
+                } else if (subscriptions.Count > i)
                 {
                     subscriptions[i].OnAvailabilityChanged?.Invoke(true);
                     subscriptions[i].OnSpriteChanged?.Invoke(availableAbilities[i].AbilityIcon);
                 }
             }
+        }
+
+        private void OnNextCardProgressChanged(PlayerAbilityInput sender, float progress)
+        {
+            OnNextCardProgress?.Invoke(progress);
+        }
+
+        private void OnNextShuffleProgressChanged(PlayerAbilityInput sender, float progress)
+        {
+            OnNextShuffleProgress?.Invoke(progress);
         }
     }
 }

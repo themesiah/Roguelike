@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using GamedevsToolbox.Utils;
 
 namespace Laresistance.Behaviours
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Elevator : MonoBehaviour
+    public class Elevator : MonoBehaviour, IPausable
     {
         [SerializeField]
         private Transform startingPosition = default;
@@ -16,6 +17,8 @@ namespace Laresistance.Behaviours
 
         private Rigidbody2D body;
         private bool goingFromStartToEnd = true;
+        private int pauseStack = 0;
+        private Vector2 lastVelocity = Vector2.zero;
 
         public void Awake()
         {
@@ -61,6 +64,28 @@ namespace Laresistance.Behaviours
                 }
             }
             body.velocity = Vector2.zero;
+        }
+
+        public void Pause()
+        {
+            if (pauseStack == 0)
+            {
+                lastVelocity = body.velocity;
+                body.simulated = false;
+                body.velocity = Vector2.zero;
+            }
+            pauseStack++;
+        }
+
+        public void Resume()
+        {
+            pauseStack--;
+            pauseStack = System.Math.Max(0, pauseStack);
+            if (pauseStack == 0)
+            {
+                body.velocity = lastVelocity;
+                body.simulated = true;
+            }
         }
     }
 }

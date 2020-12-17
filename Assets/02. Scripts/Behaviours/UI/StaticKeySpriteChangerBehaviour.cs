@@ -12,12 +12,27 @@ namespace Laresistance.Behaviours
         private Image spriteReference = default;
         [SerializeField]
         private SpriteRenderer spriteRenderer = default;
-
         [SerializeField]
         private KeySetSelector keySetSelector = default;
-
         [SerializeField]
         private bool activateOnChange = true;
+        [SerializeField]
+        private Vector3[] scalePerScheme = default;
+
+        private Vector3 originalScale;
+        private Transform transformToUse;
+
+        private void Awake()
+        {
+            if (spriteRenderer != null)
+            {
+                transformToUse = spriteRenderer.transform;
+            } else if (spriteReference != null)
+            {
+                transformToUse = spriteReference.transform;
+            }
+            originalScale = transformToUse.localScale;
+        }
 
         private void OnEnable()
         {
@@ -48,6 +63,14 @@ namespace Laresistance.Behaviours
             }
             if (spriteRenderer != null)
                 spriteRenderer.sprite = keySetSelector.Get();
+
+            if (scalePerScheme.Length > newControlScheme)
+            {
+                transformToUse.localScale = scalePerScheme[newControlScheme];
+            } else
+            {
+                transformToUse.localScale = originalScale;
+            }
         }
     }
 }

@@ -182,6 +182,11 @@ namespace Laresistance.Battle
             cooldownTimer = Cooldown;
         }
 
+        public void ResetCooldown()
+        {
+            cooldownTimer = 0f;
+        }
+
         public void CancelExecution(CharacterHealth sender)
         {
             if (executingAbility)

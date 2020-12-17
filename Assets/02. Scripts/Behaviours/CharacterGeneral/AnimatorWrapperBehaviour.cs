@@ -41,7 +41,11 @@ namespace Laresistance.Behaviours
                 animating = false;
                 if (timer >= TIMEOUT)
                 {
-                    GamedevsToolbox.Utils.Logger.Logger.LogWarning(string.Format("Animation trigger {0} caused a timeout.", trigger));
+                    GamedevsToolbox.Utils.Logger.Logger.LogWarning(string.Format("Animation trigger {0} caused a timeout. Stopping.", trigger));
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Stop");
+                    }
                 }
             } else
             {

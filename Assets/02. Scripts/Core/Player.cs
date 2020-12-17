@@ -16,6 +16,7 @@ namespace Laresistance.Core
         private EquipmentEvents equipmentEvents = null;
         public BattleStatusManager statusManager { get; private set; }
         public BattleAbility[] characterAbilities { get; private set; }
+        public BattleAbility ultimateAbility { get; private set; }
 
         public Player(BattleStatusManager statusManager)
         {
@@ -298,9 +299,10 @@ namespace Laresistance.Core
             return abilities;
         }
 
-        public void SetMainAbilities(BattleAbility[] abilities)
+        public void SetMainAbilities(BattleAbility[] abilities, BattleAbility ultimate)
         {
             characterAbilities = abilities;
+            ultimateAbility = ultimate;
         }
         #endregion
     }

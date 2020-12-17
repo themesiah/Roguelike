@@ -98,6 +98,8 @@ MonoBehaviour:
   spriteReference: {fileID: 0}
   spriteRenderer: {fileID: 313746103}
   keySetSelector: {fileID: 11400000, guid: 0ad3c179d93d1ac4292e345970272d57, type: 2}
+  activateOnChange: 1
+  scalePerScheme: []
 --- !u!1 &1988691838
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +420,8 @@ GameObject:
   - component: {fileID: 9110053996184436543}
   - component: {fileID: 6762449960797484957}
   - component: {fileID: 3941643822881304300}
+  - component: {fileID: -6470689633611422842}
+  - component: {fileID: 1857934332068699100}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -526,3 +530,61 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
+--- !u!114 &-6470689633611422842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189296731159612393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: e8e9fd60096d9004eac9a239b17be398, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3941643822881304300}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.Elevator, GameScripts
+        m_MethodName: Pause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1857934332068699100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189296731159612393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: b38a83e699b52e74ab8ca81f60ba10c9, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3941643822881304300}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.Elevator, GameScripts
+        m_MethodName: Resume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
