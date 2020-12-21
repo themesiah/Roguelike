@@ -76,5 +76,10 @@ namespace Laresistance.Behaviours
         {
             return playerDataBehaviour.player.GetAbilities();
         }
+
+        public override BattleAbility[] GetAbilitiesWithUltimate()
+        {
+            return playerDataBehaviour.player.GetAbilitiesWithUltimate();
+        }
     }
 }

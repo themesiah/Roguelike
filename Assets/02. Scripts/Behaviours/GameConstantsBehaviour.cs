@@ -31,7 +31,7 @@ namespace Laresistance.Behaviours
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            Instance = this;
+            GameConstantsBehaviour.Instance = this;
         }
     }
 }

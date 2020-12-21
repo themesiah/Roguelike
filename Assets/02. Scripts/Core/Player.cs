@@ -299,6 +299,34 @@ namespace Laresistance.Core
             return abilities;
         }
 
+        public BattleAbility[] GetAbilitiesWithUltimate()
+        {
+            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5];
+            abilities[0] = characterAbilities[0];
+            abilities[1] = characterAbilities[1];
+            abilities[2] = characterAbilities[2];
+            abilities[3] = characterAbilities[3];
+            for(int i = 0; i < MAX_MINIONS; ++i)
+            {
+                if (minions.Length > i && minions[i] != null)
+                {
+                    for (int k = 0; k < 4; k++)
+                    {
+                        abilities[i * 4 + k + 4] = minions[i].Abilities[k];
+                    }
+                }
+            }
+            for(int i = 0; i < MAX_CONSUMABLES; ++i)
+            {
+                if (consumables.Length > i && consumables[i] != null)
+                {
+                    abilities[i + 4 + MAX_MINIONS * 4] = consumables[i].Ability;
+                }
+            }
+            abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 4] = ultimateAbility;
+            return abilities;
+        }
+
         public void SetMainAbilities(BattleAbility[] abilities, BattleAbility ultimate)
         {
             characterAbilities = abilities;
