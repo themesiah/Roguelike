@@ -58,10 +58,17 @@ namespace Laresistance.Battle
                 }
                 currentAnimator = animator;
                 currentAbility = abilityToExecute;
-                yield return animator?.PlayAnimation(animationTrigger);
-                if (battling)
+                if (targets.Length == 0 || (targets.Length == 1 && targets[0] == null) || (targets.Length >= 1 && targets[0].health.GetCurrentHealth() <= 0))
                 {
-                    abilityToExecute.Perform(allies, targets, level, animator, bloodRef);
+                    abilityToExecute.CancelByTargetDeath();
+                }
+                else
+                {
+                    yield return animator?.PlayAnimation(animationTrigger);
+                    if (battling)
+                    {
+                        abilityToExecute.Perform(allies, targets, level, animator, bloodRef);
+                    }
                 }
                 currentAbility = null;
                 abilityQueue.Remove(abilityToExecute);

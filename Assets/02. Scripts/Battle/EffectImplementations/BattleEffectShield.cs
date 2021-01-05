@@ -41,6 +41,11 @@ namespace Laresistance.Battle
             return Texts.GetText(textId, GetPower(level, equipmentEvents));
         }
 
+        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        {
+            return GetPower(level, equipmentEvents).ToString();
+        }
+
         public override string GetAnimationTrigger()
         {
             return "Shield";

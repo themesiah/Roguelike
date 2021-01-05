@@ -66,6 +66,10 @@ namespace Laresistance.Battle
         public event OnEnergyChangedHandler OnEnergyChanged;
         public delegate void OnNextAbilityChangedHandler(BattleAbility nextAbility);
         public event OnNextAbilityChangedHandler OnNextAbilityChanged;
+        public delegate void OnAbilityExecutionCancelledByTargetDeathHandler(BattleAbility ability, int slotIndex);
+        public event OnAbilityExecutionCancelledByTargetDeathHandler OnAbilityExecutionCancelledByTargetDeath;
+        public delegate void OnAbilityExecutedHandler(BattleAbility ability, int slotIndex);
+        public event OnAbilityExecutedHandler OnAbilityExecuted;
         #endregion
 
         #region Public methods
@@ -277,6 +281,16 @@ namespace Laresistance.Battle
         {
             NextAbility = ability;
             OnNextAbilityChanged?.Invoke(NextAbility);
+        }
+
+        public void CancelAbilityByTargetDeath(BattleAbility ability, int slotIndex)
+        {
+            OnAbilityExecutionCancelledByTargetDeath?.Invoke(ability, slotIndex);
+        }
+
+        public void AbilityExecuted(BattleAbility ability, int slotIndex)
+        {
+            OnAbilityExecuted?.Invoke(ability, slotIndex);
         }
         #endregion
     }

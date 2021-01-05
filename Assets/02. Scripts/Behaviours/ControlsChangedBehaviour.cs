@@ -27,7 +27,7 @@ namespace Laresistance.Behaviours
         {
             if (playerInput.currentControlScheme != currentControlScheme)
             {
-                Debug.LogFormat("Control scheme changed from {0} to {1}", currentControlScheme, playerInput.currentControlScheme);
+                //Debug.LogFormat("Control scheme changed from {0} to {1}", currentControlScheme, playerInput.currentControlScheme);
                 currentControlScheme = playerInput.currentControlScheme;
                 switch(currentControlScheme)
                 {

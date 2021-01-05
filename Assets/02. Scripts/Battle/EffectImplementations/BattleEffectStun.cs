@@ -39,6 +39,11 @@ namespace Laresistance.Battle
             return Texts.GetText(textId, new object[] { GetPower(level, equipmentEvents), GetTargetString() });
         }
 
+        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        {
+            return GetPower(level, equipmentEvents).ToString();
+        }
+
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
         {
             equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);

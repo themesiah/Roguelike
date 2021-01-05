@@ -130,6 +130,7 @@ namespace Laresistance.Battle
         }
 
         public abstract string GetEffectString(int level, EquipmentEvents equipmentEvents);
+        public abstract string GetShortEffectString(int level, EquipmentEvents equipmentEvents);
         protected string GetTargetString()
         {
             string textId = "";

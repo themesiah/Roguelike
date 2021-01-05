@@ -24,13 +24,16 @@ namespace Laresistance.Battle
         private BattleStatusManager statusManager;
         private bool executingAbility = false;
         private float cooldownTimer = 0f;
-        private AbilityData data;
+        public AbilityData data { get; private set; }
         public int Weight { get; private set; }
         public float Cooldown { get; private set; }
         public bool IsShieldAbility { get; private set; }
         public bool IsOffensiveAbility { get; private set; }
         public bool IsBasicSkill { get; private set; }
         public Sprite AbilityIcon { get; private set; }
+        public Sprite AbilityFrame { get; private set; }
+
+        public int CurrentPlayerSlot { get; set; }
 
         public BattleAbility(List<BattleEffect> effectsToSet, int energyCost, int weight, float cooldown, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null, Sprite icon = null, AbilityData data = null)
         {
@@ -45,12 +48,13 @@ namespace Laresistance.Battle
             this.Weight = weight;
             this.Cooldown = cooldown;
             this.AbilityIcon = icon;
+            this.AbilityFrame = data.FrameGraphic;
             this.data = data;
         }
 
         public BattleAbility Copy()
         {
-            var ability = new BattleAbility(effects, energyCost, Weight, Cooldown, statusManager, equipmentEvents);
+            var ability = new BattleAbility(effects, energyCost, Weight, Cooldown, statusManager, equipmentEvents, AbilityIcon, data);
             if (IsShieldAbility)
             {
                 ability.SetShieldAbility();
@@ -63,6 +67,7 @@ namespace Laresistance.Battle
             {
                 ability.SetBasicSkill();
             }
+            ability.CurrentPlayerSlot = CurrentPlayerSlot;
 
             return ability;
         }
@@ -122,9 +127,24 @@ namespace Laresistance.Battle
             return builder.ToString();
         }
 
-        public string GetShortAbilityText()
+        public string GetShortAbilityText(int level)
         {
-            return Texts.GetText(data.ShortDesc);
+            StringBuilder builder = new StringBuilder();
+            builder.Append(Texts.GetText(data.ShortDesc));
+            builder.Append(" (");
+            for (int i = 0; i < effects.Count; ++i)
+            {
+                var effect = effects[i];
+                //builder.Append(effect.GetPower(level, equipmentEvents));
+                builder.Append(effect.GetShortEffectString(level, equipmentEvents));
+                if (i < effects.Count - 1)
+                {
+                    builder.Append(",");
+                }
+            }
+            builder.Append(")");
+
+            return builder.ToString();
         }
 
         public void Tick(float deltaTime)
@@ -161,9 +181,7 @@ namespace Laresistance.Battle
             {
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
-                statusManager.ConsumeEnergy(energyCost);
-                SetCooldownAsUsed();
-                yield return BattleAbilityManager.ExecuteAbility(this.Copy(), allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
+                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }
@@ -175,6 +193,15 @@ namespace Laresistance.Battle
             {
                 effect.PerformEffect(allies, targets, level, equipmentEvents, animator, bloodRef);
             }
+            statusManager.ConsumeEnergy(energyCost);
+            SetCooldownAsUsed();
+            statusManager.AbilityExecuted(this, CurrentPlayerSlot);
+            CurrentPlayerSlot = -1;
+        }
+
+        public void CancelByTargetDeath()
+        {
+            statusManager.CancelAbilityByTargetDeath(this, CurrentPlayerSlot);
         }
 
         public void SetCooldownAsUsed()
@@ -195,6 +222,10 @@ namespace Laresistance.Battle
 
         public bool CanBeUsed()
         {
+            if (executingAbility)
+            {
+                return false;
+            }
             if (IsBasicSkill)
             {
                 return statusManager.CanExecute(energyCost) && !BattleAbilityManager.Executing;

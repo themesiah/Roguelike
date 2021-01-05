@@ -65,6 +65,20 @@ namespace Laresistance.Battle
             return Texts.GetText(textId, new object[] { GetTargetString(), modifier * 100f, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue() });
         }
 
+        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        {
+            float modifier = GetModifier(level, equipmentEvents);
+            if (modifier > 1f)
+            {
+                modifier -= 1f;
+            }
+            else
+            {
+                modifier = 1f - modifier;
+            }
+            return modifier.ToString();
+        }
+
         public override string GetAnimationTrigger()
         {
             return "Effect";

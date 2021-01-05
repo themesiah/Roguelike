@@ -30,6 +30,10 @@ namespace Laresistance.Data
         public Sprite Icon { get { return icon; } }
 
         [SerializeField]
+        private Sprite frameGraphic = default;
+        public Sprite FrameGraphic { get { return frameGraphic; } }
+
+        [SerializeField]
         private bool isBasicSkill = false;
         public bool IsBasicSkill { get { return isBasicSkill; } }
     }

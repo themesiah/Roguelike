@@ -26,11 +26,15 @@ namespace Laresistance.Battle
         public event OnNextCardProgressHandler OnNextCardProgress;
         public delegate void OnNextShuffleProgressHandler(PlayerAbilityInput sender, float progress);
         public event OnNextShuffleProgressHandler OnNextShuffleProgress;
+        public delegate void OnAbilityOnQueueHandler(PlayerAbilityInput sender, int slot, bool onQueue);
+        public event OnAbilityOnQueueHandler OnAbilityOnQueue;
 
         public PlayerAbilityInput(Player player, BattleStatusManager battleStatus)
         {
             this.player = player;
             this.battleStatus = battleStatus;
+            this.battleStatus.OnAbilityExecutionCancelledByTargetDeath += OnAbilityCancelledByTargetDeath;
+            this.battleStatus.OnAbilityExecuted += OnAbilityExecuted;
 
             //renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
             //shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
@@ -53,7 +57,8 @@ namespace Laresistance.Battle
             if (currentAbilityIndex != -1 && currentAbilityIndex != 4)
             {
                 temp = IndexOfAbility(availableAbilities[currentAbilityIndex]);
-                availableAbilities[currentAbilityIndex] = null;
+                OnAbilityOnQueue?.Invoke(this, currentAbilityIndex, true);
+                //availableAbilities[currentAbilityIndex] = null;
                 OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
             } else if (currentAbilityIndex == 4)
             {
@@ -174,11 +179,27 @@ namespace Laresistance.Battle
                 {
                     int index = Random.Range(0, readyAbilities.Count);
                     availableAbilities[i] = readyAbilities[index];
+                    readyAbilities[index].CurrentPlayerSlot = i;
+                    OnAbilityOnQueue?.Invoke(this, i, false);
                     renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
                     OnNextCardProgress?.Invoke(this, NextCardProgress);
                     break;
                 }
             }
+        }
+
+        private void OnAbilityCancelledByTargetDeath(BattleAbility ability, int slot)
+        {
+            availableAbilities[slot] = ability;
+            OnAbilityOnQueue?.Invoke(this, slot, false);
+            OnAvailableSkillsChanged?.Invoke(this, AvailableAbilities);
+        }
+
+        private void OnAbilityExecuted(BattleAbility ability, int slot)
+        {
+            availableAbilities[slot] = null;
+            OnAbilityOnQueue?.Invoke(this, slot, false);
+            OnAvailableSkillsChanged?.Invoke(this, AvailableAbilities);
         }
 
         private void RenewAllAbilities() // SHUFFLE
@@ -198,6 +219,8 @@ namespace Laresistance.Battle
                     break;
                 int index = Random.Range(0, readyAbilities.Count);
                 availableAbilities[i] = readyAbilities[index];
+                readyAbilities[index].CurrentPlayerSlot = i;
+                OnAbilityOnQueue?.Invoke(this, i, false);
                 readyAbilities.RemoveAt(index);
             }
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);

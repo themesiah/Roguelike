@@ -67,14 +67,22 @@ namespace Laresistance.Core
             foreach (var ability in Abilities)
             {
                 builder.Append("- ");
-                builder.Append(ability.GetShortAbilityText());
+                builder.Append(ability.GetShortAbilityText(Level));
                 builder.Append("\n");
             }
             return builder.ToString();
         }
         public string GetNextLevelAbilityText()
         {
-            return Abilities[0].GetAbilityText(Level+1);
+            //return Abilities[0].GetAbilityText(Level+1);
+            StringBuilder builder = new StringBuilder();
+            foreach (var ability in Abilities)
+            {
+                builder.Append("- ");
+                builder.Append(ability.GetShortAbilityText(Level+1));
+                builder.Append("\n");
+            }
+            return builder.ToString();
         }
 
         public int GetUpgradeCost()

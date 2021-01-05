@@ -10,6 +10,8 @@ namespace Laresistance.Behaviours
         [System.Serializable]
         public class CardSubscription {
             public UnityEvent<Sprite> OnSpriteChanged = default;
+            public UnityEvent<Sprite> OnFrameChanged = default;
+            public UnityEvent<Color> OnAvailabilityChangedColor = default;
             public UnityEvent<bool> OnAvailabilityChanged = default;
         }
 
@@ -21,6 +23,8 @@ namespace Laresistance.Behaviours
         private UnityEvent<float> OnNextCardProgress = default;
         [SerializeField]
         private UnityEvent<float> OnNextShuffleProgress = default;
+        [SerializeField]
+        private Color onQueueColor = default;
 
         private void OnEnable()
         {
@@ -28,6 +32,7 @@ namespace Laresistance.Behaviours
             playerInput.OnAvailableSkillsChanged += OnAvailableSkillsChanged;
             playerInput.OnNextCardProgress += OnNextCardProgressChanged;
             playerInput.OnNextShuffleProgress += OnNextShuffleProgressChanged;
+            playerInput.OnAbilityOnQueue += OnAbilityOnQueue;
             OnAvailableSkillsChanged(playerInput, playerInput.AvailableAbilities);
             OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
             OnNextShuffleProgressChanged(playerInput, playerInput.NextShuffleProgress);
@@ -39,6 +44,7 @@ namespace Laresistance.Behaviours
             playerInput.OnAvailableSkillsChanged -= OnAvailableSkillsChanged;
             playerInput.OnNextCardProgress -= OnNextCardProgressChanged;
             playerInput.OnNextShuffleProgress -= OnNextShuffleProgressChanged;
+            playerInput.OnAbilityOnQueue -= OnAbilityOnQueue;
         }
 
         private PlayerAbilityInput GetPlayerInput()
@@ -57,6 +63,7 @@ namespace Laresistance.Behaviours
                 {
                     subscriptions[i].OnAvailabilityChanged?.Invoke(true);
                     subscriptions[i].OnSpriteChanged?.Invoke(availableAbilities[i].AbilityIcon);
+                    subscriptions[i].OnFrameChanged?.Invoke(availableAbilities[i].AbilityFrame);
                 }
             }
         }
@@ -69,6 +76,18 @@ namespace Laresistance.Behaviours
         private void OnNextShuffleProgressChanged(PlayerAbilityInput sender, float progress)
         {
             OnNextShuffleProgress?.Invoke(progress);
+        }
+
+        private void OnAbilityOnQueue(PlayerAbilityInput sender, int slot, bool onQueue)
+        {
+            if (onQueue)
+            {
+                subscriptions[slot].OnAvailabilityChangedColor?.Invoke(onQueueColor);
+            }
+            else
+            {
+                subscriptions[slot].OnAvailabilityChangedColor?.Invoke(Color.white);
+            }
         }
     }
 }
