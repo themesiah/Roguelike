@@ -39,7 +39,7 @@ namespace Laresistance.Battle
         private List<DamageImprovement> damageImprovements;
         private List<TempDamageChange> tempDamageModifications;
         private EquipmentEvents equipmentEvents;
-        private bool stunned = false;
+        public bool Stunned { get; private set; }
         private float stunTimer;
         private float energyPerSecond;
         // Damage, heal and shield modifiers
@@ -128,12 +128,12 @@ namespace Laresistance.Battle
             health.Tick(delta);
             if (!BattleAbilityManager.Executing || BattleAbilityManager.executingBasicSkill)
             {
-                if (stunned)
+                if (Stunned)
                 {
                     stunTimer -= delta * energySpeedModifier;
                     if (stunTimer <= 0f)
                     {
-                        stunned = false;
+                        Stunned = false;
                     }
                 }
                 else
@@ -207,13 +207,13 @@ namespace Laresistance.Battle
             speedModifiers.Clear();
             damageOverTimes.Clear();
             tempDamageModifications.Clear();
-            stunned = false;
+            Stunned = false;
         }
 
         public void Stun(float time)
         {
             OnStun?.Invoke(this, time);
-            stunned = true;
+            Stunned = true;
             stunTimer = time;
         }
 
@@ -234,7 +234,7 @@ namespace Laresistance.Battle
                     speedModifiers.RemoveAt(i);
                 }
             }
-            stunned = false;
+            Stunned = false;
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
@@ -268,7 +268,7 @@ namespace Laresistance.Battle
 
         public bool CanExecute(int energy)
         {
-            return UsableEnergy >= energy && !stunned;
+            return UsableEnergy >= energy && !Stunned;
         }
 
         public void RemoveEnergy(float energy)

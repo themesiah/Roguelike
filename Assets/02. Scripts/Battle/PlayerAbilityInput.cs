@@ -28,6 +28,8 @@ namespace Laresistance.Battle
         public event OnNextShuffleProgressHandler OnNextShuffleProgress;
         public delegate void OnAbilityOnQueueHandler(PlayerAbilityInput sender, int slot, bool onQueue);
         public event OnAbilityOnQueueHandler OnAbilityOnQueue;
+        public delegate void OnShuffleHandler(PlayerAbilityInput sender, int[] shuffled);
+        public event OnShuffleHandler OnShuffle;
 
         public PlayerAbilityInput(Player player, BattleStatusManager battleStatus)
         {
@@ -102,12 +104,13 @@ namespace Laresistance.Battle
 
         public void Reshuffle()
         {
-            if (!BattleAbilityManager.Executing && shuffleTimer <= 0f)
+            if (!BattleAbilityManager.Executing && shuffleTimer <= 0f && battleStatus.Stunned == false)
             {
                 renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
-                int discarded = DiscardAvailableAbilities();
-                battleStatus.AddEnergy(discarded);
+                int[] discarded = DiscardAvailableAbilities();
+                OnShuffle?.Invoke(this, discarded);
+                battleStatus.AddEnergy(discarded.Length);
                 RenewAllAbilities();
                 shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
@@ -226,20 +229,23 @@ namespace Laresistance.Battle
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
         }
 
-        private int DiscardAvailableAbilities()
+        private int[] DiscardAvailableAbilities()
         {
             int amountDiscarded = 0;
-            foreach (var ability in availableAbilities)
+            List<int> discarded = new List<int>();
+            for (int i = 0; i < availableAbilities.Length; ++i)
             {
+                var ability = availableAbilities[i];
                 if (ability != null)
                 {
                     amountDiscarded++;
                     ability.SetCooldownAsUsed();
+                    discarded.Add(i);
                 }
             }
             availableAbilities = new BattleAbility[4];
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
-            return amountDiscarded;
+            return discarded.ToArray();
         }
 
         private bool AlreadyInAvailableAbilities(BattleAbility ability)
