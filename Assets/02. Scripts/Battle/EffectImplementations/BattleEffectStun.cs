@@ -49,7 +49,9 @@ namespace Laresistance.Battle
             equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.Stun(GetSeconds(GetPower(level, equipmentEvents)));
+            int power = GetPower(level, equipmentEvents);
+            float seconds = GetSeconds(power);
+            target.Stun(seconds);
         }
 
         private float GetSeconds(int power)

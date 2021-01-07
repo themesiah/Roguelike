@@ -56,5 +56,10 @@ namespace Laresistance.Battle
         {
 
         }
+
+        public void BattleEnd()
+        {
+
+        }
     }
 }

@@ -97,6 +97,14 @@ namespace Laresistance.Battle
             renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
         }
 
+        public void BattleEnd()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                OnAbilityOnQueue?.Invoke(this, i, false);
+            }
+        }
+
         public BattleAbility[] GetAbilities()
         {
             return player.GetAbilities();

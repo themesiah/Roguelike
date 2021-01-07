@@ -56,26 +56,10 @@ namespace Laresistance.Battle
                         return i;
                     } else
                     {
-                        //if (abilities[i].IsShieldAbility)
-                        //{
-                        //    BattleAbility currentAbility = BattleAbilityManager.currentAbility;
-                        //    if (currentAbility != null && BattleAbilityManager.Executing && currentAbility.GetStatusManager() != battleStatus && currentAbility.IsOffensiveAbility)
-                        //    {
-                        //        var currentTargets = BattleAbilityManager.currentTargets;
-                        //        foreach(var target in currentTargets)
-                        //        {
-                        //            if (target == battleStatus) // An enemy must be targetted (or its team) to activate the shields
-                        //            {
-                        //                battleStatus.SetNextAbility(null);
-                        //                return i;
-                        //            }
-                        //        }
-                        //    }
-                        //}
                     }
                 }
             }
-            if (!BattleAbilityManager.Executing)
+            if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
             {
                 nextAbilityTimer -= delta;
                 OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);
@@ -97,6 +81,11 @@ namespace Laresistance.Battle
         }
 
         public void BattleStart()
+        {
+
+        }
+
+        public void BattleEnd()
         {
 
         }
