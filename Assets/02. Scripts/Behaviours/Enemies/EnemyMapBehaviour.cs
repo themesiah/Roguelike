@@ -14,6 +14,8 @@ namespace Laresistance.Behaviours
         private LayerMask raycastLayerMask = default;
         [SerializeField]
         private Transform raycastPivot = default;
+        [SerializeField]
+        private bool partyMember = false;
 
         protected override IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction)
         {
@@ -22,10 +24,13 @@ namespace Laresistance.Behaviours
 
         private void Start()
         {
-            bool enoughSpace = BattlePosition.CheckSpace(transform.position, raycastLayerMask.value);
-            if (!enoughSpace)
+            if (!partyMember)
             {
-                Debug.LogErrorFormat(gameObject, "Enemy {0} have no space to battle", name);
+                bool enoughSpace = BattlePosition.CheckSpace(transform.position, raycastLayerMask.value);
+                if (!enoughSpace)
+                {
+                    Debug.LogErrorFormat(gameObject, "Enemy {0} have no space to battle", name);
+                }
             }
         }
 
@@ -37,6 +42,14 @@ namespace Laresistance.Behaviours
         public void Turn(bool right)
         {
             ((EnemySimpleMovementManager)movementManager).Turn(right);
+        }
+
+        protected override void Update()
+        {
+            if (!partyMember)
+            {
+                base.Update();
+            }
         }
     }
 }

@@ -10,6 +10,9 @@ namespace Laresistance.Behaviours
         private List<GameObject> prefabList = default;
 
         [SerializeField]
+        private bool hasParty = true;
+
+        [SerializeField]
         private bool manualSpawn = false;
 
         private void Start()
@@ -30,6 +33,11 @@ namespace Laresistance.Behaviours
                 scale.x = -1;
             }
             go.transform.localScale = scale;
+            if (hasParty == false)
+            {
+                go.GetComponent<PartyManagerBehaviour>().enabled = false;
+            }
+
             Destroy(this.gameObject);
         }
     }

@@ -21,7 +21,7 @@ namespace Laresistance.Behaviours
 
         protected abstract IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction);
 
-        private void Update()
+        protected virtual void Update()
         {
             movementManager.Tick(Time.deltaTime);
         }
