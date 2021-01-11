@@ -60,7 +60,7 @@ namespace Laresistance.Battle
                     if (target.TargetPivot != null)
                     {
                         targetPoint += target.TargetPivot.transform.position;
-                        Debug.LogFormat("Position for character {0} is {1}", target.TargetPivot.name, target.TargetPivot.transform.position);
+                        //Debug.LogFormat("Position for character {0} is {1}", target.TargetPivot.name, target.TargetPivot.transform.position);
                     }
                 });
 

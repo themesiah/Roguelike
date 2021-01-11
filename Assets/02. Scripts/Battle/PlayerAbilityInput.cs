@@ -208,7 +208,7 @@ namespace Laresistance.Battle
 
         private void OnAbilityExecuted(BattleAbility ability, int slot)
         {
-            if (availableAbilities.Length > slot)
+            if (availableAbilities.Length > slot && slot >= 0)
             {
                 availableAbilities[slot] = null;
                 OnAbilityOnQueue?.Invoke(this, slot, false);
