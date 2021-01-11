@@ -45,7 +45,7 @@ namespace Laresistance.Battle
         public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
         {
             UpdateAvailableAbilities(delta);
-            if (!BattleAbilityManager.Executing)
+            if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
             {
                 shuffleTimer -= delta;
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
@@ -156,7 +156,7 @@ namespace Laresistance.Battle
 
             // 1- Set which abilities have complete cooldown and are not in availableAbilities
             // 2- Get a random one for every null in availableAbilities. Remove it.
-            if (!BattleAbilityManager.Executing)
+            if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
             {
                 renewTimer -= delta;
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
@@ -208,9 +208,12 @@ namespace Laresistance.Battle
 
         private void OnAbilityExecuted(BattleAbility ability, int slot)
         {
-            availableAbilities[slot] = null;
-            OnAbilityOnQueue?.Invoke(this, slot, false);
-            OnAvailableSkillsChanged?.Invoke(this, AvailableAbilities);
+            if (availableAbilities.Length > slot)
+            {
+                availableAbilities[slot] = null;
+                OnAbilityOnQueue?.Invoke(this, slot, false);
+                OnAvailableSkillsChanged?.Invoke(this, AvailableAbilities);
+            }
         }
 
         private void RenewAllAbilities() // SHUFFLE

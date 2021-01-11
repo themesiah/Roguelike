@@ -54,14 +54,8 @@ namespace Laresistance.Battle
         #endregion
 
         #region Events
-        public delegate void OnSpeedModifierAppliedHandler(BattleStatusManager sender, float coeficient, float currentSpeedModifier);
-        public event OnSpeedModifierAppliedHandler OnSpeedModifierApplied;
-        public delegate void OnDamageOverTimeAppliedHandler(BattleStatusManager sender, int power);
-        public event OnDamageOverTimeAppliedHandler OnDamageOverTimeApplied;
-        public delegate void OnDamageImprovementAppliedHandler(BattleStatusManager sender, float coeficient, float currentDamageImprovement);
-        public event OnDamageImprovementAppliedHandler OnDamageImprovementApplied;
-        public delegate void OnStunHandler(BattleStatusManager sender, float stunPercent);
-        public event OnStunHandler OnStun;
+        public delegate void OnStatusAppliedHandler(BattleStatusManager sender, StatusType statusType, float duration);
+        public event OnStatusAppliedHandler OnStatusApplied;
         public delegate void OnEnergyChangedHandler(float currentEnergy, int usableEnergy);
         public event OnEnergyChangedHandler OnEnergyChanged;
         public delegate void OnNextAbilityChangedHandler(BattleAbility nextAbility);
@@ -70,6 +64,10 @@ namespace Laresistance.Battle
         public event OnAbilityExecutionCancelledByTargetDeathHandler OnAbilityExecutionCancelledByTargetDeath;
         public delegate void OnAbilityExecutedHandler(BattleAbility ability, int slotIndex);
         public event OnAbilityExecutedHandler OnAbilityExecuted;
+        public delegate void OnTickHandler(BattleStatusManager sender, float delta);
+        public event OnTickHandler OnTick;
+        public delegate void OnResetStatusHandler(BattleStatusManager sender);
+        public event OnResetStatusHandler OnResetStatus;
         #endregion
 
         #region Public methods
@@ -144,30 +142,43 @@ namespace Laresistance.Battle
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
                 }
             }
+            OnTick?.Invoke(this, delta);
         }
 
         public void ApplySpeedModifier(float coeficient)
         {
             speedModifiers.Add(new SpeedEffect() { speedCoeficient = coeficient, timer = 0f });
-            OnSpeedModifierApplied?.Invoke(this, coeficient, GetSpeedModifier());
+            if (coeficient > 1f)
+            {
+                OnStatusApplied?.Invoke(this, StatusType.Speed, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
+            } else
+            {
+                OnStatusApplied?.Invoke(this, StatusType.Slow, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
+            }
         }
 
         public void ApplyDamageOverTime(int power)
         {
             damageOverTimes.Add(new DamageOverTime() { power = power, timer = 0, ticked = 0 });
-            OnDamageOverTimeApplied?.Invoke(this, power);
+            OnStatusApplied?.Invoke(this, StatusType.DoT, GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue());
         }
 
         public void ApplyDamageImprovement(float coeficient)
         {
             damageImprovements.Add(new DamageImprovement() { coeficient = coeficient });
-            OnDamageImprovementApplied?.Invoke(this, coeficient, GetDamageModifier());
+            OnStatusApplied?.Invoke(this, StatusType.DamageImprovement, -1f);
         }
 
         public void ApplyTempDamageModification(float coeficient)
         {
             tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, timer = 0f });
-            OnDamageImprovementApplied?.Invoke(this, coeficient, GetDamageModifier());
+            if (coeficient > 1f)
+            {
+                OnStatusApplied?.Invoke(this, StatusType.Buff, GameConstantsBehaviour.Instance.damageModifierDuration.GetValue());
+            } else
+            {
+                OnStatusApplied?.Invoke(this, StatusType.Debuff, GameConstantsBehaviour.Instance.damageModifierDuration.GetValue());
+            }
         }
 
         public float GetSpeedModifier()
@@ -208,11 +219,12 @@ namespace Laresistance.Battle
             damageOverTimes.Clear();
             tempDamageModifications.Clear();
             Stunned = false;
+            OnResetStatus?.Invoke(this);
         }
 
         public void Stun(float time)
         {
-            OnStun?.Invoke(this, time);
+            OnStatusApplied?.Invoke(this, StatusType.Stun, time);
             Stunned = true;
             stunTimer = time;
         }

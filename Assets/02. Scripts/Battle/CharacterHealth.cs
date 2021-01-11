@@ -152,7 +152,9 @@ namespace Laresistance.Battle
             {
                 if (currentShields[i].timer >= SHIELD_DURATION)
                 {
+                    int amount = -currentShields[i].remainingAmount;
                     currentShields.RemoveAt(i);
+                    OnShieldsChanged?.Invoke(this, amount, TotalShields());
                 }
             }
         }

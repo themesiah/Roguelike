@@ -146,14 +146,14 @@ PrefabInstance:
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 7161766185300077914}
+      objectReference: {fileID: 3480907508434999494}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: GamedevsToolbox.Utils.TimedDestroy, GamedevsToolbox
+      value: Laresistance.Behaviours.StatusSubscription, GameScripts
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: DoDestroy
+      value: BeforeDestroyed
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
@@ -217,15 +217,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: DoDestroy
+      value: DoDeactivate
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -254,6 +254,10 @@ PrefabInstance:
     - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_FloatArgument
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909678482288378004, guid: 348e2590273cb004ca19090d24446c90, type: 3}
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8410598202582482540, guid: 348e2590273cb004ca19090d24446c90, type: 3}
       propertyPath: m_IsActive
@@ -305,3 +309,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8232852243488243059, guid: 348e2590273cb004ca19090d24446c90, type: 3}
   m_PrefabInstance: {fileID: 1055925658622799305}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3480907508434999494 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4533378959465559311, guid: 348e2590273cb004ca19090d24446c90, type: 3}
+  m_PrefabInstance: {fileID: 1055925658622799305}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9000322583845556410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a550794624357d40b89a8e31c456a9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

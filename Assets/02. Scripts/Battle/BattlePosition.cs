@@ -8,8 +8,8 @@ namespace Laresistance.Battle
     public class BattlePosition
     {
         private static float CHARACTERS_HORIZONTAL_OFFSET = 3f;
-        private static float PARTY_HORIZONTAL_OFFSET = 0.4f;
-        private static float PARTY_VERTICAL_OFFSET = 0.4f;
+        private static float PARTY_HORIZONTAL_OFFSET = 2.5f;
+        private static float PARTY_VERTICAL_OFFSET = 0.0f;
 
         private static float DISTANCE_BETWEEN_VERTICAL_RAYCAST = 0.1f;
         private static float MIN_DISTANCE_FOR_SETUP = 14f;
