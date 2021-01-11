@@ -36,12 +36,12 @@ namespace Laresistance.Battle
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
         {
             string textId = "EFF_STUN_DESC";
-            return Texts.GetText(textId, new object[] { GetPower(level, equipmentEvents), GetTargetString() });
+            return Texts.GetText(textId, new object[] { GetSeconds(GetPower(level, equipmentEvents)), GetTargetString() });
         }
 
         public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
         {
-            return GetPower(level, equipmentEvents).ToString();
+            return string.Format("{0}s", GetSeconds(GetPower(level, equipmentEvents)).ToString());
         }
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
