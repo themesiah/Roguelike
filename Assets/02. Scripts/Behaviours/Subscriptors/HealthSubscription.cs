@@ -23,6 +23,10 @@ namespace Laresistance.Behaviours
         private UnityEvent<float> OnHealthChangedPercent = default;
         [SerializeField]
         private UnityEvent OnDie = default;
+        [SerializeField]
+        private UnityEvent<string> OnHealthChangedString = default;
+        [SerializeField]
+        private UnityEvent<string> OnMaxHealthChangedString = default;
 
         private void OnEnable()
         {
@@ -53,7 +57,9 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnMaxHealthChanged += MaxHealthChanged;
             battleBehaviour.StatusManager.health.OnHealthChanged += HealthChanged;
             OnMaxHealth?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth());
+            OnMaxHealthChangedString?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth().ToString());
             OnHealthChanged?.Invoke(battleBehaviour.StatusManager.health.GetCurrentHealth());
+            OnHealthChangedString?.Invoke(battleBehaviour.StatusManager.health.GetCurrentHealth().ToString());
             OnHealthChangedPercent?.Invoke(battleBehaviour.StatusManager.health.GetPercentHealth());
         }
 
@@ -61,6 +67,7 @@ namespace Laresistance.Behaviours
         {
             OnDamageReceived?.Invoke(damageTaken);
             OnHealthChanged?.Invoke(currentHealth);
+            OnHealthChangedString?.Invoke(currentHealth.ToString());
             HealthPercent(sender);
         }
 
@@ -68,6 +75,7 @@ namespace Laresistance.Behaviours
         {
             OnHealReceived?.Invoke(healAmount);
             OnHealthChanged?.Invoke(currentHealth);
+            OnHealthChangedString?.Invoke(currentHealth.ToString());
             HealthPercent(sender);
         }
 
@@ -89,12 +97,14 @@ namespace Laresistance.Behaviours
         private void MaxHealthChanged(CharacterHealth sender, int maxHealth)
         {
             OnMaxHealth?.Invoke(maxHealth);
+            OnMaxHealthChangedString?.Invoke(maxHealth.ToString());
             OnHealthChangedPercent?.Invoke(sender.GetPercentHealth());
         }
 
         private void HealthChanged(CharacterHealth sender, int health)
         {
             OnHealthChanged?.Invoke(health);
+            OnHealthChangedString?.Invoke(health.ToString());
             OnHealthChangedPercent?.Invoke(sender.GetPercentHealth());
         }
     }

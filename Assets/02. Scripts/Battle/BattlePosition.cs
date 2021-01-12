@@ -80,7 +80,7 @@ namespace Laresistance.Battle
             return distance;
         }
 
-        public static void MoveCharacters(GameObject playerObject, GameObject[] enemyObjects, int centerCheckLayerMask)
+        public static bool MoveCharacters(GameObject playerObject, GameObject[] enemyObjects, int centerCheckLayerMask)
         {
             bool playerLookingRight = false;
             float direction = -1f;
@@ -113,6 +113,7 @@ namespace Laresistance.Battle
                 enemyObjects[i].transform.position = enemyObjects[0].transform.position + Vector3.left * PARTY_HORIZONTAL_OFFSET * direction * i + Vector3.up * PARTY_VERTICAL_OFFSET * i;
                 Turn(enemyObjects[i], !playerLookingRight);
             }
+            return playerLookingRight;
         }
 
         private static void Turn(GameObject character, bool right)

@@ -51,6 +51,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 5624489015214765262}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.ExtendedBattleInfo, GameScripts
+        m_MethodName: SetupForBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnBattleBehaviourDisable:
     m_PersistentCalls:
       m_Calls:
@@ -90,6 +102,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5624489015214765262}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.ExtendedBattleInfo, GameScripts
+        m_MethodName: Unsetup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectionArrowReference: {fileID: 11400000, guid: 21e5e288afb6f934f9ee103988f87d7e, type: 2}
   selectionArrowPivot: {fileID: 5910637909470878144}
   enemyData: {fileID: 11400000, guid: 70207bf0c942b6940ac6e0a5a75bb563, type: 2}
@@ -108,6 +132,37 @@ MonoBehaviour:
     value: {fileID: 11400000, guid: ba95aa8e601b68d4d9e85fe0a035d958, type: 2}
     constantValue: {x: 0, y: 0}
   effectTargetPivot: {fileID: 2744979763195783028}
+  OnEnemyName:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 894428648673089864}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEnemyLevel:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1756837886179601190}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.LocalizedIntTextBehaviour,
+          GameScripts
+        m_MethodName: ChangeVariable
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1805785070886233288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -230,3 +285,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4546189731272786876, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
   m_PrefabInstance: {fileID: 1805785070886233288}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5624489015214765262 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6269394419315036166, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
+  m_PrefabInstance: {fileID: 1805785070886233288}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b13e4c98209354db24aa7414f0b9ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &894428648673089864 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1542141927736425856, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
+  m_PrefabInstance: {fileID: 1805785070886233288}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1756837886179601190 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 103271954165682158, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
+  m_PrefabInstance: {fileID: 1805785070886233288}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2082cb6539fa5994faf046fe1a59db2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

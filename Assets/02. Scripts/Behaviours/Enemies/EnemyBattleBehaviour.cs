@@ -1,7 +1,9 @@
 ﻿using Laresistance.Battle;
 using Laresistance.Data;
 using UnityEngine;
+using UnityEngine.Events;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 
 namespace Laresistance.Behaviours
 {
@@ -17,18 +19,24 @@ namespace Laresistance.Behaviours
         protected ScriptableVector2Reference levelVarianceRef = default;
         [SerializeField]
         protected Transform effectTargetPivot = default;
+        [SerializeField]
+        protected UnityEvent<string> OnEnemyName;
+        [SerializeField]
+        protected UnityEvent<int> OnEnemyLevel;
 
         protected int enemyLevel;
 
         protected void GenerateEnemyLevel()
         {
             enemyLevel = System.Math.Max(1, (int)((currentLevel.GetValue() * levelVarianceRef.GetValue().x) + Random.Range(-levelVarianceRef.GetValue().y, levelVarianceRef.GetValue().y)));
+            OnEnemyLevel?.Invoke(enemyLevel);
         }
 
         protected override void SetupStatusManager()
         {
             GenerateEnemyLevel();
             StatusManager = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth * (int)(1f + (enemyLevel - 1) * 0.1f)), effectTargetPivot);
+            OnEnemyName?.Invoke(Texts.GetText(enemyData.NameRef));
         }
 
         protected override void SetupAbilityInputExecutor()
