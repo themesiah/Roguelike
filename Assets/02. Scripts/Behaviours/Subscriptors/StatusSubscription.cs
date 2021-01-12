@@ -14,16 +14,15 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform statusIndicatorsHolder = default;
         [SerializeField]
-        private ScriptablePool statusIndicatorPool = default;
-        [SerializeField]
         private CharacterBattleBehaviour battleBehaviour = default;
 
         private bool haveShields = false;
         private bool haveDamageImprovement = false;
+        private ScriptablePool statusIndicatorPool;
 
         private void Start()
         {
-            statusIndicatorPool.InitPool();
+            statusIndicatorPool = PoolInitializerBehaviour.GetPool("Status");
         }
 
         private void OnEnable()
@@ -80,7 +79,6 @@ namespace Laresistance.Behaviours
         {
             haveShields = false;
             haveDamageImprovement = false;
-            //statusIndicatorPool.FreeAll();
         }
 
         private StatusData GetStatus(StatusType statusType)

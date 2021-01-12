@@ -31,13 +31,13 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RectTransform nextCardIndicator = default;
         [SerializeField]
-        private ScriptablePool particlesPool = default;
-        [SerializeField]
         private RectTransform ultimatePosition = default;
+
+        private ScriptablePool particlesPool;
 
         private void Awake()
         {
-            particlesPool.InitPool();
+            particlesPool = PoolInitializerBehaviour.GetPool("Energy");
         }
 
         private void OnEnable()
