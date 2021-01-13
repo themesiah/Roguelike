@@ -6,9 +6,11 @@ namespace Laresistance.Behaviours
     public class SelectionArrowBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private float deltaMovement = 3f;
-        [SerializeField]
         private float movementDuration = 1f;
+        [SerializeField]
+        private Vector3 targetPosition = default;
+        [SerializeField]
+        private Vector3 initialPosition = Vector3.zero;
 
         private void OnEnable()
         {
@@ -20,26 +22,24 @@ namespace Laresistance.Behaviours
             TweenFactory.RemoveTweenKey("SelectionArrow", TweenStopBehavior.DoNotModify);
         }
 
-        private void UpdateArrowPosition(ITween<float> t)
+        private void UpdateArrowPosition(ITween<Vector3> t)
         {
-            var pos = transform.localPosition;
-            pos.y = t.CurrentValue;
-            transform.localPosition = pos;
+            transform.localPosition = t.CurrentValue;
         }
 
-        private void MoveCompleted(ITween<float> t)
+        private void MoveCompleted(ITween<Vector3> t)
         {
             ExecuteTween();
         }
 
         private void ExecuteTween()
         {
-            TweenFactory.Tween("SelectionArrow", 0f, -deltaMovement, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, ExecuteReverseTween);
+            TweenFactory.Tween("SelectionArrow", initialPosition, targetPosition, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, ExecuteReverseTween);
         }
 
-        private void ExecuteReverseTween(ITween<float> t)
+        private void ExecuteReverseTween(ITween<Vector3> t)
         {
-            TweenFactory.Tween("SelectionArrow", -deltaMovement, 0f, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, MoveCompleted);
+            TweenFactory.Tween("SelectionArrow", targetPosition, initialPosition, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, MoveCompleted);
         }
     }
 }

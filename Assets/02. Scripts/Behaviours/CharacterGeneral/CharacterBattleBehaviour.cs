@@ -15,7 +15,11 @@ namespace Laresistance.Behaviours
         [SerializeField]
         protected RuntimeSingleGameObject selectionArrowReference = default;
         [SerializeField]
+        protected RuntimeSingleGameObject selectionArrowExtendedInfoReference = default;
+        [SerializeField]
         protected Transform selectionArrowPivot = default;
+        [SerializeField]
+        protected ExtendedBattleInfo extendedBattleInfo = default;
         public BattleStatusManager StatusManager { get; protected set; }
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
         public IAbilityExecutor AbilityExecutor { get; protected set; }
@@ -61,6 +65,16 @@ namespace Laresistance.Behaviours
                 t.SetParent(null);
             }
             t.GetChild(0).gameObject.SetActive(selected);
+
+            GameObject extendedInfoArrow = selectionArrowExtendedInfoReference.Get();
+            if (selected == true)
+            {
+                extendedBattleInfo.SetSelectionArrow(extendedInfoArrow);
+            } else
+            {
+                extendedInfoArrow.transform.SetParent(null);
+            }
+            extendedInfoArrow.SetActive(selected);
         }
 
         public void OutsideBattleHeal(int heal)

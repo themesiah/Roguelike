@@ -7,6 +7,9 @@ namespace Laresistance.Behaviours
 {
     public class ExtendedBattleInfo : MonoBehaviour
     {
+        private static Vector3 ARROW_EULER_LEFT = Vector3.zero;
+        private static Vector3 ARROW_EULER_RIGHT = Vector3.forward * 180f;
+
         [SerializeField]
         private HorizontalOrVerticalLayoutGroup[] layouts = default;
         [SerializeField]
@@ -17,6 +20,8 @@ namespace Laresistance.Behaviours
         private RuntimeSingleGameObject rightSideRef = default;
         [SerializeField]
         private ScriptableIntReference battleSideRef = default;
+        [SerializeField]
+        private Transform arrowHolder = default;
         [SerializeField]
         private bool isPlayer = default;
 
@@ -39,6 +44,7 @@ namespace Laresistance.Behaviours
                     layout.childAlignment = TextAnchor.MiddleLeft;
                     healthStatusLayout.reverseArrangement = false;
                 }
+                arrowHolder.localEulerAngles = ARROW_EULER_LEFT;
             } else
             {
                 sideObject = rightSideRef.Get();
@@ -47,6 +53,7 @@ namespace Laresistance.Behaviours
                     layout.childAlignment = TextAnchor.MiddleRight;
                     healthStatusLayout.reverseArrangement = true;
                 }
+                arrowHolder.localEulerAngles = ARROW_EULER_RIGHT;
             }
 
             transform.SetParent(sideObject.transform, false);
@@ -56,6 +63,13 @@ namespace Laresistance.Behaviours
         {
             transform.SetParent(originalParent, false);
             gameObject.SetActive(false);
+        }
+
+        public void SetSelectionArrow(GameObject arrow)
+        {
+            arrow.transform.SetParent(arrowHolder, false);
+            arrow.transform.localScale = Vector3.one;
+            arrow.transform.localEulerAngles = Vector3.zero;
         }
     }
 }
