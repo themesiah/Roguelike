@@ -23,6 +23,12 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform arrowHolder = default;
         [SerializeField]
+        private Text[] infoTextsForColorChange = default;
+        [SerializeField]
+        private Color defaultTextColor = default;
+        [SerializeField]
+        private Color textSelectedColor = default;
+        [SerializeField]
         private bool isPlayer = default;
 
         private Transform originalParent;
@@ -56,6 +62,11 @@ namespace Laresistance.Behaviours
                 arrowHolder.localEulerAngles = ARROW_EULER_RIGHT;
             }
 
+            foreach(Text t in infoTextsForColorChange)
+            {
+                t.color = defaultTextColor;
+            }
+
             transform.SetParent(sideObject.transform, false);
         }
 
@@ -70,6 +81,22 @@ namespace Laresistance.Behaviours
             arrow.transform.SetParent(arrowHolder, false);
             arrow.transform.localScale = Vector3.one;
             arrow.transform.localEulerAngles = Vector3.zero;
+        }
+
+        public void Selected()
+        {
+            foreach (Text t in infoTextsForColorChange)
+            {
+                t.color = textSelectedColor;
+            }
+        }
+
+        public void Unselected()
+        {
+            foreach (Text t in infoTextsForColorChange)
+            {
+                t.color = defaultTextColor;
+            }
         }
     }
 }

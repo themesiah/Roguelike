@@ -70,9 +70,11 @@ namespace Laresistance.Behaviours
             if (selected == true)
             {
                 extendedBattleInfo.SetSelectionArrow(extendedInfoArrow);
+                extendedBattleInfo.Selected();
             } else
             {
                 extendedInfoArrow.transform.SetParent(null);
+                extendedBattleInfo.Unselected();
             }
             extendedInfoArrow.SetActive(selected);
         }
