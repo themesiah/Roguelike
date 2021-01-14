@@ -8,6 +8,7 @@ namespace Laresistance.Battle
     public class EnemyAbilityManager : IAbilityInputProcessor, IAbilityExecutor
     {
         private static float NEXT_ABILITY_COOLDOWN = 3f;
+        private static float NEXT_ABILITY_COOLDOWN_VARIANCE = 0.5f;
         private BattleAbility[] abilities;
         private int level;
         private IBattleAnimator animator;
@@ -34,6 +35,13 @@ namespace Laresistance.Battle
             {
                 nextAbility = GetRandomAbilityFromWeights();
                 battleStatus.SetNextAbility(nextAbility);
+                if (nextAbility.data.CastTime != 0)
+                {
+                    nextAbilityTimer = nextAbility.data.CastTime;
+                } else
+                {
+                    nextAbilityTimer = NEXT_ABILITY_COOLDOWN + Random.Range(-NEXT_ABILITY_COOLDOWN_VARIANCE, NEXT_ABILITY_COOLDOWN_VARIANCE);
+                }
             }
 
             for(int i = 0; i < abilities.Length; ++i)
@@ -52,7 +60,6 @@ namespace Laresistance.Battle
                 {
                     if (abilities[i] == nextAbility)
                     {
-                        nextAbilityTimer = NEXT_ABILITY_COOLDOWN;
                         return i;
                     } else
                     {

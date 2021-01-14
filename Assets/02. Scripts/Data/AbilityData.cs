@@ -26,6 +26,10 @@ namespace Laresistance.Data
         public float Cooldown { get { return cooldown; } }
 
         [SerializeField]
+        private float castTime = default;
+        public float CastTime { get { return castTime; } }
+
+        [SerializeField]
         private Sprite icon = default;
         public Sprite Icon { get { return icon; } }
 
