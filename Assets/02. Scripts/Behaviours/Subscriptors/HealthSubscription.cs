@@ -18,6 +18,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private UnityEvent<int> OnShieldPerformed = default;
         [SerializeField]
+        private UnityEvent OnShieldsRemoved = default;
+        [SerializeField]
         private UnityEvent<int> OnHealthChanged = default;
         [SerializeField]
         private UnityEvent<float> OnHealthChangedPercent = default;
@@ -79,9 +81,16 @@ namespace Laresistance.Behaviours
             HealthPercent(sender);
         }
 
-        private void OnShieldsChanged(CharacterHealth sender, int delta, int totalShields)
+        private void OnShieldsChanged(CharacterHealth sender, int delta, int totalShields, bool isDamage)
         {
-            OnShieldPerformed?.Invoke(delta);
+            if (isDamage)
+            {
+                OnShieldPerformed?.Invoke(delta);
+            }
+            if (totalShields == 0)
+            {
+                OnShieldsRemoved?.Invoke();
+            }
         }
 
         private void OnDeath(CharacterHealth sender)

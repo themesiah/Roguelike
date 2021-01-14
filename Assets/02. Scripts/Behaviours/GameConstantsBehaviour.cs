@@ -27,6 +27,8 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference damageOverTimeDuration = default;
         [Tooltip("Time in seconds between damages in damage over time effects")]
         public ScriptableFloatReference damageOverTimeTickDelay = default;
+        [Tooltip("Time in seconds for the effect of a shield to wear off")]
+        public ScriptableFloatReference shieldDuration = default;
 
         private void Awake()
         {

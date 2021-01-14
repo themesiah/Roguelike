@@ -1,4 +1,5 @@
-﻿using Laresistance.Core;
+﻿using Laresistance.Behaviours;
+using Laresistance.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +15,6 @@ namespace Laresistance.Battle
         }
         #endregion
 
-        #region Constants
-        public static float SHIELD_DURATION = 0.5f;
-        #endregion
-
         #region Private Variables
         private int originalMaxHealth = 0;
         private int maxHealth = 0;
@@ -30,7 +27,7 @@ namespace Laresistance.Battle
         public event OnDamageTakenHandler OnDamageTaken;
         public delegate void OnHealedHandler(CharacterHealth sender, int healAmount, int currentHealth);
         public event OnHealedHandler OnHealed;
-        public delegate void OnShieldsChangedHandler(CharacterHealth sender, int delta, int totalShields);
+        public delegate void OnShieldsChangedHandler(CharacterHealth sender, int delta, int totalShields, bool isDamage);
         public event OnShieldsChangedHandler OnShieldsChanged;
         public delegate void OnDeathHandler(CharacterHealth sender);
         public event OnDeathHandler OnDeath;
@@ -98,7 +95,7 @@ namespace Laresistance.Battle
                         int last = remainingPower;
                         remainingPower = 0;
                         s.remainingAmount -= last;
-                        OnShieldsChanged?.Invoke(this, -last, TotalShields());
+                        OnShieldsChanged?.Invoke(this, -last, TotalShields(), true);
                         break;
                     } else
                     {
@@ -106,7 +103,7 @@ namespace Laresistance.Battle
                         remainingPower -= s.remainingAmount;
                         s.remainingAmount = 0;
                         currentShields.Remove(s);
-                        OnShieldsChanged?.Invoke(this, -last, TotalShields());
+                        OnShieldsChanged?.Invoke(this, -last, TotalShields(), true);
                     }
                 } else
                 {
@@ -135,7 +132,7 @@ namespace Laresistance.Battle
             if (currentHealth <= 0)
                 return;
             currentShields.Add(new Shield() { remainingAmount = power, timer = 0f });
-            OnShieldsChanged?.Invoke(this, power, TotalShields());
+            OnShieldsChanged?.Invoke(this, power, TotalShields(), true);
         }
 
         public void Tick(float delta)
@@ -150,11 +147,11 @@ namespace Laresistance.Battle
 
             for (int i = currentShields.Count-1; i >= 0; --i)
             {
-                if (currentShields[i].timer >= SHIELD_DURATION)
+                if (currentShields[i].timer >= GameConstantsBehaviour.Instance.shieldDuration.GetValue())
                 {
                     int amount = -currentShields[i].remainingAmount;
                     currentShields.RemoveAt(i);
-                    OnShieldsChanged?.Invoke(this, amount, TotalShields());
+                    OnShieldsChanged?.Invoke(this, amount, TotalShields(), false);
                 }
             }
         }

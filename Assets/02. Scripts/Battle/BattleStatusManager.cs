@@ -85,47 +85,48 @@ namespace Laresistance.Battle
 
         public void ProcessStatus(float delta, float energySpeedModifier)
         {
-            int totalDamage = 0;
-            for(int i = damageOverTimes.Count-1; i >= 0; --i)
-            {
-                DamageOverTime dot = damageOverTimes[i];
-                dot.timer += delta * energySpeedModifier;
-                if (dot.timer >= GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue())
-                {
-                    totalDamage += dot.power;
-                    dot.ticked++;
-                    dot.timer = dot.timer - GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue();
-                    if (dot.ticked >= Mathf.CeilToInt(GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
-                    {
-                        damageOverTimes.Remove(dot);
-                    }
-                }
-            }
-            for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
-            {
-                TempDamageChange tdm = tempDamageModifications[i];
-                tdm.timer += delta * energySpeedModifier;
-                if (tdm.timer >= GameConstantsBehaviour.Instance.damageModifierDuration.GetValue())
-                {
-                    tempDamageModifications.Remove(tdm);
-                }
-            }
-            for (int i = speedModifiers.Count - 1; i >= 0; --i)
-            {
-                SpeedEffect se = speedModifiers[i];
-                se.timer += delta * energySpeedModifier;
-                if (se.timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
-                {
-                    speedModifiers.Remove(se);
-                }
-            }
-            if (totalDamage > 0)
-            {
-                health.TakeDamage(totalDamage, null);
-            }
-            health.Tick(delta);
             if (!BattleAbilityManager.Executing || BattleAbilityManager.executingBasicSkill)
             {
+                int totalDamage = 0;
+                for(int i = damageOverTimes.Count-1; i >= 0; --i)
+                {
+                    DamageOverTime dot = damageOverTimes[i];
+                    dot.timer += delta * energySpeedModifier;
+                    if (dot.timer >= GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue())
+                    {
+                        totalDamage += dot.power;
+                        dot.ticked++;
+                        dot.timer = dot.timer - GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue();
+                        if (dot.ticked >= Mathf.CeilToInt(GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
+                        {
+                            damageOverTimes.Remove(dot);
+                        }
+                    }
+                }
+                for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
+                {
+                    TempDamageChange tdm = tempDamageModifications[i];
+                    tdm.timer += delta * energySpeedModifier;
+                    if (tdm.timer >= GameConstantsBehaviour.Instance.damageModifierDuration.GetValue())
+                    {
+                        tempDamageModifications.Remove(tdm);
+                    }
+                }
+                for (int i = speedModifiers.Count - 1; i >= 0; --i)
+                {
+                    SpeedEffect se = speedModifiers[i];
+                    se.timer += delta * energySpeedModifier;
+                    if (se.timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
+                    {
+                        speedModifiers.Remove(se);
+                    }
+                }
+                if (totalDamage > 0)
+                {
+                    health.TakeDamage(totalDamage, null);
+                }
+                health.Tick(delta);
+            
                 if (Stunned)
                 {
                     stunTimer -= delta * energySpeedModifier;
@@ -141,8 +142,8 @@ namespace Laresistance.Battle
                     CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
                 }
+                OnTick?.Invoke(this, delta);
             }
-            OnTick?.Invoke(this, delta);
         }
 
         public void ApplySpeedModifier(float coeficient)

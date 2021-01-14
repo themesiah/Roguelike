@@ -146,7 +146,7 @@ namespace Laresistance.Tests {
             var ability = GetAbilityByIndex(0);
             var ability2 = GetAbilityByIndex(2);
             yield return ability2.ExecuteAbility(new BattleStatusManager[] { enemy }, new BattleStatusManager[] { enemy }, 1, null);
-            enemy.ProcessStatus(CharacterHealth.SHIELD_DURATION+0.1f, 1f);
+            enemy.ProcessStatus(1f+0.1f, 1f);
             yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { enemy }, 1, null);
             Assert.AreEqual(STARTING_HEALTH-10, enemy.health.GetCurrentHealth());
             yield return null;

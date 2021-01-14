@@ -86,7 +86,7 @@ namespace Laresistance.Behaviours
             DeactivateIndicator();
         }
 
-        private void OnShieldsChanged(CharacterHealth sender, int delta, int total)
+        private void OnShieldsChanged(CharacterHealth sender, int delta, int total, bool isDamage)
         {
             if (total <= 0)
             {
