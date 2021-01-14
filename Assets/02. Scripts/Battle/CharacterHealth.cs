@@ -35,6 +35,8 @@ namespace Laresistance.Battle
         public event OnMaxHealthChangedHandler OnMaxHealthChanged;
         public delegate void OnHealthChangedHandler(CharacterHealth sender, int health);
         public event OnHealthChangedHandler OnHealthChanged;
+        public delegate void OnAttackMissedHandler(CharacterHealth sender);
+        public event OnAttackMissedHandler OnAttackMissed;
         #endregion
 
         #region Public API
@@ -79,10 +81,10 @@ namespace Laresistance.Battle
             OnHealed?.Invoke(this, power, currentHealth);
         }
 
-        public void TakeDamage(int power, EquipmentEvents equipmentEvents)
+        public int TakeDamage(int power, EquipmentEvents equipmentEvents)
         {
             if (currentHealth <= 0)
-                return;
+                return 0;
             int remainingPower = power;
             
             for (int i = currentShields.Count-1; i >= 0; --i)
@@ -125,6 +127,12 @@ namespace Laresistance.Battle
             {
                 OnDeath?.Invoke(this);
             }
+            return remainingPower;
+        }
+
+        public void MissAttack()
+        {
+            OnAttackMissed?.Invoke(this);
         }
 
         public void AddShield(int power)

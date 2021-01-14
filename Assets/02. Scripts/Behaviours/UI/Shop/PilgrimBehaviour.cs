@@ -123,7 +123,7 @@ namespace Laresistance.Behaviours
             }
             while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY)
             {
-                int index = Random.Range(0, consumableDatas.Count - 1);
+                int index = Random.Range(0, consumableDatas.Count);
                 if (!selectedConsumableIndexes.Contains(index))
                 {
                     Consumable c = ConsumableFactory.GetConsumable(consumableDatas[index], player.GetEquipmentEvents(), statusManager);
@@ -133,7 +133,7 @@ namespace Laresistance.Behaviours
             }
             while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY + OFFER_EQUIPMENTS_QUANTITY)
             {
-                int index = Random.Range(0, equipmentDatas.Count - 1);
+                int index = Random.Range(0, equipmentDatas.Count);
                 if (!selectedEquipmentIndexes.Contains(index))
                 {
                     Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[index], player.GetEquipmentEvents(), playerDataBehaviourReference.Get().StatusManager);
@@ -143,7 +143,7 @@ namespace Laresistance.Behaviours
             }
             while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY + OFFER_EQUIPMENTS_QUANTITY + OFFER_MAP_ABILITIES_QUANTITY)
             {
-                int index = Random.Range(0, mapAbilityDatas.Count - 1);
+                int index = Random.Range(0, mapAbilityDatas.Count);
                 if (!selectedMapAbilityIndexes.Contains(index))
                 {
                     shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index])));

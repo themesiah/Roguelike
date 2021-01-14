@@ -10,7 +10,7 @@ namespace Laresistance.Behaviours
     public class StatusSubscription : MonoBehaviour
     {
         [SerializeField]
-        private StatusData[] statusList = default;
+        private StatusList statusList = default;
         [SerializeField]
         private Transform statusIndicatorsHolder = default;
         [SerializeField]
@@ -83,7 +83,7 @@ namespace Laresistance.Behaviours
 
         private StatusData GetStatus(StatusType statusType)
         {
-            foreach(var status in statusList)
+            foreach(var status in statusList.Statuses)
             {
                 if (statusType == status.Status)
                 {

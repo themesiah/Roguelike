@@ -32,19 +32,32 @@ namespace Laresistance.Battle
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
         {
+            PerformAttackEffect(target, level, equipmentEvents, bloodRef);
+        }
+
+        protected int PerformAttackEffect(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        {
             equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetAttackAbilityBloodCost?.Invoke(bloodRef);
             equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
             equipmentEvents?.OnGetAttackAbilityBloodCostFlat?.Invoke(bloodRef);
-            int damage = GetPower(level, equipmentEvents);
-            target.health.TakeDamage(damage, target.GetEquipmentEvents());
-            int retaliation = 0;
-            target.GetEquipmentEvents()?.OnRetaliationDamage?.Invoke(ref damage, ref retaliation);
-            target.GetEquipmentEvents()?.OnRetaliationDamageFlat?.Invoke(ref damage, ref retaliation);
-            if (retaliation > 0)
+            int damageDone = 0;
+            if (UnityEngine.Random.value <= SelfStatus.GetHitChance())
             {
-                SelfStatus.health.TakeDamage(retaliation, equipmentEvents);
+                int damage = GetPower(level, equipmentEvents);
+                damageDone = target.health.TakeDamage(damage, target.GetEquipmentEvents());
+                int retaliation = 0;
+                target.GetEquipmentEvents()?.OnRetaliationDamage?.Invoke(ref damage, ref retaliation);
+                target.GetEquipmentEvents()?.OnRetaliationDamageFlat?.Invoke(ref damage, ref retaliation);
+                if (retaliation > 0)
+                {
+                    SelfStatus.health.TakeDamage(retaliation, equipmentEvents);
+                }
+            } else
+            {
+                target.health.MissAttack();
             }
+            return damageDone;
         }
 
         public override string GetEffectString(int level, EquipmentEvents equipmentEvents)

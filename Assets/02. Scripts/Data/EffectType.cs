@@ -14,6 +14,9 @@
         AdvanceCooldowns, // Unused, now obtain energy
         DamageModification,
         ObtainEnergy,
-        BasicAttack
+        BasicAttack,
+        RemoveBuffs,
+        LifeSiphon,
+        Blind
     }
 }

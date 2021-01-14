@@ -29,6 +29,11 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference damageOverTimeTickDelay = default;
         [Tooltip("Time in seconds for the effect of a shield to wear off")]
         public ScriptableFloatReference shieldDuration = default;
+        [Tooltip("Time in seconds for the effect of blind to wear off")]
+        public ScriptableFloatReference blindDuration = default;
+        [Header("Battle effect constants")]
+        [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]
+        public ScriptableFloatReference siphonPercent = default;
 
         private void Awake()
         {

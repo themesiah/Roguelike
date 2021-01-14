@@ -7256,7 +7256,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2da9e92125f31c3419eed4024a92ba6b, type: 2}
   useStartingData: 1
   startingMinions:
-  - {fileID: 11400000, guid: 1bd35752cbb8329489b814978a259a20, type: 2}
+  - {fileID: 11400000, guid: 4a574eb35a20557478de9b56da473226, type: 2}
   startingConsumables: []
   startingEquipments: []
   playerDataBehaviourReference: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
@@ -8334,6 +8334,22 @@ MonoBehaviour:
   OnMaxHealthChangedString:
     m_PersistentCalls:
       m_Calls: []
+  OnMissedAttackReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 23771297}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.DamageTextSpawnerBehaviour,
+          GameScripts
+        m_MethodName: SpawnMissText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1040196530455569181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9038,15 +9054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a550794624357d40b89a8e31c456a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusList:
-  - {fileID: 11400000, guid: 41d49cabb9288fe4196c529cdec63b00, type: 2}
-  - {fileID: 11400000, guid: 2b00e9b42a9b54d4cb65f251ca54da41, type: 2}
-  - {fileID: 11400000, guid: 548df59a1ee91624dae494fc3ce1c7d8, type: 2}
-  - {fileID: 11400000, guid: 749cab12bde96b44a8da2d74baa4c5b4, type: 2}
-  - {fileID: 11400000, guid: ae8f9584b7aa30d4d830dec77c913f3f, type: 2}
-  - {fileID: 11400000, guid: 33fabbcba47113c44a25378074b8aa6c, type: 2}
-  - {fileID: 11400000, guid: 546d271501108d04191440243dd52a44, type: 2}
-  - {fileID: 11400000, guid: 491a84fd0316e8a4f8df4973860d5135, type: 2}
+  statusList: {fileID: 11400000, guid: ec818095b6a9e0340b7a714e70e1bfaa, type: 2}
   statusIndicatorsHolder: {fileID: 1155824518569516660}
   battleBehaviour: {fileID: 23771295}
 --- !u!1 &4574693791740187019

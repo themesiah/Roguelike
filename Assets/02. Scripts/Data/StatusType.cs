@@ -8,5 +8,6 @@
     DoT,
     DoTFire,
     Shield,
-    DamageImprovement
+    DamageImprovement,
+    Blind
 }

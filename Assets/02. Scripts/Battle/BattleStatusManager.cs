@@ -31,6 +31,12 @@ namespace Laresistance.Battle
             public float modifier;
             public float timer;
         }
+
+        public class BlindStatus
+        {
+            public float timer;
+            public float coeficient;
+        }
         #endregion
 
         #region Private Variables
@@ -38,6 +44,7 @@ namespace Laresistance.Battle
         private List<DamageOverTime> damageOverTimes;
         private List<DamageImprovement> damageImprovements;
         private List<TempDamageChange> tempDamageModifications;
+        private List<BlindStatus> blindStatuses;
         private EquipmentEvents equipmentEvents;
         public bool Stunned { get; private set; }
         private float stunTimer;
@@ -78,6 +85,7 @@ namespace Laresistance.Battle
             damageOverTimes = new List<DamageOverTime>();
             damageImprovements = new List<DamageImprovement>();
             tempDamageModifications = new List<TempDamageChange>();
+            blindStatuses = new List<BlindStatus>();
             this.energyPerSecond = energyPerSecond;
             this.TargetPivot = targetPivot;
             CurrentEnergy = 0;
@@ -182,6 +190,12 @@ namespace Laresistance.Battle
             }
         }
 
+        public void ApplyBlind(float coeficient)
+        {
+            blindStatuses.Add(new BlindStatus() { coeficient = coeficient, timer = 0f });
+            OnStatusApplied?.Invoke(this, StatusType.Blind, GameConstantsBehaviour.Instance.blindDuration.GetValue());
+        }
+
         public float GetSpeedModifier()
         {
             float speedModifier = 1f;
@@ -191,6 +205,16 @@ namespace Laresistance.Battle
                 speedModifier *= se.speedCoeficient;
             }
             return speedModifier;
+        }
+
+        public float GetHitChance()
+        {
+            float chance = 1f;
+            foreach(BlindStatus bs in blindStatuses)
+            {
+                chance *= (1f - bs.coeficient);
+            }
+            return chance;
         }
 
         public float GetDamageModifier()
@@ -219,6 +243,7 @@ namespace Laresistance.Battle
             speedModifiers.Clear();
             damageOverTimes.Clear();
             tempDamageModifications.Clear();
+            blindStatuses.Clear();
             Stunned = false;
             OnResetStatus?.Invoke(this);
         }
@@ -247,7 +272,27 @@ namespace Laresistance.Battle
                     speedModifiers.RemoveAt(i);
                 }
             }
+            blindStatuses.Clear();
             Stunned = false;
+        }
+
+        public void RemoveBuffs()
+        {
+            for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
+            {
+                if (tempDamageModifications[i].modifier > 0f)
+                {
+                    tempDamageModifications.RemoveAt(i);
+                }
+            }
+            for (int i = speedModifiers.Count - 1; i >= 0; --i)
+            {
+                if (speedModifiers[i].speedCoeficient > 1f)
+                {
+                    speedModifiers.RemoveAt(i);
+                }
+            }
+            damageImprovements.Clear();
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)

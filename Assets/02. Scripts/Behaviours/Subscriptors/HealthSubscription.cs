@@ -29,6 +29,8 @@ namespace Laresistance.Behaviours
         private UnityEvent<string> OnHealthChangedString = default;
         [SerializeField]
         private UnityEvent<string> OnMaxHealthChangedString = default;
+        [SerializeField]
+        private UnityEvent OnMissedAttackReceived = default;
 
         private void OnEnable()
         {
@@ -48,6 +50,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnDeath -= OnDeath;
             battleBehaviour.StatusManager.health.OnMaxHealthChanged -= MaxHealthChanged;
             battleBehaviour.StatusManager.health.OnHealthChanged -= HealthChanged;
+            battleBehaviour.StatusManager.health.OnAttackMissed -= AttackMissed;
         }
 
         private void EnableSuscriptions()
@@ -58,6 +61,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnDeath += OnDeath;
             battleBehaviour.StatusManager.health.OnMaxHealthChanged += MaxHealthChanged;
             battleBehaviour.StatusManager.health.OnHealthChanged += HealthChanged;
+            battleBehaviour.StatusManager.health.OnAttackMissed += AttackMissed;
             OnMaxHealth?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth());
             OnMaxHealthChangedString?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth().ToString());
             OnHealthChanged?.Invoke(battleBehaviour.StatusManager.health.GetCurrentHealth());
@@ -115,6 +119,11 @@ namespace Laresistance.Behaviours
             OnHealthChanged?.Invoke(health);
             OnHealthChangedString?.Invoke(health.ToString());
             OnHealthChangedPercent?.Invoke(sender.GetPercentHealth());
+        }
+
+        private void AttackMissed(CharacterHealth sender)
+        {
+            OnMissedAttackReceived?.Invoke();
         }
     }
 }
