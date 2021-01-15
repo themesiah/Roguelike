@@ -8,7 +8,7 @@ namespace Laresistance.Data
     public class StatusList : ScriptableObject
     {
         [SerializeField]
-        private StatusData[] statuses;
+        private StatusData[] statuses = default;
         public StatusData[] Statuses { get{ return statuses; } }
     }
 }

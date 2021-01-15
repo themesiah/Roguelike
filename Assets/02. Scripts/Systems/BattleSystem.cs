@@ -19,14 +19,22 @@ namespace Laresistance.Systems
         private static float BATTLE_ENERGY_SPEED_ACCELERATION = 0.00f;
         private static float MAX_BATTLE_ENERGY_SPEED_MODIFIER = 4f;
         private float currentEnergySpeedModifier;
+        private bool stoppedTime = false;
+
+        private List<int> playerAbilityQueue;
+
+        public delegate void OnTimeStopActivationHandler(BattleSystem sender, bool activate);
+        public event OnTimeStopActivationHandler OnTimeStopActivation;
 
         public BattleSystem()
         {
             selectedEnemy = null;
+            playerAbilityQueue = new List<int>();
         }
 
         public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies)
         {
+            playerAbilityQueue.Clear();
             currentEnergySpeedModifier = 1f;
             this.playerBattleManager = player;
             this.enemiesBattleManager = new List<CharacterBattleManager>(enemies);
@@ -212,21 +220,46 @@ namespace Laresistance.Systems
         {
             if (!paused && battling)
             {
-                int playerAbilityIndex = playerBattleManager.Tick(delta, currentEnergySpeedModifier);
-                if (playerAbilityIndex != -1)
+                float finalDelta = delta;
+                if (stoppedTime)
+                {
+                    finalDelta = 0f;
+                } else if (playerAbilityQueue.Count > 0)
+                {
+                    foreach (int index in playerAbilityQueue)
+                    {
+                        yield return playerBattleManager.ExecuteSkill(index);
+                    }
+                    playerAbilityQueue.Clear();
+                }
+                int playerAbilityIndex = playerBattleManager.Tick(finalDelta, currentEnergySpeedModifier);
+                
+                if (playerAbilityIndex != -1 && !stoppedTime)
                 {
                     yield return playerBattleManager.ExecuteSkill(playerAbilityIndex);
+                } else if (playerAbilityIndex != -1 && stoppedTime)
+                {
+                    playerAbilityQueue.Add(playerAbilityIndex);
                 }
                 foreach (var bm in enemiesBattleManager)
                 {
-                    int enemyAbilityIndex = bm.Tick(delta, currentEnergySpeedModifier);
+                    int enemyAbilityIndex = bm.Tick(finalDelta, currentEnergySpeedModifier);
                     if (enemyAbilityIndex != -1)
                     {
                         yield return bm.ExecuteSkill(enemyAbilityIndex);
                     }
                 }
-                currentEnergySpeedModifier = Mathf.Min(MAX_BATTLE_ENERGY_SPEED_MODIFIER, currentEnergySpeedModifier + BATTLE_ENERGY_SPEED_ACCELERATION * delta);
+                currentEnergySpeedModifier = Mathf.Min(MAX_BATTLE_ENERGY_SPEED_MODIFIER, currentEnergySpeedModifier + BATTLE_ENERGY_SPEED_ACCELERATION * finalDelta);
             }
+        }
+
+        public void PerformTimeStop(bool activate)
+        {
+            if (stoppedTime != activate)
+            {
+                OnTimeStopActivation?.Invoke(this, activate);
+            }
+            stoppedTime = activate;
         }
 
         public void Pause()

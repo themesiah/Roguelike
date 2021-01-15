@@ -22,7 +22,7 @@ namespace Laresistance.StateMachines
         private bool removeFirstEnemy = false;
         private RewardSystem rewardSystem;
         private PlayerMinionCompanionSpawner companionSpawner;
-        private BattleSystem battleSystem;
+        public BattleSystem battleSystem { get; private set; }
         private GameObject[] enemyObjects;
         private int deathCount;
         private RewardData rewardData = null;
@@ -132,6 +132,11 @@ namespace Laresistance.StateMachines
             this.battleSystem = new BattleSystem();
             this.battlePositionIntReference = battlePositionIntReference;
             playerObject.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += PlayerDeath;
+        }
+
+        public void PerformTimeStop(bool activate)
+        {
+            battleSystem.PerformTimeStop(activate);
         }
         #endregion
 

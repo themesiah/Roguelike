@@ -1347,6 +1347,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "TimeStop",
+                    "type": "Button",
+                    "id": "8eeda881-bd58-4e75-8e5d-5ac5bae1d065",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.1)"
+                },
+                {
                     "name": "TargetSelection",
                     "type": "Button",
                     "id": "c3fc690d-4d1d-40d9-8fbb-9ef06084d1f1",
@@ -1625,6 +1633,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e2e11ba5-ded8-4eda-b8cb-537b75d88150",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "TimeStop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e40f8580-79ae-4a0e-8fb2-49f17088063b",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "TimeStop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

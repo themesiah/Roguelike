@@ -9,6 +9,8 @@ using UnityEngine.Assertions;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
 using GamedevsToolbox.Utils;
 using GamedevsToolbox.ScriptableArchitecture.Events;
+using UnityEngine.InputSystem;
+using Laresistance.Systems;
 
 namespace Laresistance.Behaviours
 {
@@ -51,6 +53,8 @@ namespace Laresistance.Behaviours
 
             stateMachine.SetStates(states);
             StartCoroutine(StateMachineCoroutine());
+
+            battleState.battleSystem.OnTimeStopActivation += OnTimeStopActivate;
         }
 
         public void ReceiveSignal(string signal)
@@ -105,6 +109,33 @@ namespace Laresistance.Behaviours
             RoomChangeData rcd = rcb.GetRoomChangeData();
             roomChangeState.SetRoomData(rcd);
             stateMachine.ReceiveSignal("RoomChange");
+        }
+
+        public void PerformTimeStop(InputAction.CallbackContext context)
+        {
+            bool activate = false;
+            if (context.performed)
+            {
+                activate = true;
+            } else if (context.canceled)
+            {
+                activate = false;
+            } else
+            {
+                return;
+            }
+            battleState.PerformTimeStop(activate);
+        }
+
+        private void OnTimeStopActivate(BattleSystem sender, bool activation)
+        {
+            if (activation)
+            {
+                Debug.Log("Time Stop activated");
+            } else
+            {
+                Debug.Log("Time Stop deactivated");
+            }
         }
 
         public void Pause()
