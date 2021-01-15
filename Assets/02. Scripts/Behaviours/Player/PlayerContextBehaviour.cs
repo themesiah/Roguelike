@@ -11,6 +11,7 @@ using GamedevsToolbox.Utils;
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using UnityEngine.InputSystem;
 using Laresistance.Systems;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -34,6 +35,10 @@ namespace Laresistance.Behaviours
         private RewardUILibrary rewardUILibrary = default;
         [SerializeField]
         private ScriptableIntReference battlePositionIntegerReference = default;
+        [SerializeField]
+        private UnityEvent OnTimeStopActivated = default;
+        [SerializeField]
+        private UnityEvent OnTimeStopDeactivated = default;
 
         private SimpleSignalStateMachine stateMachine;
         private GameContextBattleState battleState;
@@ -131,10 +136,10 @@ namespace Laresistance.Behaviours
         {
             if (activation)
             {
-                Debug.Log("Time Stop activated");
+                OnTimeStopActivated?.Invoke();
             } else
             {
-                Debug.Log("Time Stop deactivated");
+                OnTimeStopDeactivated?.Invoke();
             }
         }
 
