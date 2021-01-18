@@ -15,6 +15,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private bool manualSpawn = false;
 
+        [SerializeField]
+        private bool fixedDirection = false;
+
         private void Start()
         {
             if (!manualSpawn)
@@ -28,9 +31,22 @@ namespace Laresistance.Behaviours
             GameObject go = Instantiate(prefabList[Random.Range(0, prefabList.Count)], transform.parent);
             go.transform.position = transform.position;
             Vector3 scale = go.transform.localScale;
-            if (Random.Range(0, 1) == 0)
+            if (fixedDirection)
             {
-                scale.x = -1;
+                if (transform.localScale.x < 0f)
+                {
+                    scale.x = -1f;
+                } else
+                {
+                    scale.x = 1f;
+                }
+            }
+            else
+            {
+                if (Random.Range(0, 1) == 0)
+                {
+                    scale.x = -1;
+                }
             }
             go.transform.localScale = scale;
             if (hasParty == false)

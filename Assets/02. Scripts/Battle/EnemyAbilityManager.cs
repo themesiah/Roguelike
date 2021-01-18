@@ -15,8 +15,9 @@ namespace Laresistance.Battle
 
         private BattleAbility nextAbility = null;
         private float nextAbilityTimer = NEXT_ABILITY_COOLDOWN;
+        private float nextAbilityCooldown = NEXT_ABILITY_COOLDOWN;
 
-        public float CooldownProgress { get { return 1f-(nextAbilityTimer / NEXT_ABILITY_COOLDOWN); } }
+        public float CooldownProgress { get { return 1f-(nextAbilityTimer / nextAbilityCooldown); } }
 
         public delegate void OnAbilityCooldownProgressHandler(EnemyAbilityManager enemyAbilityManager, float progress);
         public event OnAbilityCooldownProgressHandler OnAbilityCooldownProgress;
@@ -42,6 +43,7 @@ namespace Laresistance.Battle
                 {
                     nextAbilityTimer = NEXT_ABILITY_COOLDOWN + Random.Range(-NEXT_ABILITY_COOLDOWN_VARIANCE, NEXT_ABILITY_COOLDOWN_VARIANCE);
                 }
+                nextAbilityCooldown = nextAbilityTimer;
             }
 
             for(int i = 0; i < abilities.Length; ++i)

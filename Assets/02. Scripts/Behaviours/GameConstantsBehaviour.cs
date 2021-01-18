@@ -18,6 +18,8 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference shuffleCooldown = default;
         [Tooltip("How much energy are you able to have at a time")]
         public ScriptableFloatReference maxEnergy = default;
+        [Tooltip("Time between pressing the time stop button and the time being stopped completely")]
+        public ScriptableFloatReference stopTimeDelay = default;
         [Header("Status constants")]
         [Tooltip("Time in seconds of duration for speed buffs and debuffs")]
         public ScriptableFloatReference speedModifierDuration = default;
@@ -34,6 +36,9 @@ namespace Laresistance.Behaviours
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]
         public ScriptableFloatReference siphonPercent = default;
+        [Header("Effect constants")]
+        [Tooltip("Max intensity for chromatic aberration when stopping time")]
+        public ScriptableFloatReference chromaticAberrationMaxIntensity = default;
 
         private void Awake()
         {

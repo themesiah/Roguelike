@@ -61,7 +61,7 @@ namespace Laresistance.Behaviours
                     minionPanels[i].SetActive(true);
                     IShopOfferUI offerUI = minionPanels[i].GetComponent<IShopOfferUI>();
                     offerUI.SetupOffer(new ShopOffer(0, false, new RewardData(0, 0, player.GetMinions()[i], null, null, null)));
-                    offerUI.SetOfferKey(keyList[i]);
+                    offerUI.SetOfferKey(null);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace Laresistance.Behaviours
                     consumablePanels[i].SetActive(true);
                     IShopOfferUI offerUI = consumablePanels[i].GetComponent<IShopOfferUI>();
                     offerUI.SetupOffer(new ShopOffer(0, false, new RewardData(0, 0, null, player.GetConsumables()[i], null, null)));
-                    offerUI.SetOfferKey(keyList[i + 4]);
+                    offerUI.SetOfferKey(null);
                 }
             }
 

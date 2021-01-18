@@ -1,5 +1,6 @@
 ﻿using GamedevsToolbox.Utils;
 using Laresistance.Battle;
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,9 +23,12 @@ namespace Laresistance.Systems
         private bool stoppedTime = false;
 
         private List<int> playerAbilityQueue;
+        private float stopTimeDelayTimer = 0f;
 
         public delegate void OnTimeStopActivationHandler(BattleSystem sender, bool activate);
         public event OnTimeStopActivationHandler OnTimeStopActivation;
+        public delegate void OnTimeStopDeltaModifierHandler(BattleSystem sender, float modifier);
+        public event OnTimeStopDeltaModifierHandler OnTimeStopDeltaModifier;
 
         public BattleSystem()
         {
@@ -61,6 +65,7 @@ namespace Laresistance.Systems
             SelectNext();
             battling = true;
             BattleAbilityManager.StartBattle();
+            OnTimeStopDeltaModifier?.Invoke(this, 0f);
         }
 
         public void EndBattle()
@@ -77,6 +82,7 @@ namespace Laresistance.Systems
             playerBattleManager = null;
             enemiesBattleManager = null;
             battling = false;
+            OnTimeStopDeltaModifier?.Invoke(this, 0f);
         }
 
         public void SelectNext()
@@ -221,10 +227,24 @@ namespace Laresistance.Systems
             if (!paused && battling)
             {
                 float finalDelta = delta;
-                if (stoppedTime)
+                float deltaModifier = 1f;
+
+                // Modify delta time
+                if (stopTimeDelayTimer > 0f)
                 {
-                    finalDelta = 0f;
-                } else if (playerAbilityQueue.Count > 0)
+                    stopTimeDelayTimer -= delta;
+                    stopTimeDelayTimer = Mathf.Max(stopTimeDelayTimer, 0f);
+                }
+                deltaModifier = stopTimeDelayTimer / GameConstantsBehaviour.Instance.stopTimeDelay.GetValue();
+                if (!stoppedTime)
+                {
+                    deltaModifier = 1f - deltaModifier;
+                }
+                finalDelta *= deltaModifier;
+                OnTimeStopDeltaModifier?.Invoke(this, 1f - deltaModifier);
+
+                // If time is not stopped and there are queued abilities
+                if (!stoppedTime && playerAbilityQueue.Count > 0)
                 {
                     foreach (int index in playerAbilityQueue)
                     {
@@ -232,13 +252,17 @@ namespace Laresistance.Systems
                     }
                     playerAbilityQueue.Clear();
                 }
+
+                // Player battle manager always tick, with different delta depending on time stopped or not
                 int playerAbilityIndex = playerBattleManager.Tick(finalDelta, currentEnergySpeedModifier);
                 
+                // If the player tries to cast an ability and the time is not stopped, do as always
                 if (playerAbilityIndex != -1 && !stoppedTime)
                 {
                     yield return playerBattleManager.ExecuteSkill(playerAbilityIndex);
                 } else if (playerAbilityIndex != -1 && stoppedTime)
                 {
+                    // If the player tries to cast an ability and the time is stopped, put ability on the queue
                     playerAbilityQueue.Add(playerAbilityIndex);
                 }
                 foreach (var bm in enemiesBattleManager)
@@ -258,8 +282,10 @@ namespace Laresistance.Systems
             if (stoppedTime != activate)
             {
                 OnTimeStopActivation?.Invoke(this, activate);
+                stopTimeDelayTimer = GameConstantsBehaviour.Instance.stopTimeDelay.GetValue();
             }
             stoppedTime = activate;
+            
         }
 
         public void Pause()

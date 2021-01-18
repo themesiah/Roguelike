@@ -39,6 +39,8 @@ namespace Laresistance.Behaviours
         private UnityEvent OnTimeStopActivated = default;
         [SerializeField]
         private UnityEvent OnTimeStopDeactivated = default;
+        [SerializeField]
+        private UnityEvent<float> OnTimeStopDeltaModified = default;
 
         private SimpleSignalStateMachine stateMachine;
         private GameContextBattleState battleState;
@@ -60,6 +62,7 @@ namespace Laresistance.Behaviours
             StartCoroutine(StateMachineCoroutine());
 
             battleState.battleSystem.OnTimeStopActivation += OnTimeStopActivate;
+            battleState.battleSystem.OnTimeStopDeltaModifier += OnTimeStopDeltaModifier;
         }
 
         public void ReceiveSignal(string signal)
@@ -141,6 +144,11 @@ namespace Laresistance.Behaviours
             {
                 OnTimeStopDeactivated?.Invoke();
             }
+        }
+
+        private void OnTimeStopDeltaModifier(BattleSystem sender, float modifier)
+        {
+            OnTimeStopDeltaModified?.Invoke(modifier);
         }
 
         public void Pause()
