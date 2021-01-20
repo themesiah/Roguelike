@@ -5,7 +5,6 @@ using System.Text;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Values;
-using System.Diagnostics;
 using UnityEngine;
 using Laresistance.Data;
 #if UNITY_EDITOR
@@ -15,7 +14,7 @@ using UnityEditor;
 
 namespace Laresistance.Battle
 {
-    public class BattleAbility
+    public class BattleAbility : ShowableElement
     {
         private static int MAX_EFFECTS = 2;
         private int energyCost;
@@ -144,6 +143,22 @@ namespace Laresistance.Battle
             }
             builder.Append(")");
 
+            return builder.ToString();
+        }
+
+        public string GetAbilityPowerText(int level)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < effects.Count; ++i)
+            {
+                var effect = effects[i];
+                //builder.Append(effect.GetPower(level, equipmentEvents));
+                builder.Append(effect.GetShortEffectString(level, equipmentEvents));
+                if (i < effects.Count - 1)
+                {
+                    builder.Append(" / ");
+                }
+            }
             return builder.ToString();
         }
 

@@ -1,5 +1,6 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
 using GamedevsToolbox.Utils;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -48,11 +49,25 @@ namespace Laresistance.Behaviours
 
         public void Pause()
         {
-            playerInput.SwitchCurrentActionMap("UI");
+            // As coroutine to avoid infinite loop
+            StartCoroutine(PauseCoroutine());
         }
 
         public void Resume()
         {
+            // As coroutine to avoid infinite loop
+            StartCoroutine(ResumeCoroutine());
+        }
+
+        private IEnumerator PauseCoroutine()
+        {
+            yield return null;
+            playerInput.SwitchCurrentActionMap("UI");
+        }
+
+        private IEnumerator ResumeCoroutine()
+        {
+            yield return null;
             playerInput.SwitchCurrentActionMap(lastActionMap);
         }
     }

@@ -29,6 +29,8 @@ namespace Laresistance.Systems
         public event OnTimeStopActivationHandler OnTimeStopActivation;
         public delegate void OnTimeStopDeltaModifierHandler(BattleSystem sender, float modifier);
         public event OnTimeStopDeltaModifierHandler OnTimeStopDeltaModifier;
+        public delegate void OnEnemyRemovedHandler(BattleSystem sender, CharacterBattleManager enemy);
+        public event OnEnemyRemovedHandler OnEnemyRemoved;
 
         public BattleSystem()
         {
@@ -60,6 +62,7 @@ namespace Laresistance.Systems
                 enemy.StartBattle();
                 enemy.StatusManager.health.OnDeath += (CharacterHealth h) => {
                     enemy.Die();
+                    enemiesBattleManager.Remove(enemy);
                 };
             }
             SelectNext();
@@ -214,12 +217,14 @@ namespace Laresistance.Systems
             {
                 SelectNext();
             }
-            enemiesBattleManager[indexToRemove].EndBattle();
-            enemiesBattleManager.RemoveAt(indexToRemove);
-            if (AllEnemiesDead())
-            {
-                EndBattle();
-            }
+            CharacterBattleManager enemy = enemiesBattleManager[indexToRemove];
+            enemy.EndBattle();
+            enemiesBattleManager.Remove(enemy);
+            //if (AllEnemiesDead())
+            //{
+            //    EndBattle();
+            //}
+            OnEnemyRemoved?.Invoke(this, enemy);
         }
 
         public IEnumerator Tick(float delta)
@@ -265,8 +270,9 @@ namespace Laresistance.Systems
                     // If the player tries to cast an ability and the time is stopped, put ability on the queue
                     playerAbilityQueue.Add(playerAbilityIndex);
                 }
-                foreach (var bm in enemiesBattleManager)
+                for (int i = enemiesBattleManager.Count-1; i >= 0; --i)
                 {
+                    var bm = enemiesBattleManager[i];
                     int enemyAbilityIndex = bm.Tick(finalDelta, currentEnergySpeedModifier);
                     if (enemyAbilityIndex != -1)
                     {

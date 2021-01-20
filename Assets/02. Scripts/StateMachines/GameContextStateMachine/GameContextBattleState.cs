@@ -132,6 +132,7 @@ namespace Laresistance.StateMachines
             this.battleSystem = new BattleSystem();
             this.battlePositionIntReference = battlePositionIntReference;
             playerObject.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += PlayerDeath;
+            this.battleSystem.OnEnemyRemoved += EnemyFlee;
         }
 
         public void PerformTimeStop(bool activate)
@@ -155,6 +156,15 @@ namespace Laresistance.StateMachines
         }
 
         private void EnemyDeath(CharacterHealth health)
+        {
+            deathCount++;
+            if (deathCount == enemyObjects.Length)
+            {
+                goToMap = true;
+            }
+        }
+
+        private void EnemyFlee(BattleSystem battleSystem, CharacterBattleManager enemy)
         {
             deathCount++;
             if (deathCount == enemyObjects.Length)

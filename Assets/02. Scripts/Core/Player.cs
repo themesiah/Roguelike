@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Laresistance.Core
 {
-    public class Player
+    public class Player : ShowableElement
     {
         private static int MAX_MINIONS = 3;
         private static int MAX_EQUIPS = 4;

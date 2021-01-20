@@ -10,7 +10,7 @@ using Laresistance.Battle;
 
 namespace Laresistance.Core
 {
-    public class Equipment : ISlot
+    public class Equipment : ShowableElement, ISlot
     {
         #region Events
         private UnityAction onEquip;

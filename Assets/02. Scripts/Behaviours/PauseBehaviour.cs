@@ -11,24 +11,14 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private GameEvent resumeEvent = default;
 
-        private bool paused = false;
-
-        public void TogglePause(InputAction.CallbackContext context)
+        public void GameStateChange(bool pausedSignal)
         {
-            if (context.performed)
+            if (pausedSignal)
             {
-                if (paused)
-                {
-                    // Resume
-                    resumeEvent.Raise();
-                    paused = false;
-                }
-                else
-                {
-                    // Pause
-                    pauseEvent.Raise();
-                    paused = true;
-                }
+                pauseEvent?.Raise();
+            } else
+            {
+                resumeEvent?.Raise();
             }
         }
     }

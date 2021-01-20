@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -10,12 +11,14 @@ namespace Laresistance.Behaviours
         private ScriptableIntReference currencyReference = default;
 
         [SerializeField]
-        private Text currencyText = default;
+        private UnityEvent<int> OnValueChanged = default;
+        [SerializeField]
+        private UnityEvent<string> OnValueChangedString = default;
 
         private void OnEnable()
         {
             currencyReference.RegisterOnChangeAction(ListenToValue);
-            SetText();
+            ManualUpdate();
         }
 
         private void OnDisable()
@@ -25,17 +28,18 @@ namespace Laresistance.Behaviours
 
         private void Awake()
         {
-            SetText();
+            ManualUpdate();
         }
 
-        private void SetText()
+        private void ManualUpdate()
         {
-            currencyText.text = currencyReference.GetValue().ToString();
+            ListenToValue(currencyReference.GetValue());
         }
 
         private void ListenToValue(int newValue)
         {
-            SetText();
+            OnValueChanged?.Invoke(newValue);
+            OnValueChangedString?.Invoke(newValue.ToString());
         }
     }
 }

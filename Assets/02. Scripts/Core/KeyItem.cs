@@ -1,6 +1,6 @@
 ﻿namespace Laresistance.Core
 {
-    public class KeyItem
+    public class KeyItem : ShowableElement
     {
     }
 }

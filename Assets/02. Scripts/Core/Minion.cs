@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Laresistance.Core
 {
-    public class Minion : ISlot
+    public class Minion : ShowableElement, ISlot
     {
         private static int MAX_MINION_LEVEL = 10;
         public string Name { get { return Texts.GetText(Data.NameRef); }}

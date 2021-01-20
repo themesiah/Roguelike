@@ -428,7 +428,24 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
-  currencyText: {fileID: 324997277}
+  OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueChangedString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 324997277}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &360586533
 GameObject:
   m_ObjectHideFlags: 0
@@ -6001,7 +6018,24 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
-  currencyText: {fileID: 1639860782}
+  OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnValueChangedString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1639860782}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1793806897
 GameObject:
   m_ObjectHideFlags: 0
@@ -7229,7 +7263,20 @@ MonoBehaviour:
       m_Calls: []
   OnTimeStopDeltaModified:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: d9011909e625029439d33a6f6f3dd2e0, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Values.ScriptableValue`1[[System.Single,
+          mscorlib
+        m_MethodName: SetValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &23771297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7265,9 +7312,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2da9e92125f31c3419eed4024a92ba6b, type: 2}
   useStartingData: 0
   startingMinions:
-  - {fileID: 11400000, guid: 4a574eb35a20557478de9b56da473226, type: 2}
+  - {fileID: 11400000, guid: 9a88fa7176242384fa4b7242fd3f2b11, type: 2}
+  - {fileID: 11400000, guid: 4b29a073093fd9241ac679a5c8ca75b6, type: 2}
+  - {fileID: 11400000, guid: 8644ee1abbc8eef4886790ef97dd5565, type: 2}
+  - {fileID: 11400000, guid: 9c34197df8ab1704eb51633b14ac825b, type: 2}
   startingConsumables: []
-  startingEquipments: []
+  startingEquipments:
+  - {fileID: 11400000, guid: e72cf9f1b8837af42ab1962938228877, type: 2}
+  - {fileID: 11400000, guid: ca0c134e07228464cb73f49abcde56d9, type: 2}
+  - {fileID: 11400000, guid: 9b2b7becf71973341b5d9da401a4786d, type: 2}
+  - {fileID: 11400000, guid: 9a050e67e5d13634e8aec2d2ada781a9, type: 2}
   playerDataBehaviourReference: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   effectTargetPivot: {fileID: 5697926345240863743}
   energyProductionRef:
@@ -7627,7 +7681,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8257133501918188329
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8477,6 +8531,19 @@ MonoBehaviour:
         - m_Target: {fileID: 8117709301024287480}
           m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_MethodName: set_fillAmount
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 11400000, guid: 9d5f4509fd3ec5047babb9b3f4622415, type: 2}
+          m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Values.ScriptableValue`1[[System.Single,
+            mscorlib
+          m_MethodName: SetValue
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

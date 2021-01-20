@@ -4,7 +4,7 @@ using Laresistance.Data;
 
 namespace Laresistance.Core
 {
-    public class Consumable : ISlot
+    public class Consumable : ShowableElement, ISlot
     {
         public ConsumableData Data { get; private set; }
         public BattleAbility Ability{ get; private set;}

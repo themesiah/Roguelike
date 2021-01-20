@@ -32,7 +32,7 @@ namespace Laresistance.Systems
                 if (bloodLost > 0)
                 {
                     OnBloodLost?.Invoke(bloodLost);
-                    bloodRef.SetValue(bloodRef.GetValue() - bloodLost);
+                    bloodRef.SetValue(System.Math.Max(bloodRef.GetValue() - bloodLost, 0));
                 }
             }
         }
