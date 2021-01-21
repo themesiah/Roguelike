@@ -33,12 +33,14 @@ namespace Laresistance.Behaviours
             {
                 currentlyLoadingScene = true;
                 SceneManager.LoadScene(loadingScene, LoadSceneMode.Single);
+                yield return new WaitForSeconds(1f);
                 var newSceneOperation = SceneManager.LoadSceneAsync(targetScene, LoadSceneMode.Additive);
                 while (!newSceneOperation.isDone)
                 {
                     yield return null;
                 }
                 var unloadLoadingSceneOperation = SceneManager.UnloadSceneAsync(loadingScene);
+                yield return new WaitForSeconds(1f);
                 while (!unloadLoadingSceneOperation.isDone)
                 {
                     yield return null;

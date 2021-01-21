@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace Laresistance.Behaviours
 {
-    public class GameManagerStateMachineBehaviour : MonoBehaviour
+    public class ContextStateMachineBehaviour : MonoBehaviour
     {
         private SimpleSignalStateMachine stateMachine = default;
 
