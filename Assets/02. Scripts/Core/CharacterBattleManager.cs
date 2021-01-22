@@ -43,16 +43,16 @@ namespace Laresistance.Core
 
         public void StartBattle()
         {
+            OnBattleStart?.Invoke();
             StatusManager.ResetStatus();
             AbilityInputProcessor.BattleStart();
-            OnBattleStart?.Invoke();
         }
 
         public void EndBattle()
         {
+            OnBattleEnd?.Invoke();
             StatusManager.ResetStatus();
             AbilityInputProcessor.BattleEnd();
-            OnBattleEnd?.Invoke();
         }
 
         public bool Select()

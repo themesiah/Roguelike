@@ -17,6 +17,10 @@ namespace Laresistance.Behaviours
         private Text effectPowerText = default;
         [SerializeField]
         private Text shortText = default;
+        [SerializeField]
+        private Image[] interactableImages = default;
+        [SerializeField]
+        private Color nonInteractableColor = default;
 
         private int level = 1;
 
@@ -63,6 +67,23 @@ namespace Laresistance.Behaviours
                 if (shortText != null)
                 {
                     shortText.text = ability.GetShortAbilityText(level);
+                }
+            }
+        }
+
+        public void SetInteractable(bool interactable)
+        {
+            if (interactable)
+            {
+                foreach(Image im in interactableImages)
+                {
+                    im.color = Color.white;
+                }
+            } else
+            {
+                foreach(Image im in interactableImages)
+                {
+                    im.color = nonInteractableColor;
                 }
             }
         }

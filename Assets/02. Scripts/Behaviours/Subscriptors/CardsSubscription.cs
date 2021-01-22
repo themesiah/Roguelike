@@ -10,34 +10,39 @@ namespace Laresistance.Behaviours
     {
         [System.Serializable]
         public class CardSubscription {
-            public UnityEvent<Sprite> OnSpriteChanged = default;
-            public UnityEvent<Sprite> OnFrameChanged = default;
-            public UnityEvent<Color> OnAvailabilityChangedColor = default;
             public UnityEvent<bool> OnAvailabilityChanged = default;
+            public UnityEvent<bool> OnAvailabilityChangedColor = default;
+            public UnityEvent<BattleAbility> OnShowableAbility = default;
         }
 
         [SerializeField]
         private CharacterBattleBehaviour battleBehaviour = default;
+        [Header("Current abilities")]
         [SerializeField]
         private List<CardSubscription> subscriptions = default;
+        [Header("Shuffle and ulti")]
         [SerializeField]
         private UnityEvent<float> OnNextCardProgress = default;
         [SerializeField]
         private UnityEvent<float> OnNextShuffleProgress = default;
-        [SerializeField]
-        private Color onQueueColor = default;
         [SerializeField]
         private RectTransform[] cardsLocation = default;
         [SerializeField]
         private RectTransform nextCardIndicator = default;
         [SerializeField]
         private RectTransform ultimatePosition = default;
+        [Header("Ability queue")]
+        [SerializeField]
+        private ScriptablePool queuePool = default;
+        [SerializeField]
+        private Transform abilityQueueParent = default;
 
         private ScriptablePool particlesPool;
 
         private void Awake()
         {
             particlesPool = PoolInitializerBehaviour.GetPool("Energy");
+            queuePool.InitPool();
         }
 
         private void OnEnable()
@@ -48,6 +53,8 @@ namespace Laresistance.Behaviours
             playerInput.OnNextShuffleProgress += OnNextShuffleProgressChanged;
             playerInput.OnAbilityOnQueue += OnAbilityOnQueue;
             playerInput.OnShuffle += OnShuffle;
+            playerInput.OnRenewAbilities += OnRenewedAbilities;
+            playerInput.OnAbilityOffQueue += OnAbilityOffQueue;
             OnAvailableSkillsChanged(playerInput, playerInput.AvailableAbilities);
             OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
             OnNextShuffleProgressChanged(playerInput, playerInput.NextShuffleProgress);
@@ -61,6 +68,8 @@ namespace Laresistance.Behaviours
             playerInput.OnNextShuffleProgress -= OnNextShuffleProgressChanged;
             playerInput.OnAbilityOnQueue -= OnAbilityOnQueue;
             playerInput.OnShuffle -= OnShuffle;
+            playerInput.OnRenewAbilities -= OnRenewedAbilities;
+            playerInput.OnAbilityOffQueue -= OnAbilityOffQueue;
         }
 
         private PlayerAbilityInput GetPlayerInput()
@@ -85,8 +94,7 @@ namespace Laresistance.Behaviours
                 } else if (subscriptions.Count > i)
                 {
                     subscriptions[i].OnAvailabilityChanged?.Invoke(true);
-                    subscriptions[i].OnSpriteChanged?.Invoke(availableAbilities[i].AbilityIcon);
-                    subscriptions[i].OnFrameChanged?.Invoke(availableAbilities[i].AbilityFrame);
+                    subscriptions[i].OnShowableAbility?.Invoke(availableAbilities[i]);
                 }
             }
             if (cardIndicationPositionSelected == false)
@@ -107,14 +115,7 @@ namespace Laresistance.Behaviours
 
         private void OnAbilityOnQueue(PlayerAbilityInput sender, int slot, bool onQueue)
         {
-            if (onQueue)
-            {
-                subscriptions[slot].OnAvailabilityChangedColor?.Invoke(onQueueColor);
-            }
-            else
-            {
-                subscriptions[slot].OnAvailabilityChangedColor?.Invoke(Color.white);
-            }
+            subscriptions[slot].OnAvailabilityChangedColor?.Invoke(!onQueue);
         }
 
         private void OnShuffle(PlayerAbilityInput sender, int[] discarded)
@@ -124,6 +125,28 @@ namespace Laresistance.Behaviours
                 GameObject particleObject = particlesPool.GetInstance(null, cardsLocation[discardedIndex].position, Quaternion.identity);
                 UltimateParticlesEffect upe = particleObject.GetComponent<UltimateParticlesEffect>();
                 upe.GoToTarget(ultimatePosition.position, particlesPool);
+            }
+        }
+
+        private void OnRenewedAbilities(PlayerAbilityInput sender)
+        {
+            foreach (Transform t in abilityQueueParent)
+            {
+                queuePool.FreeInstance(t.gameObject);
+            }
+            foreach (BattleAbility ability in sender.abilitiesQueue)
+            {
+                GameObject instance = queuePool.GetInstance(abilityQueueParent);
+                instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
+                instance.transform.localScale = Vector3.one;
+            }
+        }
+
+        private void OnAbilityOffQueue(PlayerAbilityInput sender)
+        {
+            if (abilityQueueParent.childCount > 0)
+            {
+                queuePool.FreeInstance(abilityQueueParent.GetChild(0).gameObject);
             }
         }
     }
