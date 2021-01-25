@@ -31,18 +31,24 @@ namespace Laresistance.Behaviours
         private RectTransform nextCardIndicator = default;
         [SerializeField]
         private RectTransform ultimatePosition = default;
-        [Header("Ability queue")]
+        [Header("Next Ability queue")]
         [SerializeField]
-        private ScriptablePool queuePool = default;
+        private ScriptablePool nextAbilityQueuePool = default;
         [SerializeField]
-        private Transform abilityQueueParent = default;
+        private Transform nextAbilityQueueParent = default;
+        [Header("Ability to use queue")]
+        [SerializeField]
+        private ScriptablePool abilityToUsePool = default;
+        [SerializeField]
+        private Transform abilityToUseQueueParent = default;
 
         private ScriptablePool particlesPool;
 
         private void Awake()
         {
             particlesPool = PoolInitializerBehaviour.GetPool("Energy");
-            queuePool.InitPool();
+            nextAbilityQueuePool.InitPool();
+            abilityToUsePool.InitPool();
         }
 
         private void OnEnable()
@@ -55,7 +61,7 @@ namespace Laresistance.Behaviours
             playerInput.OnShuffle += OnShuffle;
             playerInput.OnRenewAbilities += OnRenewedAbilities;
             playerInput.OnAbilityOffQueue += OnAbilityOffQueue;
-            OnAvailableSkillsChanged(playerInput, playerInput.AvailableAbilities);
+            playerInput.OnAbilitiesToUseChanged += OnAbilitiesToUseChanged;
             OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
             OnNextShuffleProgressChanged(playerInput, playerInput.NextShuffleProgress);
         }
@@ -70,6 +76,7 @@ namespace Laresistance.Behaviours
             playerInput.OnShuffle -= OnShuffle;
             playerInput.OnRenewAbilities -= OnRenewedAbilities;
             playerInput.OnAbilityOffQueue -= OnAbilityOffQueue;
+            playerInput.OnAbilitiesToUseChanged -= OnAbilitiesToUseChanged;
         }
 
         private PlayerAbilityInput GetPlayerInput()
@@ -115,7 +122,29 @@ namespace Laresistance.Behaviours
 
         private void OnAbilityOnQueue(PlayerAbilityInput sender, int slot, bool onQueue)
         {
-            subscriptions[slot].OnAvailabilityChangedColor?.Invoke(!onQueue);
+            subscriptions[slot].OnAvailabilityChangedColor?.Invoke(!onQueue);    
+        }
+
+        private void OnAbilitiesToUseChanged(PlayerAbilityInput sender)
+        {
+            // Remove instances that are currently active
+            for (int i = abilityToUseQueueParent.childCount-1; i >= 0; --i)
+            {
+                Transform t = abilityToUseQueueParent.GetChild(i);
+                abilityToUsePool.FreeInstance(t.gameObject);
+            }
+
+            // Create the new instances with the correct graphics
+            foreach (int index in sender.abilitiesToUseIndexList)
+            {
+                if (index != 4)
+                {
+                    BattleAbility ability = sender.AvailableAbilities[index];
+                    GameObject instance = abilityToUsePool.GetInstance(abilityToUseQueueParent);
+                    instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
+                    instance.transform.localScale = Vector3.one;
+                }
+            }
         }
 
         private void OnShuffle(PlayerAbilityInput sender, int[] discarded)
@@ -130,13 +159,13 @@ namespace Laresistance.Behaviours
 
         private void OnRenewedAbilities(PlayerAbilityInput sender)
         {
-            foreach (Transform t in abilityQueueParent)
+            foreach (Transform t in nextAbilityQueueParent)
             {
-                queuePool.FreeInstance(t.gameObject);
+                nextAbilityQueuePool.FreeInstance(t.gameObject);
             }
-            foreach (BattleAbility ability in sender.abilitiesQueue)
+            foreach (BattleAbility ability in sender.nextAbilitiesQueue)
             {
-                GameObject instance = queuePool.GetInstance(abilityQueueParent);
+                GameObject instance = nextAbilityQueuePool.GetInstance(nextAbilityQueueParent);
                 instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
                 instance.transform.localScale = Vector3.one;
             }
@@ -144,9 +173,9 @@ namespace Laresistance.Behaviours
 
         private void OnAbilityOffQueue(PlayerAbilityInput sender)
         {
-            if (abilityQueueParent.childCount > 0)
+            if (nextAbilityQueueParent.childCount > 0)
             {
-                queuePool.FreeInstance(abilityQueueParent.GetChild(0).gameObject);
+                nextAbilityQueuePool.FreeInstance(nextAbilityQueueParent.GetChild(0).gameObject);
             }
         }
     }

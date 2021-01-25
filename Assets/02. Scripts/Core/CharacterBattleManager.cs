@@ -2,12 +2,13 @@
 using Laresistance.Behaviours;
 using Laresistance.Systems;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Laresistance.Core
 {
-    public class CharacterBattleManager
+    public class CharacterBattleManager : ITimeStoppable, ITargetDependant
     {
         public BattleStatusManager StatusManager { get; protected set; }
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
@@ -20,6 +21,8 @@ namespace Laresistance.Core
         private CharacterBattleManager[] allies;
         private CharacterBattleManager[] enemies;
         private BattleSystem battleSystem;
+        private List<int> abilitiesToUse;
+        private CharacterBattleManager selectedTarget = null;
 
         public delegate void OnBattleStartHandler();
         public event OnBattleStartHandler OnBattleStart;
@@ -39,6 +42,7 @@ namespace Laresistance.Core
             this.animator = animator;
             selected = false;
             dead = false;
+            abilitiesToUse = new List<int>();
         }
 
         public void StartBattle()
@@ -109,43 +113,49 @@ namespace Laresistance.Core
             }
         }
 
-        public int Tick(float delta, float battleSpeedManager)
+        public AbilityExecutionData Tick(float delta, float battleSpeedManager)
         {
+            abilitiesToUse.Clear();
             if (dead)
-                return -1;
+                return new AbilityExecutionData() { index = -1, selectedTarget = null };
             StatusManager.ProcessStatus(delta, battleSpeedManager);
             int targetSelectionInput = TargetSelector.GetTargetSelection();
             if (targetSelectionInput == -1) battleSystem.SelectPrevious();
             if (targetSelectionInput == 1) battleSystem.SelectNext();
-            int index = AbilityInputProcessor.GetAbilityToExecute(StatusManager, StatusManager.GetSpeedModifier() * delta);
-            return index;
+            AbilityExecutionData abilityExecutionData = AbilityInputProcessor.GetAbilitiesToExecute(StatusManager, StatusManager.GetSpeedModifier() * delta);
+            return abilityExecutionData;
         }
 
-        public IEnumerator ExecuteSkill(int index)
+        public IEnumerator ExecuteSkill(int index, CharacterBattleManager cbm)
         {
-            var statuses = GetStatuses();
+            BattleStatusManager[] statuses;
+            if (cbm == null)
+            {
+                statuses = GetStatuses(selectedTarget);
+            } else
+            {
+                statuses = GetStatuses(cbm);
+            }
             var allyStatuses = GetAllyStatuses();
             yield return AbilityExecutor.ExecuteAbility(index, allyStatuses, statuses);
         }
 
-        protected virtual BattleStatusManager[] GetStatuses()
-        {
-            CharacterBattleManager cbm = battleSystem.GetSelected();
-            
+        protected virtual BattleStatusManager[] GetStatuses(CharacterBattleManager executionSelectedTarget)
+        {            
             BattleStatusManager[] statuses = new BattleStatusManager[enemies.Length];
             for (int i = 0; i < statuses.Length; ++i)
             {
                 statuses[i] = enemies[i].StatusManager;
             }
-            if (cbm != null && !IsAlly(cbm))
+            if (executionSelectedTarget != null && !IsAlly(executionSelectedTarget))
             {
-                if (statuses[0] != cbm.StatusManager)
+                if (statuses[0] != executionSelectedTarget.StatusManager)
                 {
                     var temp = statuses[0];
-                    statuses[0] = cbm.StatusManager;
+                    statuses[0] = executionSelectedTarget.StatusManager;
                     for (int i = 1; i < statuses.Length; ++i)
                     {
-                        if (statuses[i] == cbm.StatusManager)
+                        if (statuses[i] == executionSelectedTarget.StatusManager)
                         {
                             statuses[i] = temp;
                         }
@@ -185,6 +195,26 @@ namespace Laresistance.Core
                     return true;
             }
             return false;
+        }
+
+        public void PerformTimeStop(bool activate)
+        {
+            AbilityInputProcessor.PerformTimeStop(activate);
+        }
+
+        public void SetSelectedTarget(CharacterBattleManager cbm)
+        {
+            selectedTarget = cbm;
+            ITargetDependant targetDependantInput = (ITargetDependant)AbilityInputProcessor;
+            if (targetDependantInput != null)
+            {
+                targetDependantInput.SetSelectedTarget(cbm);
+            }
+        }
+
+        public CharacterBattleManager GetSelectedTarget()
+        {
+            return selectedTarget;
         }
     }
 }

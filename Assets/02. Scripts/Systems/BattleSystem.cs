@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Laresistance.Systems
 {
-    public class BattleSystem : IPausable
+    public class BattleSystem : IPausable, ITimeStoppable, ITargetDependant
     {
         private CharacterBattleManager playerBattleManager;
         private List<CharacterBattleManager> enemiesBattleManager;
@@ -22,7 +22,6 @@ namespace Laresistance.Systems
         private float currentEnergySpeedModifier;
         private bool stoppedTime = false;
 
-        private List<int> playerAbilityQueue;
         private float stopTimeDelayTimer = 0f;
 
         public delegate void OnTimeStopActivationHandler(BattleSystem sender, bool activate);
@@ -35,12 +34,10 @@ namespace Laresistance.Systems
         public BattleSystem()
         {
             selectedEnemy = null;
-            playerAbilityQueue = new List<int>();
         }
 
         public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies)
         {
-            playerAbilityQueue.Clear();
             currentEnergySpeedModifier = 1f;
             this.playerBattleManager = player;
             this.enemiesBattleManager = new List<CharacterBattleManager>(enemies);
@@ -162,11 +159,19 @@ namespace Laresistance.Systems
         {
             if (AllEnemiesDead())
                 return;
+            SetSelectedTarget(enemiesBattleManager[index]);
+        }
+
+        public void SetSelectedTarget(CharacterBattleManager cbm)
+        {
             Unselect();
-            selectedEnemy = enemiesBattleManager[index];
-            if (!enemiesBattleManager[index].Select())
+            selectedEnemy = cbm;
+            if (!selectedEnemy.Select())
             {
                 SelectNext();
+            } else
+            {
+                playerBattleManager.SetSelectedTarget(cbm);
             }
         }
 
@@ -176,7 +181,7 @@ namespace Laresistance.Systems
             selectedEnemy = null;
         }
 
-        public CharacterBattleManager GetSelected()
+        public CharacterBattleManager GetSelectedTarget()
         {
             return selectedEnemy;
         }
@@ -248,35 +253,20 @@ namespace Laresistance.Systems
                 finalDelta *= deltaModifier;
                 OnTimeStopDeltaModifier?.Invoke(this, 1f - deltaModifier);
 
-                // If time is not stopped and there are queued abilities
-                if (!stoppedTime && playerAbilityQueue.Count > 0)
-                {
-                    foreach (int index in playerAbilityQueue)
-                    {
-                        yield return playerBattleManager.ExecuteSkill(index);
-                    }
-                    playerAbilityQueue.Clear();
-                }
-
                 // Player battle manager always tick, with different delta depending on time stopped or not
-                int playerAbilityIndex = playerBattleManager.Tick(finalDelta, currentEnergySpeedModifier);
+                AbilityExecutionData playerAbilityExecutionData = playerBattleManager.Tick(finalDelta, currentEnergySpeedModifier);
                 
-                // If the player tries to cast an ability and the time is not stopped, do as always
-                if (playerAbilityIndex != -1 && !stoppedTime)
+                if(playerAbilityExecutionData.index != -1)
                 {
-                    yield return playerBattleManager.ExecuteSkill(playerAbilityIndex);
-                } else if (playerAbilityIndex != -1 && stoppedTime)
-                {
-                    // If the player tries to cast an ability and the time is stopped, put ability on the queue
-                    playerAbilityQueue.Add(playerAbilityIndex);
+                    yield return playerBattleManager.ExecuteSkill(playerAbilityExecutionData.index,playerAbilityExecutionData.selectedTarget);
                 }
                 for (int i = enemiesBattleManager.Count-1; i >= 0; --i)
                 {
                     var bm = enemiesBattleManager[i];
-                    int enemyAbilityIndex = bm.Tick(finalDelta, currentEnergySpeedModifier);
-                    if (enemyAbilityIndex != -1)
+                    AbilityExecutionData enemyAbilityExecutionData = bm.Tick(finalDelta, currentEnergySpeedModifier);
+                    if (enemyAbilityExecutionData.index != -1)
                     {
-                        yield return bm.ExecuteSkill(enemyAbilityIndex);
+                        yield return bm.ExecuteSkill(enemyAbilityExecutionData.index, enemyAbilityExecutionData.selectedTarget);
                     }
                 }
                 currentEnergySpeedModifier = Mathf.Min(MAX_BATTLE_ENERGY_SPEED_MODIFIER, currentEnergySpeedModifier + BATTLE_ENERGY_SPEED_ACCELERATION * finalDelta);
@@ -289,9 +279,14 @@ namespace Laresistance.Systems
             {
                 OnTimeStopActivation?.Invoke(this, activate);
                 stopTimeDelayTimer = GameConstantsBehaviour.Instance.stopTimeDelay.GetValue();
+
+                playerBattleManager.PerformTimeStop(activate);
+                foreach (var bm in enemiesBattleManager)
+                {
+                    bm.PerformTimeStop(activate);
+                }
             }
             stoppedTime = activate;
-            
         }
 
         public void Pause()

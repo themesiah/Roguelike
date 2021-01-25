@@ -1,8 +1,10 @@
-﻿namespace Laresistance.Battle
+﻿using System.Collections.Generic;
+
+namespace Laresistance.Battle
 {
-    public interface IAbilityInputProcessor
+    public interface IAbilityInputProcessor : ITimeStoppable
     {
-        int GetAbilityToExecute(BattleStatusManager battleStatus, float delta);
+        AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta);
         BattleAbility[] GetAbilities();
         void BattleStart();
         void BattleEnd();

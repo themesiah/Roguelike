@@ -1,5 +1,6 @@
 ﻿using Laresistance.Behaviours;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Battle
@@ -21,7 +22,7 @@ namespace Laresistance.Battle
             return abilities;
         }
 
-        public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
+        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
             for (int i = 0; i < abilities.Length; ++i)
             {
@@ -40,16 +41,16 @@ namespace Laresistance.Battle
                         BattleAbility currentAbility = BattleAbilityManager.currentAbility;
                         if (currentAbility == null || (currentAbility.GetStatusManager() != battleStatus && currentAbility.IsOffensiveAbility))
                         {
-                            return i;
+                            return new AbilityExecutionData() { index = i, selectedTarget = null }; ;
                         }
                     }
                     else
                     {
-                        return i;
+                        return new AbilityExecutionData() { index = i, selectedTarget = null }; ;
                     }
                 }
             }
-            return -1;
+            return new AbilityExecutionData() { index = -1, selectedTarget = null }; ;
         }
 
         public void BattleStart()
@@ -61,5 +62,9 @@ namespace Laresistance.Battle
         {
 
         }
+        public void PerformTimeStop(bool activate)
+        {
+        }
+
     }
 }

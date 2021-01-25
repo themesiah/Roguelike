@@ -20,6 +20,8 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference maxEnergy = default;
         [Tooltip("Time between pressing the time stop button and the time being stopped completely")]
         public ScriptableFloatReference stopTimeDelay = default;
+        [Tooltip("Time for an ability to go from the 'queued' state to 'executing'. It should be pretty small for the player not to notice it too much")]
+        public ScriptableFloatReference abilityToUseDequeueTimer = default;
         [Header("Status constants")]
         [Tooltip("Time in seconds of duration for speed buffs and debuffs")]
         public ScriptableFloatReference speedModifierDuration = default;

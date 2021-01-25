@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Laresistance.Battle
 {
-    public class PlayerAbilityInput : IAbilityInputProcessor
+    public class PlayerAbilityInput : IAbilityInputProcessor, ITargetDependant
     {
         private Player player;
         private BattleStatusManager battleStatus;
@@ -14,12 +14,18 @@ namespace Laresistance.Battle
         private BattleAbility[] availableAbilities;
         private float renewTimer;
         private float shuffleTimer;
+        private float abilitiesToUseDequeueTimer;
 
-        public Queue<BattleAbility> abilitiesQueue { get; private set; }
+        public Queue<BattleAbility> nextAbilitiesQueue { get; private set; }
 
         public BattleAbility[] AvailableAbilities { get { return availableAbilities; } }
         public float NextCardProgress { get { return 1f-(renewTimer / GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue()); } }
         public float NextShuffleProgress { get { return 1f - (shuffleTimer / GameConstantsBehaviour.Instance.shuffleCooldown.GetValue()); } }
+        public List<int> abilitiesToUseIndexList { get; private set; }
+
+        private List<AbilityExecutionData> abilitiesToUseList;
+        private bool timeStopped = false;
+        private CharacterBattleManager selectedTarget = null;
 
 
         public delegate void OnAvailableSkillsChangedHandler(PlayerAbilityInput sender, BattleAbility[] availableAbilities);
@@ -36,6 +42,8 @@ namespace Laresistance.Battle
         public event OnRenewAbilitiesHandler OnRenewAbilities;
         public delegate void OnAbilityOffQueueHandler(PlayerAbilityInput sender);
         public event OnAbilityOffQueueHandler OnAbilityOffQueue;
+        public delegate void OnAbilitiesToUseChangedHandler(PlayerAbilityInput sender);
+        public event OnAbilitiesToUseChangedHandler OnAbilitiesToUseChanged;
 
         public PlayerAbilityInput(Player player, BattleStatusManager battleStatus)
         {
@@ -43,35 +51,58 @@ namespace Laresistance.Battle
             this.battleStatus = battleStatus;
             this.battleStatus.OnAbilityExecutionCancelledByTargetDeath += OnAbilityCancelledByTargetDeath;
             this.battleStatus.OnAbilityExecuted += OnAbilityExecuted;
-            abilitiesQueue = new Queue<BattleAbility>();
-    }
+            nextAbilitiesQueue = new Queue<BattleAbility>();
+            abilitiesToUseList = new List<AbilityExecutionData>();
+            abilitiesToUseIndexList = new List<int>();
+        }
 
-        public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
+        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
+            // Update if any current ability has to change or be added
             UpdateAvailableAbilities(delta);
+
+            // Step up the shuffle timer if necessary
             if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
             {
                 shuffleTimer -= delta;
+                abilitiesToUseDequeueTimer -= delta;
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
             }
 
+            // Tick abilities to reduce the current cooldown and those things
             foreach (var ability in player.GetAbilities())
             {
                 ability?.Tick(delta);
             }
-            int temp = -1;
-            if (currentAbilityIndex != -1 && currentAbilityIndex != 4)
+
+            // Check if the player selected any ability
+            if (currentAbilityIndex != -1 && currentAbilityIndex != 4 && !abilitiesToUseIndexList.Contains(currentAbilityIndex))
             {
-                temp = IndexOfAbility(availableAbilities[currentAbilityIndex]);
-                OnAbilityOnQueue?.Invoke(this, currentAbilityIndex, true);
-                //availableAbilities[currentAbilityIndex] = null;
-                OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
-            } else if (currentAbilityIndex == 4)
+                AddAbilityToUseQueue(currentAbilityIndex);
+            } else if (currentAbilityIndex == 4 && !abilitiesToUseIndexList.Contains(4))
             {
-                temp = 4;
+                abilitiesToUseList.Add(new AbilityExecutionData() { index = 4, selectedTarget = GetSelectedTarget() });
+                abilitiesToUseIndexList.Add(4);
             }
+
+            // If player selected an ability, deselect it
             currentAbilityIndex = -1;
-            return temp;
+
+            if (!timeStopped)
+            {
+                // Return list of selected abilities
+                AbilityExecutionData aed = new AbilityExecutionData() { index = -1, selectedTarget = null };
+                if (abilitiesToUseList.Count > 0 && abilitiesToUseDequeueTimer <= 0f)
+                {
+                    aed = DequeueAbilityToUse();
+                }
+
+                return aed;
+            } else
+            {
+                // Return an empty list, because time has stopped
+                return new AbilityExecutionData() { index = -1, selectedTarget = null};
+            }
         }
 
         public void TryToExecuteAbility(int index)
@@ -94,11 +125,51 @@ namespace Laresistance.Battle
             }
         }
 
+        private void AddAbilityToUseQueue(int abilityInternalIndex)
+        {
+            AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget() };
+            if (availableAbilities[abilityInternalIndex].IsPrioritary())
+            {
+                abilitiesToUseList.Insert(0, aed);
+                abilitiesToUseIndexList.Insert(0, abilityInternalIndex);
+                abilitiesToUseDequeueTimer = 0f;
+            }
+            else
+            {
+                abilitiesToUseList.Add(aed);
+                abilitiesToUseIndexList.Add(abilityInternalIndex);
+                abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            }
+            OnAbilitiesToUseChanged?.Invoke(this);
+            OnAbilityOnQueue?.Invoke(this, abilityInternalIndex, true);
+            OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
+            OnAbilitiesToUseChanged?.Invoke(this);
+        }
+
+        private AbilityExecutionData DequeueAbilityToUse()
+        {
+            abilitiesToUseIndexList.RemoveAt(0);
+            AbilityExecutionData aed = abilitiesToUseList[0];
+            abilitiesToUseList.RemoveAt(0);
+            if (abilitiesToUseIndexList.Count != 0 && availableAbilities[abilitiesToUseIndexList[0]].IsPrioritary())
+            {
+                abilitiesToUseDequeueTimer = 0f;
+            } else
+            {
+                abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            }
+            OnAbilitiesToUseChanged?.Invoke(this);
+            return aed;
+        }
+
         public void BattleStart()
         {
             InitializeCards();
             shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
             renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+            abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            abilitiesToUseList.Clear();
+            abilitiesToUseIndexList.Clear();
         }
 
         public void BattleEnd()
@@ -128,7 +199,7 @@ namespace Laresistance.Battle
 
         public void Reshuffle()
         {
-            if (!BattleAbilityManager.Executing && shuffleTimer <= 0f && battleStatus.Stunned == false)
+            if (!BattleAbilityManager.Executing && shuffleTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
             {
                 renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
@@ -174,7 +245,7 @@ namespace Laresistance.Battle
             // 2- Get a random one for every null in availableAbilities. Remove it.
             if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
             {
-                if (abilitiesQueue.Count != 0)
+                if (nextAbilitiesQueue.Count != 0)
                 {
                     renewTimer -= delta;
                 }
@@ -192,33 +263,14 @@ namespace Laresistance.Battle
         {
             if (renewTimer > 0f)
                 return;
-            //List<BattleAbility> readyAbilities = new List<BattleAbility>();
-            //foreach (BattleAbility ability in GetAbilities())
-            //{
-            //    if (ability != null && ability.CanBeUsed() && !AlreadyInAvailableAbilities(ability))
-            //    {
-            //        readyAbilities.Add(ability);
-            //    }
-            //}
 
             for (int i = 0; i < availableAbilities.Length; ++i)
             {
-                //if (readyAbilities.Count == 0)
-                if (abilitiesQueue.Count == 0)
+                if (nextAbilitiesQueue.Count == 0)
                     break;
-                //if (availableAbilities[i] == null)
-                //{
-                //    int index = Random.Range(0, readyAbilities.Count);
-                //    availableAbilities[i] = readyAbilities[index];
-                //    readyAbilities[index].CurrentPlayerSlot = i;
-                //    OnAbilityOnQueue?.Invoke(this, i, false);
-                //    renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
-                //    OnNextCardProgress?.Invoke(this, NextCardProgress);
-                //    break;
-                //}
                 if (availableAbilities[i] == null)
                 {
-                    availableAbilities[i] = abilitiesQueue.Dequeue();
+                    availableAbilities[i] = nextAbilitiesQueue.Dequeue();
                     availableAbilities[i].CurrentPlayerSlot = i;
                     OnAbilityOnQueue?.Invoke(this, i, false);
                     renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
@@ -242,7 +294,7 @@ namespace Laresistance.Battle
             {
                 if (GetAbilitiesCount() == 4 || GetAbilitiesCount() == 5)
                 {
-                    abilitiesQueue.Enqueue(availableAbilities[slot]);
+                    nextAbilitiesQueue.Enqueue(availableAbilities[slot]);
                 }
                 availableAbilities[slot] = null;
                 OnAbilityOnQueue?.Invoke(this, slot, false);
@@ -261,26 +313,21 @@ namespace Laresistance.Battle
                 }
             }
 
-            abilitiesQueue.Clear();
+            nextAbilitiesQueue.Clear();
             while(readyAbilities.Count > 0)
             {
                 int index = Random.Range(0, readyAbilities.Count);
-                abilitiesQueue.Enqueue(readyAbilities[index]);
+                nextAbilitiesQueue.Enqueue(readyAbilities[index]);
                 readyAbilities.RemoveAt(index);
             }
 
             for (int i = 0; i < availableAbilities.Length; ++i)
             {
-                //if (readyAbilities.Count == 0)
-                if (abilitiesQueue.Count == 0)
+                if (nextAbilitiesQueue.Count == 0)
                     break;
-                //int index = Random.Range(0, readyAbilities.Count);
-                //availableAbilities[i] = readyAbilities[index];
-                availableAbilities[i] = abilitiesQueue.Dequeue();
+                availableAbilities[i] = nextAbilitiesQueue.Dequeue();
                 availableAbilities[i].CurrentPlayerSlot = i;
-                //readyAbilities[index].CurrentPlayerSlot = i;
                 OnAbilityOnQueue?.Invoke(this, i, false);
-                //readyAbilities.RemoveAt(index);
             }
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
             OnRenewAbilities?.Invoke(this);
@@ -331,6 +378,21 @@ namespace Laresistance.Battle
                 }
             }
             return -1;
+        }
+
+        public void PerformTimeStop(bool activate)
+        {
+            timeStopped = activate;
+        }
+
+        public void SetSelectedTarget(CharacterBattleManager cbm)
+        {
+            selectedTarget = cbm;
+        }
+
+        public CharacterBattleManager GetSelectedTarget()
+        {
+            return selectedTarget;
         }
     }
 }

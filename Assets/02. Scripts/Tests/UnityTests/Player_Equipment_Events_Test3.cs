@@ -89,12 +89,12 @@ namespace Laresistance.Tests
         public IEnumerator When_No_Equip002()
         {
             BattleSystem battleSystem = GetBattleSystem(new string[] {}, new string[] {}, null);
-            int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int startingHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             yield return battleSystem.Tick(0.1f);
-            int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth, currentHealth);
             yield return battleSystem.Tick(2.5f);
-            currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth, currentHealth);
         }
 
@@ -102,12 +102,12 @@ namespace Laresistance.Tests
         public IEnumerator When_Equip002()
         {
             BattleSystem battleSystem = GetBattleSystem(new string[] {}, new string[] { "EQUIPMENT_002" }, null);
-            int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int startingHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             yield return battleSystem.Tick(0.1f);
-            int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth, currentHealth);
             yield return battleSystem.Tick(2.5f);
-            currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth-12, currentHealth);
         }
 
@@ -115,9 +115,9 @@ namespace Laresistance.Tests
         public IEnumerator When_Equip004()
         {
             BattleSystem battleSystem = GetBattleSystem(new string[] {}, new string[] { "EQUIPMENT_004" }, null);
-            int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int startingHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             yield return battleSystem.Tick(0.1f);
-            int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth-15, currentHealth);
         }
 
@@ -130,9 +130,9 @@ namespace Laresistance.Tests
             Assert.AreEqual(1000, bloodRef.GetValue());
 
             BattleSystem battleSystem = GetBattleSystem(new string[] { }, new string[] { "EQUIPMENT_006" }, bloodRef);
-            int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int startingHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             yield return battleSystem.Tick(3.1f);
-            int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth - 18, currentHealth);
             Assert.AreEqual(970, bloodRef.GetValue());
         }
@@ -153,10 +153,10 @@ namespace Laresistance.Tests
         public IEnumerator When_Equip014()
         {
             BattleSystem battleSystem = GetBattleSystem(new string[] {  }, new string[] { "EQUIPMENT_014" }, null);
-            int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int startingHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             int playerStartingHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             yield return battleSystem.Tick(7.1f);
-            int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             int playerCurrentHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth - 20, currentHealth);
             Assert.AreEqual(playerStartingHealth - 9, playerCurrentHealth);
@@ -166,10 +166,10 @@ namespace Laresistance.Tests
         public IEnumerator When_Equip016()
         {
             BattleSystem battleSystem = GetBattleSystem(new string[] {  }, new string[] { "EQUIPMENT_016" }, null);
-            int startingHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int startingHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             int playerStartingHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             yield return battleSystem.Tick(7.1f);
-            int currentHealth = battleSystem.GetSelected().StatusManager.health.GetCurrentHealth();
+            int currentHealth = battleSystem.GetSelectedTarget().StatusManager.health.GetCurrentHealth();
             int playerCurrentHealth = battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth();
             Assert.AreEqual(startingHealth - 10, currentHealth);
             Assert.AreEqual(playerStartingHealth - 5, playerCurrentHealth);

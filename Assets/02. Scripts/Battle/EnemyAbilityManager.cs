@@ -30,7 +30,7 @@ namespace Laresistance.Battle
             this.animator = animator;
         }
 
-        public int GetAbilityToExecute(BattleStatusManager battleStatus, float delta)
+        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
             if (nextAbility == null)
             {
@@ -62,7 +62,7 @@ namespace Laresistance.Battle
                 {
                     if (abilities[i] == nextAbility)
                     {
-                        return i;
+                        return new AbilityExecutionData() { index = i, selectedTarget = null }; ;
                     } else
                     {
                     }
@@ -73,7 +73,7 @@ namespace Laresistance.Battle
                 nextAbilityTimer -= delta;
                 OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);
             }
-            return -1;
+            return new AbilityExecutionData() { index = -1, selectedTarget = null};
         }
 
         public IEnumerator ExecuteAbility(int abilityIndex, BattleStatusManager[] allies, BattleStatusManager[] enemies)
@@ -117,6 +117,10 @@ namespace Laresistance.Battle
                 return null; // This should only be the case for an enemy with only a reactive skill, like a shield minion
             }
             return weightedAbilities[Random.Range(0, weightedAbilities.Count)];
+        }
+
+        public void PerformTimeStop(bool activate)
+        {
         }
     }
 }
