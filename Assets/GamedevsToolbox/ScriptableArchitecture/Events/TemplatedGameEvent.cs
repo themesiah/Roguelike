@@ -29,5 +29,10 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
             if (eventListeners.Contains(listener))
                 eventListeners.Remove(listener);
         }
+
+        public void UnregisterAll()
+        {
+            eventListeners.Clear();
+        }
     }
 }

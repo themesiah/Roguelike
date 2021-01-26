@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace Laresistance.Behaviours
 {
@@ -33,19 +34,25 @@ namespace Laresistance.Behaviours
             }
         }
 
-        public void NextTab()
+        public void NextTab(InputAction.CallbackContext context)
         {
-            ChangeTab((currentTab + 1) % tabs.Length);
+            if (context.performed)
+            {
+                ChangeTab((currentTab + 1) % tabs.Length);
+            }
         }
 
-        public void PreviousTab()
+        public void PreviousTab(InputAction.CallbackContext context)
         {
-            int nextTab = currentTab - 1;
-            if (nextTab < 0)
+            if (context.performed)
             {
-                nextTab = tabs.Length - 1;
+                int nextTab = currentTab - 1;
+                if (nextTab < 0)
+                {
+                    nextTab = tabs.Length - 1;
+                }
+                ChangeTab(nextTab);
             }
-            ChangeTab(nextTab);
         }
 
         public void ChangeTab(int newTab)

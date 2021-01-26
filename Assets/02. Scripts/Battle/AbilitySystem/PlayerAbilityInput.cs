@@ -148,6 +148,28 @@ namespace Laresistance.Battle
 
         private AbilityExecutionData DequeueAbilityToUse()
         {
+            BattleAbility[] abilities = new BattleAbility[abilitiesToUseIndexList.Count];
+            for(int i = 0; i < abilitiesToUseIndexList.Count; ++i)
+            {
+                abilities[i] = availableAbilities[abilitiesToUseIndexList[i]];
+            }
+            for (int i = 0; i < player.combos.Length; ++i)
+            {
+                Combo combo = player.combos[i];
+                if (combo.IsSatisfiedBy(abilities))
+                {
+                    for(int j = 0; j < combo.ComboLength; ++j)
+                    {
+                        OnAbilityExecuted(availableAbilities[abilitiesToUseIndexList[0]], abilitiesToUseIndexList[0]);
+                        abilitiesToUseIndexList.RemoveAt(0);
+                        abilitiesToUseList.RemoveAt(0);
+                    }
+                    abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+                    OnAbilitiesToUseChanged?.Invoke(this);
+                    return new AbilityExecutionData() { index = i + 20, selectedTarget = GetSelectedTarget() };
+                }
+            }
+
             abilitiesToUseIndexList.RemoveAt(0);
             AbilityExecutionData aed = abilitiesToUseList[0];
             abilitiesToUseList.RemoveAt(0);

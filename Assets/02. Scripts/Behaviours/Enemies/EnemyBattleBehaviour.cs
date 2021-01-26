@@ -82,7 +82,7 @@ namespace Laresistance.Behaviours
             return AbilityInputProcessor.GetAbilities();
         }
 
-        public override BattleAbility[] GetAbilitiesWithUltimate()
+        public override BattleAbility[] GetAllAbilities()
         {
             return AbilityInputProcessor.GetAbilities();
         }

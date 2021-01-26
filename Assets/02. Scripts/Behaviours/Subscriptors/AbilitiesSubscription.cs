@@ -38,7 +38,7 @@ namespace Laresistance.Behaviours
 
         private void OnEnable()
         {
-            BattleAbility[] abilities = battleBehaviour.GetAbilitiesWithUltimate();
+            BattleAbility[] abilities = battleBehaviour.GetAllAbilities();
             foreach (var suscription in subscriptions)
             {
                 if (suscription.abilityIndex < 0 || suscription.abilityIndex >= abilities.Length || (abilities[suscription.abilityIndex] == null && suscription.abilityIndex != 19))
@@ -78,7 +78,7 @@ namespace Laresistance.Behaviours
             OnUsableEnergy?.Invoke(usableEnergy);
             OnRemainingEnergy?.Invoke(currentEnergy - (float)usableEnergy);
             OnUsableEnergyStr?.Invoke(usableEnergy.ToString());
-            BattleAbility[] abilities = battleBehaviour.GetAbilitiesWithUltimate();
+            BattleAbility[] abilities = battleBehaviour.GetAllAbilities();
             foreach (var subscription in subscriptions)
             {
                 if (subscription.abilityIndex >= 0 && subscription.abilityIndex < abilities.Length && abilities[subscription.abilityIndex] != null)
@@ -91,7 +91,7 @@ namespace Laresistance.Behaviours
 
         private void OnNextAbilityChanged(BattleAbility nextAbility)
         {
-            BattleAbility[] abilities = battleBehaviour.GetAbilitiesWithUltimate();
+            BattleAbility[] abilities = battleBehaviour.GetAllAbilities();
             foreach (var subscription in subscriptions)
             {
                 if (subscription.abilityIndex >= 0 && subscription.abilityIndex < abilities.Length && abilities[subscription.abilityIndex] != null)

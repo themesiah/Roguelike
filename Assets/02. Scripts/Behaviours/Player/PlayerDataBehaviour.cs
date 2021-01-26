@@ -13,6 +13,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private AbilityData[] playerAbilityData = default;
         [SerializeField]
+        private ComboData[] combosData = default;
+        [SerializeField]
         private bool useStartingData = false;
         [SerializeField]
         private List<MinionData> startingMinions = default;
@@ -36,6 +38,7 @@ namespace Laresistance.Behaviours
             player = new Player(StatusManager);
             StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
 
+            // Abilities
             BattleAbility[] playerAbilities = new BattleAbility[4];
             playerAbilities[0] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[0], player.GetEquipmentEvents(), StatusManager);
             playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[1], player.GetEquipmentEvents(), StatusManager);
@@ -45,6 +48,15 @@ namespace Laresistance.Behaviours
 
             player.SetMainAbilities(playerAbilities, ultimate);
 
+            // Combos
+            Combo[] combos = new Combo[combosData.Length];
+            for (int i = 0; i < combos.Length; ++i)
+            {
+                combos[i] = new Combo(combosData[i], player.GetEquipmentEvents(), StatusManager);
+            }
+            player.SetCombos(combos);
+
+            // Starting minions, equipments... for testing purposes
             if (useStartingData)
             {
                 foreach (var md in startingMinions)

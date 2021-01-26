@@ -32,11 +32,15 @@ namespace Laresistance.Battle
                 int minionIndex = Mathf.FloorToInt((abilityIndex - 5) / 4);
                 int minionAbility = (abilityIndex - 5) % 4;
                 yield return player.GetMinions()[minionIndex].ExecuteAbility(minionAbility, allies, enemies, animator, bloodRef);
-            } else
+            } else if (abilityIndex >= 17 && abilityIndex < 20)
             {
                 Consumable c = player.GetConsumables()[abilityIndex - 17];
                 yield return c.Ability.ExecuteAbility(allies, enemies, 1, animator);
                 player.UseConsumable(c);
+            } else
+            {
+                Combo c = player.combos[abilityIndex - 20];
+                yield return c.comboAbility.ExecuteAbility(allies, enemies, 1, animator);
             }
         }
     }

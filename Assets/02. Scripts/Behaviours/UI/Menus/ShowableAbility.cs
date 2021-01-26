@@ -87,5 +87,13 @@ namespace Laresistance.Behaviours
                 }
             }
         }
+
+        public void OverrideFrame(Sprite newFrame)
+        {
+            if (frame != null)
+            {
+                frame.sprite = newFrame;
+            }
+        }
     }
 }

@@ -90,6 +90,6 @@ namespace Laresistance.Behaviours
         }
 
         public abstract BattleAbility[] GetAbilities();
-        public abstract BattleAbility[] GetAbilitiesWithUltimate();
+        public abstract BattleAbility[] GetAllAbilities();
     }
 }

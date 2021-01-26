@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Laresistance.Core;
+using GamedevsToolbox.ScriptableArchitecture.Pools;
 
 namespace Laresistance.Behaviours
 {
@@ -14,6 +15,10 @@ namespace Laresistance.Behaviours
         private ShowableAbility[] abilityElements = default;
         [SerializeField]
         private ShowableEquipment[] equipmentElements = default;
+        [SerializeField]
+        private Transform comboHolder = default;
+        [SerializeField]
+        private ScriptablePool comboSlotPool = default;
         [SerializeField]
         private RectTransform portraitParent = default;
         [SerializeField]
@@ -48,6 +53,21 @@ namespace Laresistance.Behaviours
             for (int i = 0; i < equipmentElements.Length; ++i)
             {
                 equipmentElements[i].SetupShowableElement(player.GetEquipments()[i]);
+            }
+
+            if (comboHolder != null)
+            {
+                for (int i = comboHolder.childCount - 1; i >= 0; --i)
+                {
+                    Destroy(comboHolder.GetChild(i).gameObject);
+                }
+                comboSlotPool.InitPool();
+                for (int i = 0; i < player.combos.Length; ++i)
+                {
+                    GameObject go = comboSlotPool.GetInstance(comboHolder);
+                    go.GetComponent<ShowableCombo>().SetupShowableElement(player.combos[i]);
+                    go.transform.localScale = Vector3.one;
+                }
             }
         }
     }

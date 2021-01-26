@@ -19,7 +19,7 @@ namespace Laresistance.Behaviours
 
         private void OnEnable()
         {
-            foreach(CommandEventResponse cer in inputEventList)
+            foreach (CommandEventResponse cer in inputEventList)
             {
                 cer.Register();
             }

@@ -17,6 +17,7 @@ namespace Laresistance.Core
         public BattleStatusManager statusManager { get; private set; }
         public BattleAbility[] characterAbilities { get; private set; }
         public BattleAbility ultimateAbility { get; private set; }
+        public Combo[] combos { get; private set; }
 
         public Player(BattleStatusManager statusManager)
         {
@@ -299,13 +300,16 @@ namespace Laresistance.Core
             return abilities;
         }
 
-        public BattleAbility[] GetAbilitiesWithUltimate()
+        public BattleAbility[] GetAllAbilities()
         {
-            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5];
+            // Length is 4 player abilities, 1 ultimate, 4 per minion (3 minions), 3 consumables, and the combos
+            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5 + combos.Length];
+            // Player abilities. From 0 to 3.
             abilities[0] = characterAbilities[0];
             abilities[1] = characterAbilities[1];
             abilities[2] = characterAbilities[2];
             abilities[3] = characterAbilities[3];
+            // Minion abilities. From 4 to 15
             for(int i = 0; i < MAX_MINIONS; ++i)
             {
                 if (minions.Length > i && minions[i] != null)
@@ -316,6 +320,7 @@ namespace Laresistance.Core
                     }
                 }
             }
+            // Consumable abilities. From 16 to 18
             for(int i = 0; i < MAX_CONSUMABLES; ++i)
             {
                 if (consumables.Length > i && consumables[i] != null)
@@ -323,7 +328,13 @@ namespace Laresistance.Core
                     abilities[i + 4 + MAX_MINIONS * 4] = consumables[i].Ability;
                 }
             }
+            // Ultimate ability. Slot 19
             abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 4] = ultimateAbility;
+            // Combos. From 20 onward
+            for (int i = 0; i < combos.Length; ++i)
+            {
+                abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5 + i] = combos[i].comboAbility;
+            }
             return abilities;
         }
 
@@ -331,6 +342,13 @@ namespace Laresistance.Core
         {
             characterAbilities = abilities;
             ultimateAbility = ultimate;
+        }
+        #endregion
+
+        #region Combos
+        public void SetCombos(Combo[] combos)
+        {
+            this.combos = combos;
         }
         #endregion
     }

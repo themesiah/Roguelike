@@ -27,6 +27,11 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
             Event.UnregisterListener(this);
         }
 
+        public void UnregisterAll()
+        {
+            Event.UnregisterAll();
+        }
+
         public virtual void OnEventRaised(T data)
         {
             Response.Invoke(data);
