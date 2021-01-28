@@ -55,13 +55,10 @@ namespace Laresistance.Behaviours
                 equipmentElements[i].SetupShowableElement(player.GetEquipments()[i]);
             }
 
-            if (comboHolder != null)
+            if (comboHolder != null && comboSlotPool != null)
             {
-                for (int i = comboHolder.childCount - 1; i >= 0; --i)
-                {
-                    Destroy(comboHolder.GetChild(i).gameObject);
-                }
                 comboSlotPool.InitPool();
+                comboSlotPool.SoftFreeAll();
                 for (int i = 0; i < player.combos.Length; ++i)
                 {
                     GameObject go = comboSlotPool.GetInstance(comboHolder);

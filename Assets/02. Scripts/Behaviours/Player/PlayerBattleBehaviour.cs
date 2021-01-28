@@ -54,7 +54,7 @@ namespace Laresistance.Behaviours
         {
             if (context.performed)
             {
-                ((PlayerAbilityInput)AbilityInputProcessor).Reshuffle();
+                ((PlayerAbilityInput)AbilityInputProcessor).Shuffle();
             }
         }
 

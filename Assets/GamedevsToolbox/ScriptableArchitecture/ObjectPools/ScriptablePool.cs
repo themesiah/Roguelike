@@ -103,6 +103,20 @@ namespace GamedevsToolbox.ScriptableArchitecture.Pools
             }
         }
 
+        public void SoftFreeAll()
+        {
+            if (!CheckPoolInitialized())
+                return;
+
+            for (int i = usedInstances.Count-1; i >= 0; --i)
+            {
+                var instance = usedInstances[i];
+                usedInstances.Remove(instance);
+                freeInstances.Enqueue(instance);
+                instance.transform.SetParent(poolParent);
+            }
+        }
+
         public void FreeAll()
         {
             if (!CheckPoolInitialized())

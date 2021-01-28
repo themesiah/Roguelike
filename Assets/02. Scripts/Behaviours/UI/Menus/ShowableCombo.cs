@@ -20,8 +20,6 @@ namespace Laresistance.Behaviours
         private Text effectText = default;
         [SerializeField]
         private Sprite genericFrameGraphic = default;
-        [SerializeField]
-        private PoolInitializerBehaviour poolBehaviour = default;
 
         public void SetupShowableElement(ShowableElement showableElement)
         {
@@ -31,7 +29,7 @@ namespace Laresistance.Behaviours
             {
                 for (int i = conditionsHolder.childCount - 1; i >= 0; --i)
                 {
-                    Destroy(conditionsHolder.GetChild(i).gameObject);
+                    PoolInitializerBehaviour.GetPool("ComboCondition").FreeInstance(conditionsHolder.GetChild(i).gameObject);
                 }
                 BattleStatusManager dummyStatusManager = new BattleStatusManager(new CharacterHealth(1));
                 foreach (AbilityConditionData acd in combo.comboCondition.conditionData.AbilityConditionDatas)

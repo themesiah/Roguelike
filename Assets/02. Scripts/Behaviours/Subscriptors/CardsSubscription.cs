@@ -128,11 +128,7 @@ namespace Laresistance.Behaviours
         private void OnAbilitiesToUseChanged(PlayerAbilityInput sender)
         {
             // Remove instances that are currently active
-            for (int i = abilityToUseQueueParent.childCount-1; i >= 0; --i)
-            {
-                Transform t = abilityToUseQueueParent.GetChild(i);
-                abilityToUsePool.FreeInstance(t.gameObject);
-            }
+            abilityToUsePool.SoftFreeAll();
 
             // Create the new instances with the correct graphics
             foreach (int index in sender.abilitiesToUseIndexList)
@@ -159,10 +155,7 @@ namespace Laresistance.Behaviours
 
         private void OnRenewedAbilities(PlayerAbilityInput sender)
         {
-            foreach (Transform t in nextAbilityQueueParent)
-            {
-                nextAbilityQueuePool.FreeInstance(t.gameObject);
-            }
+            nextAbilityQueuePool.SoftFreeAll();
             foreach (BattleAbility ability in sender.nextAbilitiesQueue)
             {
                 GameObject instance = nextAbilityQueuePool.GetInstance(nextAbilityQueueParent);

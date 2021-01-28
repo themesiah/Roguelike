@@ -128,6 +128,12 @@ namespace Laresistance.Battle
         private void AddAbilityToUseQueue(int abilityInternalIndex)
         {
             AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget() };
+            if (abilityInternalIndex == 4)
+            {
+                abilitiesToUseList.Add(new AbilityExecutionData() { index = abilityInternalIndex, selectedTarget = GetSelectedTarget() });
+                abilitiesToUseIndexList.Add(abilityInternalIndex);
+                abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            } else
             if (availableAbilities[abilityInternalIndex].IsPrioritary())
             {
                 abilitiesToUseList.Insert(0, aed);
@@ -151,7 +157,12 @@ namespace Laresistance.Battle
             BattleAbility[] abilities = new BattleAbility[abilitiesToUseIndexList.Count];
             for(int i = 0; i < abilitiesToUseIndexList.Count; ++i)
             {
-                abilities[i] = availableAbilities[abilitiesToUseIndexList[i]];
+                if (abilitiesToUseIndexList[i] != 4) {
+                    abilities[i] = availableAbilities[abilitiesToUseIndexList[i]];
+                } else
+                {
+                    abilities[i] = player.ultimateAbility;
+                }
             }
             for (int i = 0; i < player.combos.Length; ++i)
             {
@@ -173,6 +184,10 @@ namespace Laresistance.Battle
             abilitiesToUseIndexList.RemoveAt(0);
             AbilityExecutionData aed = abilitiesToUseList[0];
             abilitiesToUseList.RemoveAt(0);
+            if (abilitiesToUseIndexList.Count != 0 && abilitiesToUseIndexList[0] == 4)
+            {
+                abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            } else
             if (abilitiesToUseIndexList.Count != 0 && availableAbilities[abilitiesToUseIndexList[0]].IsPrioritary())
             {
                 abilitiesToUseDequeueTimer = 0f;
@@ -219,7 +234,7 @@ namespace Laresistance.Battle
             return count;
         }
 
-        public void Reshuffle()
+        public void Shuffle()
         {
             if (!BattleAbilityManager.Executing && shuffleTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
             {
