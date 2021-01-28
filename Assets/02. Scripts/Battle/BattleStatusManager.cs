@@ -75,6 +75,9 @@ namespace Laresistance.Battle
         public event OnTickHandler OnTick;
         public delegate void OnResetStatusHandler(BattleStatusManager sender);
         public event OnResetStatusHandler OnResetStatus;
+        public delegate void OnStatusesRemovedHandler(BattleStatusManager sender);
+        public event OnStatusesRemovedHandler OnBuffsRemoved;
+        public event OnStatusesRemovedHandler OnDebuffsRemoved;
         #endregion
 
         #region Public methods
@@ -274,6 +277,7 @@ namespace Laresistance.Battle
             }
             blindStatuses.Clear();
             Stunned = false;
+            OnDebuffsRemoved?.Invoke(this);
         }
 
         public void RemoveBuffs()
@@ -293,6 +297,7 @@ namespace Laresistance.Battle
                 }
             }
             damageImprovements.Clear();
+            OnBuffsRemoved?.Invoke(this);
         }
 
         public void SetEquipmentEvents(EquipmentEvents equipmentEvents)

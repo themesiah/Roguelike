@@ -7,6 +7,12 @@ namespace Laresistance.Battle
 {
     public class BattlePosition
     {
+        public struct BattlePositionData
+        {
+            public bool direction;
+            public Vector3 center;
+        }
+
         private static float CHARACTERS_HORIZONTAL_OFFSET = 3f;
         private static float PARTY_HORIZONTAL_OFFSET = -2.5f;
         private static float PARTY_VERTICAL_OFFSET = 0.0f;
@@ -80,8 +86,9 @@ namespace Laresistance.Battle
             return distance;
         }
 
-        public static bool MoveCharacters(GameObject playerObject, GameObject[] enemyObjects, int centerCheckLayerMask)
+        public static BattlePositionData MoveCharacters(GameObject playerObject, GameObject[] enemyObjects, int centerCheckLayerMask)
         {
+            BattlePositionData bpd = new BattlePositionData();
             bool playerLookingRight = false;
             float direction = -1f;
             if (playerObject.transform.position.x < enemyObjects[0].transform.position.x)
@@ -113,7 +120,9 @@ namespace Laresistance.Battle
                 enemyObjects[i].transform.position = enemyObjects[0].transform.position + Vector3.left * PARTY_HORIZONTAL_OFFSET * direction * i + Vector3.up * PARTY_VERTICAL_OFFSET * i;
                 Turn(enemyObjects[i], !playerLookingRight);
             }
-            return playerLookingRight;
+            bpd.direction = playerLookingRight;
+            bpd.center = center;
+            return bpd;
         }
 
         private static void Turn(GameObject character, bool right)

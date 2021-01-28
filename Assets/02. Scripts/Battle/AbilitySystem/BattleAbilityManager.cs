@@ -97,6 +97,7 @@ namespace Laresistance.Battle
             CancelAllExecutions();
             battling = false;
             currentAnimator?.Stop();
+            AbilityInQueue = false;
         }
 
         public static void CancelAllExecutions()
@@ -118,5 +119,6 @@ namespace Laresistance.Battle
         }
 
         public static bool Executing => currentlyExecuting;
+        public static bool AbilityInQueue = false;
     }
 }

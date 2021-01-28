@@ -28,6 +28,7 @@ namespace Laresistance.StateMachines
         private RewardData rewardData = null;
         private bool paused = false;
         private ScriptableIntReference battlePositionIntReference;
+        private CameraBattleBehaviour cameraBattleBehaviour;
 
         #region ICoroutineState Implementation
         public IEnumerator EnterState()
@@ -37,13 +38,15 @@ namespace Laresistance.StateMachines
             ConfigureEnemyObjects();
             SpawnPlayerCompanions();
             // Move characters
-            bool right = BattlePosition.MoveCharacters(this.playerObject, this.enemyObjects, centerCheckLayerMask);
+            var battlePositionData = BattlePosition.MoveCharacters(this.playerObject, this.enemyObjects, centerCheckLayerMask);
             int position = 0;
-            if (!right)
+            if (!battlePositionData.direction)
             {
                 position = 1;
             }
             battlePositionIntReference.SetValue(position);
+            // Move Camera
+            cameraBattleBehaviour.CenterOnBattle(battlePositionData.center);
             // Init battle system
             CharacterBattleManager[] enemies = new CharacterBattleManager[enemyObjects.Length];
             for (int i = 0; i < enemies.Length; ++i)
@@ -68,6 +71,7 @@ namespace Laresistance.StateMachines
             }
             goToMap = false;
             forcedStop = false;
+            cameraBattleBehaviour.EndBattleCentering();
             yield return null;
         }
 
@@ -133,6 +137,7 @@ namespace Laresistance.StateMachines
             this.battlePositionIntReference = battlePositionIntReference;
             playerObject.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += PlayerDeath;
             this.battleSystem.OnEnemyRemoved += EnemyFlee;
+            cameraBattleBehaviour = playerCamera.gameObject.GetComponent<CameraBattleBehaviour>();
         }
 
         public void PerformTimeStop(bool activate)

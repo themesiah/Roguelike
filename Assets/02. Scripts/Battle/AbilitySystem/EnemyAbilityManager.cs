@@ -68,7 +68,7 @@ namespace Laresistance.Battle
                     }
                 }
             }
-            if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
+            if (!BattleAbilityManager.Executing && !battleStatus.Stunned && !BattleAbilityManager.AbilityInQueue)
             {
                 nextAbilityTimer -= delta;
                 OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);

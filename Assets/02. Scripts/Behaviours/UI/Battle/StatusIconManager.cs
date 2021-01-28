@@ -100,5 +100,10 @@ namespace Laresistance.Behaviours
             UnsuscribeFromStatusManager(statusManager);
             pool.FreeInstance(gameObject);
         }
+
+        public void ManualTermination()
+        {
+            DeactivateIndicator();
+        }
     }
 }

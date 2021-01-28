@@ -20,9 +20,14 @@ namespace Laresistance.Behaviours
         private bool haveDamageImprovement = false;
         private ScriptablePool statusIndicatorPool;
 
+        private List<StatusIconManager> buffList;
+        private List<StatusIconManager> debuffList;
+
         private void Start()
         {
             statusIndicatorPool = PoolInitializerBehaviour.GetPool("Status");
+            buffList = new List<StatusIconManager>();
+            debuffList = new List<StatusIconManager>();
         }
 
         private void OnEnable()
@@ -30,6 +35,8 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.OnStatusApplied += OnStatusApplied;
             battleBehaviour.StatusManager.OnResetStatus += OnResetStatus;
             battleBehaviour.StatusManager.health.OnShieldsChanged += OnShieldsChanged;
+            battleBehaviour.StatusManager.OnBuffsRemoved += OnRemoveBuffs;
+            battleBehaviour.StatusManager.OnDebuffsRemoved += OnRemoveDebuffs;
         }
 
         private void OnDisable()
@@ -37,6 +44,8 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.OnStatusApplied -= OnStatusApplied;
             battleBehaviour.StatusManager.OnResetStatus -= OnResetStatus;
             battleBehaviour.StatusManager.health.OnShieldsChanged -= OnShieldsChanged;
+            battleBehaviour.StatusManager.OnBuffsRemoved -= OnRemoveBuffs;
+            battleBehaviour.StatusManager.OnDebuffsRemoved -= OnRemoveDebuffs;
         }
 
         private void OnStatusApplied(BattleStatusManager sender, StatusType statusType, float duration)
@@ -64,6 +73,14 @@ namespace Laresistance.Behaviours
             if (statusType == StatusType.DamageImprovement)
             {
                 haveDamageImprovement = true;
+            }
+
+            if (statusType == StatusType.Blind || statusType == StatusType.Debuff || statusType == StatusType.DoT || statusType == StatusType.DoTFire || statusType == StatusType.Slow || statusType == StatusType.Stun)
+            {
+                debuffList.Add(sim);
+            } else if (statusType == StatusType.Buff || statusType == StatusType.DamageImprovement || statusType == StatusType.Speed)
+            {
+                buffList.Add(sim);
             }
         }
 
@@ -106,6 +123,34 @@ namespace Laresistance.Behaviours
             }
 
             sender.OnStatusTerminated -= OnStatusTerminated;
+            if (buffList.Contains(sender))
+            {
+                buffList.Remove(sender);
+            }
+            if (debuffList.Contains(sender))
+            {
+                debuffList.Remove(sender);
+            }
+        }
+
+        private void OnRemoveBuffs(BattleStatusManager statusManager)
+        {
+            for (int i = buffList.Count-1; i >= 0; --i)
+            {
+                var sim = buffList[i];
+                sim.ManualTermination();
+            }
+            buffList.Clear();
+        }
+
+        private void OnRemoveDebuffs(BattleStatusManager statusManager)
+        {
+            for (int i = debuffList.Count-1; i >= 0; --i)
+            {
+                var sim = debuffList[i];
+                sim.ManualTermination();
+            }
+            debuffList.Clear();
         }
     }
 }
