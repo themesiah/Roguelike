@@ -41,6 +41,12 @@ namespace Laresistance.Behaviours
         private ScriptablePool abilityToUsePool = default;
         [SerializeField]
         private Transform abilityToUseQueueParent = default;
+        [Header("Ability used animation")]
+        [SerializeField]
+        private Transform animationPivot = default;
+        [SerializeField]
+        private GameObject animationIconPrefab = default;
+
 
         private ScriptablePool particlesPool;
 
@@ -62,6 +68,7 @@ namespace Laresistance.Behaviours
             playerInput.OnRenewAbilities += OnRenewedAbilities;
             playerInput.OnAbilityOffQueue += OnAbilityOffQueue;
             playerInput.OnAbilitiesToUseChanged += OnAbilitiesToUseChanged;
+            playerInput.OnAbilityExecutedFromQueue += OnAbilityExecutedFromQueue;
             OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
             OnNextShuffleProgressChanged(playerInput, playerInput.NextShuffleProgress);
         }
@@ -77,6 +84,7 @@ namespace Laresistance.Behaviours
             playerInput.OnRenewAbilities -= OnRenewedAbilities;
             playerInput.OnAbilityOffQueue -= OnAbilityOffQueue;
             playerInput.OnAbilitiesToUseChanged -= OnAbilitiesToUseChanged;
+            playerInput.OnAbilityExecutedFromQueue -= OnAbilityExecutedFromQueue;
         }
 
         private PlayerAbilityInput GetPlayerInput()
@@ -170,6 +178,13 @@ namespace Laresistance.Behaviours
             {
                 nextAbilityQueuePool.FreeInstance(nextAbilityQueueParent.GetChild(0).gameObject);
             }
+        }
+
+        private void OnAbilityExecutedFromQueue(PlayerAbilityInput sender, BattleAbility ability)
+        {
+            GameObject animationIconInstance = Instantiate(animationIconPrefab, animationPivot, false);
+            animationIconInstance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
+            animationIconInstance.transform.localPosition = Vector3.zero;
         }
     }
 }

@@ -31,6 +31,19 @@ namespace Laresistance.Battle
         public bool IsBasicSkill { get; private set; }
         public Sprite AbilityIcon { get; private set; }
         public Sprite AbilityFrame { get; private set; }
+        public Minion parentMinion { get; private set; }
+        public int AbilityLevel { 
+            get 
+            { 
+                if (parentMinion == null)
+                {
+                    return 1;
+                } else
+                {
+                    return parentMinion.Level;
+                }
+            }
+        }
 
         public int CurrentPlayerSlot { get; set; }
 
@@ -269,6 +282,11 @@ namespace Laresistance.Battle
                     return true;
             }
             return false;
+        }
+
+        public void SetParentMinion(Minion m)
+        {
+            parentMinion = m;
         }
     }
 }

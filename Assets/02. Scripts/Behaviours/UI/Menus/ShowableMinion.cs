@@ -58,7 +58,6 @@ namespace Laresistance.Behaviours
 
                 for (int i = 0; i < minionAbilities.Length; ++i)
                 {
-                    minionAbilities[i].SetupLevel(minion.Level);
                     minionAbilities[i].SetupShowableElement(minion.Abilities[i]);
                 }
 

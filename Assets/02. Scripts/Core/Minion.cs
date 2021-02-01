@@ -22,6 +22,10 @@ namespace Laresistance.Core
             if (abilities == null)
                 throw new System.Exception("A minion should have an ability");
             this.abilities = abilities;
+            foreach(var ability in abilities)
+            {
+                ability.SetParentMinion(this);
+            }
             if (level <= 0 || level > MAX_MINION_LEVEL)
                 throw new System.Exception("A minion level must be at least 1 and " + MAX_MINION_LEVEL + " at max");
             Level = level;

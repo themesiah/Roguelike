@@ -22,13 +22,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Color nonInteractableColor = default;
 
-        private int level = 1;
-
-        public void SetupLevel(int newLevel)
-        {
-            level = newLevel;
-        }
-
         public void SetupShowableElement(ShowableElement showableElement)
         {
             if (showableElement == null)
@@ -61,12 +54,12 @@ namespace Laresistance.Behaviours
 
                 if (effectPowerText != null)
                 {
-                    effectPowerText.text = ability.GetAbilityPowerText(level);
+                    effectPowerText.text = ability.GetAbilityPowerText(ability.AbilityLevel);
                 }
 
                 if (shortText != null)
                 {
-                    shortText.text = ability.GetShortAbilityText(level);
+                    shortText.text = ability.GetShortAbilityText(ability.AbilityLevel);
                 }
             }
         }

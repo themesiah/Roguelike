@@ -5,5 +5,6 @@ namespace Laresistance.Battle {
     {
         public int index;
         public CharacterBattleManager selectedTarget;
+        public BattleAbility ability;
     }
 }

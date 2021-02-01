@@ -44,6 +44,8 @@ namespace Laresistance.Battle
         public event OnAbilityOffQueueHandler OnAbilityOffQueue;
         public delegate void OnAbilitiesToUseChangedHandler(PlayerAbilityInput sender);
         public event OnAbilitiesToUseChangedHandler OnAbilitiesToUseChanged;
+        public delegate void OnAbilityExecutedFromQueueHandler(PlayerAbilityInput sender, BattleAbility ability);
+        public event OnAbilityExecutedFromQueueHandler OnAbilityExecutedFromQueue;
 
         public PlayerAbilityInput(Player player, BattleStatusManager battleStatus)
         {
@@ -93,17 +95,18 @@ namespace Laresistance.Battle
             if (!timeStopped)
             {
                 // Return list of selected abilities
-                AbilityExecutionData aed = new AbilityExecutionData() { index = -1, selectedTarget = null };
+                AbilityExecutionData aed = new AbilityExecutionData() { index = -1, selectedTarget = null, ability = null };
                 if (abilitiesToUseList.Count > 0 && abilitiesToUseDequeueTimer <= 0f)
                 {
                     aed = DequeueAbilityToUse();
+                    OnAbilityExecutedFromQueue?.Invoke(this, aed.ability);
                 }
 
                 return aed;
             } else
             {
                 // Return an empty list, because time has stopped
-                return new AbilityExecutionData() { index = -1, selectedTarget = null};
+                return new AbilityExecutionData() { index = -1, selectedTarget = null, ability = null};
             }
         }
 
@@ -129,10 +132,10 @@ namespace Laresistance.Battle
 
         private void AddAbilityToUseQueue(int abilityInternalIndex)
         {
-            AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget() };
+            AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget(), ability = availableAbilities[abilityInternalIndex] };
             if (abilityInternalIndex == 4)
             {
-                abilitiesToUseList.Add(new AbilityExecutionData() { index = abilityInternalIndex, selectedTarget = GetSelectedTarget() });
+                abilitiesToUseList.Add(new AbilityExecutionData() { index = abilityInternalIndex, selectedTarget = GetSelectedTarget(), ability = player.ultimateAbility });
                 abilitiesToUseIndexList.Add(abilityInternalIndex);
                 abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
             } else
@@ -180,7 +183,11 @@ namespace Laresistance.Battle
                     }
                     abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
                     OnAbilitiesToUseChanged?.Invoke(this);
-                    return new AbilityExecutionData() { index = i + 20, selectedTarget = GetSelectedTarget() };
+                    if (abilitiesToUseIndexList.Count == 0)
+                    {
+                        BattleAbilityManager.AbilityInQueue = false;
+                    }
+                    return new AbilityExecutionData() { index = i + 20, selectedTarget = GetSelectedTarget(), ability = combo.comboAbility };
                 }
             }
 
@@ -208,12 +215,12 @@ namespace Laresistance.Battle
 
         public void BattleStart()
         {
+            abilitiesToUseList.Clear();
+            abilitiesToUseIndexList.Clear();
             InitializeCards();
             shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
             renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
             abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
-            abilitiesToUseList.Clear();
-            abilitiesToUseIndexList.Clear();
         }
 
         public void BattleEnd()
