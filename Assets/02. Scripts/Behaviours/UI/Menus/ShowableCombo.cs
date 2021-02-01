@@ -1,11 +1,8 @@
 ﻿using Laresistance.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Laresistance.Battle;
 using Laresistance.Data;
-using GamedevsToolbox.ScriptableArchitecture.Pools;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 
 namespace Laresistance.Behaviours
@@ -37,7 +34,7 @@ namespace Laresistance.Behaviours
                     GameObject go = PoolInitializerBehaviour.GetPool("ComboCondition").GetInstance(conditionsHolder);
                     go.transform.localScale = Vector3.one;
                     ShowableAbility showableAbility = go.GetComponent<ShowableAbility>();
-                    BattleAbility conditionAbility = BattleAbilityFactory.GetBattleAbility(acd.AbilityDatas[0], null, dummyStatusManager);
+                    BattleAbility conditionAbility = BattleAbilityFactory.GetBattleAbility(acd.AbilityDatas[0], new EquipmentsContainer(), dummyStatusManager);
                     showableAbility.SetupShowableElement(conditionAbility);
                     showableAbility.OverrideFrame(genericFrameGraphic);
                 }

@@ -30,7 +30,7 @@ namespace Laresistance.StateMachines
             this.mapBehavioursRef = mapBehavioursRef;
             playerMapBehaviour = playerObject.GetComponent<PlayerMapBehaviour>();
             playerBody = playerObject.GetComponent<Rigidbody2D>();
-            bloodLossSystem = new BloodLossSystem(playerObject.GetComponent<PlayerDataBehaviour>().player.GetEquipmentEvents(), bloodReference);
+            bloodLossSystem = new BloodLossSystem(playerObject.GetComponent<PlayerDataBehaviour>().player.GetEquipmentContainer(), bloodReference);
         }
 
         private void ObjectActivationAndDesactivation(bool enter)

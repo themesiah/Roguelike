@@ -14,7 +14,7 @@ namespace Laresistance.Tests {
             return new BattleStatusManager(new CharacterHealth(100));
         }
 
-        private BattleAbility GetAbilityByIndex(int i, EquipmentEvents events)
+        private BattleAbility GetAbilityByIndex(int i, EquipmentsContainer equipments)
         {
             int cost = 0;
             List<BattleEffect> effects = new List<BattleEffect>();
@@ -27,7 +27,7 @@ namespace Laresistance.Tests {
                     break;
             }
 
-            BattleAbility ability = new BattleAbility(effects, cost, 0, 1f, null, events);
+            BattleAbility ability = new BattleAbility(effects, cost, 0, 1f, null, equipments);
             ability.Tick(1.1f);
             return ability;
         }
@@ -40,55 +40,61 @@ namespace Laresistance.Tests {
         [UnityTest]
         public IEnumerator When_ReducingChargeSpeed()
         {
-            EquipmentEvents events = new EquipmentEvents();
-            BattleStatusManager player = GetStatusManager(100);
-            var ability = GetAbilityByIndex(0, events);
-            Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
-            Assert.IsFalse(ability.CanBeUsed());
-            Equipment e = new Equipment(0, null, null);
-            e.SetEnergyProduction(events, 2f);
-            e.EquipEquipment();
-            ability.Tick(1.1f * player.GetSpeedModifier());
-            Assert.IsFalse(ability.CanBeUsed());
+            //EquipmentsContainer events = new EquipmentsContainer();
+            //BattleStatusManager player = GetStatusManager(100);
+            //var ability = GetAbilityByIndex(0, events);
+            //Assert.IsTrue(ability.CanBeUsed());
+            //yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
+            //Assert.IsFalse(ability.CanBeUsed());
+            //Equipment e = new Equipment(0, null, null);
+            //e.SetEnergyProduction(events, 2f);
+            //e.EquipEquipment();
+            //ability.Tick(1.1f * player.GetSpeedModifier());
+            //Assert.IsFalse(ability.CanBeUsed());
+            //yield return null;
             yield return null;
+            Assert.IsTrue(false);
         }
 
         [UnityTest]
         public IEnumerator When_MaintainingChargeSpeed()
         {
-            EquipmentEvents events = new EquipmentEvents();
-            BattleStatusManager player = GetStatusManager(100);
-            var ability = GetAbilityByIndex(0, events);
-            Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
-            Assert.IsFalse(ability.CanBeUsed());
-            Equipment e = new Equipment(0, null, null);
-            e.SetEnergyProduction(events, 2f);
-            e.EquipEquipment();
-            Equipment e2 = new Equipment(1, null, null);
-            e2.SetEnergyProduction(events, 0.5f);
-            e2.EquipEquipment();
-            ability.Tick(1.1f * player.GetSpeedModifier());
-            Assert.IsTrue(ability.CanBeUsed());
+            //EquipmentEvents events = new EquipmentEvents();
+            //BattleStatusManager player = GetStatusManager(100);
+            //var ability = GetAbilityByIndex(0, events);
+            //Assert.IsTrue(ability.CanBeUsed());
+            //yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
+            //Assert.IsFalse(ability.CanBeUsed());
+            //Equipment e = new Equipment(0, null, null);
+            //e.SetEnergyProduction(events, 2f);
+            //e.EquipEquipment();
+            //Equipment e2 = new Equipment(1, null, null);
+            //e2.SetEnergyProduction(events, 0.5f);
+            //e2.EquipEquipment();
+            //ability.Tick(1.1f * player.GetSpeedModifier());
+            //Assert.IsTrue(ability.CanBeUsed());
+            //yield return null;
             yield return null;
+            Assert.IsTrue(false);
         }
 
         [UnityTest]
         public IEnumerator When_ImprovingChargeSpeed()
         {
-            EquipmentEvents events = new EquipmentEvents();
-            BattleStatusManager player = GetStatusManager(100);
-            var ability = GetAbilityByIndex(0, events);
-            Assert.IsTrue(ability.CanBeUsed());
-            yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
-            Assert.IsFalse(ability.CanBeUsed());
-            Equipment e2 = new Equipment(1, null, null);
-            e2.SetEnergyProduction(events, 0.5f);
-            e2.EquipEquipment();
-            ability.Tick(0.55f * player.GetSpeedModifier());
-            Assert.IsTrue(ability.CanBeUsed());
+            //EquipmentEvents events = new EquipmentEvents();
+            //BattleStatusManager player = GetStatusManager(100);
+            //var ability = GetAbilityByIndex(0, events);
+            //Assert.IsTrue(ability.CanBeUsed());
+            //yield return ability.ExecuteAbility(new BattleStatusManager[] { player }, new BattleStatusManager[] { player }, 1, null);
+            //Assert.IsFalse(ability.CanBeUsed());
+            //Equipment e2 = new Equipment(1, null, null);
+            //e2.SetEnergyProduction(events, 0.5f);
+            //e2.EquipEquipment();
+            //ability.Tick(0.55f * player.GetSpeedModifier());
+            //Assert.IsTrue(ability.CanBeUsed());
+            //yield return null;
             yield return null;
+            Assert.IsTrue(false);
         }
     }
 }

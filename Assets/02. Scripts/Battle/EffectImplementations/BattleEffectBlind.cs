@@ -16,14 +16,14 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Blind;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int powerTemp = System.Math.Abs(100 - Power);
             int power = Mathf.CeilToInt(powerTemp * (1 + ((level - 1) * 0.05f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetEffectPower?.Invoke(ref power);
-            //equipmentEvents?.OnGetEffectPowerFlat?.Invoke(ref powerTemp);
+
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
 
             if (Power > 100)
             {
@@ -35,29 +35,28 @@ namespace Laresistance.Battle
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.ApplyBlind(GetModifier(level, equipmentEvents));
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
+            target.ApplyBlind(GetModifier(level, equipments));
         }
 
-        private float GetModifier(int level, EquipmentEvents equipmentEvents)
+        private float GetModifier(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipmentEvents) / 100f;
+            return GetPower(level, equipments) / 100f;
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
-            float modifier = GetModifier(level, equipmentEvents);
+            float modifier = GetModifier(level, equipments);
             string textId = "EFF_BLIND_DESC";
             return Texts.GetText(textId, new object[] { GetTargetString(), modifier * 100f, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue() });
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            float modifier = GetModifier(level, equipmentEvents);
+            float modifier = GetModifier(level, equipments);
             if (modifier > 1f)
             {
                 modifier -= 1f;

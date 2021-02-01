@@ -153,6 +153,7 @@ namespace Laresistance.Behaviours
 
         private void OnShuffle(PlayerAbilityInput sender, int[] discarded)
         {
+            particlesPool.SoftFreeAll();
             foreach(int discardedIndex in discarded)
             {
                 GameObject particleObject = particlesPool.GetInstance(null, cardsLocation[discardedIndex].position, Quaternion.identity);

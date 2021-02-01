@@ -249,21 +249,21 @@ namespace Laresistance.Simulator
         {
             BattleStatusManager playerStatus = new BattleStatusManager(new CharacterHealth(playerHealth));
             Player player = new Player(playerStatus);
-            playerStatus.SetEquipmentEvents(player.GetEquipmentEvents());
+            playerStatus.SetEquipmentsContainer(player.GetEquipmentContainer());
 
-            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentEvents(), playerStatus);
-            BattleAbility playerAbility2 = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentEvents(), playerStatus);
+            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentContainer(), playerStatus);
+            BattleAbility playerAbility2 = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentContainer(), playerStatus);
             player.SetMainAbilities(new BattleAbility[] { playerAbility}, playerAbility2);
 
             foreach (var md in playerMinions)
             {
-                Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentEvents(), playerStatus);
+                Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentContainer(), playerStatus);
                 player.EquipMinion(m);
             }
 
             foreach (var equipmentData in playerEquipments)
             {
-                Equipment equip = EquipmentFactory.GetEquipment(equipmentData, player.GetEquipmentEvents(), playerStatus);
+                Equipment equip = EquipmentFactory.GetEquipment(equipmentData, playerStatus);
                 if (!player.EquipEquipment(equip))
                 {
                     Assert.IsTrue(false, "The simulation contains more than one equipment of the same slot");
@@ -283,7 +283,7 @@ namespace Laresistance.Simulator
             BattleAbility[] abilities = new BattleAbility[enemyData.AbilitiesData.Length];
             for (int i = 0; i < enemyData.AbilitiesData.Length; ++i)
             {
-                abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], null, enemyStatus);
+                abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], new EquipmentsContainer(), enemyStatus);
             }
 
             IAbilityInputProcessor abilityInput = new EnemyAbilityManager(abilities, 1, new DummyBattleAnimator());
@@ -327,7 +327,7 @@ namespace Laresistance.Simulator
             string wonIndicator = battleExecutionData.playerWon ? ">>>>>" : "<<<<<";
             string whoWon = battleExecutionData.playerWon ? "The player" : "The enemies";
             int remainingHealth = battleExecutionData.playerWon ? battleExecutionData.playerRemainingHealth : battleExecutionData.enemiesRemainingHealth;
-            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(battleExecutionData.playerAbility, new EquipmentEvents(), new BattleStatusManager(new CharacterHealth(1)));
+            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(battleExecutionData.playerAbility, new EquipmentsContainer(), new BattleStatusManager(new CharacterHealth(1)));
             StringBuilder minionsText = new StringBuilder();
             for (int i = 0; i < battleExecutionData.minions.Length; ++i)
             {

@@ -9,15 +9,15 @@ namespace Laresistance.Systems
     {
         private ScriptableIntReference bloodRef;
 
-        private EquipmentEvents equipmentEvents;
+        private EquipmentsContainer equipments;
         private float timer = 0f;
 
         public delegate void OnBloodLostHandler(int bloodLost);
         public OnBloodLostHandler OnBloodLost;
 
-        public BloodLossSystem(EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef)
+        public BloodLossSystem(EquipmentsContainer equipments, ScriptableIntReference bloodRef)
         {
-            this.equipmentEvents = equipmentEvents;
+            this.equipments = equipments;
             this.bloodRef = bloodRef;
         }
 
@@ -28,7 +28,7 @@ namespace Laresistance.Systems
             {
                 timer -= 1f;
                 int bloodLost = 0;
-                equipmentEvents?.OnBloodLossPerSecond?.Invoke(ref bloodLost);
+                bloodLost = equipments.ModifyValue(Equipments.EquipmentSituation.BloodLoss, bloodLost);
                 if (bloodLost > 0)
                 {
                     OnBloodLost?.Invoke(bloodLost);

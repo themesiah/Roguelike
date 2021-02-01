@@ -45,7 +45,7 @@ namespace Laresistance.Battle
         private List<DamageImprovement> damageImprovements;
         private List<TempDamageChange> tempDamageModifications;
         private List<BlindStatus> blindStatuses;
-        private EquipmentEvents equipmentEvents;
+        private EquipmentsContainer equipmentsContainer;
         public bool Stunned { get; private set; }
         private float stunTimer;
         private float energyPerSecond;
@@ -83,6 +83,7 @@ namespace Laresistance.Battle
         #region Public methods
         public BattleStatusManager(CharacterHealth health, Transform targetPivot = null, float energyPerSecond = 1f)
         {
+            equipmentsContainer = new EquipmentsContainer();
             this.health = health;
             speedModifiers = new List<SpeedEffect>();
             damageOverTimes = new List<DamageOverTime>();
@@ -149,7 +150,7 @@ namespace Laresistance.Battle
                 else
                 {
                     float currentProduction = energyPerSecond;
-                    equipmentEvents?.OnGetEnergyProduction?.Invoke(ref currentProduction);
+                    currentProduction = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, currentProduction);
                     CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
                 }
@@ -300,20 +301,20 @@ namespace Laresistance.Battle
             OnBuffsRemoved?.Invoke(this);
         }
 
-        public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
+        public void SetEquipmentsContainer(EquipmentsContainer equipments)
         {
-            this.equipmentEvents = equipmentEvents;
+            this.equipmentsContainer = equipments;
         }
 
-        public EquipmentEvents GetEquipmentEvents()
+        public EquipmentsContainer GetEquipmentsContainer()
         {
-            return this.equipmentEvents;
+            return this.equipmentsContainer;
         }
 
         public void AddEnergy(float energy)
         {
             float energyToWin = energy * GameConstantsBehaviour.Instance.energyPerCardReference.GetValue();
-            equipmentEvents?.OnGetEnergyProduction?.Invoke(ref energyToWin);
+            energyToWin = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, energyToWin);
             CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + energyToWin);
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
         }

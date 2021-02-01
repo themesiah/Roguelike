@@ -16,33 +16,31 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.DamageModification;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetEffectPower?.Invoke(ref power);
-            equipmentEvents?.OnGetEffectPowerFlat?.Invoke(ref power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.ApplyTempDamageModification((float)GetPower(level, equipmentEvents) / 100f);
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
+            target.ApplyTempDamageModification((float)GetPower(level, equipments) / 100f);
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
             string textId = "EFF_DAMAGE_IMPRV_DESC";
-            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents) });
+            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipments) });
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipmentEvents).ToString();
+            return GetPower(level, equipments).ToString();
         }
 
         public override string GetAnimationTrigger()

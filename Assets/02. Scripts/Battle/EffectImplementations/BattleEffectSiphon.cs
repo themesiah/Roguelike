@@ -17,41 +17,43 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.LifeSiphon;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetAttackPower?.Invoke(ref power);
-            equipmentEvents?.OnGetAttackPowerFlat?.Invoke(ref power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AttackPower, power);
             power = (int)(power * SelfStatus.GetDamageModifier());
             power = System.Math.Max(1, power);
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            int damageDone = PerformAttackEffect(target, level, equipmentEvents, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
+            int damageDone = PerformAttackEffect(target, level, equipments, bloodRef);
             if (damageDone > 0)
             {
                 int healAmount = Mathf.FloorToInt(damageDone * GameConstantsBehaviour.Instance.siphonPercent.GetValue());
                 if (healAmount > 0)
                 {
+                    healAmount = equipments.ModifyValue(Equipments.EquipmentSituation.HealPower, healAmount);
                     SelfStatus.health.Heal(healAmount);
                 }
             }
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
             string textId = "EFF_SIPHON_DESC";
-            return Texts.GetText(textId, new object[] { GetPower(level, equipmentEvents), GetTargetString(), GameConstantsBehaviour.Instance.siphonPercent.GetValue()*100f });
+            return Texts.GetText(textId, new object[] { GetPower(level, equipments), GetTargetString(), GameConstantsBehaviour.Instance.siphonPercent.GetValue()*100f });
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipmentEvents).ToString();
+            return GetPower(level, equipments).ToString();
         }
 
         public override string GetAnimationTrigger()

@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Laresistance.Equipments;
 
 namespace Laresistance.Data
 {
@@ -10,6 +10,10 @@ namespace Laresistance.Data
         [SerializeField]
         private string equipNameReference = default;
         public string EquipmentNameReference { get { return equipNameReference; } }
+
+        [SerializeField]
+        private string equipDescriptionReference = default;
+        public string EquipmentDescriptionReference { get { return equipDescriptionReference; } }
 
         [SerializeField]
         private EquipmentSlotType slot = default;
@@ -24,8 +28,8 @@ namespace Laresistance.Data
         public Sprite SpriteReference { get { return spriteReference; } }
 
         [SerializeField]
-        private List<EquipmentEffectData> equipmentEffects = default;
-        public List<EquipmentEffectData> EquipmentEffects { get { return equipmentEffects; } }
+        private List<EquipmentEffect> equipmentEffects = default;
+        public List<EquipmentEffect> EquipmentEffects { get { return equipmentEffects; } }
 
         [SerializeField]
         private bool corrupted = default;

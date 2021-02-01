@@ -19,7 +19,7 @@ namespace Laresistance.Battle
         private static int MAX_EFFECTS = 2;
         private int energyCost;
         private List<BattleEffect> effects = default;
-        private EquipmentEvents equipmentEvents;
+        private EquipmentsContainer equipmentsContainer;
         private BattleStatusManager statusManager;
         private bool executingAbility = false;
         private float cooldownTimer = 0f;
@@ -47,14 +47,14 @@ namespace Laresistance.Battle
 
         public int CurrentPlayerSlot { get; set; }
 
-        public BattleAbility(List<BattleEffect> effectsToSet, int energyCost, int weight, float cooldown, BattleStatusManager statusManager, EquipmentEvents equipmentEvents = null, Sprite icon = null, AbilityData data = null)
+        public BattleAbility(List<BattleEffect> effectsToSet, int energyCost, int weight, float cooldown, BattleStatusManager statusManager, EquipmentsContainer equipments, Sprite icon = null, AbilityData data = null)
         {
             if (effectsToSet == null || effectsToSet.Count == 0)
                 throw new System.Exception("Abilities should have at least one effect");
             if (effectsToSet.Count > MAX_EFFECTS)
                 throw new System.Exception("Abilities can only have up to " + MAX_EFFECTS + " effects");
             effects = effectsToSet;
-            this.equipmentEvents = equipmentEvents;
+            this.equipmentsContainer = equipments;
             this.statusManager = statusManager;
             this.energyCost = energyCost;
             this.Weight = weight;
@@ -66,7 +66,7 @@ namespace Laresistance.Battle
 
         public BattleAbility Copy()
         {
-            var ability = new BattleAbility(effects, energyCost, Weight, Cooldown, statusManager, equipmentEvents, AbilityIcon, data);
+            var ability = new BattleAbility(effects, energyCost, Weight, Cooldown, statusManager, equipmentsContainer, AbilityIcon, data);
             if (IsShieldAbility)
             {
                 ability.SetShieldAbility();
@@ -99,9 +99,9 @@ namespace Laresistance.Battle
             IsBasicSkill = true;
         }
 
-        public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
+        public void SetEquipmentsContainer(EquipmentsContainer equipments)
         {
-            this.equipmentEvents = equipmentEvents;
+            this.equipmentsContainer = equipments;
         }
 
         public void SetStatusManager(BattleStatusManager selfStatus)
@@ -123,7 +123,7 @@ namespace Laresistance.Battle
         {
             if (index > effects.Count - 1 || index < 0)
                 throw new System.Exception("Invalid index for effect power");
-            return effects[index].GetPower(level, equipmentEvents);
+            return effects[index].GetPower(level, equipmentsContainer);
         }
 
         public string GetAbilityText(int level)
@@ -131,7 +131,7 @@ namespace Laresistance.Battle
             StringBuilder builder = new StringBuilder();
             foreach(var effect in effects)
             {
-                builder.Append(effect.GetEffectString(level, equipmentEvents));
+                builder.Append(effect.GetEffectString(level, equipmentsContainer));
                 builder.Append(" ");
             }
             if (GetCost() > 0)
@@ -147,8 +147,7 @@ namespace Laresistance.Battle
             for (int i = 0; i < effects.Count; ++i)
             {
                 var effect = effects[i];
-                //builder.Append(effect.GetPower(level, equipmentEvents));
-                builder.Append(effect.GetShortEffectString(level, equipmentEvents));
+                builder.Append(effect.GetShortEffectString(level, equipmentsContainer));
                 if (i < effects.Count - 1)
                 {
                     builder.Append(",");
@@ -165,8 +164,7 @@ namespace Laresistance.Battle
             for (int i = 0; i < effects.Count; ++i)
             {
                 var effect = effects[i];
-                //builder.Append(effect.GetPower(level, equipmentEvents));
-                builder.Append(effect.GetShortEffectString(level, equipmentEvents));
+                builder.Append(effect.GetShortEffectString(level, equipmentsContainer));
                 if (i < effects.Count - 1)
                 {
                     builder.Append(" / ");
@@ -219,7 +217,7 @@ namespace Laresistance.Battle
         {
             foreach (var effect in effects)
             {
-                effect.PerformEffect(allies, targets, level, equipmentEvents, animator, bloodRef);
+                effect.PerformEffect(allies, targets, level, equipmentsContainer, animator, bloodRef);
             }
             statusManager.ConsumeEnergy(energyCost);
             SetCooldownAsUsed();

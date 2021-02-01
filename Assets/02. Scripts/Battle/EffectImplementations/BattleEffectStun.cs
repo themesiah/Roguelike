@@ -16,13 +16,12 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Stun;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetEffectPower?.Invoke(ref power);
-            equipmentEvents?.OnGetEffectPowerFlat?.Invoke(ref power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
         }
@@ -32,23 +31,22 @@ namespace Laresistance.Battle
             return "Effect";
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
             string textId = "EFF_STUN_DESC";
-            return Texts.GetText(textId, new object[] { GetSeconds(GetPower(level, equipmentEvents)), GetTargetString() });
+            return Texts.GetText(textId, new object[] { GetSeconds(GetPower(level, equipments)), GetTargetString() });
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return string.Format("{0}s", GetSeconds(GetPower(level, equipmentEvents)).ToString());
+            return string.Format("{0}s", GetSeconds(GetPower(level, equipments)).ToString());
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetEffectAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            int power = GetPower(level, equipmentEvents);
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
+            int power = GetPower(level, equipments);
             float seconds = GetSeconds(power);
             target.Stun(seconds);
         }

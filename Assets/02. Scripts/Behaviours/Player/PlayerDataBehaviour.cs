@@ -36,15 +36,15 @@ namespace Laresistance.Behaviours
         {
             StatusManager = new BattleStatusManager(new CharacterHealth(150), effectTargetPivot, energyProductionRef.GetValue());
             player = new Player(StatusManager);
-            StatusManager.SetEquipmentEvents(player.GetEquipmentEvents());
+            StatusManager.SetEquipmentsContainer(player.GetEquipmentContainer());
 
             // Abilities
             BattleAbility[] playerAbilities = new BattleAbility[4];
-            playerAbilities[0] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[0], player.GetEquipmentEvents(), StatusManager);
-            playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[1], player.GetEquipmentEvents(), StatusManager);
-            playerAbilities[2] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[2], player.GetEquipmentEvents(), StatusManager);
-            playerAbilities[3] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[3], player.GetEquipmentEvents(), StatusManager);
-            BattleAbility ultimate = BattleAbilityFactory.GetBattleAbility(playerAbilityData[4], player.GetEquipmentEvents(), StatusManager);
+            playerAbilities[0] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[0], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[1], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[2] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[2], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[3] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[3], player.GetEquipmentContainer(), StatusManager);
+            BattleAbility ultimate = BattleAbilityFactory.GetBattleAbility(playerAbilityData[4], player.GetEquipmentContainer(), StatusManager);
 
             player.SetMainAbilities(playerAbilities, ultimate);
 
@@ -52,7 +52,7 @@ namespace Laresistance.Behaviours
             Combo[] combos = new Combo[combosData.Length];
             for (int i = 0; i < combos.Length; ++i)
             {
-                combos[i] = new Combo(combosData[i], player.GetEquipmentEvents(), StatusManager);
+                combos[i] = new Combo(combosData[i], player.GetEquipmentContainer(), StatusManager);
             }
             player.SetCombos(combos);
 
@@ -61,19 +61,19 @@ namespace Laresistance.Behaviours
             {
                 foreach (var md in startingMinions)
                 {
-                    Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentEvents(), StatusManager);
+                    Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentContainer(), StatusManager);
                     player.EquipMinion(m);
                 }
 
                 foreach (var cd in startingConsumables)
                 {
-                    Consumable c = ConsumableFactory.GetConsumable(cd, player.GetEquipmentEvents(), StatusManager);
+                    Consumable c = ConsumableFactory.GetConsumable(cd, player.GetEquipmentContainer(), StatusManager);
                     player.AddConsumable(c);
                 }
 
                 foreach (var eq in startingEquipments)
                 {
-                    Equipment e = EquipmentFactory.GetEquipment(eq, player.GetEquipmentEvents(), StatusManager);
+                    Equipment e = EquipmentFactory.GetEquipment(eq, StatusManager);
                     player.EquipEquipment(e);
                 }
             }

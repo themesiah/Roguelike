@@ -16,35 +16,32 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.DamageOverTime;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetAttackPower?.Invoke(ref power);
-            equipmentEvents?.OnGetAttackPowerFlat?.Invoke(ref power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.DotDamage, power);
             power = (int)(power * SelfStatus.GetDamageModifier());
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAttackAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAttackAbilityBloodCostFlat?.Invoke(bloodRef);
-            target.ApplyDamageOverTime(GetPower(level, equipmentEvents));
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
+            target.ApplyDamageOverTime(GetPower(level, equipments));
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
             string textId = "EFF_DOT_DESC";
-            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipmentEvents), GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue(), GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() });
+            return Texts.GetText(textId, new object[] { GetTargetString(), GetPower(level, equipments), GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue(), GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() });
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipmentEvents).ToString();
+            return GetPower(level, equipments).ToString();
         }
 
         public override string GetAnimationTrigger()

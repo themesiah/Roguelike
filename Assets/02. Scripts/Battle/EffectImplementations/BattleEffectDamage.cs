@@ -17,41 +17,37 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Damage;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetAttackPower?.Invoke(ref power);
-            equipmentEvents?.OnGetAttackPowerFlat?.Invoke(ref power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AttackPower, power);
             power = (int)(power * SelfStatus.GetDamageModifier());
             power = System.Math.Max(1, power);
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            PerformAttackEffect(target, level, equipmentEvents, bloodRef);
+            PerformAttackEffect(target, level, equipments, bloodRef);
         }
 
-        protected int PerformAttackEffect(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected int PerformAttackEffect(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAttackAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAttackAbilityBloodCostFlat?.Invoke(bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
             int damageDone = 0;
             if (UnityEngine.Random.value <= SelfStatus.GetHitChance())
             {
-                int damage = GetPower(level, equipmentEvents);
-                damageDone = target.health.TakeDamage(damage, target.GetEquipmentEvents());
+                int damage = GetPower(level, equipments);
+                damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer());
                 int retaliation = 0;
-                target.GetEquipmentEvents()?.OnRetaliationDamage?.Invoke(ref damage, ref retaliation);
-                target.GetEquipmentEvents()?.OnRetaliationDamageFlat?.Invoke(ref damage, ref retaliation);
+                retaliation = target.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.RetaliationDamage, retaliation);
                 if (retaliation > 0)
                 {
-                    SelfStatus.health.TakeDamage(retaliation, equipmentEvents);
+                    SelfStatus.health.TakeDamage(retaliation, equipments);
                 }
             } else
             {
@@ -60,15 +56,15 @@ namespace Laresistance.Battle
             return damageDone;
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
             string textId = "EFF_DAMAGE_DESC";
-            return Texts.GetText(textId, new object[] { GetPower(level, equipmentEvents), GetTargetString() });
+            return Texts.GetText(textId, new object[] { GetPower(level, equipments), GetTargetString() });
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipmentEvents).ToString();
+            return GetPower(level, equipments).ToString();
         }
 
         public override string GetAnimationTrigger()

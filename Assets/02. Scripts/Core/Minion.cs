@@ -31,11 +31,11 @@ namespace Laresistance.Core
             Level = level;
         }
 
-        public void SetEquipmentEvents(EquipmentEvents equipmentEvents)
+        public void SetEquipmentsContainer(EquipmentsContainer equipments)
         {
             foreach(var ability in abilities)
             {
-                ability.SetEquipmentEvents(equipmentEvents);
+                ability.SetEquipmentsContainer(equipments);
             }
         }
 
@@ -50,7 +50,6 @@ namespace Laresistance.Core
         public int GetEffectPower(int index)
         {
             return 0;
-            //return ability.GetEffectPower(index, Level);
         }
 
         public bool SetInSlot(Player player)

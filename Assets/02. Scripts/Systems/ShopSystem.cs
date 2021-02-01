@@ -66,11 +66,11 @@ namespace Laresistance.Systems
             }
         }
 
-        public void UpdateOfferCosts(EquipmentEvents equipmentEvents)
+        public void UpdateOfferCosts(EquipmentsContainer equipments)
         {
             foreach(var offer in offers)
             {
-                offer.SetNewCost(equipmentEvents.OnShopPrice);
+                offer.SetNewCost(equipments);
             }
         }
     }

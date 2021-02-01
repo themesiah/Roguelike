@@ -1,5 +1,6 @@
 ﻿using Laresistance.Battle;
 using Laresistance.Data;
+using Laresistance.Core;
 using UnityEngine;
 using UnityEngine.Events;
 using GamedevsToolbox.ScriptableArchitecture.Values;
@@ -49,7 +50,7 @@ namespace Laresistance.Behaviours
             BattleAbility[] abilities = new BattleAbility[enemyData.AbilitiesData.Length];
             for(int i = 0; i < enemyData.AbilitiesData.Length; ++i)
             {
-                abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], null, StatusManager);
+                abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], new EquipmentsContainer(), StatusManager);
             }
 
             AbilityInputProcessor = new EnemyAbilityManager(abilities, enemyLevel, animator);
@@ -72,7 +73,7 @@ namespace Laresistance.Behaviours
         public virtual RewardData GetReward()
         {
             int bloodToGet = enemyData.BaseBloodReward * enemyLevel;
-            playerDataRef.Get().player.GetEquipmentEvents().OnGetExtraBlood?.Invoke(ref bloodToGet);
+            bloodToGet = playerDataRef.Get().player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ExtraBlood, bloodToGet);
             RewardData rewardData = new RewardData(bloodToGet, 0, null, null, null, null);
             return rewardData;
         }

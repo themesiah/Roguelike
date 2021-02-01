@@ -1,4 +1,6 @@
-﻿using Laresistance.Battle;
+﻿using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Battle;
+using Laresistance.Equipments;
 using System.Collections.Generic;
 
 namespace Laresistance.Core
@@ -6,14 +8,12 @@ namespace Laresistance.Core
     public class Player : ShowableElement
     {
         private static int MAX_MINIONS = 3;
-        private static int MAX_EQUIPS = 4;
         private static int MAX_CONSUMABLES = 3;
 
         private Minion[] minions;
         private List<Minion> reservedMinions;
-        private Equipment[] equipments;
         private Consumable[] consumables;
-        private EquipmentEvents equipmentEvents = null;
+        private EquipmentsContainer equipmentsContainer;
         public BattleStatusManager statusManager { get; private set; }
         public BattleAbility[] characterAbilities { get; private set; }
         public BattleAbility ultimateAbility { get; private set; }
@@ -23,10 +23,9 @@ namespace Laresistance.Core
         {
             minions = new Minion[MAX_MINIONS];
             reservedMinions = new List<Minion>();
-            equipments = new Equipment[MAX_EQUIPS];
+            equipmentsContainer = new EquipmentsContainer();
             consumables = new Consumable[MAX_CONSUMABLES];
             this.statusManager = statusManager;
-            InitEquipmentEvents();
         }
 
         #region Minions
@@ -74,7 +73,6 @@ namespace Laresistance.Core
                 {
                     minions[i] = minion;
                     minion.SetStatusManager(statusManager);
-                    minion.SetEquipmentEvents(equipmentEvents);
                     return true;
                 }
             }
@@ -128,12 +126,12 @@ namespace Laresistance.Core
         #region Equipments
         public Equipment[] GetEquipments()
         {
-            return equipments;
+            return equipmentsContainer.Equipments;
         }
 
-        public EquipmentEvents GetEquipmentEvents()
+        public EquipmentsContainer GetEquipmentContainer()
         {
-            return equipmentEvents;
+            return equipmentsContainer;
         }
 
         public int EquippedEquipmentsQuantity
@@ -141,7 +139,7 @@ namespace Laresistance.Core
             get
             {
                 int equipmentQuantity = 0;
-                foreach (Equipment e in equipments)
+                foreach (Equipment e in GetEquipments())
                 {
                     if (e != null)
                     {
@@ -152,30 +150,14 @@ namespace Laresistance.Core
             }
         }
 
-        private void InitEquipmentEvents()
-        {
-            if (equipmentEvents == null)
-            {
-                equipmentEvents = new EquipmentEvents();
-            }
-        }
-
         public bool EquipEquipment(Equipment equipment)
         {
-            if (equipment == null || equipment.Slot == -1 || equipments[equipment.Slot] != null)
-                throw new System.Exception("Can't equip. Equipment does not exist, or invalid slot");
-            equipments[equipment.Slot] = equipment;
-            equipment.EquipEquipment();
-            return true;
+            return equipmentsContainer.EquipEquipment(equipment);
         }
 
         public bool UnequipEquipment(Equipment equipment)
         {
-            if (equipment == null || equipment.Slot == -1 || equipments[equipment.Slot] != equipment)
-                throw new System.Exception("Can't unequip. Equipment does not exist, or invalid slot");
-            equipments[equipment.Slot] = null;
-            equipment.UnequipEquipment();
-            return true;
+            return equipmentsContainer.UnequipEquipment(equipment);
         }
         #endregion
 

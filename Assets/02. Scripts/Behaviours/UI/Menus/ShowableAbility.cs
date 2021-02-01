@@ -22,6 +22,13 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Color nonInteractableColor = default;
 
+        private Player player;
+
+        public void SetPlayer(Player player)
+        {
+            this.player = player;
+        }
+
         public void SetupShowableElement(ShowableElement showableElement)
         {
             if (showableElement == null)

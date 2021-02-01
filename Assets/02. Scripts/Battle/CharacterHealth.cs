@@ -81,7 +81,7 @@ namespace Laresistance.Battle
             OnHealed?.Invoke(this, power, currentHealth);
         }
 
-        public int TakeDamage(int power, EquipmentEvents equipmentEvents)
+        public int TakeDamage(int power, EquipmentsContainer equipments)
         {
             if (currentHealth <= 0)
                 return 0;
@@ -113,8 +113,7 @@ namespace Laresistance.Battle
                 }
             }
 
-            equipmentEvents?.OnDamageReceivedModifier?.Invoke(ref remainingPower);
-            equipmentEvents?.OnDamageReceivedModifierFlat?.Invoke(ref remainingPower);
+            remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
             currentHealth -= remainingPower;
             currentHealth = System.Math.Max(currentHealth, 0);
 
@@ -164,10 +163,10 @@ namespace Laresistance.Battle
             }
         }
 
-        public void RecalculateMaxHealth(EquipmentEvents equipmentEvents)
+        public void RecalculateMaxHealth(EquipmentsContainer equipments)
         {
             maxHealth = originalMaxHealth;
-            equipmentEvents?.OnGetMaxHealth(ref maxHealth);
+            maxHealth = equipments.ModifyValue(Equipments.EquipmentSituation.MaxHealth, maxHealth);
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;

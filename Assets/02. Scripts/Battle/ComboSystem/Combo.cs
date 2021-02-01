@@ -11,10 +11,10 @@ namespace Laresistance.Battle
         public ComboCondition comboCondition { get; private set; }
         public int ComboLength { get { return comboCondition.ConditionLength; } }
 
-        public Combo(ComboData comboData, EquipmentEvents equipmentEvents, BattleStatusManager statusManager)
+        public Combo(ComboData comboData, EquipmentsContainer equipments, BattleStatusManager statusManager)
         {
             this.comboData = comboData;
-            comboAbility = BattleAbilityFactory.GetBattleAbility(comboData.ComboAbility, equipmentEvents, statusManager);
+            comboAbility = BattleAbilityFactory.GetBattleAbility(comboData.ComboAbility, equipments, statusManager);
             comboCondition = new ComboCondition(comboData.ComboCondition);
         }
 

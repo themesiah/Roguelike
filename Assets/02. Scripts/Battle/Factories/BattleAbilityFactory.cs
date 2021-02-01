@@ -7,8 +7,9 @@ namespace Laresistance.Battle
 {
     public class BattleAbilityFactory
     {
-        public static BattleAbility GetBattleAbility(AbilityData abilityData, EquipmentEvents events, BattleStatusManager battleStatus)
+        public static BattleAbility GetBattleAbility(AbilityData abilityData, EquipmentsContainer equipments, BattleStatusManager battleStatus)
         {
+            UnityEngine.Assertions.Assert.IsNotNull(equipments);
             List<BattleEffect> effects = new List<BattleEffect>();
             bool shield = false;
             bool offensive = false;
@@ -27,7 +28,7 @@ namespace Laresistance.Battle
             }
             effects[0].SetAnimationPrimaryEffect();
 
-            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cost, abilityData.Weight, abilityData.Cooldown, battleStatus, events, abilityData.Icon, abilityData);
+            BattleAbility battleAbility = new BattleAbility(effects, abilityData.Cost, abilityData.Weight, abilityData.Cooldown, battleStatus, equipments, abilityData.Icon, abilityData);
             if (shield)
             {
                 battleAbility.SetShieldAbility();

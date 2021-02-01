@@ -37,7 +37,7 @@ namespace Laresistance.Battle
             primaryEffect = true;
         }
 
-        public virtual int GetPower(int level, EquipmentEvents equipmentEvents)
+        public virtual int GetPower(int level, EquipmentsContainer equipments)
         {
             if (level <= 0)
                 throw new System.Exception("Effect level should be greater than 0");
@@ -49,7 +49,7 @@ namespace Laresistance.Battle
             Power = power;
         }
 
-        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentEvents equipmentEvents, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
+        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentsContainer equipments, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             List<BattleStatusManager> targets = GetTargets(allies, enemies);
             if (primaryEffect)
@@ -67,10 +67,10 @@ namespace Laresistance.Battle
                 targetPoint = targetPoint / targets.Count;
                 animator.SetAttackPosition(targetPoint);
             }
-            targets.ForEach((target) => PerformEffectOnTarget(target, level, equipmentEvents, bloodRef));
+            targets.ForEach((target) => PerformEffectOnTarget(target, level, equipments, bloodRef));
         }
 
-        protected abstract void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef);
+        protected abstract void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef);
 
         public abstract EffectType EffectType { get; }
 
@@ -129,8 +129,8 @@ namespace Laresistance.Battle
             return statuses;
         }
 
-        public abstract string GetEffectString(int level, EquipmentEvents equipmentEvents);
-        public abstract string GetShortEffectString(int level, EquipmentEvents equipmentEvents);
+        public abstract string GetEffectString(int level, EquipmentsContainer equipments);
+        public abstract string GetShortEffectString(int level, EquipmentsContainer equipments);
         protected string GetTargetString()
         {
             string textId = "";

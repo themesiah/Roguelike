@@ -16,34 +16,31 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Shield;
 
-        public override int GetPower(int level, EquipmentEvents equipmentEvents)
+        public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            base.GetPower(level, equipmentEvents);
+            base.GetPower(level, equipments);
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
-            equipmentEvents?.OnGetPower?.Invoke(ref power);
-            equipmentEvents?.OnGetShieldPower?.Invoke(ref power);
-            equipmentEvents?.OnGetShieldPowerFlat?.Invoke(ref power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            power = equipments.ModifyValue(Equipments.EquipmentSituation.ShieldPower, power);
             return power;
         }
 
-        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentEvents equipmentEvents, ScriptableIntReference bloodRef = null)
+        protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            equipmentEvents?.OnGetAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetShieldAbilityBloodCost?.Invoke(bloodRef);
-            equipmentEvents?.OnGetAbilityBloodCostFlat?.Invoke(bloodRef);
-            equipmentEvents?.OnGetShieldAbilityBloodCost?.Invoke(bloodRef);
-            target.health.AddShield(GetPower(level, equipmentEvents));
+            equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
+            equipments.ModifyValue(Equipments.EquipmentSituation.ShieldBloodCost, bloodRef);
+            target.health.AddShield(GetPower(level, equipments));
         }
 
-        public override string GetEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetEffectString(int level, EquipmentsContainer equipments)
         {
             string textId = "EFF_SHIELD_DESC";
-            return Texts.GetText(textId, GetPower(level, equipmentEvents));
+            return Texts.GetText(textId, GetPower(level, equipments));
         }
 
-        public override string GetShortEffectString(int level, EquipmentEvents equipmentEvents)
+        public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipmentEvents).ToString();
+            return GetPower(level, equipments).ToString();
         }
 
         public override string GetAnimationTrigger()

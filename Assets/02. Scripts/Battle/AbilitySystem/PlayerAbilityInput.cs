@@ -19,8 +19,20 @@ namespace Laresistance.Battle
         public Queue<BattleAbility> nextAbilitiesQueue { get; private set; }
 
         public BattleAbility[] AvailableAbilities { get { return availableAbilities; } }
-        public float NextCardProgress { get { return 1f-(renewTimer / GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue()); } }
-        public float NextShuffleProgress { get { return 1f - (shuffleTimer / GameConstantsBehaviour.Instance.shuffleCooldown.GetValue()); } }
+        public float NextCardProgress { get { return 1f - (renewTimer / TotalCardRenewCooldown); } }
+        public float NextShuffleProgress { get { return 1f - (shuffleTimer / TotalShuffleCooldown); } }
+        public float TotalCardRenewCooldown { get
+            {
+                float total = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+                total = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.RenewCardDelay, total);
+                return total;
+            } }
+        public float TotalShuffleCooldown { get
+            {
+                float total = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
+                total = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleDelay, total);
+                return total;
+            } }
         public List<int> abilitiesToUseIndexList { get; private set; }
 
         private List<AbilityExecutionData> abilitiesToUseList;
@@ -218,8 +230,8 @@ namespace Laresistance.Battle
             abilitiesToUseList.Clear();
             abilitiesToUseIndexList.Clear();
             InitializeCards();
-            shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
-            renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+            shuffleTimer = TotalShuffleCooldown;
+            renewTimer = TotalCardRenewCooldown;
             abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
         }
 
@@ -252,13 +264,13 @@ namespace Laresistance.Battle
         {
             if (!BattleAbilityManager.Executing && !BattleAbilityManager.AbilityInQueue && shuffleTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
             {
-                renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+                renewTimer = TotalCardRenewCooldown;
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
                 int[] discarded = DiscardAvailableAbilities();
                 OnShuffle?.Invoke(this, discarded);
                 battleStatus.AddEnergy(discarded.Length);
                 RenewAllAbilities();
-                shuffleTimer = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
+                shuffleTimer = TotalShuffleCooldown;
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
             }
         }
@@ -324,7 +336,7 @@ namespace Laresistance.Battle
                     availableAbilities[i] = nextAbilitiesQueue.Dequeue();
                     availableAbilities[i].CurrentPlayerSlot = i;
                     OnAbilityOnQueue?.Invoke(this, i, false);
-                    renewTimer = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+                    renewTimer = TotalCardRenewCooldown;
                     OnNextCardProgress?.Invoke(this, NextCardProgress);
                     OnAbilityOffQueue?.Invoke(this);
                     break;

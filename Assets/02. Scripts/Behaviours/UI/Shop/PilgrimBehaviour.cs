@@ -116,7 +116,7 @@ namespace Laresistance.Behaviours
                 int index = Random.Range(0, buyableMinionList.minionList.Count - 1);
                 if (!selectedMinionIndexes.Contains(index))
                 {
-                    Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], 1, player.GetEquipmentEvents(), statusManager);
+                    Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], 1, player.GetEquipmentContainer(), statusManager);
                     shopSystem.AddOffer(new ShopOffer(minion.Data.BaseBloodPrice, false, new RewardData(0, 0, minion, null, null, null)));
                     selectedMinionIndexes.Add(index);
                 }
@@ -126,7 +126,7 @@ namespace Laresistance.Behaviours
                 int index = Random.Range(0, consumableDatas.Count);
                 if (!selectedConsumableIndexes.Contains(index))
                 {
-                    Consumable c = ConsumableFactory.GetConsumable(consumableDatas[index], player.GetEquipmentEvents(), statusManager);
+                    Consumable c = ConsumableFactory.GetConsumable(consumableDatas[index], player.GetEquipmentContainer(), statusManager);
                     shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null)));
                     selectedConsumableIndexes.Add(index);
                 }
@@ -136,7 +136,7 @@ namespace Laresistance.Behaviours
                 int index = Random.Range(0, equipmentDatas.Count);
                 if (!selectedEquipmentIndexes.Contains(index))
                 {
-                    Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[index], player.GetEquipmentEvents(), playerDataBehaviourReference.Get().StatusManager);
+                    Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[index], playerDataBehaviourReference.Get().StatusManager);
                     shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null)));
                     selectedEquipmentIndexes.Add(index);
                 }
@@ -183,7 +183,7 @@ namespace Laresistance.Behaviours
                     shopUpgradeUIList.Add(shopOfferUI);
                     shopOfferUI.SetOfferKey(offerKeys[i]);
                     int upgradeCost = m.GetUpgradeCost();
-                    player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
+                    upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
                     shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
                     int currentIndex = i;
                     shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
@@ -196,14 +196,14 @@ namespace Laresistance.Behaviours
         {
             IShopOfferUI shopOfferUI = shopUpgradeUIList[index];
             int upgradeCost = m.GetUpgradeCost();
-            player.GetEquipmentEvents()?.OnUpgradePrice?.Invoke(ref upgradeCost);
+            upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
             shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
             shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
         }        
 
         private void UpdateShopPanel()
         {
-            shopSystem.UpdateOfferCosts(player.GetEquipmentEvents());
+            shopSystem.UpdateOfferCosts(player.GetEquipmentContainer());
             for(int i = 0; i < shopSystem.GetOffers().Count; ++i)
             {
                 shopOfferUIList[i].SetCost(shopSystem.GetOffers()[i].Cost);
