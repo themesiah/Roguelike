@@ -42,12 +42,12 @@ namespace Laresistance.Battle
             if (UnityEngine.Random.value <= SelfStatus.GetHitChance())
             {
                 int damage = GetPower(level, equipments);
-                damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer());
+                damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer(), equipments);
                 int retaliation = 0;
                 retaliation = target.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.RetaliationDamage, retaliation);
                 if (retaliation > 0)
                 {
-                    SelfStatus.health.TakeDamage(retaliation, equipments);
+                    SelfStatus.health.TakeDamage(retaliation, equipments, target.GetEquipmentsContainer());
                 }
             } else
             {

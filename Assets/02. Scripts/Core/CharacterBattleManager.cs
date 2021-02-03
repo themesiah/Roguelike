@@ -56,6 +56,7 @@ namespace Laresistance.Core
         {
             OnBattleEnd?.Invoke();
             StatusManager.ResetStatus();
+            StatusManager.BattleEnd();
             AbilityInputProcessor.BattleEnd();
         }
 

@@ -73,6 +73,7 @@ namespace Laresistance.Core
                 {
                     minions[i] = minion;
                     minion.SetStatusManager(statusManager);
+                    minion.SetEquipmentsContainer(GetEquipmentContainer());
                     return true;
                 }
             }

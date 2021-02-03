@@ -23,7 +23,8 @@ namespace Laresistance.Behaviours
                 GameObject prefab = selector.Get();
                 if (prefab != null)
                 {
-                    Instantiate(prefab, partyHolder);
+                    GameObject go = Instantiate(prefab, partyHolder);
+                    go.GetComponent<EnemyBattleBehaviour>().InitEnemy(0);
                 }
             }
 

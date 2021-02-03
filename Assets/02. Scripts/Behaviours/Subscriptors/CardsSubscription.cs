@@ -130,7 +130,10 @@ namespace Laresistance.Behaviours
 
         private void OnAbilityOnQueue(PlayerAbilityInput sender, int slot, bool onQueue)
         {
-            subscriptions[slot].OnAvailabilityChangedColor?.Invoke(!onQueue);    
+            if (slot >= 0 && slot <= 3)
+            {
+                subscriptions[slot].OnAvailabilityChangedColor?.Invoke(!onQueue);
+            }
         }
 
         private void OnAbilitiesToUseChanged(PlayerAbilityInput sender)
@@ -144,6 +147,12 @@ namespace Laresistance.Behaviours
                 if (index != 4)
                 {
                     BattleAbility ability = sender.AvailableAbilities[index];
+                    GameObject instance = abilityToUsePool.GetInstance(abilityToUseQueueParent);
+                    instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
+                    instance.transform.localScale = Vector3.one;
+                } else
+                {
+                    BattleAbility ability = sender.PlayerUltimate;
                     GameObject instance = abilityToUsePool.GetInstance(abilityToUseQueueParent);
                     instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
                     instance.transform.localScale = Vector3.one;

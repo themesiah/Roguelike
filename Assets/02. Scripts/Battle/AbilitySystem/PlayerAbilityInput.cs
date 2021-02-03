@@ -97,8 +97,7 @@ namespace Laresistance.Battle
                 AddAbilityToUseQueue(currentAbilityIndex);
             } else if (currentAbilityIndex == 4 && !abilitiesToUseIndexList.Contains(4))
             {
-                abilitiesToUseList.Add(new AbilityExecutionData() { index = 4, selectedTarget = GetSelectedTarget() });
-                abilitiesToUseIndexList.Add(4);
+                AddAbilityToUseQueue(currentAbilityIndex);
             }
 
             // If player selected an ability, deselect it
@@ -144,24 +143,27 @@ namespace Laresistance.Battle
 
         private void AddAbilityToUseQueue(int abilityInternalIndex)
         {
-            AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget(), ability = availableAbilities[abilityInternalIndex] };
             if (abilityInternalIndex == 4)
             {
                 abilitiesToUseList.Add(new AbilityExecutionData() { index = abilityInternalIndex, selectedTarget = GetSelectedTarget(), ability = player.ultimateAbility });
                 abilitiesToUseIndexList.Add(abilityInternalIndex);
                 abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
-            } else
-            if (availableAbilities[abilityInternalIndex].IsPrioritary())
-            {
-                abilitiesToUseList.Insert(0, aed);
-                abilitiesToUseIndexList.Insert(0, abilityInternalIndex);
-                abilitiesToUseDequeueTimer = 0f;
             }
             else
             {
-                abilitiesToUseList.Add(aed);
-                abilitiesToUseIndexList.Add(abilityInternalIndex);
-                abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+                AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget(), ability = availableAbilities[abilityInternalIndex] };
+                if (availableAbilities[abilityInternalIndex].IsPrioritary())
+                {
+                    abilitiesToUseList.Insert(0, aed);
+                    abilitiesToUseIndexList.Insert(0, abilityInternalIndex);
+                    abilitiesToUseDequeueTimer = 0f;
+                }
+                else
+                {
+                    abilitiesToUseList.Add(aed);
+                    abilitiesToUseIndexList.Add(abilityInternalIndex);
+                    abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+                }
             }
             OnAbilitiesToUseChanged?.Invoke(this);
             OnAbilityOnQueue?.Invoke(this, abilityInternalIndex, true);
@@ -229,6 +231,7 @@ namespace Laresistance.Battle
         {
             abilitiesToUseList.Clear();
             abilitiesToUseIndexList.Clear();
+            OnAbilitiesToUseChanged?.Invoke(this);
             InitializeCards();
             shuffleTimer = TotalShuffleCooldown;
             renewTimer = TotalCardRenewCooldown;
@@ -268,7 +271,9 @@ namespace Laresistance.Battle
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
                 int[] discarded = DiscardAvailableAbilities();
                 OnShuffle?.Invoke(this, discarded);
-                battleStatus.AddEnergy(discarded.Length);
+                int energyValue = discarded.Length;
+                energyValue = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleEnergyGain, energyValue);
+                battleStatus.AddEnergy(energyValue);
                 RenewAllAbilities();
                 shuffleTimer = TotalShuffleCooldown;
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
@@ -370,7 +375,7 @@ namespace Laresistance.Battle
             List<BattleAbility> readyAbilities = new List<BattleAbility>();
             foreach (BattleAbility ability in GetAbilities())
             {
-                if (ability != null && ability.CanBeUsed() && !AlreadyInAvailableAbilities(ability))
+                if (ability != null && ability.CanBeUsed())// && !AlreadyInAvailableAbilities(ability))
                 {
                     readyAbilities.Add(ability);
                 }
@@ -457,5 +462,7 @@ namespace Laresistance.Battle
         {
             return selectedTarget;
         }
+
+        public BattleAbility PlayerUltimate => player.ultimateAbility;
     }
 }

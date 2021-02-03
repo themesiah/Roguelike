@@ -7,10 +7,18 @@ namespace Laresistance.Equipments
     {
         [SerializeField]
         private int value = default;
+        [SerializeField]
+        private bool cantBeZero = true;
 
         public override int ModificationStrategy(int originalValue)
         {
-            return originalValue + value;
+            if (cantBeZero)
+            {
+                return System.Math.Max(0, originalValue + value);
+            } else
+            {
+                return originalValue + value;
+            }
         }
     }
 }

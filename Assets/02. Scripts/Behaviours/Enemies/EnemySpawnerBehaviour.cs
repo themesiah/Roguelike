@@ -18,6 +18,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private bool fixedDirection = false;
 
+        [SerializeField]
+        private int levelOverride = 0;
+
         private void Start()
         {
             if (!manualSpawn)
@@ -29,6 +32,7 @@ namespace Laresistance.Behaviours
         public void SpawnEnemy()
         {
             GameObject go = Instantiate(prefabList[Random.Range(0, prefabList.Count)], transform.parent);
+            go.GetComponent<EnemyBattleBehaviour>().InitEnemy(levelOverride);
             go.transform.position = transform.position;
             Vector3 scale = go.transform.localScale;
             if (fixedDirection)

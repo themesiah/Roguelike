@@ -115,6 +115,7 @@ namespace Laresistance.Battle
                         }
                     }
                 }
+                totalDamage = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.DotDamageReceived, totalDamage);
                 for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
                 {
                     TempDamageChange tdm = tempDamageModifications[i];
@@ -135,7 +136,7 @@ namespace Laresistance.Battle
                 }
                 if (totalDamage > 0)
                 {
-                    health.TakeDamage(totalDamage, null);
+                    health.TakeDamage(totalDamage, GetEquipmentsContainer(), new EquipmentsContainer());
                 }
                 health.Tick(delta);
             
@@ -250,6 +251,11 @@ namespace Laresistance.Battle
             blindStatuses.Clear();
             Stunned = false;
             OnResetStatus?.Invoke(this);
+        }
+
+        public void BattleEnd()
+        {
+            CurrentEnergy = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.AfterBattleEnergyLoss, CurrentEnergy);
         }
 
         public void Stun(float time)

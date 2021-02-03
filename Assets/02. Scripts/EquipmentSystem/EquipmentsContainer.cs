@@ -9,6 +9,10 @@ namespace Laresistance.Core
         private static int MAX_EQUIPS = 4;
         public Equipment[] Equipments { get; private set; }
 
+        public delegate void OnEquipmentEquipedHandler(EquipmentsContainer sender);
+        public event OnEquipmentEquipedHandler OnEquip;
+        public event OnEquipmentEquipedHandler OnUnequip;
+
         public EquipmentsContainer()
         {
             Equipments = new Equipment[MAX_EQUIPS];
@@ -57,10 +61,13 @@ namespace Laresistance.Core
 
         public bool EquipEquipment(Equipment equipment)
         {
-            if (equipment == null || equipment.Slot == -1 || Equipments[equipment.Slot] != null)
-                throw new System.Exception("Can't equip. Equipment does not exist, or invalid slot");
+            if (equipment == null || equipment.Slot == -1)
+                throw new System.Exception("Can't equip. Equipment does not exist.");
+            if (Equipments[equipment.Slot] != null)
+                throw new System.Exception("Can't equip. Slot already in use.");
             Equipments[equipment.Slot] = equipment;
             equipment.EquipEquipment();
+            OnEquip?.Invoke(this);
             return true;
         }
 
@@ -70,6 +77,7 @@ namespace Laresistance.Core
                 throw new System.Exception("Can't unequip. Equipment does not exist, or invalid slot");
             Equipments[equipment.Slot] = null;
             equipment.UnequipEquipment();
+            OnUnequip?.Invoke(this);
             return true;
         }
     }

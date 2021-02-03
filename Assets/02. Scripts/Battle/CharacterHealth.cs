@@ -72,6 +72,12 @@ namespace Laresistance.Battle
             currentShields = new List<Shield>();
         }
 
+        public void RegisterEquipmentEvents(EquipmentsContainer equipmentsContainer)
+        {
+            equipmentsContainer.OnEquip += RecalculateMaxHealth;
+            equipmentsContainer.OnUnequip += RecalculateMaxHealth;
+        }
+
         public void Heal(int power)
         {
             if (currentHealth <= 0)
@@ -81,7 +87,7 @@ namespace Laresistance.Battle
             OnHealed?.Invoke(this, power, currentHealth);
         }
 
-        public int TakeDamage(int power, EquipmentsContainer equipments)
+        public int TakeDamage(int power, EquipmentsContainer equipments, EquipmentsContainer damageDealerEquipments)
         {
             if (currentHealth <= 0)
                 return 0;
@@ -114,6 +120,7 @@ namespace Laresistance.Battle
             }
 
             remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
+            remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
             currentHealth -= remainingPower;
             currentHealth = System.Math.Max(currentHealth, 0);
 

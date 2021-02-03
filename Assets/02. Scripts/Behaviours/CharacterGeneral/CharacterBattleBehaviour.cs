@@ -28,7 +28,7 @@ namespace Laresistance.Behaviours
         protected IBattleAnimator animator;
         public CharacterBattleManager battleManager { get; protected set; }
 
-        protected virtual void Awake()
+        public virtual void Init()
         {
             ConfigurePrefab();
             SetupStatusManager();
@@ -79,14 +79,15 @@ namespace Laresistance.Behaviours
             extendedInfoArrow.SetActive(selected);
         }
 
-        public void OutsideBattleHeal(int heal)
+        public virtual void OutsideBattleHeal(int heal)
         {
-            StatusManager.health.Heal(heal);
+            int finalHeal = StatusManager.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.FountainHealing, heal);
+            StatusManager.health.Heal(finalHeal);
         }
 
-        public void OutsideBattleDamage(int damage)
+        public virtual void OutsideBattleDamage(int damage)
         {
-            StatusManager.health.TakeDamage(damage, null);
+            StatusManager.health.TakeDamage(damage, new EquipmentsContainer(), new EquipmentsContainer());
         }
 
         public abstract BattleAbility[] GetAbilities();

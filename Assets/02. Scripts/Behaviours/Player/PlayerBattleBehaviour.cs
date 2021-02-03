@@ -39,10 +39,15 @@ namespace Laresistance.Behaviours
 
         }
 
-        protected override void Awake()
+        private void Awake()
+        {
+            Init();
+        }
+
+        public override void Init()
         {
             SetAnimator(animatorReference);
-            base.Awake();
+            base.Init();
         }
 
         public void PerformPlayerAction(InputAction.CallbackContext context) => PerformAbility(context, 0);
@@ -80,6 +85,12 @@ namespace Laresistance.Behaviours
         public override BattleAbility[] GetAllAbilities()
         {
             return playerDataBehaviour.player.GetAllAbilities();
+        }
+
+        public override void OutsideBattleHeal(int heal)
+        {
+            base.OutsideBattleHeal(heal);
+            StatusManager.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.FountainBlood, bloodReference);
         }
     }
 }

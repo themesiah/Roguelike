@@ -36,6 +36,7 @@ namespace Laresistance.Behaviours
         {
             StatusManager = new BattleStatusManager(new CharacterHealth(150), effectTargetPivot, energyProductionRef.GetValue());
             player = new Player(StatusManager);
+            StatusManager.health.RegisterEquipmentEvents(player.GetEquipmentContainer());
             StatusManager.SetEquipmentsContainer(player.GetEquipmentContainer());
 
             // Abilities

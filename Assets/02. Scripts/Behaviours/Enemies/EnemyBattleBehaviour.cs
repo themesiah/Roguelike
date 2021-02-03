@@ -25,18 +25,30 @@ namespace Laresistance.Behaviours
         [SerializeField]
         protected UnityEvent<int> OnEnemyLevel;
 
-        protected int enemyLevel;
+        protected int enemyLevel = 0;
+
+        public void InitEnemy(int overrideLevel)
+        {
+            if (overrideLevel > 0)
+            {
+                enemyLevel = overrideLevel;
+            }
+            Init();
+        }
 
         protected void GenerateEnemyLevel()
         {
-            enemyLevel = System.Math.Max(1, (int)((currentLevel.GetValue() * levelVarianceRef.GetValue().x) + Random.Range(-levelVarianceRef.GetValue().y, levelVarianceRef.GetValue().y)));
+            if (enemyLevel == 0)
+            {
+                enemyLevel = System.Math.Max(1, (int)((currentLevel.GetValue() * levelVarianceRef.GetValue().x) + Random.Range(-levelVarianceRef.GetValue().y, levelVarianceRef.GetValue().y)));
+            }
             OnEnemyLevel?.Invoke(enemyLevel);
         }
 
         protected override void SetupStatusManager()
         {
             GenerateEnemyLevel();
-            StatusManager = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth * (int)(1f + (enemyLevel - 1) * 0.1f)), effectTargetPivot);
+            StatusManager = new BattleStatusManager(new CharacterHealth((int)(enemyData.MaxHealth * (1f + (enemyLevel - 1) * 0.1f))), effectTargetPivot);
             OnEnemyName?.Invoke(Texts.GetText(enemyData.NameRef));
         }
 

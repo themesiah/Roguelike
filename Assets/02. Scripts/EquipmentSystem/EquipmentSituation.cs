@@ -23,6 +23,12 @@
         ShuffleDelay,
         RenewCardDelay,
         StatusDuration,
-        DotDamage
+        DotDamage,
+        FountainHealing,
+        EnemyDamageReceived,
+        AfterBattleEnergyLoss,
+        DotDamageReceived,
+        FountainBlood,
+        ShuffleEnergyGain
     }
 }
