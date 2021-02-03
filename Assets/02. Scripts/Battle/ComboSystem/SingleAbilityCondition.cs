@@ -14,6 +14,7 @@ namespace Laresistance.Battle
 
         public override bool IsSatisfiedBy(BattleAbility candidate)
         {
+            UnityEngine.Assertions.Assert.IsNotNull(candidate);
             return candidate.data == abilityData;
         }
     }

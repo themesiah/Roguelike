@@ -19,19 +19,24 @@ namespace Laresistance.Battle
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);
-            int powerTemp = System.Math.Abs(100 - Power);
+            //int powerTemp = System.Math.Abs(100 - Power);
+            //int power = Mathf.CeilToInt(powerTemp * (1 + ((level - 1) * 0.05f)));
+            //
+            //power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
+            //power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
+            //
+            //if (Power > 100)
+            //{
+            //    power += 100;
+            //} else
+            //{
+            //    power = 100 - power;
+            //}
+            //return power;
+            int powerTemp = Power;
             int power = Mathf.CeilToInt(powerTemp * (1 + ((level - 1) * 0.05f)));
-
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
-
-            if (Power > 100)
-            {
-                power += 100;
-            } else
-            {
-                power = 100 - power;
-            }
             return power;
         }
 
@@ -56,16 +61,8 @@ namespace Laresistance.Battle
 
         public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            float modifier = GetModifier(level, equipments);
-            if (modifier > 1f)
-            {
-                modifier -= 1f;
-            }
-            else
-            {
-                modifier = 1f - modifier;
-            }
-            return modifier.ToString();
+            float modifier = GetPower(level, equipments);
+            return string.Format("{0}%", modifier.ToString());
         }
 
         public override string GetAnimationTrigger()

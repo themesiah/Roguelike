@@ -358,7 +358,7 @@ namespace Laresistance.Battle
 
         private void OnAbilityExecuted(BattleAbility ability, int slot)
         {
-            if (availableAbilities.Length > slot && slot >= 0)
+            if (availableAbilities.Length > slot && slot >= 0 && !ability.data.IsComboSkill)
             {
                 if (GetAbilitiesCount() == 4 || GetAbilitiesCount() == 5)
                 {

@@ -18,7 +18,7 @@ namespace Laresistance.Battle
 
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
-            return 0;
+            return 1;
         }
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)

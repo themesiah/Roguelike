@@ -40,5 +40,9 @@ namespace Laresistance.Data
         [SerializeField]
         private bool isBasicSkill = false;
         public bool IsBasicSkill { get { return isBasicSkill; } }
+
+        [SerializeField]
+        private bool isComboSkill = false;
+        public bool IsComboSkill { get { return isComboSkill; } }
     }
 }

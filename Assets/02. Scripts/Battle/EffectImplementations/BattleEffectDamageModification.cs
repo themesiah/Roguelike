@@ -40,7 +40,7 @@ namespace Laresistance.Battle
 
         public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return GetPower(level, equipments).ToString();
+            return string.Format("{0}%", GetPower(level, equipments));
         }
 
         public override string GetAnimationTrigger()

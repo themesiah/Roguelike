@@ -167,7 +167,7 @@ namespace Laresistance.Battle
                 builder.Append(effect.GetShortEffectString(level, equipmentsContainer));
                 if (i < effects.Count - 1)
                 {
-                    builder.Append(" / ");
+                    builder.Append("/");
                 }
             }
             return builder.ToString();
