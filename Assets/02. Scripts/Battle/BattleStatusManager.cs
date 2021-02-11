@@ -95,7 +95,7 @@ namespace Laresistance.Battle
             CurrentEnergy = 0f;
         }
 
-        public void ProcessStatus(float delta, float energySpeedModifier)
+        public void ProcessStatus(float delta, float speedModifier)
         {
             if (!BattleAbilityManager.Executing || BattleAbilityManager.executingBasicSkill)
             {
@@ -103,7 +103,7 @@ namespace Laresistance.Battle
                 for(int i = damageOverTimes.Count-1; i >= 0; --i)
                 {
                     DamageOverTime dot = damageOverTimes[i];
-                    dot.timer += delta * energySpeedModifier;
+                    dot.timer += delta * speedModifier;
                     if (dot.timer >= GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue())
                     {
                         totalDamage += dot.power;
@@ -119,7 +119,7 @@ namespace Laresistance.Battle
                 for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
                 {
                     TempDamageChange tdm = tempDamageModifications[i];
-                    tdm.timer += delta * energySpeedModifier;
+                    tdm.timer += delta * speedModifier;
                     if (tdm.timer >= GameConstantsBehaviour.Instance.damageModifierDuration.GetValue())
                     {
                         tempDamageModifications.Remove(tdm);
@@ -128,10 +128,19 @@ namespace Laresistance.Battle
                 for (int i = speedModifiers.Count - 1; i >= 0; --i)
                 {
                     SpeedEffect se = speedModifiers[i];
-                    se.timer += delta * energySpeedModifier;
+                    se.timer += delta * speedModifier;
                     if (se.timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
                     {
                         speedModifiers.Remove(se);
+                    }
+                }
+                for (int i = blindStatuses.Count - 1; i >= 0; --i)
+                {
+                    BlindStatus bs = blindStatuses[i];
+                    bs.timer += delta * speedModifier;
+                    if (bs.timer >= GameConstantsBehaviour.Instance.blindDuration.GetValue())
+                    {
+                        blindStatuses.Remove(bs);
                     }
                 }
                 if (totalDamage > 0)
@@ -142,7 +151,7 @@ namespace Laresistance.Battle
             
                 if (Stunned)
                 {
-                    stunTimer -= delta * energySpeedModifier;
+                    stunTimer -= delta * speedModifier;
                     if (stunTimer <= 0f)
                     {
                         Stunned = false;
@@ -152,7 +161,7 @@ namespace Laresistance.Battle
                 {
                     float currentProduction = energyPerSecond;
                     currentProduction = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, currentProduction);
-                    CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetSpeedModifier() * energySpeedModifier);
+                    CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetSpeedModifier() * speedModifier);
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
                 }
                 OnTick?.Invoke(this, delta);

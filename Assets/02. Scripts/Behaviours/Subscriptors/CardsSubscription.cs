@@ -1,8 +1,10 @@
 ﻿using Laresistance.Battle;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using GamedevsToolbox.ScriptableArchitecture.Pools;
+using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
@@ -49,12 +51,17 @@ namespace Laresistance.Behaviours
 
 
         private ScriptablePool particlesPool;
+        private RectTransform emptyQueueAnimatorObject;
 
         private void Awake()
         {
             particlesPool = PoolInitializerBehaviour.GetPool("Energy");
             nextAbilityQueuePool.InitPool();
             abilityToUsePool.InitPool();
+            GameObject go = new GameObject("EmptyQueueAnimator");
+            emptyQueueAnimatorObject = go.AddComponent<RectTransform>();
+            emptyQueueAnimatorObject.gameObject.SetActive(false);
+            emptyQueueAnimatorObject.SetParent(null);
         }
 
         private void OnEnable()
@@ -173,6 +180,7 @@ namespace Laresistance.Behaviours
 
         private void OnRenewedAbilities(PlayerAbilityInput sender)
         {
+            DeactivateQueueAnimator();
             nextAbilityQueuePool.SoftFreeAll();
             foreach (BattleAbility ability in sender.nextAbilitiesQueue)
             {
@@ -188,6 +196,7 @@ namespace Laresistance.Behaviours
             {
                 nextAbilityQueuePool.FreeInstance(nextAbilityQueueParent.GetChild(0).gameObject);
             }
+            ActivateQueueAnimator();
         }
 
         private void OnAbilityExecutedFromQueue(PlayerAbilityInput sender, BattleAbility ability)
@@ -195,6 +204,40 @@ namespace Laresistance.Behaviours
             GameObject animationIconInstance = Instantiate(animationIconPrefab, animationPivot, false);
             animationIconInstance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
             animationIconInstance.transform.localPosition = Vector3.zero;
+        }
+
+        private void ActivateQueueAnimator()
+        {
+            emptyQueueAnimatorObject.SetParent(nextAbilityQueueParent);
+            emptyQueueAnimatorObject.SetAsFirstSibling();
+            emptyQueueAnimatorObject.localScale = Vector3.one;
+            emptyQueueAnimatorObject.sizeDelta = new Vector2(1f, 100f);
+            emptyQueueAnimatorObject.gameObject.SetActive(true);
+            StartCoroutine(QueueAnimatorActivationCoroutine());
+        }
+
+        private void DeactivateQueueAnimator()
+        {
+            emptyQueueAnimatorObject.gameObject.SetActive(true);
+            emptyQueueAnimatorObject.SetParent(null);
+        }
+
+        private IEnumerator QueueAnimatorActivationCoroutine()
+        {
+            float timer = 1f;
+
+            while (timer > 0f)
+            {
+                timer -= Time.deltaTime;
+
+                emptyQueueAnimatorObject.sizeDelta = Vector2.right + Vector2.up * timer * 100f;
+                LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)nextAbilityQueueParent);
+                Canvas.ForceUpdateCanvases();
+
+                yield return null;
+            }
+
+            DeactivateQueueAnimator();
         }
     }
 }

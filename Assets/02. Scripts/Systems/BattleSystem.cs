@@ -71,6 +71,7 @@ namespace Laresistance.Systems
         public void EndBattle()
         {
             UnityEngine.Debug.Log("End battle!");
+            PerformTimeStop(false);
             BattleAbilityManager.StopBattle();
             Unselect();
             playerBattleManager.EndBattle();
@@ -275,7 +276,7 @@ namespace Laresistance.Systems
 
         public void PerformTimeStop(bool activate)
         {
-            if (stoppedTime != activate)
+            if (stoppedTime != activate && playerBattleManager != null)
             {
                 OnTimeStopActivation?.Invoke(this, activate);
                 stopTimeDelayTimer = GameConstantsBehaviour.Instance.stopTimeDelay.GetValue();

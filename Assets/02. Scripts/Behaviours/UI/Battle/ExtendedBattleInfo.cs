@@ -2,13 +2,14 @@
 using UnityEngine.UI;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using GamedevsToolbox.Utils;
 
 namespace Laresistance.Behaviours
 {
     public class ExtendedBattleInfo : MonoBehaviour
     {
-        private static Vector3 ARROW_EULER_LEFT = Vector3.zero;
-        private static Vector3 ARROW_EULER_RIGHT = Vector3.forward * 180f;
+        private static Vector3 ARROW_EULER_LEFT = Vector3.forward * 90f;
+        private static Vector3 ARROW_EULER_RIGHT = Vector3.forward * -90f;
 
         [SerializeField]
         private HorizontalOrVerticalLayoutGroup[] layouts = default;
@@ -23,19 +24,29 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform arrowHolder = default;
         [SerializeField]
-        private Text[] infoTextsForColorChange = default;
+        private Text[] infoTextsForSizeChange = default;
         [SerializeField]
-        private Color defaultTextColor = default;
+        private int textSelectedSize = default;
         [SerializeField]
-        private Color textSelectedColor = default;
+        private Vector2 sliderSelectedSize = default;
+        [SerializeField]
+        private RectTransform healthSliderTransform = default;
+        [SerializeField]
+        private MaskSlider healthSlider = default;
         [SerializeField]
         private bool isPlayer = default;
+        [SerializeField]
+        private Transform[] extraObjectsToReparent = default;
 
         private Transform originalParent;
+        private int originalTextSize;
+        private Vector2 originalSliderSize;
 
         private void Awake()
         {
             originalParent = transform.parent;
+            originalTextSize = infoTextsForSizeChange[0].fontSize;
+            originalSliderSize = healthSliderTransform.sizeDelta;
         }
 
         public void SetupForBattle()
@@ -62,18 +73,34 @@ namespace Laresistance.Behaviours
                 arrowHolder.localEulerAngles = ARROW_EULER_RIGHT;
             }
 
-            foreach(Text t in infoTextsForColorChange)
+            if (isPlayer)
             {
-                t.color = defaultTextColor;
+                Selected();
+            }
+            else
+            {
+                Unselected();
             }
 
             transform.SetParent(sideObject.transform, false);
+
+            foreach(Transform extra in extraObjectsToReparent)
+            {
+                extra.SetParent(sideObject.transform, false);
+                extra.gameObject.SetActive(true);
+            }
         }
 
         public void Unsetup()
         {
             transform.SetParent(originalParent, false);
             gameObject.SetActive(false);
+
+            foreach (Transform extra in extraObjectsToReparent)
+            {
+                extra.SetParent(originalParent, false);
+                extra.gameObject.SetActive(false);
+            }
         }
 
         public void SetSelectionArrow(GameObject arrow)
@@ -85,17 +112,34 @@ namespace Laresistance.Behaviours
 
         public void Selected()
         {
-            foreach (Text t in infoTextsForColorChange)
+            foreach (Text t in infoTextsForSizeChange)
             {
-                t.color = textSelectedColor;
+                t.fontSize = textSelectedSize;
             }
+            healthSliderTransform.sizeDelta = sliderSelectedSize;
+            healthSlider.UpdateSlider();
+            RebuildLayouts();
         }
 
         public void Unselected()
         {
-            foreach (Text t in infoTextsForColorChange)
+            foreach (Text t in infoTextsForSizeChange)
             {
-                t.color = defaultTextColor;
+                t.fontSize = originalTextSize;
+            }
+            healthSliderTransform.sizeDelta = originalSliderSize;
+            healthSlider.UpdateSlider();
+            RebuildLayouts();
+        }
+
+        private void RebuildLayouts()
+        {
+            Canvas.ForceUpdateCanvases();
+            foreach (var layout in layouts)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layout.transform);
+                layout.CalculateLayoutInputHorizontal();
+                layout.CalculateLayoutInputVertical();
             }
         }
     }

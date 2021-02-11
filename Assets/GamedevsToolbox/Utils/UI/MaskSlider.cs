@@ -26,16 +26,16 @@ namespace GamedevsToolbox.Utils
             }
         }
 
-        //public void SetValue(float value)
-        //{
-        //    Value = value;
-        //}
-
         private void ChangeSlider()
         {
             var size = fill.sizeDelta;
             size.x = sliderValue * background.rect.width;
             fill.sizeDelta = size;
+        }
+
+        public void UpdateSlider()
+        {
+            ChangeSlider();
         }
     }
 }

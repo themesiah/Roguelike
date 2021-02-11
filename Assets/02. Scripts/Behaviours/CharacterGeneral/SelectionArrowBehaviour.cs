@@ -11,6 +11,8 @@ namespace Laresistance.Behaviours
         private Vector3 targetPosition = default;
         [SerializeField]
         private Vector3 initialPosition = Vector3.zero;
+        [SerializeField]
+        private int selectionArrowIndex = 0;
 
         private void OnEnable()
         {
@@ -19,7 +21,7 @@ namespace Laresistance.Behaviours
 
         private void OnDisable()
         {
-            TweenFactory.RemoveTweenKey("SelectionArrow", TweenStopBehavior.DoNotModify);
+            TweenFactory.RemoveTweenKey("SelectionArrow" + selectionArrowIndex.ToString(), TweenStopBehavior.DoNotModify);
         }
 
         private void UpdateArrowPosition(ITween<Vector3> t)
@@ -34,12 +36,12 @@ namespace Laresistance.Behaviours
 
         private void ExecuteTween()
         {
-            TweenFactory.Tween("SelectionArrow", initialPosition, targetPosition, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, ExecuteReverseTween);
+            TweenFactory.Tween("SelectionArrow" + selectionArrowIndex.ToString(), initialPosition, targetPosition, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, ExecuteReverseTween);
         }
 
         private void ExecuteReverseTween(ITween<Vector3> t)
         {
-            TweenFactory.Tween("SelectionArrow", targetPosition, initialPosition, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, MoveCompleted);
+            TweenFactory.Tween("SelectionArrow" + selectionArrowIndex.ToString(), targetPosition, initialPosition, movementDuration, TweenScaleFunctions.Linear, UpdateArrowPosition, MoveCompleted);
         }
     }
 }
