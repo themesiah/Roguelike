@@ -306,8 +306,8 @@ namespace Laresistance.LevelGeneration
             {
                 linkType = HORIZONTAL_LINK_TYPES[Random.Range(0, HORIZONTAL_LINK_TYPES.Length)];
             }
-            current.AddLink(new RoomLink() { linkedRoom = linked, linkedRoomIndex = linked.RoomIndex, linkType = linkType, linkPosition = Random.Range(0, 3), minimalPath = minimalPath });
-            linked.AddLink(new RoomLink() { linkedRoom = current, linkedRoomIndex = current.RoomIndex, linkType = linkType, linkPosition = Random.Range(0, 3), minimalPath = minimalPath });
+            current.AddLink(new RoomLink() { linkedRoom = linked, linkedRoomIndex = linked.RoomIndex, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
+            linked.AddLink(new RoomLink() { linkedRoom = current, linkedRoomIndex = current.RoomIndex, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
         }
 
         private void GeneratePilgrimInteractable()

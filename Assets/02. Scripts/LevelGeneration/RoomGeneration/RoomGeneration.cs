@@ -8,12 +8,11 @@ namespace Laresistance.LevelGeneration
         private MapData mapData;
         private MapGeneration mapGeneration;
 
-
         public RoomGeneration(RoomData roomData, MapData mapData, MapGeneration mapGeneration)
         {
             this.roomData = roomData;
             this.mapData = mapData;
             this.mapGeneration = mapGeneration;
-        }        
+        }
     }
 }

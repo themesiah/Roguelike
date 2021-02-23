@@ -30,6 +30,7 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateInteractables();
             mapData.GenerateMovementTestRooms();
             mapData.GenerateRoomEnemies();
+            mapData.GenerateRoomsGrids();
             return mapData;
         }
 
