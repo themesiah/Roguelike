@@ -5,5 +5,6 @@
     {
         public RoomInteractableType roomInteractableType;
         public XYPair gridPosition;
+        public bool alreadySet;
     }
 }

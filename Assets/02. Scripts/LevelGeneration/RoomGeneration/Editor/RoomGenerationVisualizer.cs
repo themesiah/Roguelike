@@ -11,21 +11,12 @@ namespace Laresistance.LevelGeneration
         private static Vector2 NODE_WINDOW_SIZE = Vector2.one * 10f;
         private static float COORDINATES_SEPARATION = 20f;
         private static Vector2 ROOM_POSITION_OFFSET = Vector2.up * 150f + Vector2.right * 50f;
-        private static Vector2 NOISE_SCALE_MIN_MAX = RoomData.NOISE_SCALE_MIN_MAX;
-        private static Vector2 NOISE_WEIGHT_MIN_MAX = RoomData.NOISE_WEIGHT_MIN_MAX;
-        private static Vector2 NOISE_OFFSET_MIN_MAX = RoomData.NOISE_OFFSET_MIN_MAX;
 
         private MapData mapData = null;
         private RoomData roomData;
         private List<Rect> nodesWindows;
 
         private XYPair mapSize = new XYPair() { x = 4, y = 4 };
-        private float noiseScale = 1f;
-        private float noiseWeight = 1f;
-        private Vector2 noiseOffset = Vector2.one;
-
-        private Color[] pix;
-        private Texture2D noiseTex;
 
         [MenuItem("Laresistance/Room Generation Visualizer")]
         public static void ShowEditor()
@@ -52,7 +43,6 @@ namespace Laresistance.LevelGeneration
                 CreateMap();
             }
             roomData = mapData.FirstRoom.GetLinks()[0].linkedRoom;
-            roomData.SetNoiseData(noiseScale, noiseOffset, noiseWeight);
             roomData.GenerateRoom();
             return roomData;
         }
@@ -108,6 +98,22 @@ namespace Laresistance.LevelGeneration
                 foreach(var link in roomData.GetLinks())
                 {
                     int gridIndexPosition = MapGenerationUtils.CoordinatesToIndex(link.gridPosition, roomData.RoomSize.x);
+                    if (gridIndexPosition == i)
+                    {
+                        GUI.color = Color.green;
+                    }
+                }
+                foreach(var interactable in roomData.GetInteractables())
+                {
+                    int gridIndexPosition = MapGenerationUtils.CoordinatesToIndex(interactable.gridPosition, roomData.RoomSize.x);
+                    if (gridIndexPosition == i)
+                    {
+                        GUI.color = Color.blue;
+                    }
+                }
+                foreach(var enemy in roomData.GetRoomEnemies())
+                {
+                    int gridIndexPosition = MapGenerationUtils.CoordinatesToIndex(enemy.gridPosition, roomData.RoomSize.x);
                     if (gridIndexPosition == i)
                     {
                         GUI.color = Color.red;

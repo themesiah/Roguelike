@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GamedevsToolbox.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.LevelGeneration
@@ -13,11 +14,16 @@ namespace Laresistance.LevelGeneration
             public Vector2 noiseOffset;
         }
 
-        private static int MAX_AREA = 225;
-        private static float AREA_PER_ENEMY = 36f;
-        private static float AREA_PER_INTERACTABLE = 18f;
-        private static float AREA_PER_MOVEMENT_TEST = 24f;
-        private static float AREA_PER_ROOM_LINK = 18f;
+        //private static int MAX_AREA = 225;
+        //private static float AREA_PER_ENEMY = 36f;
+        //private static float AREA_PER_INTERACTABLE = 18f;
+        //private static float AREA_PER_MOVEMENT_TEST = 24f;
+        //private static float AREA_PER_ROOM_LINK = 18f;
+        private static int MAX_AREA = 500;
+        private static float AREA_PER_ENEMY = 50f;
+        private static float AREA_PER_INTERACTABLE = 25f;
+        private static float AREA_PER_MOVEMENT_TEST = 40f;
+        private static float AREA_PER_ROOM_LINK = 25f;
 
         private static int LEFT_LINK_OFFSET = 1;
         private static int RIGHT_LINK_OFFSET = 1;
@@ -82,7 +88,7 @@ namespace Laresistance.LevelGeneration
 
         public RoomLink GetLinkFromRoom(RoomData roomData)
         {
-            foreach(var link in roomConnections)
+            foreach (var link in roomConnections)
             {
                 if (link.linkedRoom == roomData)
                 {
@@ -176,11 +182,181 @@ namespace Laresistance.LevelGeneration
             roomPosition = GetRoomPosition();
             UnityEngine.Assertions.Assert.IsTrue(roomPosition.x >= 0f);
             UnityEngine.Assertions.Assert.IsTrue(roomPosition.y >= 0f);
+            // Setup grid
+            var nodes = GetScenarioNodes();
+            Grid = new AStarGrid(roomSize, nodes);
+            Grid.SetNeighbours();
             // Determinate link points on the limits of the room
             SetLinksPositionInGrid();
             // Create at least one minimal path between every link point with each other link point. If the room have a movement test that blocks the path, the minimal path will have to follow other rules. For a minimal path between the bottom of the room and the top, there is some % that there is an elevator involved.
+            GetLinksPaths();
+            // Determinate interactables position
+            DetermineInteractablesPosition();
+            // Create at least one minimal path between somewhere on the minimal path of the links and the rewards. If there are no minimal paths between links (just one link, end of path room), use the start of the room. As for the links minimal paths, there could be an elevator or a movement test.
+            CreateInteractablesPaths();
+            // Determinate nodes IN THE PATH that will contain enemies.
+            DetermineEnemiesPosition();
+        }
+
+        private void DetermineEnemiesPosition()
+        {
+            List<AStarNode> candidates = new List<AStarNode>();
+            foreach (var path in RoomPaths)
+            {
+                for (int i = 0; i < path.Length; ++i)
+                {
+                    if (i > 0 && i < path.Length - 1)
+                    {
+                        if (CheckValidEnemyPositionPlane(path, i) && !(CheckCandidatesInLine(path, candidates, i)))
+                        {
+                            candidates.Add(path[i]);
+                        }
+                    }
+                }
+            }
+            int remain = roomEnemies.Count - candidates.Count;
+            for (int i = 0; i < roomEnemies.Count; ++i)
+            {
+                var enemy = roomEnemies[i];
+                enemy.gridPosition = new XYPair();
+                if (candidates.Count > 0)
+                {
+                    int index = Random.Range(0, candidates.Count);
+                    enemy.gridPosition = MapGenerationUtils.IndexToCoordinates(candidates[index].Index, roomSize.x);
+                    candidates.RemoveAt(index);
+                }
+                roomEnemies[i] = enemy;
+            }
+            // Create new paths for the remaining enemies.
+            for (int k = roomEnemies.Count-remain; k < roomEnemies.Count; ++k)
+            {
+                int maxDistance = 0;
+                XYPair bestCandidate = new XYPair();
+                for (int i = LEFT_LINK_OFFSET; i < roomSize.x - RIGHT_LINK_OFFSET; ++i)
+                {
+                    for (int j = BOTTOM_LINK_OFFSET; j < roomSize.y - TOP_LINK_OFFSET; ++j)
+                    {
+                        XYPair candidate = new XYPair() { x = i, y = j };
+                        int value = InteractableDistanceValue(candidate);
+                        if (value > maxDistance)
+                        {
+                            maxDistance = value;
+                            bestCandidate = candidate;
+                        }
+                    }
+                }
+                var enemy = roomEnemies[k];
+                enemy.gridPosition = bestCandidate;
+                roomEnemies[k] = enemy;
+
+                AStarNode nodeCandidate = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(bestCandidate, roomSize.x)];
+                AStarAlgorithm algorithm = new RoomGenerationAStar();
+                AStarNode start;
+                if (RoomPaths.Count > 0)
+                {
+                    int index1 = Random.Range(0, RoomPaths.Count);
+                    UnityEngine.Assertions.Assert.IsTrue(RoomPaths.Count > index1, "Index was " + index1.ToString() + " in room " + RoomIndex.ToString());
+                    int index2 = Random.Range(0, RoomPaths[index1].Length);
+                    UnityEngine.Assertions.Assert.IsTrue(RoomPaths[index1].Length > index2);
+                    start = RoomPaths[index1][index2];
+                } else
+                {
+                    UnityEngine.Assertions.Assert.AreEqual(1, roomConnections.Count);
+                    start = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(roomConnections[0].gridPosition, roomSize.x)];
+                }
+                AStarNode[] path = algorithm.Compute(start, nodeCandidate);
+                UnityEngine.Assertions.Assert.IsNotNull(path);
+                RoomPaths.Add(path);
+            }
+        }
+
+        private bool CheckValidEnemyPositionPlane(AStarNode[] path, int i)
+        {
+            return System.Math.Abs(path[i - 1].Coordinates.x - path[i].Coordinates.x) == 1 && System.Math.Abs(path[i - 1].Coordinates.y - path[i].Coordinates.y) == 0 && System.Math.Abs(path[i].Coordinates.x - path[i + 1].Coordinates.x) == 1 && System.Math.Abs(path[i].Coordinates.y - path[i + 1].Coordinates.y) == 0;
+        }
+
+        private bool CheckCandidatesInLine(AStarNode[] path, List<AStarNode> candidates, int index)
+        {
+            // We check the line (before any change on Y coordinate) if there are any other candidate. If so, return true (there is a candidate). If not, return false.
+            int tempIndex = index-1;
+            AStarNode newCandidate = path[index];
+            while (tempIndex >= 0 && path[tempIndex].Coordinates.y == newCandidate.Coordinates.y)
+            {
+                if (candidates.Contains(path[tempIndex]))
+                {
+                    return true;
+                }
+                tempIndex--;
+            }
+            tempIndex = index + 1;
+            while (tempIndex < path.Length && path[tempIndex].Coordinates.y == newCandidate.Coordinates.y)
+            {
+                if (candidates.Contains(path[tempIndex]))
+                {
+                    return true;
+                }
+                tempIndex++;
+            }
+            return false;
+        }
+
+        private void CreateInteractablesPaths()
+        {
+            foreach (var interactable in roomInteractables)
+            {
+                AStarNode start = null;
+                if (RoomPaths.Count > 0)
+                {
+                    int index1 = Random.Range(0, RoomPaths.Count);
+                    int index2 = Random.Range(0, RoomPaths[index1].Length);
+                    start = RoomPaths[index1][index2];
+                }
+                else
+                {
+                    UnityEngine.Assertions.Assert.AreEqual(1, roomConnections.Count);
+                    XYPair gridPosition = roomConnections[0].gridPosition;
+                    int index = MapGenerationUtils.CoordinatesToIndex(gridPosition, roomSize.x);
+                    start = Grid.Nodes[index];
+                }
+                AStarNode end = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(interactable.gridPosition, roomSize.x)];
+                AStarAlgorithm algorithm = new RoomGenerationAStar();
+                AStarNode[] path = algorithm.Compute(start, end);
+                UnityEngine.Assertions.Assert.IsNotNull(path);
+                RoomPaths.Add(path);
+            }
+        }
+
+        private void DetermineInteractablesPosition()
+        {
+            for (int z = 0; z < roomInteractables.Count; ++z)
+            {
+                var interactable = roomInteractables[z];
+                int maxDistance = 0;
+                XYPair maxGridPosition = new XYPair();
+                for (int i = LEFT_LINK_OFFSET; i < roomSize.x - RIGHT_LINK_OFFSET - 1; ++i)
+                {
+                    for (int j = BOTTOM_LINK_OFFSET; j < roomSize.y - TOP_LINK_OFFSET - 1; ++j)
+                    {
+                        XYPair candidate = new XYPair() { x = i, y = j };
+                        int value = InteractableDistanceValue(candidate);
+                        if (value > maxDistance)
+                        {
+                            maxDistance = value;
+                            maxGridPosition = candidate;
+                        }
+                    }
+                }
+                interactable.gridPosition = maxGridPosition;
+                interactable.alreadySet = true;
+                roomInteractables[z] = interactable;
+            }
+        }
+
+        private void GetLinksPaths()
+        {
             RoomPaths = new List<AStarNode[]>();
             NoiseData bestNoiseData = new NoiseData();
+            var nodes = Grid.Nodes;
             for (int z = 0; z < RANDOM_PATH_TRIES; ++z)
             {
                 float newNoiseScale = Random.Range(NOISE_SCALE_MIN_MAX.x, NOISE_SCALE_MIN_MAX.y);
@@ -188,17 +364,34 @@ namespace Laresistance.LevelGeneration
                 Vector2 newNoiseOffset = new Vector2(Random.Range(NOISE_OFFSET_MIN_MAX.x, NOISE_OFFSET_MIN_MAX.y), Random.Range(NOISE_OFFSET_MIN_MAX.x, NOISE_OFFSET_MIN_MAX.y));
                 SetNoiseData(newNoiseScale, newNoiseOffset, newNoiseWeight);
                 List<AStarNode[]> paths = new List<AStarNode[]>();
+
                 for (int i = 0; i < GetLinks().Length; ++i)
                 {
+                    if (IsFirstRoom)
+                    {
+                        AStarAlgorithm algorithm = new RoomGenerationAStar();
+                        int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = LEFT_LINK_OFFSET, y = BOTTOM_LINK_OFFSET }, RoomSize.x);
+                        int gridIndexEnd = MapGenerationUtils.CoordinatesToIndex(GetLinks()[i].gridPosition, RoomSize.x);
+                        var path = algorithm.Compute(nodes[gridIndexStart], nodes[gridIndexEnd]);
+                        UnityEngine.Assertions.Assert.IsNotNull(path);
+                        paths.Add(path);
+                    }
+                    else if (IsLastRoom)
+                    {
+                        AStarAlgorithm algorithm = new RoomGenerationAStar();
+                        int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = RoomSize.x - RIGHT_LINK_OFFSET - 1, y = RoomSize.y - TOP_LINK_OFFSET - 1 }, RoomSize.x);
+                        int gridIndexEnd = MapGenerationUtils.CoordinatesToIndex(GetLinks()[i].gridPosition, RoomSize.x);
+                        var path = algorithm.Compute(nodes[gridIndexStart], nodes[gridIndexEnd]);
+                        UnityEngine.Assertions.Assert.IsNotNull(path);
+                        paths.Add(path);
+                    }
                     for (int j = i + 1; j < GetLinks().Length; ++j)
                     {
-                        var nodes = GetScenarioNodes();
-                        Grid = new AStarGrid(roomSize, nodes);
-                        Grid.SetNeighbours();
                         AStarAlgorithm algorithm = new RoomGenerationAStar();
                         int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(GetLinks()[i].gridPosition, RoomSize.x);
                         int gridIndexEnd = MapGenerationUtils.CoordinatesToIndex(GetLinks()[j].gridPosition, RoomSize.x);
                         var path = algorithm.Compute(nodes[gridIndexStart], nodes[gridIndexEnd]);
+                        UnityEngine.Assertions.Assert.IsNotNull(path);
                         paths.Add(path);
                     }
                 }
@@ -210,12 +403,29 @@ namespace Laresistance.LevelGeneration
                     bestNoiseData.noiseWeight = noiseWeight;
                 }
             }
-            // Determinate rewards position
-            // Create at least one minimal path between somewhere on the minimal path of the links and the rewards. If there are no minimal paths between links (just one link, end of path room), use the start of the room. As for the links minimal paths, there could be an elevator or a movement test.
-            // Determinate nodes IN THE PATH that will contain enemies.
-            // Setup enemies
-            // Setup decoration
+        }
 
+        private int InteractableDistanceValue(XYPair positionCandidate)
+        {
+            int value = 0;
+            foreach(var link in roomConnections)
+            {
+                value += GetManhattanDistance(positionCandidate, link.gridPosition);
+            }
+            foreach(var interactable in roomInteractables)
+            {
+                if (!interactable.alreadySet)
+                {
+                    value += GetManhattanDistance(positionCandidate, interactable.gridPosition);
+                }
+            }
+            value += Random.Range(0, 6);
+            return value;
+        }
+
+        private int GetManhattanDistance(XYPair point1, XYPair point2)
+        {
+            return System.Math.Abs(point2.x - point1.x) + System.Math.Abs(point2.y - point1.y);
         }
 
         private XYPair GetRoomSize(int numberOfEnemies, int numberOfInteractables, int numberOfConnections, bool haveMovementTest)
@@ -267,7 +477,7 @@ namespace Laresistance.LevelGeneration
                     link.gridPosition = new XYPair() { x = xposition, y = BOTTOM_LINK_OFFSET };
                 } else // top link
                 {
-                    link.gridPosition = new XYPair() { x = xposition, y = roomSize.y - TOP_LINK_OFFSET };
+                    link.gridPosition = new XYPair() { x = xposition, y = roomSize.y - TOP_LINK_OFFSET - 1 };
                 }
             } else // horizontal
             {
@@ -279,7 +489,7 @@ namespace Laresistance.LevelGeneration
                     link.gridPosition = new XYPair() { x = LEFT_LINK_OFFSET, y = yposition };
                 } else // right link
                 {
-                    link.gridPosition = new XYPair() { x = roomSize.x - RIGHT_LINK_OFFSET, y = yposition };
+                    link.gridPosition = new XYPair() { x = roomSize.x - RIGHT_LINK_OFFSET-1, y = yposition };
                 }
             }
             return link;

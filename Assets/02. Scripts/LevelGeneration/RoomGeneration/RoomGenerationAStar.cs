@@ -13,7 +13,7 @@ namespace Laresistance.LevelGeneration
         protected override float Heuristic(AStarNode current, AStarNode goal)
         {
             int x = System.Math.Abs(current.Coordinates.x - goal.Coordinates.x);
-            int y = System.Math.Abs(current.Coordinates.y - goal.Coordinates.y) * 2;
+            int y = System.Math.Abs(current.Coordinates.y - goal.Coordinates.y) * 4;
             return x + y;
         }
     }
