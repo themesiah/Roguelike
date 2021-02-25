@@ -225,6 +225,7 @@ namespace Laresistance.LevelGeneration
                     enemy.gridPosition = MapGenerationUtils.IndexToCoordinates(candidates[index].Index, roomSize.x);
                     candidates.RemoveAt(index);
                 }
+                enemy.alreadySet = true;
                 roomEnemies[i] = enemy;
             }
             // Create new paths for the remaining enemies.
@@ -237,17 +238,19 @@ namespace Laresistance.LevelGeneration
                     for (int j = BOTTOM_LINK_OFFSET; j < roomSize.y - TOP_LINK_OFFSET; ++j)
                     {
                         XYPair candidate = new XYPair() { x = i, y = j };
-                        int value = InteractableDistanceValue(candidate);
-                        if (value > maxDistance)
+                        if (CheckCandidateSurroundings(candidate))
                         {
-                            maxDistance = value;
-                            bestCandidate = candidate;
+                            int value = InteractableDistanceValue(candidate);
+                            if (value > maxDistance)
+                            {
+                                maxDistance = value;
+                                bestCandidate = candidate;
+                            }
                         }
                     }
                 }
                 var enemy = roomEnemies[k];
                 enemy.gridPosition = bestCandidate;
-                roomEnemies[k] = enemy;
 
                 AStarNode nodeCandidate = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(bestCandidate, roomSize.x)];
                 AStarAlgorithm algorithm = new RoomGenerationAStar();
@@ -266,7 +269,20 @@ namespace Laresistance.LevelGeneration
                 }
                 AStarNode[] path = algorithm.Compute(start, nodeCandidate);
                 UnityEngine.Assertions.Assert.IsNotNull(path);
-                RoomPaths.Add(path);
+                List<AStarNode> incompletePath = new List<AStarNode>(path);
+                if (CheckSpaceLeft(bestCandidate))
+                {
+                    AddPathToLeft(bestCandidate, incompletePath);
+                } else if (CheckSpaceLeftRight(bestCandidate))
+                {
+                    AddPathToLeftAndRight(bestCandidate, incompletePath);
+                } else if (CheckSpaceRight(bestCandidate))
+                {
+                    AddPathToRight(bestCandidate, incompletePath);
+                }
+                RoomPaths.Add(incompletePath.ToArray());
+                enemy.alreadySet = true;
+                roomEnemies[k] = enemy;
             }
         }
 
@@ -405,6 +421,156 @@ namespace Laresistance.LevelGeneration
             }
         }
 
+        // Checks if there is space two nodes left, two nodes right, or one left and one right
+        private bool CheckCandidateSurroundings(XYPair positionCandidate)
+        {
+            if (CheckSpaceLeft(positionCandidate))
+                return true;
+            if (CheckSpaceLeftRight(positionCandidate))
+                return true;
+            if (CheckSpaceRight(positionCandidate))
+                return true;
+            return false;
+        }
+
+        private bool CheckSpaceLeft(XYPair positionCandidate)
+        {
+            int candidateIndex = MapGenerationUtils.CoordinatesToIndex(positionCandidate, roomSize.x);
+            bool occupied = false;
+            // Space on left
+            if (positionCandidate.x > LEFT_LINK_OFFSET + 2)
+            {
+                XYPair left1 = positionCandidate;
+                left1.x--;
+                XYPair left2 = left1;
+                left2.x--;
+                int left1Index = MapGenerationUtils.CoordinatesToIndex(left1, roomSize.x);
+                int left2Index = MapGenerationUtils.CoordinatesToIndex(left2, roomSize.x);
+                foreach (var path in RoomPaths)
+                {
+                    foreach (AStarNode node in path)
+                    {
+                        if (candidateIndex == node.Index || left1Index == node.Index || left2Index == node.Index)
+                        {
+                            occupied = true;
+                        }
+                    }
+                }
+                if (!occupied)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckSpaceLeftRight(XYPair positionCandidate)
+        {
+            // Space on left and right
+            int candidateIndex = MapGenerationUtils.CoordinatesToIndex(positionCandidate, roomSize.x);
+            bool occupied = false;
+            if (positionCandidate.x > LEFT_LINK_OFFSET + 1 && positionCandidate.x < roomSize.x - RIGHT_LINK_OFFSET - 1)
+            {
+                XYPair left1 = positionCandidate;
+                left1.x--;
+                XYPair right1 = positionCandidate;
+                right1.x++;
+                int left1Index = MapGenerationUtils.CoordinatesToIndex(left1, roomSize.x);
+                int right1Index = MapGenerationUtils.CoordinatesToIndex(right1, roomSize.x);
+                foreach (var path in RoomPaths)
+                {
+                    foreach (AStarNode node in path)
+                    {
+                        if (candidateIndex == node.Index || left1Index == node.Index || right1Index == node.Index)
+                        {
+                            occupied = true;
+                        }
+                    }
+                }
+                if (!occupied)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckSpaceRight(XYPair positionCandidate)
+        {
+            // Space on right
+            int candidateIndex = MapGenerationUtils.CoordinatesToIndex(positionCandidate, roomSize.x);
+            bool occupied = false;
+            if (positionCandidate.x < roomSize.x - RIGHT_LINK_OFFSET - 2)
+            {
+                XYPair right1 = positionCandidate;
+                right1.x++;
+                XYPair right2 = right1;
+                right2.x++;
+                int right1Index = MapGenerationUtils.CoordinatesToIndex(right1, roomSize.x);
+                int right2Index = MapGenerationUtils.CoordinatesToIndex(right2, roomSize.x);
+                foreach (var path in RoomPaths)
+                {
+                    foreach (AStarNode node in path)
+                    {
+                        if (candidateIndex == node.Index || right1Index == node.Index || right1Index == node.Index)
+                        {
+                            occupied = true;
+                        }
+                    }
+                }
+                if (!occupied)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void AddPathToLeft(XYPair bestCandidate, List<AStarNode> path)
+        {
+            AStarNode originalCandidate = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(bestCandidate, roomSize.x)];
+            AStarNode current = Grid.Nodes[originalCandidate.Index - 1];
+            if (!path.Contains(current))
+            {
+                path.Add(current);
+            }
+            current = Grid.Nodes[originalCandidate.Index - 2];
+            if (!path.Contains(current))
+            {
+                path.Add(current);
+            }
+        }
+
+        private void AddPathToLeftAndRight(XYPair bestCandidate, List<AStarNode> path)
+        {
+            AStarNode originalCandidate = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(bestCandidate, roomSize.x)];
+            AStarNode current = Grid.Nodes[originalCandidate.Index - 1];
+            if (!path.Contains(current))
+            {
+                path.Add(current);
+            }
+            current = Grid.Nodes[originalCandidate.Index + 1];
+            if (!path.Contains(current))
+            {
+                path.Add(current);
+            }
+        }
+
+        private void AddPathToRight(XYPair bestCandidate, List<AStarNode> path)
+        {
+            AStarNode originalCandidate = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(bestCandidate, roomSize.x)];
+            AStarNode current = Grid.Nodes[originalCandidate.Index + 1];
+            if (!path.Contains(current))
+            {
+                path.Add(current);
+            }
+            current = Grid.Nodes[originalCandidate.Index + 2];
+            if (!path.Contains(current))
+            {
+                path.Add(current);
+            }
+        }
+
         private int InteractableDistanceValue(XYPair positionCandidate)
         {
             int value = 0;
@@ -414,9 +580,16 @@ namespace Laresistance.LevelGeneration
             }
             foreach(var interactable in roomInteractables)
             {
-                if (!interactable.alreadySet)
+                if (interactable.alreadySet)
                 {
                     value += GetManhattanDistance(positionCandidate, interactable.gridPosition);
+                }
+            }
+            foreach(var enemy in roomEnemies)
+            {
+                if (enemy.alreadySet)
+                {
+                    value += GetManhattanDistance(positionCandidate, enemy.gridPosition);
                 }
             }
             value += Random.Range(0, 6);

@@ -5,5 +5,6 @@
     {
         public RoomEnemyType roomEnemyType;
         public XYPair gridPosition;
+        public bool alreadySet;
     }
 }
