@@ -15,6 +15,8 @@ namespace Laresistance.LevelGeneration
         private MapData mapData = null;
         private RoomData roomData;
         private List<Rect> nodesWindows;
+        private int seed = -1;
+        private int room = 0;
 
         private XYPair mapSize = new XYPair() { x = 4, y = 4 };
 
@@ -27,6 +29,10 @@ namespace Laresistance.LevelGeneration
 
         private void CreateMap()
         {
+            if (seed != -1)
+            {
+                Random.InitState(seed);
+            }
             mapData = new MapData(mapSize);
             mapData.GenerateMontecarloMinimalPath();
             mapData.GenerateMontecarloExtraPaths();
@@ -34,26 +40,73 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateMovementTestRooms();
             mapData.GenerateRoomEnemies();
             mapData.GenerateRoomsGrids();
+            roomData = GetRoomData();
         }
 
-        private RoomData CreateRoom()
+        private RoomData GetRoomData()
+        {
+            if (room == -2)
+            {
+                return mapData.FirstRoom.GetLinks()[0].linkedRoom;
+            } else
+            {
+                return mapData.GetAllRooms()[room];
+            }
+        }
+
+        private void NextRoom()
+        {
+            room++;
+            if (room >= mapData.GetAllRooms().Length)
+            {
+                room = 0;
+            } else if (room == -1)
+            {
+                room = 0;
+            }
+            roomData = GetRoomData();
+        }
+
+        private void PreviousRoom()
+        {
+            room--;
+            if (room <= -1)
+            {
+                room = mapData.GetAllRooms().Length - 1;
+            }
+            roomData = GetRoomData();
+        }
+
+        private void CreateRoom()
         {
             if (mapData == null)
             {
                 CreateMap();
+                roomData = GetRoomData();
             }
-            roomData = mapData.FirstRoom.GetLinks()[0].linkedRoom;
-            roomData.GenerateRoom();
-            return roomData;
+            else
+            {
+                //if (seed != -1)
+                //{
+                //    Random.InitState(seed);
+                //}
+                //roomData = GetRoomData();
+                //roomData.GenerateRoom();
+            }
         }
 
         public void Init()
         {
-            roomData = CreateRoom();
+            CreateMap();
+            InitRoom();
+        }
+
+        private void InitRoom()
+        {
             nodesWindows = new List<Rect>();
             AStarNode[] roomNodes = roomData.Grid.Nodes;
 
-            foreach(AStarNode nodeData in roomNodes)
+            foreach (AStarNode nodeData in roomNodes)
             {
                 Vector2 pos = GetPosFromRoom(nodeData, roomData.RoomSize);
                 nodesWindows.Add(new Rect(pos, NODE_WINDOW_SIZE));
@@ -76,18 +129,35 @@ namespace Laresistance.LevelGeneration
 
         private void OnGUI()
         {
-            bool dirty = false;
+            //bool dirty = false;
+
+            seed = EditorGUILayout.IntField("Seed", seed);
 
             if (GUILayout.Button("New Map"))
             {
-                CreateMap();
-                dirty = true;
+                Init();
+                //dirty = true;
             }
 
-            if (GUILayout.Button("New Room") || dirty == true)
+            //if (GUILayout.Button("New Room") || dirty == true)
+            //{
+            //    Init();
+            //}
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Previous Room"))
             {
-                Init();
+                PreviousRoom();
+                InitRoom();
             }
+            GUILayout.Label("ROOM " + (room + 1).ToString());
+            if (GUILayout.Button("Next Room"))
+            {
+                NextRoom();
+                InitRoom();
+            }
+            GUILayout.EndHorizontal();
+
             var nodes = roomData.Grid.Nodes;
             var paths = roomData.RoomPaths;
 

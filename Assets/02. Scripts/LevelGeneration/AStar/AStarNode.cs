@@ -34,5 +34,10 @@ namespace Laresistance.LevelGeneration
         {
             this.neighbours = neighbours;
         }
+
+        public void SetTravelCost(float cost)
+        {
+            TravelCost = cost;
+        }
     }
 }

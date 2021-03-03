@@ -14,6 +14,7 @@ namespace Laresistance.LevelGeneration
         private List<Rect> roomsWindows;
 
         private XYPair mapSize = new XYPair() { x = 4, y = 4 };
+        private int seed = -1;
 
         [MenuItem("Laresistance/Map Generation Visualizer")]
         public static void ShowEditor()
@@ -24,6 +25,10 @@ namespace Laresistance.LevelGeneration
 
         private MapData CreateMap()
         {
+            if (seed != -1)
+            {
+                Random.InitState(seed);
+            }
             MapData mapData = new MapData(mapSize);
             mapData.GenerateMontecarloMinimalPath();
             mapData.GenerateMontecarloExtraPaths();
@@ -66,6 +71,7 @@ namespace Laresistance.LevelGeneration
         {
             mapSize.x = EditorGUILayout.IntField("Width", mapSize.x);
             mapSize.y = EditorGUILayout.IntField("Height", mapSize.y);
+            seed = EditorGUILayout.IntField("Seed", seed);
             if (GUILayout.Button("Generate"))
             {
                 Init();

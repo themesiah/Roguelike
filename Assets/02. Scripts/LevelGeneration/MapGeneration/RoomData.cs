@@ -61,12 +61,15 @@ namespace Laresistance.LevelGeneration
         public bool IsFirstRoom { get; private set; }
         public bool IsLastRoom { get; private set; }
         public List<AStarNode[]> RoomPaths { get; private set; }
+        public AStarNode[] UniquePathNodes => uniquePathNodes.ToArray();
         public AStarGrid Grid { get; private set; }
         public XYPair RoomSize => roomSize;
+        public Vector2 RoomPosition => roomPosition;
 
         private float noiseScale = 1f; // > 0
         private Vector2 noiseOffset = Vector2.zero; // 0~1
         private float noiseWeight = 1f;
+        private List<AStarNode> uniquePathNodes;
 
         public RoomData(int roomIndex, MapData mapData)
         {
@@ -168,6 +171,7 @@ namespace Laresistance.LevelGeneration
         #region RoomGeneration
         public void GenerateRoom()
         {
+            InitRoomData();
             // Get necessary data
             int numberOfEnemies = roomEnemies.Count;
             bool movementTest = haveMovementTest;
@@ -196,6 +200,43 @@ namespace Laresistance.LevelGeneration
             CreateInteractablesPaths();
             // Determinate nodes IN THE PATH that will contain enemies.
             DetermineEnemiesPosition();
+            // Get all unique path cells occupied by paths. No repeating.
+            GetUniquePathNodes();
+        }
+
+        private void InitRoomData()
+        {
+            uniquePathNodes = new List<AStarNode>();
+
+            // No need to init room connections, as it does not depend on being already set or not
+            for (int i = 0; i < roomInteractables.Count; ++i)
+            {
+                var interactable = roomInteractables[i];
+                interactable.alreadySet = false;
+                interactable.gridPosition = new XYPair() { x = 0, y = 0 };
+                roomInteractables[i] = interactable;
+            }
+            for (int i = 0; i < roomEnemies.Count; ++i)
+            {
+                var enemy = roomEnemies[i];
+                enemy.alreadySet = false;
+                enemy.gridPosition = new XYPair() { x = 0, y = 0 };
+                roomEnemies[i] = enemy;
+            }
+        }
+
+        private void GetUniquePathNodes()
+        { 
+            foreach(var path in RoomPaths)
+            {
+                foreach(var node in path)
+                {
+                    if (!uniquePathNodes.Contains(node))
+                    {
+                        uniquePathNodes.Add(node);
+                    }
+                }
+            }
         }
 
         private void DetermineEnemiesPosition()
@@ -380,6 +421,7 @@ namespace Laresistance.LevelGeneration
                 Vector2 newNoiseOffset = new Vector2(Random.Range(NOISE_OFFSET_MIN_MAX.x, NOISE_OFFSET_MIN_MAX.y), Random.Range(NOISE_OFFSET_MIN_MAX.x, NOISE_OFFSET_MIN_MAX.y));
                 SetNoiseData(newNoiseScale, newNoiseOffset, newNoiseWeight);
                 List<AStarNode[]> paths = new List<AStarNode[]>();
+                SetNewTravelCosts();
 
                 for (int i = 0; i < GetLinks().Length; ++i)
                 {
@@ -403,6 +445,8 @@ namespace Laresistance.LevelGeneration
                     }
                     for (int j = i + 1; j < GetLinks().Length; ++j)
                     {
+                        if (i == j)
+                            continue;
                         AStarAlgorithm algorithm = new RoomGenerationAStar();
                         int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(GetLinks()[i].gridPosition, RoomSize.x);
                         int gridIndexEnd = MapGenerationUtils.CoordinatesToIndex(GetLinks()[j].gridPosition, RoomSize.x);
@@ -417,6 +461,7 @@ namespace Laresistance.LevelGeneration
                     bestNoiseData.noiseOffset = noiseOffset;
                     bestNoiseData.noiseScale = noiseScale;
                     bestNoiseData.noiseWeight = noiseWeight;
+                    SetNewTravelCosts();
                 }
             }
         }
@@ -592,7 +637,8 @@ namespace Laresistance.LevelGeneration
                     value += GetManhattanDistance(positionCandidate, enemy.gridPosition);
                 }
             }
-            value += Random.Range(0, 6);
+            int randomValue = Random.Range(0, 6);
+            value += randomValue;
             return value;
         }
 
@@ -677,28 +723,41 @@ namespace Laresistance.LevelGeneration
             noiseWeight = weight;
         }
 
-        public List<AStarNode> GetScenarioNodes()
+        private List<AStarNode> GetScenarioNodes()
         {
             List<AStarNode> nodes = new List<AStarNode>();
             for (int i = 0; i < roomSize.y; ++i)
             {
                 for (int j = 0; j < roomSize.x; ++j)
                 {
-                    float xCoord = noiseOffset.x + (j*20) / roomSize.x * noiseScale * 20f;
-                    float yCoord = noiseOffset.y + (i*20) / roomSize.y * noiseScale * 20f;
+                    nodes.Add(new AStarNode(j + i * roomSize.x, roomSize, 1f));
+                }
+            }
+            return nodes;
+        }
+
+        private void SetNewTravelCosts()
+        {
+            for (int i = 0; i < roomSize.y; ++i)
+            {
+                for (int j = 0; j < roomSize.x; ++j)
+                {
+                    AStarNode node = Grid.Nodes[MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = j, y = i }, roomSize.x)];
+                    float xCoord = noiseOffset.x + (j * 20) / roomSize.x * noiseScale * 20f;
+                    float yCoord = noiseOffset.y + (i * 20) / roomSize.y * noiseScale * 20f;
                     float perlin = Mathf.Clamp01(Mathf.PerlinNoise(xCoord, yCoord));
                     if (perlin < 0.5f)
                     {
                         perlin = 0f;
-                    } else
+                    }
+                    else
                     {
                         perlin = 1f;
                     }
                     perlin *= noiseWeight;
-                    nodes.Add(new AStarNode(j + i * roomSize.x, roomSize, 1f + perlin));
+                    node.SetTravelCost(1f + perlin);
                 }
             }
-            return nodes;
         }
 
         private int PathsLength(List<AStarNode[]> paths)
