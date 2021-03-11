@@ -9,8 +9,9 @@ namespace Laresistance.LevelGeneration
         public RoomData linkedRoom;
         public int linkedRoomIndex;
         public RoomLinkType linkType;
+        public RoomLinkLocation linkLocation;
         public XYPair gridPosition;
-        public int linkPosition; // (-1~1)
+        public int linkPosition; // (1~4)
         public bool minimalPath;
     }
 }

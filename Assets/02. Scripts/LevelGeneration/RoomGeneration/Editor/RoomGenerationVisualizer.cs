@@ -214,7 +214,7 @@ namespace Laresistance.LevelGeneration
         private void DrawLink(AStarNode nodeData, AStarNode connectedNodeData, XYPair mapSize)
         {
             Vector2 startPos = GetPosFromRoom(nodeData, mapSize) + NODE_WINDOW_SIZE/2f;
-            Vector2 endPos = GetPosFromRoom(connectedNodeData, mapSize) + NODE_WINDOW_SIZE/2f;
+            Vector2 endPos = GetPosFromRoom(connectedNodeData, mapSize) + NODE_WINDOW_SIZE/ 2f;
             Handles.DrawLine(startPos, endPos);
         }
     }

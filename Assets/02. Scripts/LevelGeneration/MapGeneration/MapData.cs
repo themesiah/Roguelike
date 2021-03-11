@@ -298,16 +298,37 @@ namespace Laresistance.LevelGeneration
             XYPair currentCoordinates = MapGenerationUtils.IndexToCoordinates(current.RoomIndex, mapSize.x);
             XYPair linkedCoordinates = MapGenerationUtils.IndexToCoordinates(linked.RoomIndex, mapSize.x);
             RoomLinkType linkType;
+            RoomLinkLocation currentLocation;
+            RoomLinkLocation linkedLocation;
             if (currentCoordinates.x == linkedCoordinates.x) // vertical
             {
                 linkType = VERTICAL_LINK_TYPES[Random.Range(0, VERTICAL_LINK_TYPES.Length)];
+                if (currentCoordinates.y > linkedCoordinates.y)
+                {
+                    currentLocation = RoomLinkLocation.Bottom;
+                    linkedLocation = RoomLinkLocation.Top;
+                } else
+                {
+                    currentLocation = RoomLinkLocation.Top;
+                    linkedLocation = RoomLinkLocation.Bottom;
+                }
             }
             else // horizontal
             {
                 linkType = HORIZONTAL_LINK_TYPES[Random.Range(0, HORIZONTAL_LINK_TYPES.Length)];
+                if (currentCoordinates.x > linkedCoordinates.x)
+                {
+                    currentLocation = RoomLinkLocation.Left;
+                    linkedLocation = RoomLinkLocation.Right;
+                }
+                else
+                {
+                    currentLocation = RoomLinkLocation.Right;
+                    linkedLocation = RoomLinkLocation.Left;
+                }
             }
-            current.AddLink(new RoomLink() { linkedRoom = linked, linkedRoomIndex = linked.RoomIndex, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
-            linked.AddLink(new RoomLink() { linkedRoom = current, linkedRoomIndex = current.RoomIndex, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
+            current.AddLink(new RoomLink() { linkedRoom = linked, linkedRoomIndex = linked.RoomIndex, linkLocation = currentLocation, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
+            linked.AddLink(new RoomLink() { linkedRoom = current, linkedRoomIndex = current.RoomIndex, linkLocation = linkedLocation, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
         }
 
         private void GeneratePilgrimInteractable()

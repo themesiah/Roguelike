@@ -21,7 +21,26 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RoomChangeBehaviourEvent roomChangeEvent = default;
 
+        [SerializeField]
+        [Tooltip("Alternative objects to activate in case this connection is not used")]
+        private GameObject[] alternativeObjects = default;
+
         private void Awake()
+        {
+            InitRoom();
+            //ActivateAlternativeObjects();
+        }
+
+        public void ActivateAlternativeObjects()
+        {
+            foreach(var go in alternativeObjects)
+            {
+                go.SetActive(true);
+            }
+            gameObject.SetActive(false);
+        }
+
+        public void InitRoom()
         {
             var hit = Physics2D.Raycast(roomEnterPoint.position, Vector2.down);
             if (snapEnterPointToFloor)
@@ -39,6 +58,11 @@ namespace Laresistance.Behaviours
         public void ChangeRoom()
         {
             roomChangeEvent.Raise(this);
+        }
+
+        public void SetNextRoom(RoomChangeBehaviour nextRoom)
+        {
+            this.nextRoom = nextRoom;
         }
 
         public RoomChangeData GetRoomChangeData()

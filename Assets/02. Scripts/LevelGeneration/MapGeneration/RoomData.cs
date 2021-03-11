@@ -25,10 +25,10 @@ namespace Laresistance.LevelGeneration
         private static float AREA_PER_MOVEMENT_TEST = 40f;
         private static float AREA_PER_ROOM_LINK = 25f;
 
-        private static int LEFT_LINK_OFFSET = 1;
-        private static int RIGHT_LINK_OFFSET = 1;
-        private static int BOTTOM_LINK_OFFSET = 1;
-        private static int TOP_LINK_OFFSET = 3;
+        public static int LEFT_LINK_OFFSET = 1;
+        public static int RIGHT_LINK_OFFSET = 1;
+        public static int BOTTOM_LINK_OFFSET = 1;
+        public static int TOP_LINK_OFFSET = 3;
 
         public static Vector2 NOISE_SCALE_MIN_MAX = new Vector2() { x = 0.1f, y = 10f };
         public static Vector2 NOISE_WEIGHT_MIN_MAX = new Vector2() { x = 0.1f, y = 10f };
@@ -428,7 +428,7 @@ namespace Laresistance.LevelGeneration
                     if (IsFirstRoom)
                     {
                         AStarAlgorithm algorithm = new RoomGenerationAStar();
-                        int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = LEFT_LINK_OFFSET, y = BOTTOM_LINK_OFFSET }, RoomSize.x);
+                        int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = LEFT_LINK_OFFSET+1, y = BOTTOM_LINK_OFFSET+1 }, RoomSize.x);
                         int gridIndexEnd = MapGenerationUtils.CoordinatesToIndex(GetLinks()[i].gridPosition, RoomSize.x);
                         var path = algorithm.Compute(nodes[gridIndexStart], nodes[gridIndexEnd]);
                         UnityEngine.Assertions.Assert.IsNotNull(path);
@@ -437,7 +437,7 @@ namespace Laresistance.LevelGeneration
                     else if (IsLastRoom)
                     {
                         AStarAlgorithm algorithm = new RoomGenerationAStar();
-                        int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = RoomSize.x - RIGHT_LINK_OFFSET - 1, y = RoomSize.y - TOP_LINK_OFFSET - 1 }, RoomSize.x);
+                        int gridIndexStart = MapGenerationUtils.CoordinatesToIndex(new XYPair() { x = RoomSize.x - RIGHT_LINK_OFFSET - 2, y = RoomSize.y - TOP_LINK_OFFSET - 2 }, RoomSize.x);
                         int gridIndexEnd = MapGenerationUtils.CoordinatesToIndex(GetLinks()[i].gridPosition, RoomSize.x);
                         var path = algorithm.Compute(nodes[gridIndexStart], nodes[gridIndexEnd]);
                         UnityEngine.Assertions.Assert.IsNotNull(path);
@@ -661,7 +661,7 @@ namespace Laresistance.LevelGeneration
             float side = Mathf.Sqrt(totalRoomArea);
             int intSide = Mathf.CeilToInt(side);
 
-            return new XYPair() { x = intSide, y = intSide };
+            return new XYPair() { x = intSide+4, y = intSide-4 };
         }
 
         private Vector2 GetRoomPosition()

@@ -43,7 +43,6 @@ namespace Laresistance.LevelGeneration
             {
                 RoomGeneration rg = new RoomGeneration(room, mapData, this, biome);
                 yield return rg.GenerateRoom();
-                yield return null;
             }
         }
 

@@ -25,5 +25,13 @@ namespace Laresistance.LevelGeneration
         public ScenarioAssetData hardPlatformEnd;
         [Tooltip("Escaleras flotantes")]
         public ScenarioAssetData floatingStairs;
+        [Tooltip("Pared")]
+        public ScenarioAssetData walls;
+        [Tooltip("Techo")]
+        public ScenarioAssetData ceiling;
+        [Tooltip("Union de suelo con pared")]
+        public ScenarioAssetData wallBase;
+        [Tooltip("Union de techo con pared")]
+        public ScenarioAssetData wallCorner;
     }
 }
