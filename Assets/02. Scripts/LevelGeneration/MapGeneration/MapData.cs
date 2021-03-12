@@ -181,14 +181,6 @@ namespace Laresistance.LevelGeneration
             GenerateNormalEnemies();
         }
 
-        public void GenerateRoomsGrids()
-        {
-            foreach(var room in nodesData)
-            {
-                room.GenerateRoom();
-            }
-        }
-
         public RoomData[] GetMinimalPath()
         {
             return minimalPath.ToArray();
@@ -327,8 +319,8 @@ namespace Laresistance.LevelGeneration
                     linkedLocation = RoomLinkLocation.Left;
                 }
             }
-            current.AddLink(new RoomLink() { linkedRoom = linked, linkedRoomIndex = linked.RoomIndex, linkLocation = currentLocation, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
-            linked.AddLink(new RoomLink() { linkedRoom = current, linkedRoomIndex = current.RoomIndex, linkLocation = linkedLocation, linkType = linkType, linkPosition = Random.Range(-1, 2), minimalPath = minimalPath });
+            current.AddLink(new RoomLink() { linkedRoom = linked, linkedRoomIndex = linked.RoomIndex, linkLocation = currentLocation, linkType = linkType, minimalPath = minimalPath });
+            linked.AddLink(new RoomLink() { linkedRoom = current, linkedRoomIndex = current.RoomIndex, linkLocation = linkedLocation, linkType = linkType, minimalPath = minimalPath });
         }
 
         private void GeneratePilgrimInteractable()

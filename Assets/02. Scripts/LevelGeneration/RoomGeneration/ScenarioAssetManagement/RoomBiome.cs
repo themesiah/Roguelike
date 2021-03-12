@@ -19,9 +19,5 @@ namespace Laresistance.LevelGeneration
         [SerializeField]
         private GameObject[] minibossEnemies = default;
         public GameObject[] MinibossEnemies { get { return minibossEnemies; } }
-
-        [SerializeField]
-        private ScenarioAssetsManager scenarioManager = default;
-        public ScenarioAssetsManager ScenarioManager { get { return scenarioManager; } }
     }
 }

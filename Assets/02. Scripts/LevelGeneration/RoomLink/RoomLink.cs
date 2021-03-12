@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Laresistance.Behaviours;
 
 namespace Laresistance.LevelGeneration
 {
@@ -10,8 +10,7 @@ namespace Laresistance.LevelGeneration
         public int linkedRoomIndex;
         public RoomLinkType linkType;
         public RoomLinkLocation linkLocation;
-        public XYPair gridPosition;
-        public int linkPosition; // (1~4)
         public bool minimalPath;
+        public RoomChangeBehaviour roomChangeBehaviour;
     }
 }

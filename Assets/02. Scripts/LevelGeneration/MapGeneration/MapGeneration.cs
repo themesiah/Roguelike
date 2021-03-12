@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using Laresistance.Behaviours;
 
 namespace Laresistance.LevelGeneration
 {
@@ -33,7 +34,6 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateInteractables();
             mapData.GenerateMovementTestRooms();
             mapData.GenerateRoomEnemies();
-            mapData.GenerateRoomsGrids();
             StartCoroutine(GenerateRooms(mapData));
         }
 
@@ -48,7 +48,7 @@ namespace Laresistance.LevelGeneration
 
         private XYPair GenerateMapSize()
         {
-            return new XYPair() { x = 4, y = 4 };
+            return new XYPair() { x = 3, y = 3 };
         }
     }
 }

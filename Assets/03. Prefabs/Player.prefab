@@ -5812,9 +5812,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingLayerID: 416052121
+  m_SortingLayer: 5
+  m_SortingOrder: 1
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -6540,8 +6540,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 90
+  m_SortingLayerID: 2075291091
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &6058223205067198667
 MonoBehaviour:
@@ -6596,6 +6596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraRef: {fileID: 11400000, guid: 6abec616b80ebaf4c8a9a8ac516f0749, type: 2}
   canvasRef: {fileID: 5430707486284229566}
+  sortingLayer: UI
 --- !u!1 &355813546921842246
 GameObject:
   m_ObjectHideFlags: 0
@@ -7746,8 +7747,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 30
+  m_SortingLayerID: 2075291091
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &3177885378674460059
 MonoBehaviour:
@@ -7802,6 +7803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraRef: {fileID: 11400000, guid: 6abec616b80ebaf4c8a9a8ac516f0749, type: 2}
   canvasRef: {fileID: 595438367686999121}
+  sortingLayer: UI
 --- !u!1 &2819177805148841790
 GameObject:
   m_ObjectHideFlags: 0
@@ -8124,8 +8126,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 30
+  m_SortingLayerID: 2075291091
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &5397705061337140934
 MonoBehaviour:
@@ -8192,6 +8194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraRef: {fileID: 11400000, guid: 6abec616b80ebaf4c8a9a8ac516f0749, type: 2}
   canvasRef: {fileID: 1078268914660310308}
+  sortingLayer: UI
 --- !u!1 &3897970144034760309
 GameObject:
   m_ObjectHideFlags: 0
@@ -14392,9 +14395,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingLayerID: 416052121
+  m_SortingLayer: 5
+  m_SortingOrder: 1
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -14852,8 +14855,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingLayerID: 2075291091
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1001 &729335739435957402
 PrefabInstance:
@@ -14913,6 +14916,18 @@ PrefabInstance:
     - target: {fileID: 5792082971026757826, guid: 0f1d08bca7be7594882d42eabe7b6b5b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8258854784859710421, guid: 0f1d08bca7be7594882d42eabe7b6b5b, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 416052121
+      objectReference: {fileID: 0}
+    - target: {fileID: 8258854784859710421, guid: 0f1d08bca7be7594882d42eabe7b6b5b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8258854784859710421, guid: 0f1d08bca7be7594882d42eabe7b6b5b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f1d08bca7be7594882d42eabe7b6b5b, type: 3}
@@ -15067,6 +15082,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 49099726596751817, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 49099726596751822, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
       propertyPath: m_Name
       value: Char
@@ -15134,6 +15153,18 @@ PrefabInstance:
     - target: {fileID: 4284565863167323047, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9006365282141550083, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 416052121
+      objectReference: {fileID: 0}
+    - target: {fileID: 9006365282141550083, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9006365282141550083, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9078959972520831669, guid: 770961edcae39cb4bb02f1fdca80d32f, type: 3}
       propertyPath: InitialModule.startLifetime.scalar

@@ -11,10 +11,13 @@ namespace Laresistance.Behaviours
         private RuntimeSingleCamera cameraRef = default;
         [SerializeField]
         private Canvas canvasRef = default;
+        [SerializeField]
+        private string sortingLayer = "UI";
 
         private void Start()
         {
             canvasRef.worldCamera = cameraRef.Get();
+            canvasRef.sortingLayerName = sortingLayer;
         }
     }
 }
