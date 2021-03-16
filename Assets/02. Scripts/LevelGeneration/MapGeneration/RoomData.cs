@@ -53,7 +53,7 @@ namespace Laresistance.LevelGeneration
         #region RoomInitialization
         public void AddLink(RoomLink roomLink)
         {
-            if (!roomConnections.Exists((link) => link.linkedRoom == roomLink.linkedRoom)) // The room we want to link is not linked yet
+            if (!roomConnections.Exists((link) => link.linkedRoomIndex == roomLink.linkedRoomIndex)) // The room we want to link is not linked yet
             {
                 roomConnections.Add(roomLink);
             }

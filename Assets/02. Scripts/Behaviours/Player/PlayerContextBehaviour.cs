@@ -108,7 +108,10 @@ namespace Laresistance.Behaviours
             {
                 RoomChangeBehaviour rcb = collider.gameObject.GetComponent<RoomChangeBehaviour>();
                 Assert.IsNotNull(rcb);
-                RoomChange(rcb);
+                if (rcb.ChangeRoomOnEnterTrigger)
+                {
+                    RoomChange(rcb);
+                }
             }
         }
 

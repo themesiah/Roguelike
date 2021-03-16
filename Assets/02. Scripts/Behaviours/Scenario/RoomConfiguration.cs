@@ -30,12 +30,20 @@ namespace Laresistance.Behaviours
         private RoomChangeBehaviour leftRoomConnection = null;
         [SerializeField]
         private bool hasMovementTest = default;
+        [SerializeField]
+        private Transform levelStartPosition = default;
+        [SerializeField]
+        private RoomChangeBehaviour levelEnd = default;
 
         [Header("Data")]
         [SerializeField]
         private RuntimeSetGameObject spawnableMinionList = default;
         [SerializeField]
         private GameObject[] interactableList = default;
+
+        [Header("References")]
+        [SerializeField]
+        private RuntimePlayerDataBehaviourSingle playerDataRef = default;
 
         [Header("Temp and test")]
         public RoomBiome roomBiome;
@@ -46,10 +54,12 @@ namespace Laresistance.Behaviours
             rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
             rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion });
             rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = true });
+            //rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = true });
             rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = true });
-            rd.SetAsFirstRoom();
+            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = true });
+            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 2, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.FrontDoor, minimalPath = true });
             rd.SetAsMinimalPathRoom();
+            rd.SetAsFirstRoom();
             bool cool = CheckRoomRequirements(rd);
             if (cool)
             {
@@ -64,6 +74,15 @@ namespace Laresistance.Behaviours
         public bool CheckRoomRequirements(RoomData roomData, int thresholdReduction = 0)
         {
             // Check available links
+            if (roomData.IsFirstRoom && levelStartPosition == null)
+            {
+                return false;
+            }
+            if (roomData.IsLastRoom && levelEnd == null)
+            {
+                return false;
+            }
+
             foreach(var link in roomData.GetLinks())
             {
                 if (link.linkLocation == RoomLinkLocation.Top && topRoomConnection == null)
@@ -147,6 +166,10 @@ namespace Laresistance.Behaviours
 
         public void ConfigureRoom(MapData mapData, RoomData roomData, RoomBiome biome)
         {
+            // Configure level start
+            ConfigureLevelStart(roomData);
+            // Configure level end
+            ConfigureLevelEnd(roomData);
             // Configure links
             ConfigureLinks(mapData, roomData, biome);
             // Spawn enemies
@@ -155,15 +178,31 @@ namespace Laresistance.Behaviours
             ConfigureInteractables(roomData, biome);
         }
 
+        private void ConfigureLevelStart(RoomData roomData)
+        {
+            if (roomData.IsFirstRoom)
+            {
+                playerDataRef.Get().transform.position = levelStartPosition.position;
+            }
+        }
+
+        private void ConfigureLevelEnd(RoomData roomData)
+        {
+            if (roomData.IsLastRoom)
+            {
+                levelEnd.SetAsLevelEnd();
+            } else if (levelEnd != null)
+            {
+                levelEnd.ActivateAlternativeObjects();
+            }
+        }
+
         private void ConfigureLinks(MapData mapData, RoomData roomData, RoomBiome biome)
         {
-            if (mapData != null)
-            {
-                ConfigureLink(mapData, roomData, topRoomConnection, RoomLinkLocation.Top, RoomLinkLocation.Bottom);
-                ConfigureLink(mapData, roomData, bottomRoomConnection, RoomLinkLocation.Bottom, RoomLinkLocation.Top);
-                ConfigureLink(mapData, roomData, rightRoomConnection, RoomLinkLocation.Right, RoomLinkLocation.Left);
-                ConfigureLink(mapData, roomData, leftRoomConnection, RoomLinkLocation.Left, RoomLinkLocation.Right);
-            }
+            ConfigureLink(mapData, roomData, topRoomConnection, RoomLinkLocation.Top, RoomLinkLocation.Bottom);
+            ConfigureLink(mapData, roomData, bottomRoomConnection, RoomLinkLocation.Bottom, RoomLinkLocation.Top);
+            ConfigureLink(mapData, roomData, rightRoomConnection, RoomLinkLocation.Right, RoomLinkLocation.Left);
+            ConfigureLink(mapData, roomData, leftRoomConnection, RoomLinkLocation.Left, RoomLinkLocation.Right);
         }
 
         private void ConfigureLink(MapData mapData, RoomData roomData, RoomChangeBehaviour roomChangeBehaviour, RoomLinkLocation location, RoomLinkLocation connectionLocation)
@@ -171,7 +210,8 @@ namespace Laresistance.Behaviours
             if (roomChangeBehaviour != null)
             {
                 int linkedRoomIndex = -1;
-                foreach (var link in roomData.GetLinks())
+                var links = roomData.GetLinks();
+                foreach (var link in links)
                 {
                     if (link.linkLocation == location)
                     {
@@ -180,11 +220,14 @@ namespace Laresistance.Behaviours
                 }
                 if (linkedRoomIndex != -1)
                 {
-                    foreach(var link in mapData.GetAllRooms()[linkedRoomIndex].GetLinks())
+                    if (mapData != null)
                     {
-                        if (link.linkLocation == connectionLocation)
+                        foreach (var link in mapData.GetAllRooms()[linkedRoomIndex].GetLinks())
                         {
-                            roomChangeBehaviour.SetNextRoom(link.roomChangeBehaviour);
+                            if (link.linkLocation == connectionLocation)
+                            {
+                                roomChangeBehaviour.SetNextRoom(link.roomChangeBehaviour);
+                            }
                         }
                     }
                 }

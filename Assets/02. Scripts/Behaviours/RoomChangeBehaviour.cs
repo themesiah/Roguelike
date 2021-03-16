@@ -15,6 +15,8 @@ namespace Laresistance.Behaviours
         private bool snapEnterPointToFloor = true;
         [SerializeField]
         private bool snapExitPointToFloor = true;
+        [SerializeField]
+        private bool changeRoomOnEnterTrigger = true;
 
         [SerializeField]
         private RoomChangeBehaviour nextRoom = default;
@@ -24,6 +26,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         [Tooltip("Alternative objects to activate in case this connection is not used")]
         private GameObject[] alternativeObjects = default;
+
+        public bool ChangeRoomOnEnterTrigger => changeRoomOnEnterTrigger;
 
         private void Awake()
         {
@@ -68,6 +72,11 @@ namespace Laresistance.Behaviours
         public RoomChangeData GetRoomChangeData()
         {
             return new RoomChangeData(){ enterPoint = roomEnterPoint, exitPoint = roomExitPoint, nextRoom = nextRoom };
+        }
+
+        public void SetAsLevelEnd()
+        {
+            throw new System.NotImplementedException("SetAsLevelEnd not implemented");
         }
 
 #if UNITY_EDITOR
