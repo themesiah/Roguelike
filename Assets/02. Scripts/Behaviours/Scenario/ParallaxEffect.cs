@@ -38,15 +38,21 @@ namespace Laresistance.Behaviours
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
-            foreach(var corner in parallaxCorners)
+            if (parallaxCorners != null)
             {
-                Gizmos.DrawSphere(corner.position, 0.3f);
+                Gizmos.color = Color.red;
+                foreach (var corner in parallaxCorners)
+                {
+                    Gizmos.DrawSphere(corner.position, 0.3f);
+                }
             }
-            Gizmos.color = Color.blue;
-            foreach(var corner in playerLimits)
+            if (playerLimits != null)
             {
-                Gizmos.DrawSphere(corner.position, 0.3f);
+                Gizmos.color = Color.blue;
+                foreach (var corner in playerLimits)
+                {
+                    Gizmos.DrawSphere(corner.position, 0.3f);
+                }
             }
         }
     }

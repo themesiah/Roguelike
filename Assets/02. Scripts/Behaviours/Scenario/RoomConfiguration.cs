@@ -53,13 +53,15 @@ namespace Laresistance.Behaviours
             RoomData rd = new RoomData(0, null);
             rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
             rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion });
+            rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion });
+            rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Miniboss });
             rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
             //rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = true });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = true });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = true });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 2, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.FrontDoor, minimalPath = true });
+            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = true });
+            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 2, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = true });
+            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 3, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.FrontDoor, minimalPath = true });
             rd.SetAsMinimalPathRoom();
-            rd.SetAsFirstRoom();
+            //rd.SetAsFirstRoom();
             bool cool = CheckRoomRequirements(rd);
             if (cool)
             {

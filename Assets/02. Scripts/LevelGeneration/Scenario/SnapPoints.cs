@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Laresistance.LevelGeneration
 {
-    [ExecuteInEditMode]
+    [ExecuteInEditMode] [SelectionBase]
     public class SnapPoints : MonoBehaviour
     {
         [SerializeField]

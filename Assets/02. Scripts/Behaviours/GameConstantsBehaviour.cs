@@ -41,6 +41,15 @@ namespace Laresistance.Behaviours
         [Header("Effect constants")]
         [Tooltip("Max intensity for chromatic aberration when stopping time")]
         public ScriptableFloatReference chromaticAberrationMaxIntensity = default;
+        [Header("Enemy map constants")]
+        [Tooltip("Vertical raycast length")]
+        public ScriptableFloatReference enemyMapVerticalRaycastLength = default;
+        [Tooltip("Distance offset to check vertical raycast for turning or not")]
+        public ScriptableFloatReference enemyMapVerticalRaycastOffset = default;
+        [Tooltip("Horizontal raycast length")]
+        public ScriptableFloatReference enemyMapHorizontalRaycastLength = default;
+        [Tooltip("Horizontal raycast up offset")]
+        public ScriptableFloatReference enemyMapHorizontalRaycastOffsetUp = default;
 
         private void Awake()
         {

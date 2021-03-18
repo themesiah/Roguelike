@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,6 @@ namespace Laresistance.Movement
 {
     public class EnemySimpleMovementManager : IMovementManager
     {
-        private static float HORIZONTAL_RAYCAST_LENGTH = 1.5f;
-        private static float HORIZONTAL_RAYCAST_OFFSET_UP = 1f;
-        private static float VERTICAL_RAYCAST_LENGTH = 2f;
-        private static float VERTICAL_RAYCAST_OFFSET = 0.1f;
         private Rigidbody2D body;
         private ScriptableFloatReference movementSpeed;
         private int raycastLayerMask;
@@ -71,12 +68,12 @@ namespace Laresistance.Movement
             if (!right)
             {
                 // Left
-                if (Physics2D.Raycast(raycastPivot.position, Vector3.left, HORIZONTAL_RAYCAST_LENGTH, raycastLayerMask) || Physics2D.Raycast(body.transform.position + Vector3.up * HORIZONTAL_RAYCAST_OFFSET_UP, Vector3.left, HORIZONTAL_RAYCAST_LENGTH, raycastLayerMask))
+                if (Physics2D.Raycast(raycastPivot.position, Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(body.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
                 {
                     return true;
                 }
                 // Left down
-                if (!Physics2D.Raycast(raycastPivot.position + Vector3.left * VERTICAL_RAYCAST_OFFSET, Vector3.down, VERTICAL_RAYCAST_LENGTH, raycastLayerMask))
+                if (!Physics2D.Raycast(raycastPivot.position + Vector3.left * GameConstantsBehaviour.Instance.enemyMapVerticalRaycastOffset.GetValue(), Vector3.down, GameConstantsBehaviour.Instance.enemyMapVerticalRaycastLength.GetValue(), raycastLayerMask))
                 {
                     return true;
                 }
@@ -84,12 +81,12 @@ namespace Laresistance.Movement
             else
             {
                 // Right
-                if (Physics2D.Raycast(raycastPivot.position, Vector3.right, HORIZONTAL_RAYCAST_LENGTH, raycastLayerMask) || Physics2D.Raycast(body.transform.position + Vector3.up * HORIZONTAL_RAYCAST_OFFSET_UP, Vector3.right, HORIZONTAL_RAYCAST_LENGTH, raycastLayerMask))
+                if (Physics2D.Raycast(raycastPivot.position, Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(body.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
                 {
                     return true;
                 }
                 // Right down
-                if (!Physics2D.Raycast(raycastPivot.position + Vector3.right * VERTICAL_RAYCAST_OFFSET, Vector3.down, VERTICAL_RAYCAST_LENGTH, raycastLayerMask))
+                if (!Physics2D.Raycast(raycastPivot.position + Vector3.right * GameConstantsBehaviour.Instance.enemyMapVerticalRaycastOffset.GetValue(), Vector3.down, GameConstantsBehaviour.Instance.enemyMapVerticalRaycastLength.GetValue(), raycastLayerMask))
                 {
                     return true;
                 }
