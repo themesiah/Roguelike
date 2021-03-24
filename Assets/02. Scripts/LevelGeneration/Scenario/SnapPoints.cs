@@ -16,10 +16,10 @@ namespace Laresistance.LevelGeneration
 
         public Transform[] Points => snapPoints;
 
-        public SnapPoints[] SceneSnapPoints { get
-            {
-                return FindObjectsOfType<SnapPoints>();
-            } }
+        public SnapPoints[] SceneSnapPoints()
+        {
+            return FindObjectsOfType<SnapPoints>(true);
+        }
 
         private void Awake()
         {
@@ -27,6 +27,11 @@ namespace Laresistance.LevelGeneration
         }
 
         private void Update()
+        {
+            Snap();
+        }
+
+        private void Snap()
         {
             if (UnityEngine.InputSystem.Keyboard.current.leftCtrlKey.isPressed)
             {
@@ -37,7 +42,8 @@ namespace Laresistance.LevelGeneration
                         if (Vector2.Distance(lastPosition, transform.position) > 0.01f)
                         {
                             lastPosition = transform.position;
-                            foreach (SnapPoints sp in SceneSnapPoints)
+                            var sceneSnapPoints = SceneSnapPoints();
+                            foreach (SnapPoints sp in sceneSnapPoints)
                             {
                                 if (sp != null && sp != this)
                                 {
@@ -51,6 +57,7 @@ namespace Laresistance.LevelGeneration
                                                 local.x *= Mathf.Sign(thisPoint.lossyScale.x);
                                                 transform.position = otherPoint.position - local;
                                                 Selection.objects = null;
+                                                return;
                                             }
                                         }
                                     }
@@ -60,6 +67,14 @@ namespace Laresistance.LevelGeneration
                     }
                 }
             }
+        }
+
+        public void Recenter()
+        {
+            Vector3 pos = SceneView.lastActiveSceneView.camera.transform.position;
+            pos.z = 0f;
+            gameObject.transform.position = pos;
+            Debug.Log("Changing pos");
         }
     }
 }

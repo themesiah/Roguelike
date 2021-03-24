@@ -41,9 +41,11 @@ namespace Laresistance.LevelGeneration
                 nodesData.Add(new RoomData(i, this));
                 if (i == 0)
                 {
+                    FirstRoom = nodesData[i];
                     nodesData[i].SetAsFirstRoom();
                 } else if (i == totalSize-1)
                 {
+                    LastRoom = nodesData[i];
                     nodesData[i].SetAsLastRoom();
                 }
             }
@@ -55,11 +57,49 @@ namespace Laresistance.LevelGeneration
             return mapSize;
         }
 
+        public void GenerateMapMock()
+        {
+            minimalPath = new List<RoomData>();
+            minimalPath.Add(nodesData[0]);
+            minimalPath.Add(nodesData[2]);
+            minimalPath.Add(nodesData[3]);
+            foreach (var room in minimalPath)
+            {
+                room.SetAsMinimalPathRoom();
+            }
+            GenerateMinimalPathLinks();
+            List<RoomData> otherPath = new List<RoomData>();
+            otherPath.Add(nodesData[0]);
+            otherPath.Add(nodesData[1]);
+            GeneratePathLinks(otherPath, false);
+            RoomInteractable blood = new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward };
+            RoomInteractable equipment = new RoomInteractable() { roomInteractableType = RoomInteractableType.EquipmentReward };
+            RoomInteractable pilgrim = new RoomInteractable() { roomInteractableType = RoomInteractableType.Pilgrim };
+            RoomInteractable fountain = new RoomInteractable() { roomInteractableType = RoomInteractableType.Fountain };
+            nodesData[0].AddInteractable(blood);
+            nodesData[1].AddInteractable(fountain);
+            nodesData[2].AddInteractable(equipment);
+            nodesData[3].AddInteractable(pilgrim);
+            RoomEnemy enemy1_1 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy };
+            RoomEnemy enemy1_2 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion };
+            RoomEnemy enemy2_1 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy };
+            RoomEnemy enemy2_2 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion };
+            RoomEnemy enemy3_1 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy };
+            RoomEnemy enemy3_2 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion };
+            RoomEnemy enemy4_1 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy };
+            RoomEnemy enemy4_2 = new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion };
+            nodesData[0].AddEnemy(enemy1_1);
+            nodesData[0].AddEnemy(enemy1_2);
+            nodesData[1].AddEnemy(enemy2_1);
+            nodesData[1].AddEnemy(enemy2_2);
+            nodesData[2].AddEnemy(enemy3_1);
+            nodesData[2].AddEnemy(enemy3_2);
+            nodesData[3].AddEnemy(enemy4_1);
+            nodesData[3].AddEnemy(enemy4_2);
+        }
+
         public void GenerateMontecarloMinimalPath()
         {
-            FirstRoom = nodesData[0];
-            LastRoom = nodesData[nodesData.Count-1];
-
             minimalPath = GenerateMontecarloPath(FirstRoom, LastRoom);
             foreach(var room in minimalPath)
             {

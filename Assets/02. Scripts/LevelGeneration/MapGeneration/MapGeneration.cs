@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using Laresistance.Behaviours;
+using System.Collections.Generic;
 
 namespace Laresistance.LevelGeneration
 {
@@ -14,11 +15,23 @@ namespace Laresistance.LevelGeneration
         private RoomBiome biome = default;
 
         [SerializeField]
+        private RoomConfiguration[] roomPrefabs = default;
+
+        [SerializeField]
         private int seed = -1;
 
         private void Start()
         {
-            GenerateMap();
+            GenerateMapMock();
+            //GenerateMap();
+        }
+
+        private void GenerateMapMock()
+        {
+            XYPair size = new XYPair() { x = 2, y = 2 };
+            MapData mapData = new MapData(size);
+            mapData.GenerateMapMock();
+            StartCoroutine(GenerateRooms(mapData));
         }
 
         public void GenerateMap()
@@ -39,10 +52,16 @@ namespace Laresistance.LevelGeneration
 
         private IEnumerator GenerateRooms(MapData mapData)
         {
+            List<RoomGeneration> rooms = new List<RoomGeneration>();
             foreach(var room in mapData.GetAllRooms())
             {
-                RoomGeneration rg = new RoomGeneration(room, mapData, this, biome);
-                yield return rg.GenerateRoom();
+                RoomGeneration rg = new RoomGeneration(room, mapData, this, biome, roomPrefabs);
+                rg.PregenerateRoom();
+                rooms.Add(rg);
+            }
+            foreach(var room in rooms)
+            {
+                yield return room.GenerateRoom();
             }
         }
 

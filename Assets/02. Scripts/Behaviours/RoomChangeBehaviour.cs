@@ -76,7 +76,7 @@ namespace Laresistance.Behaviours
 
         public void SetAsLevelEnd()
         {
-            throw new System.NotImplementedException("SetAsLevelEnd not implemented");
+            //throw new System.NotImplementedException("SetAsLevelEnd not implemented");
         }
 
 #if UNITY_EDITOR

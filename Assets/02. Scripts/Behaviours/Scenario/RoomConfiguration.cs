@@ -50,6 +50,11 @@ namespace Laresistance.Behaviours
 
         private void Start()
         {
+            //InitMock();
+        }
+
+        private void InitMock()
+        {
             RoomData rd = new RoomData(0, null);
             rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
             rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion });
@@ -66,7 +71,8 @@ namespace Laresistance.Behaviours
             if (cool)
             {
                 ConfigureRoom(null, rd, roomBiome);
-            } else
+            }
+            else
             {
                 UnityEngine.Assertions.Assert.IsTrue(false);
             }
