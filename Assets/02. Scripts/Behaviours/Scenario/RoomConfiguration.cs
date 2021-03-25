@@ -48,6 +48,11 @@ namespace Laresistance.Behaviours
         [Header("Temp and test")]
         public RoomBiome roomBiome;
 
+        public Transform[] EnemySpawns => possibleEnemySpawnPoints;
+        public Transform MinibossSpawn => possibleMinibossSpawnPoint;
+
+        public LayerMask enemySpaceLayerMask;
+
         private void Start()
         {
             //InitMock();
