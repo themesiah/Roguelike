@@ -26,6 +26,8 @@ namespace Laresistance.Behaviours
         private string animatorTriggerName = "";
         [SerializeField]
         private float animationDuration = 1f;
+        [SerializeField]
+        private Collider2D interactionCollider = default;
 
         [Header("Normal behaviour configuration")]
         [SerializeField]
@@ -82,7 +84,6 @@ namespace Laresistance.Behaviours
         {
             if (!doingStartingAnimation)
             {
-                Debug.Log("Elevator activated");
                 if (elevatorNormalBehaviourCoroutine != null && startDone == true)
                 {
                     StopCoroutine(elevatorNormalBehaviourCoroutine);
@@ -98,7 +99,6 @@ namespace Laresistance.Behaviours
         {
             if (!doingStartingAnimation)
             {
-                Debug.Log("Lever activated");
                 if (elevatorNormalBehaviourCoroutine != null && startDone == true)
                 {
                     StopCoroutine(elevatorNormalBehaviourCoroutine);
@@ -154,7 +154,6 @@ namespace Laresistance.Behaviours
 
         private IEnumerator ElevatorStartCoroutine()
         {
-            Debug.Log("Elevator started starting animation");
             // Move elevator from starting point to mid point using speed
             while (Vector3.Distance(movingBone.position, midPoint.position) > 0.1f)
             {
@@ -179,19 +178,11 @@ namespace Laresistance.Behaviours
                 yield return null;
             }
             startDone = true;
-            Debug.Log("Elevator finished starting animation");
+            interactionCollider.enabled = true;
         }
 
         private IEnumerator ElevatorMoveCoroutine(bool goUp)
         {
-            Debug.Log("Elevator moving");
-            if (goUp)
-            {
-                Debug.Log("Going up");
-            } else
-            {
-                Debug.Log("Going down");
-            }
             Transform targetPoint = goUp ? upPoint : bottomPoint;
             currentlyUp = goUp;
             while (Vector3.Distance(elevatorBody.position, targetPoint.position) > 0.1f)
