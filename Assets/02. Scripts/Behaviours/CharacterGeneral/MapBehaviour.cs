@@ -10,30 +10,25 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RuntimeMapBehaviourSet mapBehaviours = default;
         [SerializeField]
-        private UnityEvent<bool> onTurn = default;
+        protected UnityEvent<bool> onTurn = default;
+        [SerializeField]
+        protected Character2DController characterController = default;
 
-        protected IMovementManager movementManager;
+        
 
         protected virtual void Awake()
         {
-            movementManager = CreateMovementManager((bool right)=> { onTurn?.Invoke(right); });
+            characterController?.OnFlip.AddListener((bool right) => { onTurn?.Invoke(right); });
         }
 
-        protected abstract IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction);
-
-        protected virtual void Update()
+        public virtual void PauseMapBehaviour()
         {
-            movementManager.Tick(Time.deltaTime);
+            characterController?.Pause();
         }
 
-        public void PauseMapBehaviour()
+        public virtual void ResumeMapBehaviour()
         {
-            movementManager?.Pause();
-        }
-
-        public void ResumeMapBehaviour()
-        {
-            movementManager?.Resume();
+            characterController?.Resume();
         }
 
         private void OnDisable()
@@ -46,9 +41,9 @@ namespace Laresistance.Behaviours
             mapBehaviours.Add(this);
         }
 
-        public IMovementManager GetMovementManager()
+        public Character2DController GetCharacterController()
         {
-            return movementManager;
+            return characterController;
         }
     }
 }

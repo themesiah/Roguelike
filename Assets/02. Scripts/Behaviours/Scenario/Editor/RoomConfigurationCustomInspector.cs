@@ -23,7 +23,10 @@ namespace Laresistance.Behaviours
                 foreach (var enemy in enemies) {
                     try
                     {
-                        BattlePosition.CheckSpace(enemy.position, rc.enemySpaceLayerMask);
+                        if (!BattlePosition.CheckSpace(enemy.position, rc.enemySpaceLayerMask))
+                        {
+                            Debug.LogErrorFormat("{0} doesn't have enough space.", enemy.name);
+                        }
                     } catch(System.Exception e)
                     {
                         Debug.LogError(e.Message);
@@ -35,7 +38,10 @@ namespace Laresistance.Behaviours
                 {
                     try
                     {
-                        BattlePosition.CheckSpace(miniboss.position, rc.enemySpaceLayerMask);
+                        if (!BattlePosition.CheckSpace(miniboss.position, rc.enemySpaceLayerMask))
+                        {
+                            Debug.LogErrorFormat("{0} doesn't have enough space.", miniboss.name);
+                        }
                     } catch (System.Exception e) {
                         Debug.LogError(e.Message);
                         Debug.LogErrorFormat("{0} doesn't have enough space.", miniboss.name);

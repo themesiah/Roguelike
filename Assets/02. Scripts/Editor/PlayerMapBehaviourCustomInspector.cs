@@ -13,9 +13,9 @@ namespace Laresistance.Behaviours
                 PlayerMapBehaviour playerMapBehaviour = (PlayerMapBehaviour)target;
                 if (playerMapBehaviour.isActiveAndEnabled)
                 {
-                    EditorGUILayout.LabelField("Jumping: " + playerMapBehaviour.IsJumping);
-                    EditorGUILayout.LabelField("Falling: " + playerMapBehaviour.IsFalling);
-                    EditorGUILayout.LabelField("Platform falling: " + playerMapBehaviour.IsPlatformFalling);
+                    EditorGUILayout.LabelField(string.Format("Jumping or falling: {0}", playerMapBehaviour.IsJumpingOrFalling));
+                    EditorGUILayout.LabelField(string.Format("Velocity: {0}x{1}y", playerMapBehaviour.CurrentVelocity.x, playerMapBehaviour.CurrentVelocity.y));
+                    EditorGUILayout.LabelField(string.Format("Platform falling: {0}", playerMapBehaviour.FallingSignal));
                 }
             }
         }

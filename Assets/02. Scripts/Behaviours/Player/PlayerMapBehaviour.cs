@@ -22,36 +22,105 @@ namespace Laresistance.Behaviours
         private Animator animator;
 
         private ScenarioInteraction currentInteraction = null;
+        private PlayerScenarioInteraction playerInteraction = null;
+
+        private bool fallSignal = false;
+        private bool jumpSignal = false;
+        private bool stopJumpSignal = false;
+        private float currentMovementValue = 0f;
 
         protected override void Awake()
         {
             body = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            playerInteraction = new PlayerScenarioInteraction();
             base.Awake();
         }
 
-        protected override IMovementManager CreateMovementManager(UnityAction<bool> onTurnAction)
+        private void FixedUpdate()
         {
-            return new PlayerMovementManager(movementData, transform, body, animator, platformFallEvent, onTurnAction);
-        }
-
-        public void Move(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).HorizontalMovement.Move(context);
-        public void Jump(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).Jump.Jump(context);
-        public void PlatformFall(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).Jump.Fall(context);
-        public void Interact(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).ScenarioInteraction.Interact(context, currentInteraction, false);
-        public void InteractEquip(InputAction.CallbackContext context) => ((PlayerMovementManager)movementManager).ScenarioInteraction.Interact(context, currentInteraction, true);
-
-        public bool IsJumping => ((PlayerMovementManager)movementManager).MovementStatus.jumping;
-        public bool IsFalling => ((PlayerMovementManager)movementManager).MovementStatus.falling;
-        public bool IsPlatformFalling => ((PlayerMovementManager)movementManager).MovementStatus.platformFalling;
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.GetContact(0).normal.y > 0.9f)
+            characterController.Move(currentMovementValue);
+            if (jumpSignal)
             {
-                ((PlayerMovementManager)movementManager).Jump.GroundContact();
+                Vector2 jumpForce = Vector2.up * movementData.JumpForce.GetValue();
+                characterController.Jump(jumpForce, movementData.JumpsLimit.GetValue());
+                jumpSignal = false;
+            }
+            if (stopJumpSignal)
+            {
+                characterController.StopJump();
+                stopJumpSignal = false;
             }
         }
+
+        public void Move(InputAction.CallbackContext context)
+        {
+            if (context.started || context.performed)
+            {
+                float axisValue = context.ReadValue<Vector2>().x;
+                if (Mathf.Abs(axisValue) > 0.3f)
+                {
+                    float movement = movementData.HorizontalSpeed.GetValue() * axisValue;
+                    currentMovementValue = movement;
+                } else
+                {
+                    currentMovementValue = 0f;
+                }
+            } else if (context.canceled)
+            {
+                currentMovementValue = 0f;
+            }
+        }
+        public void Jump(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                if (fallSignal)
+                {
+                    var groundColliders = characterController.GetGroundColliders();
+                    bool haveEffector = false;
+                    // If not above a platform effector, jump normally, even if pressing down
+                    foreach(var collider in groundColliders)
+                    {
+                        PlatformEffector2D effector = collider.GetComponent<PlatformEffector2D>();
+                        if (effector != null)
+                        {
+                            haveEffector = true;
+                            break;
+                        }
+                    }
+                    if (!haveEffector)
+                    {
+                        jumpSignal = true;
+                    } else
+                    {
+                        platformFallEvent?.Raise();
+                    }
+                } else
+                {
+                    jumpSignal = true;
+                }
+            } else if (context.canceled)
+            {
+                stopJumpSignal = true;
+            }
+        }
+        public void PlatformFall(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                fallSignal = true;
+            } else if (context.canceled)
+            {
+                fallSignal = false;
+            }
+        }
+
+        public bool IsJumpingOrFalling => characterController.IsJumpingOrFalling;
+        public Vector2 CurrentVelocity => characterController.CurrentVelocity;
+        public bool FallingSignal => fallSignal;
+        public void Interact(InputAction.CallbackContext context) => playerInteraction.Interact(context, currentInteraction, false);
+        public void InteractEquip(InputAction.CallbackContext context) => playerInteraction.Interact(context, currentInteraction, true);
 
         private void OnTriggerEnter2D(Collider2D collider)
         {

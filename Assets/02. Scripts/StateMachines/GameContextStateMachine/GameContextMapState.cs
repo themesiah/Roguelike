@@ -53,7 +53,7 @@ namespace Laresistance.StateMachines
         {
             actionMapSwitchEvent.Raise("PlayerMap");
             ObjectActivationAndDesactivation(true);
-            playerObject.GetComponent<PlayerMapBehaviour>().ResumeMapBehaviour();
+            //playerObject.GetComponent<PlayerMapBehaviour>().ResumeMapBehaviour(); // No need to do this, as the player map behaviour is part of the map behaviours set.
             // Move camera
             GamedevsToolbox.Utils.Logger.Logger.Log("Entering map state");
             yield return null;

@@ -9,33 +9,23 @@ namespace Laresistance.Movement
 {
     public class EnemySimpleMovementManager : IMovementManager
     {
-        private Rigidbody2D body;
         private ScriptableFloatReference movementSpeed;
         private int raycastLayerMask;
         private Transform raycastPivot;
-        private UnityAction<bool> onTurn;
+        private Character2DController characterController;
 
-        private bool right = true;
-        private bool stopped = false;
         private int pauseStack = 0;
 
-        public EnemySimpleMovementManager(Rigidbody2D body, ScriptableFloatReference movementSpeed, int raycastLayerMask, Transform raycastPivot, UnityAction<bool> onTurn)
+        public EnemySimpleMovementManager(Character2DController characterController, ScriptableFloatReference movementSpeed, int raycastLayerMask, Transform raycastPivot)
         {
-            this.body = body;
+            this.characterController = characterController;
             this.movementSpeed = movementSpeed;
             this.raycastLayerMask = raycastLayerMask;
             this.raycastPivot = raycastPivot;
-            this.onTurn = onTurn;
-            if (body.transform.localScale.x > 0f)
-            {
-                right = false;
-            }
         }
 
         public void Tick(float delta)
         {
-            if (stopped)
-                return;
             bool needToTurn = CheckRaycastNeedToTurn();
             if (needToTurn)
             {
@@ -47,9 +37,7 @@ namespace Laresistance.Movement
         public void Pause()
         {
             pauseStack++;
-            body.velocity = Vector2.zero;
-            body.simulated = false;
-            stopped = true;
+            characterController.Pause();
         }
 
         public void Resume()
@@ -58,17 +46,16 @@ namespace Laresistance.Movement
             pauseStack = System.Math.Max(0, pauseStack);
             if (pauseStack == 0)
             {
-                stopped = false;
-                body.simulated = true;
+                characterController.Resume();
             }
         }
 
         private bool CheckRaycastNeedToTurn()
         {
-            if (!right)
+            if (!characterController.FacingRight)
             {
                 // Left
-                if (Physics2D.Raycast(raycastPivot.position, Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(body.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
+                if (Physics2D.Raycast(raycastPivot.position, Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(characterController.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
                 {
                     return true;
                 }
@@ -81,7 +68,7 @@ namespace Laresistance.Movement
             else
             {
                 // Right
-                if (Physics2D.Raycast(raycastPivot.position, Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(body.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
+                if (Physics2D.Raycast(raycastPivot.position, Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(characterController.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
                 {
                     return true;
                 }
@@ -96,35 +83,19 @@ namespace Laresistance.Movement
 
         public void Turn()
         {
-            right = !right;
-            var scale = body.transform.localScale;
-            if (right == true)
-            {
-                scale.x = Mathf.Abs(scale.x);
-            } else
-            {
-                scale.x = -Mathf.Abs(scale.x);
-            }
-            body.transform.localScale = scale;
-            onTurn?.Invoke(right);
+            characterController.Flip();
         }
 
         public void Turn(bool r)
         {
-            right = !r;
-            Turn();
+            characterController.Flip(r);
         }
 
         private void Move()
         {
-            float modifier = 1f;
-            if (right == false)
-                modifier = -1f;
-            var velocity = body.velocity;
-            velocity.x = modifier * movementSpeed.GetValue();
-            body.velocity = velocity;
+            float modifier = characterController.FacingRight ? 1f : -1f;
+            float movement = modifier * movementSpeed.GetValue();
+            characterController.Move(movement);
         }
-
-        public bool Right => right;
     }
 }

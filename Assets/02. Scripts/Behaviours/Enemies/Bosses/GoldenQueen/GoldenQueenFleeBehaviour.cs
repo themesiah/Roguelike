@@ -182,7 +182,7 @@ namespace Laresistance.Behaviours
 
         private IEnumerator Disappear(bool right)
         {
-            mapBehaviuour.Turn(right);
+            mapBehaviuour.GetCharacterController().Flip(right);
             float disappearDistanceWithSignFrom = disappearDistance.GetValue();
             if (!right)
             {
@@ -212,7 +212,7 @@ namespace Laresistance.Behaviours
             {
                 disappearDistanceWithSignFrom = -disappearDistanceWithSignFrom;
             }
-            mapBehaviuour.Turn(!right);
+            mapBehaviuour.GetCharacterController().Flip(!right);
             Vector3 pos = transform.position;
             pos.y = floorLocations[floor - 1].Get().transform.position.y;
             pos.x = floorLocations[floor - 1].Get().transform.position.x + disappearDistanceWithSignFrom;

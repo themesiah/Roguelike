@@ -41,6 +41,7 @@ namespace Laresistance.Battle
 
         private static float GetDistanceTo(Vector3 pointCheck, float direction, int centerCheckLayerMask)
         {
+            UnityEngine.Assertions.Assert.AreNotEqual(0f, direction, "Why is direction 0?");
             float distance = 0f;
             ContactFilter2D raycastFilters = new ContactFilter2D();
             raycastFilters.layerMask = centerCheckLayerMask;
@@ -50,18 +51,13 @@ namespace Laresistance.Battle
 
             // wall
             int hits = Physics2D.Raycast(pointCheck + Vector3.up * 0.1f, Vector2.right * direction, raycastFilters, results);
-            if (hits > 0)
-            {
-                distance = results[0].distance;
-            } else
-            {
-                UnityEngine.Assertions.Assert.IsTrue(false, "Where the hell is the wall?");
-            }
+            UnityEngine.Assertions.Assert.AreNotEqual(0, hits, string.Format("Where the hell is the wall in the {0} direction?", direction > 0f ? "right" : "left"));
+            distance = results[0].distance;
 
 
             // fall
             hits = Physics2D.Raycast(pointCheck + Vector3.up * 0.1f, Vector2.down, raycastFilters, results);
-            UnityEngine.Assertions.Assert.IsTrue(hits > 0);
+            UnityEngine.Assertions.Assert.IsTrue(hits > 0, "Where the hell is the floor?");
             float height = results[0].distance+0.1f;
 
             //hits = 1;
@@ -130,7 +126,7 @@ namespace Laresistance.Battle
             MapBehaviour mb = character.GetComponent<MapBehaviour>();
             if (mb != null)
             {
-                mb.GetMovementManager().Turn(right);
+                mb.GetCharacterController().Flip(right);
             }
             else
             {
