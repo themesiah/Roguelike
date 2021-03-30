@@ -19,9 +19,8 @@ namespace Laresistance.Behaviours
 
         private IMovementManager movementManager;
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             movementManager = new EnemySimpleMovementManager(characterController, speedReference, raycastLayerMask.value, raycastPivot);
         }
 

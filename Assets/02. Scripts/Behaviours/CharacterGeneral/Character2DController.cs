@@ -97,6 +97,7 @@ namespace Laresistance.Behaviours
             var scale = transform.localScale;
             scale.x = -scale.x;
             transform.localScale = scale;
+            OnFlip?.Invoke(facingRight);
         }
 
         public void Flip(bool right)

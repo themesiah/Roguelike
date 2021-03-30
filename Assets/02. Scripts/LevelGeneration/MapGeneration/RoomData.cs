@@ -41,6 +41,9 @@ namespace Laresistance.LevelGeneration
         public bool IsLastRoom { get; private set; }
         public Vector2 RoomPosition => GetRoomPosition();
 
+        private Collider2D roomBounds;
+        public Collider2D RoomBounds => roomBounds;
+
         public RoomData(int roomIndex, MapData mapData)
         {
             this.roomIndex = roomIndex;
@@ -94,6 +97,11 @@ namespace Laresistance.LevelGeneration
         public RoomLink[] GetLinks()
         {
             return roomConnections.ToArray();
+        }
+
+        public void SetBounds(Collider2D collider)
+        {
+            roomBounds = collider;
         }
 
         public void AddInteractable(RoomInteractable roomInteractable)

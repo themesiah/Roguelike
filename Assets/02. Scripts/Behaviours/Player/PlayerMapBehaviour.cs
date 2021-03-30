@@ -29,12 +29,11 @@ namespace Laresistance.Behaviours
         private bool stopJumpSignal = false;
         private float currentMovementValue = 0f;
 
-        protected override void Awake()
+        protected void Awake()
         {
             body = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             playerInteraction = new PlayerScenarioInteraction();
-            base.Awake();
         }
 
         private void FixedUpdate()

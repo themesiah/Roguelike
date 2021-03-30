@@ -3,6 +3,7 @@ using Laresistance.LevelGeneration;
 using Laresistance.Data;
 using System.Collections.Generic;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
+using GamedevsToolbox.ScriptableArchitecture.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -34,6 +35,8 @@ namespace Laresistance.Behaviours
         private Transform levelStartPosition = default;
         [SerializeField]
         private RoomChangeBehaviour levelEnd = default;
+        [SerializeField]
+        private CompositeCollider2D roomLimits = default;
 
         [Header("Data")]
         [SerializeField]
@@ -44,6 +47,8 @@ namespace Laresistance.Behaviours
         [Header("References")]
         [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
+        [SerializeField]
+        private Collider2DGameEvent boundsChangeEvent = default;
 
         [Header("Temp and test")]
         public RoomBiome roomBiome;
@@ -174,6 +179,7 @@ namespace Laresistance.Behaviours
                         break;
                 }
                 roomData.SetLink(link, i);
+                roomData.SetBounds(roomLimits);
             }
         }
 
@@ -196,6 +202,7 @@ namespace Laresistance.Behaviours
             if (roomData.IsFirstRoom)
             {
                 playerDataRef.Get().transform.position = levelStartPosition.position;
+                boundsChangeEvent?.Raise(roomLimits);
             }
         }
 
@@ -240,6 +247,7 @@ namespace Laresistance.Behaviours
                             if (link.linkLocation == connectionLocation)
                             {
                                 roomChangeBehaviour.SetNextRoom(link.roomChangeBehaviour);
+                                roomChangeBehaviour.SetRoomBounds(roomLimits);
                             }
                         }
                     }

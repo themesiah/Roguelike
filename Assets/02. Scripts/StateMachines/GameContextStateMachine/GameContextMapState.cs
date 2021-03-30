@@ -21,13 +21,16 @@ namespace Laresistance.StateMachines
         private StringGameEvent actionMapSwitchEvent;
         private BloodLossSystem bloodLossSystem;
         private RuntimeMapBehaviourSet mapBehavioursRef;
+        private StringGameEvent virtualCameraChangeEvent;
 
-        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference, RuntimeMapBehaviourSet mapBehavioursRef)
+        public GameContextMapState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference, RuntimeMapBehaviourSet mapBehavioursRef,
+            StringGameEvent virtualCameraChangeEvent)
         {
             this.playerObject = playerObject;
             this.playerCamera = playerCamera;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
             this.mapBehavioursRef = mapBehavioursRef;
+            this.virtualCameraChangeEvent = virtualCameraChangeEvent;
             playerMapBehaviour = playerObject.GetComponent<PlayerMapBehaviour>();
             playerBody = playerObject.GetComponent<Rigidbody2D>();
             bloodLossSystem = new BloodLossSystem(playerObject.GetComponent<PlayerDataBehaviour>().player.GetEquipmentContainer(), bloodReference);
@@ -52,6 +55,7 @@ namespace Laresistance.StateMachines
         public IEnumerator EnterState()
         {
             actionMapSwitchEvent.Raise("PlayerMap");
+            virtualCameraChangeEvent.Raise("MapCamera");
             ObjectActivationAndDesactivation(true);
             //playerObject.GetComponent<PlayerMapBehaviour>().ResumeMapBehaviour(); // No need to do this, as the player map behaviour is part of the map behaviours set.
             // Move camera

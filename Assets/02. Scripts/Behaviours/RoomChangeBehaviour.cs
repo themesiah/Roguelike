@@ -28,11 +28,14 @@ namespace Laresistance.Behaviours
         private GameObject[] alternativeObjects = default;
 
         public bool ChangeRoomOnEnterTrigger => changeRoomOnEnterTrigger;
+        public bool IsLevelEnd => isLevelEnd;
+
+        private bool isLevelEnd = false;
+        private Collider2D roomBounds;
 
         private void Awake()
         {
             InitRoom();
-            //ActivateAlternativeObjects();
         }
 
         public void ActivateAlternativeObjects()
@@ -69,14 +72,19 @@ namespace Laresistance.Behaviours
             this.nextRoom = nextRoom;
         }
 
+        public void SetRoomBounds(Collider2D collider)
+        {
+            roomBounds = collider;
+        }
+
         public RoomChangeData GetRoomChangeData()
         {
-            return new RoomChangeData(){ enterPoint = roomEnterPoint, exitPoint = roomExitPoint, nextRoom = nextRoom };
+            return new RoomChangeData(){ enterPoint = roomEnterPoint, exitPoint = roomExitPoint, nextRoom = nextRoom, bounds = roomBounds };
         }
 
         public void SetAsLevelEnd()
         {
-            //throw new System.NotImplementedException("SetAsLevelEnd not implemented");
+            isLevelEnd = true;
         }
 
 #if UNITY_EDITOR

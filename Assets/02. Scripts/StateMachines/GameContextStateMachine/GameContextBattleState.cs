@@ -28,25 +28,35 @@ namespace Laresistance.StateMachines
         private RewardData rewardData = null;
         private bool paused = false;
         private ScriptableIntReference battlePositionIntReference;
-        private CameraBattleBehaviour cameraBattleBehaviour;
+        private StringGameEvent virtualCameraChangeEvent;
+        private RuntimeSingleCinemachineTargetGroup targetGroupRef;
 
         #region ICoroutineState Implementation
         public IEnumerator EnterState()
         {
             deathCount = 0;
             actionMapSwitchEvent.Raise("PlayerBattle");
+            virtualCameraChangeEvent.Raise("BattleCamera");
             ConfigureEnemyObjects();
             SpawnPlayerCompanions();
             // Move characters
             var battlePositionData = BattlePosition.MoveCharacters(this.playerObject, this.enemyObjects, centerCheckLayerMask);
             int position = 0;
+            if (targetGroupRef.Get().FindMember(playerObject.transform) < 0)
+            {
+                targetGroupRef.Get().AddMember(playerObject.transform, 1f, 5f);
+            }
+            foreach(var enemy in enemyObjects)
+            {
+                targetGroupRef.Get().AddMember(enemy.transform, 1f, 5f);
+            }
             if (!battlePositionData.direction)
             {
                 position = 1;
             }
             battlePositionIntReference.SetValue(position);
             // Move Camera
-            cameraBattleBehaviour.CenterOnBattle(battlePositionData.center);
+            // TODO: Change virtual camera
             // Init battle system
             CharacterBattleManager[] enemies = new CharacterBattleManager[enemyObjects.Length];
             for (int i = 0; i < enemies.Length; ++i)
@@ -63,6 +73,14 @@ namespace Laresistance.StateMachines
             // Deactivate things
             companionSpawner.Despawn();
             battleSystem.EndBattle();
+            // Remove enemies from virtual cam group
+            foreach(var enemy in enemyObjects)
+            {
+                if (enemy != null && targetGroupRef.Get().FindMember(enemy.transform) != -1)
+                {
+                    targetGroupRef.Get().RemoveMember(enemy.transform);
+                }
+            }
             // Yield end battle screen and give rewards
             if (!forcedStop)
             {
@@ -71,7 +89,6 @@ namespace Laresistance.StateMachines
             }
             goToMap = false;
             forcedStop = false;
-            cameraBattleBehaviour.EndBattleCentering();
             yield return null;
         }
 
@@ -125,7 +142,8 @@ namespace Laresistance.StateMachines
         }
 
         public GameContextBattleState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference,
-            ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary, ScriptableIntReference battlePositionIntReference)
+            ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary, ScriptableIntReference battlePositionIntReference,
+            StringGameEvent virtualCameraChangeEvent, RuntimeSingleCinemachineTargetGroup targetGroupRef)
         {
             this.playerObject = playerObject;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
@@ -137,7 +155,8 @@ namespace Laresistance.StateMachines
             this.battlePositionIntReference = battlePositionIntReference;
             playerObject.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += PlayerDeath;
             this.battleSystem.OnEnemyRemoved += EnemyFlee;
-            cameraBattleBehaviour = playerCamera.gameObject.GetComponent<CameraBattleBehaviour>();
+            this.virtualCameraChangeEvent = virtualCameraChangeEvent;
+            this.targetGroupRef = targetGroupRef;
         }
 
         public void PerformTimeStop(bool activate)
@@ -152,6 +171,7 @@ namespace Laresistance.StateMachines
             foreach (var go in this.enemyObjects)
             {
                 go.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += EnemyDeath;
+                go.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += (h)=> { EnemyDeathCam(go); };
             }
         }
 
@@ -166,6 +186,14 @@ namespace Laresistance.StateMachines
             if (deathCount == enemyObjects.Length)
             {
                 goToMap = true;
+            }
+        }
+
+        private void EnemyDeathCam(GameObject enemyObject)
+        {
+            if (targetGroupRef.Get().FindMember(enemyObject.transform) != -1)
+            {
+                targetGroupRef.Get().RemoveMember(enemyObject.transform);
             }
         }
 

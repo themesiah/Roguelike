@@ -41,6 +41,12 @@ namespace Laresistance.Behaviours
         private UnityEvent OnTimeStopDeactivated = default;
         [SerializeField]
         private UnityEvent<float> OnTimeStopDeltaModified = default;
+        [SerializeField]
+        private Collider2DGameEvent boundsChangeEvent = default;
+        [SerializeField]
+        private StringGameEvent virtualCameraChangeEvent = default;
+        [SerializeField] [Tooltip("Group of entities followed by the combat camera")]
+        private RuntimeSingleCinemachineTargetGroup targetGroupRef = default;
 
         private SimpleSignalStateMachine stateMachine;
         private GameContextBattleState battleState;
@@ -51,10 +57,10 @@ namespace Laresistance.Behaviours
             Camera camera = cameraReference.Get();
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
-            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef));
-            battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary, battlePositionIntegerReference);
+            states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef, virtualCameraChangeEvent));
+            battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef);
             states.Add("Battle", battleState);
-            roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData);
+            roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent);
             states.Add("RoomChange", roomChangeState);
             states.Add("UI", new GameContextUIState(actionMapSwitchEvent));
 
@@ -117,9 +123,16 @@ namespace Laresistance.Behaviours
 
         public void RoomChange(RoomChangeBehaviour rcb)
         {
-            RoomChangeData rcd = rcb.GetRoomChangeData();
-            roomChangeState.SetRoomData(rcd);
-            stateMachine.ReceiveSignal("RoomChange");
+            if (rcb.IsLevelEnd)
+            {
+                throw new System.NotImplementedException("Next level change is not yet implemented");
+            }
+            else
+            {
+                RoomChangeData rcd = rcb.GetRoomChangeData();
+                roomChangeState.SetRoomData(rcd);
+                stateMachine.ReceiveSignal("RoomChange");
+            }
         }
 
         public void PerformTimeStop(InputAction.CallbackContext context)

@@ -10,16 +10,7 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RuntimeMapBehaviourSet mapBehaviours = default;
         [SerializeField]
-        protected UnityEvent<bool> onTurn = default;
-        [SerializeField]
         protected Character2DController characterController = default;
-
-        
-
-        protected virtual void Awake()
-        {
-            characterController?.OnFlip.AddListener((bool right) => { onTurn?.Invoke(right); });
-        }
 
         public virtual void PauseMapBehaviour()
         {
