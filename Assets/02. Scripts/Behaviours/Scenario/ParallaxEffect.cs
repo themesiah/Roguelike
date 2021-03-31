@@ -24,7 +24,7 @@ namespace Laresistance.Behaviours
             UnityEngine.Assertions.Assert.AreEqual(4, playerLimits.Length);
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             float valx = Mathf.InverseLerp(playerLimits[0].position.x, playerLimits[1].position.x, playerTransform.position.x);
             float valy = Mathf.InverseLerp(playerLimits[2].position.y, playerLimits[3].position.y, playerTransform.position.y);
