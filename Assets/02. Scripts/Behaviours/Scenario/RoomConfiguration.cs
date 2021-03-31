@@ -52,6 +52,8 @@ namespace Laresistance.Behaviours
 
         [Header("Temp and test")]
         public RoomBiome roomBiome;
+        public bool mockTest;
+        public bool playerStartPoint;
 
         public Transform[] EnemySpawns => possibleEnemySpawnPoints;
         public Transform MinibossSpawn => possibleMinibossSpawnPoint;
@@ -60,32 +62,89 @@ namespace Laresistance.Behaviours
 
         private void Start()
         {
-            //InitMock();
+            if (mockTest)
+            {
+                InitMock();
+            }
         }
 
         private void InitMock()
         {
             RoomData rd = new RoomData(0, null);
-            rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
-            rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion });
-            rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Minion });
-            rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Miniboss });
-            rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
-            //rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = true });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = true });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 2, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = true });
-            rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 3, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.FrontDoor, minimalPath = true });
+            for (int i = 0; i < possibleEnemySpawnPoints.Length; ++i)
+            {
+                rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
+            }
+            if (possibleMinibossSpawnPoint != null)
+            {
+                rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Miniboss });
+            }
+            for (int i = 0; i < possibleInteractablePositions.Length; ++i)
+            {
+                rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
+            }
+            if (bottomRoomConnection != null)
+            {
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = false });
+            }
+            if (topRoomConnection != null)
+            {
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Stairs, minimalPath = false });
+            }
+            if (leftRoomConnection != null)
+            {
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 2, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = false });
+            }
+            if (rightRoomConnection != null)
+            {
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 3, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = false });
+            }
             rd.SetAsMinimalPathRoom();
-            //rd.SetAsFirstRoom();
-            bool cool = CheckRoomRequirements(rd);
-            if (cool)
+            if (levelStartPosition != null)
             {
-                ConfigureRoom(null, rd, roomBiome);
+                rd.SetAsFirstRoom();
             }
-            else
+            if (playerStartPoint)
             {
-                UnityEngine.Assertions.Assert.IsTrue(false);
+                Transform spawnPosition = null;
+                if (levelStartPosition != null)
+                {
+                    spawnPosition = levelStartPosition;
+                }
+                else
+                {
+                    if (bottomRoomConnection != null)
+                    {
+                        spawnPosition = bottomRoomConnection.RoomEnterPoint;
+                    }
+                    else
+                    if (topRoomConnection != null)
+                    {
+                        spawnPosition = topRoomConnection.RoomEnterPoint;
+                    }
+                    else
+                    if (leftRoomConnection != null)
+                    {
+                        spawnPosition = leftRoomConnection.RoomEnterPoint;
+                    }
+                    else
+                    if (rightRoomConnection != null)
+                    {
+                        spawnPosition = rightRoomConnection.RoomEnterPoint;
+                    }
+                }
+                Transform player = null;
+                var pbb = FindObjectOfType<PlayerBattleBehaviour>();
+                if (pbb != null)
+                {
+                    player = pbb.gameObject.transform;
+                }
+                if (player != null)
+                {
+                    player.position = spawnPosition.position;
+                }
             }
+            ConfigureRoom(null, rd, roomBiome);
         }
 
 
@@ -195,11 +254,16 @@ namespace Laresistance.Behaviours
             ConfigureEnemies(mapData, roomData, biome);
             // Spawn interactables
             ConfigureInteractables(roomData, biome);
+
+            if (mockTest)
+            {
+                boundsChangeEvent?.Raise(roomLimits);
+            }
         }
 
         private void ConfigureLevelStart(RoomData roomData)
         {
-            if (roomData.IsFirstRoom)
+            if (roomData.IsFirstRoom && !mockTest)
             {
                 playerDataRef.Get().transform.position = levelStartPosition.position;
                 boundsChangeEvent?.Raise(roomLimits);
@@ -247,6 +311,16 @@ namespace Laresistance.Behaviours
                             if (link.linkLocation == connectionLocation)
                             {
                                 roomChangeBehaviour.SetNextRoom(link.roomChangeBehaviour);
+                                roomChangeBehaviour.SetRoomBounds(roomLimits);
+                            }
+                        }
+                    } else if (mockTest)
+                    {
+                        foreach (var link in roomData.GetLinks())
+                        {
+                            if (link.linkLocation == connectionLocation)
+                            {
+                                roomChangeBehaviour.SetNextRoom(roomChangeBehaviour);
                                 roomChangeBehaviour.SetRoomBounds(roomLimits);
                             }
                         }

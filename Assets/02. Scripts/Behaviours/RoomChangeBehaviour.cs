@@ -33,6 +33,9 @@ namespace Laresistance.Behaviours
         private bool isLevelEnd = false;
         private Collider2D roomBounds;
 
+        public Transform RoomEnterPoint => roomEnterPoint;
+        public Transform RoomExitPoint => roomExitPoint;
+
         private void Awake()
         {
             InitRoom();
