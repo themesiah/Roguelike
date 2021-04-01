@@ -70,7 +70,7 @@ namespace Laresistance.Behaviours
             if (!isGrounded && body.velocity.y > 0f)
             {
                 var vel = body.velocity;
-                vel.y = 0f;
+                vel.y *= 0.5f;
                 body.velocity = vel;
             }
         }
