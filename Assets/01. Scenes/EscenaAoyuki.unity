@@ -759,6 +759,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 214439180}
+  - {fileID: 460308094040571350}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15131,6 +15132,76 @@ MonoBehaviour:
   sliderValue: 1
   fill: {fileID: 1915139314}
   background: {fileID: 1241503219}
+--- !u!4 &460308094040571350 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+  m_PrefabInstance: {fileID: 1197581975461258541}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1197581975461258541
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 112433446}
+    m_Modifications:
+    - target: {fileID: 1108142094409046330, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: mockTest
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108142094409046330, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: playerStartPoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 244.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 300.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308539, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656759187415308540, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
+      propertyPath: m_Name
+      value: RoomPrueba
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bdea554a5bf0a6347bb4acb1c9457bc8, type: 3}
 --- !u!1001 &1591657531704718875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15878,17 +15949,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 112433446}
     m_Modifications:
+    - target: {fileID: 517550608374906502, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
+      propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[2].X
+      value: -933243392
+      objectReference: {fileID: 0}
+    - target: {fileID: 517550608374906502, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
+      propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[3].X
+      value: -933243099
+      objectReference: {fileID: 0}
+    - target: {fileID: 517550608374906502, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
+      propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[2].x
+      value: -93.32434
+      objectReference: {fileID: 0}
+    - target: {fileID: 517550608374906502, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
+      propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[3].x
+      value: -93.32428
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094914224070561752, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1461613905
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094914224070561752, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7171154949502149723, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: 7654874447979597243, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
       propertyPath: mockTest
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7654874447979597243, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
       propertyPath: playerStartPoint
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8333496793033624698, guid: 6c3c63461911b524dbbc4c71ce266afb, type: 3}
       propertyPath: m_LocalPosition.x
