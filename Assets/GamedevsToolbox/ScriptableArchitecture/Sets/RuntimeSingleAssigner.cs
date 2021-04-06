@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GamedevsToolbox.ScriptableArchitecture.Sets
 {
-    public class RuntimeSingleAssigner<T, T2> : MonoBehaviour where T : RuntimeSingle<T2> where T2 : new()
+    public class RuntimeSingleAssigner<T, T2> : MonoBehaviour where T : RuntimeSingle<T2>
     {
         [SerializeField]
         private T runtimeSingle = default;

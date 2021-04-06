@@ -17,6 +17,10 @@ namespace Laresistance.Behaviours
         private PlayerMovementData movementData = default;
         [SerializeField]
         private GameEvent platformFallEvent = default;
+        [SerializeField]
+        private UnityEvent OnPlatformFallStart = default;
+        [SerializeField]
+        private UnityEvent OnPlatformFallEnd = default;
 
         private Rigidbody2D body;
         private Animator animator;
@@ -109,9 +113,11 @@ namespace Laresistance.Behaviours
             if (context.started)
             {
                 fallSignal = true;
+                OnPlatformFallStart?.Invoke();
             } else if (context.canceled)
             {
                 fallSignal = false;
+                OnPlatformFallEnd?.Invoke();
             }
         }
 

@@ -6913,6 +6913,7 @@ GameObject:
   - component: {fileID: 675899200}
   - component: {fileID: 435442607}
   - component: {fileID: 435442608}
+  - component: {fileID: 6358223153588258164}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -7035,6 +7036,38 @@ MonoBehaviour:
   characterController: {fileID: 2240881580150971699}
   movementData: {fileID: 11400000, guid: 1c9885111a5c0244cbfbdda082fc1084, type: 2}
   platformFallEvent: {fileID: 11400000, guid: 7be75befcf2f44e43a1e6a909da07890, type: 2}
+  OnPlatformFallStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: e416d32a787d43b4f8d62d48879dacc5, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.TemplatedGameEvent`1[[System.String,
+          mscorlib
+        m_MethodName: Raise
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MapCameraLookAheadY
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnPlatformFallEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: e416d32a787d43b4f8d62d48879dacc5, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.TemplatedGameEvent`1[[System.String,
+          mscorlib
+        m_MethodName: Raise
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MapCamera
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &23771295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7671,6 +7704,20 @@ CircleCollider2D:
   m_Offset: {x: 0.42237854, y: 0.6501312}
   serializedVersion: 2
   m_Radius: 0.49427795
+--- !u!114 &6358223153588258164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591657531686456962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e474254ed4efaf4ca36bd523fbacbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runtimeSingle: {fileID: 11400000, guid: 9ecd3f08b36c60a438fdc404e192df4e, type: 2}
+  component: {fileID: 1591657531686456967}
 --- !u!95 &1591657531704718878
 Animator:
   serializedVersion: 3
