@@ -49,6 +49,10 @@ namespace Laresistance.Behaviours
         private bool currentlyUp = false;
         private bool doingStartingAnimation = false;
 
+        private bool moving = false;
+        private bool movingPhysics = true;
+        private Vector3 currentTargetPosition = Vector3.zero;
+        private float currentSpeed = 0f;
 
         private bool firstTime = true;
 
@@ -63,6 +67,22 @@ namespace Laresistance.Behaviours
             UnityEngine.Assertions.Assert.IsNotNull(bottomPoint);
             elevatorBody = GetComponent<Rigidbody2D>();
             movingBone.position = startingPoint.position;
+        }
+
+        private void FixedUpdate()
+        {
+            if (!paused && moving)
+            {
+                if (movingPhysics)
+                {
+                    Vector3 newPos = Vector3.MoveTowards(elevatorBody.position, currentTargetPosition, elevatorSpeed * Time.fixedDeltaTime);
+                    elevatorBody.MovePosition(newPos);
+                } else
+                {
+                    Vector3 newPos = Vector3.MoveTowards(movingBone.position, currentTargetPosition, currentSpeed * Time.fixedDeltaTime);
+                    movingBone.transform.position = newPos;
+                }
+            }
         }
 
         public void ManageInput(InputAction.CallbackContext context)
@@ -168,15 +188,15 @@ namespace Laresistance.Behaviours
             elevatorAnimator.SetTrigger(animatorTriggerName);
             float newSpeed = Vector3.Distance(movingBone.position, bottomPoint.position) / animationDuration;
             // Move elevator from mid point to end point using distance / animation time.
+            moving = true;
+            currentTargetPosition = endingPoint.position;
+            currentSpeed = newSpeed;
+            movingPhysics = false;
             while (Vector3.Distance(movingBone.position, endingPoint.position) > 0.1f)
             {
-                if (!paused)
-                {
-                    Vector3 newPos = Vector3.MoveTowards(movingBone.position, endingPoint.position, newSpeed * Time.deltaTime);
-                    movingBone.transform.position = newPos;
-                }
                 yield return null;
             }
+            moving = false;
             startDone = true;
             interactionCollider.enabled = true;
         }
@@ -185,15 +205,15 @@ namespace Laresistance.Behaviours
         {
             Transform targetPoint = goUp ? upPoint : bottomPoint;
             currentlyUp = goUp;
+            moving = true;
+            currentTargetPosition = targetPoint.position;
+            currentSpeed = elevatorSpeed;
+            movingPhysics = true;
             while (Vector3.Distance(elevatorBody.position, targetPoint.position) > 0.1f)
             {
-                if (!paused)
-                {
-                    Vector3 newPos = Vector3.MoveTowards(elevatorBody.position, targetPoint.position, elevatorSpeed * Time.deltaTime);
-                    elevatorBody.MovePosition(newPos);
-                }
                 yield return null;
             }
+            moving = false;
             elevatorNormalBehaviourCoroutine = null;
         }
     }
