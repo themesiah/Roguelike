@@ -7,15 +7,21 @@ namespace Laresistance.Behaviours
     public class Character2DController : MonoBehaviour, IPausable
     {
         private static float GROUNDED_CERCLE_RADIUS = 0.2f;
+        private static float JUMP_ATTEMPT_TIMER = 0.15f;
+        private static float JUMP_GRACE_TIME = 0.2f;
 
+        [Header("References")]
         [SerializeField]
         private Rigidbody2D body = default;
 
         [SerializeField]
         private Transform groundCheck = default;
 
+        [Header("Configuration")]
         [SerializeField]
         private LayerMask groundLayers = default;
+        [SerializeField] [Tooltip("If the object tries to jump when it is not grounded or do not have more available jumps, it waits JUMP_ATTEMPT_TIMER time for retry the jump, augmenting responsivity.")]
+        private bool allowJumpAttempt = false;
 
         [Header("Events")]
         public UnityEvent<Vector3> OnLand = default;
@@ -27,6 +33,12 @@ namespace Laresistance.Behaviours
         private bool facingRight = true;
         private int performedJumps = 0;
         private bool isPaused = false;
+        private float notGroundedTime = 0f;
+
+        // Jump Attempt
+        private float jumpAttemptTimer = 0f;
+        private Vector2 jumpAttemptForce = Vector2.zero;
+        private int jumpAttemptLimit = 0;
 
         // Accessors
         public bool IsJumpingOrFalling => !isGrounded;
@@ -48,6 +60,7 @@ namespace Laresistance.Behaviours
                 return;
             if (isGrounded || performedJumps < jumpLimit)
             {
+                jumpAttemptTimer = 0f;
                 // No longer in the ground
                 isGrounded = false;
                 // Remove Y velocity, for in mid air jumps
@@ -60,6 +73,11 @@ namespace Laresistance.Behaviours
                 OnJump?.Invoke(groundCheck.position);
                 // Increase number of jumps done in mid air
                 performedJumps++;
+            } else if (!isGrounded && allowJumpAttempt)
+            {
+                jumpAttemptTimer = JUMP_ATTEMPT_TIMER;
+                jumpAttemptForce = force;
+                jumpAttemptLimit = jumpLimit;
             }
         }
 
@@ -67,6 +85,7 @@ namespace Laresistance.Behaviours
         {
             if (isPaused)
                 return;
+            jumpAttemptTimer = 0f;
             if (!isGrounded && body.velocity.y > 0f)
             {
                 var vel = body.velocity;
@@ -113,6 +132,8 @@ namespace Laresistance.Behaviours
             if (isPaused)
                 return;
             CheckGrounded();
+            CheckJumpAttempt();
+            CheckJumpGraceTime();
         }
 
         private void CheckGrounded()
@@ -128,6 +149,7 @@ namespace Laresistance.Behaviours
                     if (colliders[i].gameObject != gameObject)
                     {
                         isGrounded = true;
+                        notGroundedTime = 0f;
                         if (!wasGrounded)
                         {
                             performedJumps = 0;
@@ -135,6 +157,33 @@ namespace Laresistance.Behaviours
                         }
                         break;
                     }
+                }
+            }
+            
+        }
+
+        private void CheckJumpAttempt()
+        {
+            if (jumpAttemptTimer > 0f)
+            {
+                jumpAttemptTimer -= Time.deltaTime;
+                if (jumpAttemptTimer > 0f && isGrounded)
+                {
+                    Jump(jumpAttemptForce, jumpAttemptLimit);
+                }
+            }
+        }
+
+        private void CheckJumpGraceTime()
+        {
+            if (isGrounded)
+            {
+                notGroundedTime = 0f;
+            } else {
+                notGroundedTime += Time.deltaTime;
+                if (notGroundedTime >= JUMP_GRACE_TIME && performedJumps == 0)
+                {
+                    performedJumps = 1;
                 }
             }
         }
