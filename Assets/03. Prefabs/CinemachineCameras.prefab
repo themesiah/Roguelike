@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 1794336680380120225}
   - component: {fileID: 7879646668883175206}
   - component: {fileID: 39030715769252158}
+  - component: {fileID: 3543206060016486110}
   m_Layer: 0
   m_Name: VirtualCamMapAheadY
   m_TagString: Untagged
@@ -215,6 +216,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   confiner: {fileID: 1794336680380120225}
+--- !u!114 &3543206060016486110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6376557966525629123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f296e899ab31734e979d5363f92517b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zPosition: -10
 --- !u!1 &8889747726432113117
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +593,7 @@ GameObject:
   - component: {fileID: 8889747727309662886}
   - component: {fileID: 6047668945861464482}
   - component: {fileID: 8824170792554311083}
+  - component: {fileID: 7985089569975746477}
   m_Layer: 0
   m_Name: VirtualCamMap
   m_TagString: Untagged
@@ -594,7 +609,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8889747727309662906}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 281.9, y: 287.1, z: -10}
+  m_LocalPosition: {x: -0.00000047683716, y: 27.43, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8889747726432113116}
@@ -630,7 +645,7 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
   m_Transitions:
     m_BlendHint: 0
-    m_InheritPosition: 0
+    m_InheritPosition: 1
     m_OnCameraLive:
       m_PersistentCalls:
         m_Calls: []
@@ -737,6 +752,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7985089569975746477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889747727309662906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f296e899ab31734e979d5363f92517b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zPosition: -10
 --- !u!1 &8889747727625854725
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +780,7 @@ GameObject:
   - component: {fileID: 8889747727625854726}
   - component: {fileID: 1577775160151223874}
   - component: {fileID: 7094952139927328357}
+  - component: {fileID: 7355959441510874267}
   m_Layer: 0
   m_Name: VirtualCamBattle
   m_TagString: Untagged
@@ -910,6 +939,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7355959441510874267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889747727625854725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f296e899ab31734e979d5363f92517b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zPosition: -10
 --- !u!1 &8889747728134134956
 GameObject:
   m_ObjectHideFlags: 0
