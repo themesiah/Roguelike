@@ -9,7 +9,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectRemoveBuffs : BattleEffect
     {
-        public BattleEffectRemoveBuffs(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleEffectRemoveBuffs(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }

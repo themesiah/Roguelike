@@ -2,7 +2,6 @@
 
 namespace Laresistance.Data
 {
-    //[CreateAssetMenu(menuName = "Laresistance/Data/Effect Data")]
     [System.Serializable]
     public class EffectData
     {
@@ -17,5 +16,15 @@ namespace Laresistance.Data
         [SerializeField]
         private EffectTargetType targetType = default;
         public EffectTargetType TargetType { get { return targetType; } }
+
+        [SerializeField]
+        [Tooltip("Prefabs that will show on the caster")]
+        private GameObject[] selfEffectPrefabs = default;
+        public GameObject[] SelfEffectPrefabs { get { return selfEffectPrefabs; } }
+
+        [SerializeField]
+        [Tooltip("Prefabs that will show on every entity that is a target of the ability")]
+        private GameObject[] targetEffectPrefabs = default;
+        public GameObject[] TargetEffectPrefabs { get { return targetEffectPrefabs; } }
     }
 }

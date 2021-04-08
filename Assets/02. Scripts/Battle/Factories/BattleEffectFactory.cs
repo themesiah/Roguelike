@@ -23,7 +23,7 @@ namespace Laresistance.Battle
 
             foreach (var type in effectTypes)
             {
-                var tempEffect = Activator.CreateInstance(type, args:new object[] { 1, EffectTargetType.Self, new BattleStatusManager(new CharacterHealth(1))}) as BattleEffect;
+                var tempEffect = Activator.CreateInstance(type, args:new object[] { 1, EffectTargetType.Self, new BattleStatusManager(new CharacterHealth(1)), null}) as BattleEffect;
                 effectByType.Add(tempEffect.EffectType, type);
             }
         }
@@ -35,7 +35,7 @@ namespace Laresistance.Battle
             if (effectByType.ContainsKey(effectData.EffectType))
             {
                 Type effectType = effectByType[effectData.EffectType];
-                var effect = Activator.CreateInstance(effectType, args:new object[] { effectData.Power, effectData.TargetType, battleStatus }) as BattleEffect;
+                var effect = Activator.CreateInstance(effectType, args:new object[] { effectData.Power, effectData.TargetType, battleStatus, effectData }) as BattleEffect;
                 return effect;
             }
 

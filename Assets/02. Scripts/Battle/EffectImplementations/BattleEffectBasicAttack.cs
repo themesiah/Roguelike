@@ -10,7 +10,7 @@ namespace Laresistance.Battle
 {
     public class BattleBasicAttack : BattleEffectDamage
     {
-        public BattleBasicAttack(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleBasicAttack(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }

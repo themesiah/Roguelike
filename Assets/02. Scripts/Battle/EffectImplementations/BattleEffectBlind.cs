@@ -9,7 +9,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectBlind : BattleEffect
     {
-        public BattleEffectBlind(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleEffectBlind(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }
@@ -19,20 +19,6 @@ namespace Laresistance.Battle
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);
-            //int powerTemp = System.Math.Abs(100 - Power);
-            //int power = Mathf.CeilToInt(powerTemp * (1 + ((level - 1) * 0.05f)));
-            //
-            //power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
-            //power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
-            //
-            //if (Power > 100)
-            //{
-            //    power += 100;
-            //} else
-            //{
-            //    power = 100 - power;
-            //}
-            //return power;
             int powerTemp = Power;
             int power = Mathf.CeilToInt(powerTemp * (1 + ((level - 1) * 0.05f)));
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);

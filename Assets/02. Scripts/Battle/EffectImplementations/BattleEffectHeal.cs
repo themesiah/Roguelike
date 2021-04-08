@@ -9,7 +9,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectHeal : BattleEffect
     {
-        public BattleEffectHeal(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleEffectHeal(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }

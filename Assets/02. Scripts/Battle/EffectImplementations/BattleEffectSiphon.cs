@@ -10,7 +10,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectSiphon : BattleEffectDamage
     {
-        public BattleEffectSiphon(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleEffectSiphon(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }

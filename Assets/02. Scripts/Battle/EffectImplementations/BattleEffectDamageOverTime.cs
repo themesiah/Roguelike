@@ -9,7 +9,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectDamageOverTime : BattleEffect
     {
-        public BattleEffectDamageOverTime(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleEffectDamageOverTime(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }

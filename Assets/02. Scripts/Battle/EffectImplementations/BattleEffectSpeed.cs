@@ -9,7 +9,7 @@ namespace Laresistance.Battle
 {
     public class BattleEffectSpeed : BattleEffect
     {
-        public BattleEffectSpeed(int power, EffectTargetType targetType, BattleStatusManager selfStatus) : base(power, targetType, selfStatus)
+        public BattleEffectSpeed(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData) : base(power, targetType, selfStatus, effectData)
         {
 
         }

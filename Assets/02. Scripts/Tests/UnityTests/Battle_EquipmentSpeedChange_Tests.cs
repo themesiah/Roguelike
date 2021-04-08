@@ -22,7 +22,7 @@ namespace Laresistance.Tests {
             switch (i)
             {
                 case 0:
-                    effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self, GetStatus()));
+                    effects.Add(new BattleEffectHeal(10, Data.EffectTargetType.Self, GetStatus(), null));
                     cost = 1;
                     break;
             }
