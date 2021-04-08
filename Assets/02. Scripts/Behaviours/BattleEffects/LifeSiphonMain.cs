@@ -13,8 +13,11 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private float timeToArrive = default;
 
-        private void Start()
+        private bool playing = false;
+
+        public void Play()
         {
+            playing = true;
             if (targetRef.Get() != null)
             {
                 DoEffect(targetRef.Get());
@@ -33,7 +36,10 @@ namespace Laresistance.Behaviours
 
         private void DoEffect(Transform t)
         {
-            StartCoroutine(MoveCoroutine(t));
+            if (playing)
+            {
+                StartCoroutine(MoveCoroutine(t));
+            }
         }
 
         private IEnumerator MoveCoroutine(Transform t)
@@ -49,7 +55,6 @@ namespace Laresistance.Behaviours
                 timer += Time.deltaTime;
                 yield return null;
             }
-            Destroy(gameObject, 0.5f);
         }
     }
 }

@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2092635199200390930}
-  - component: {fileID: 4089362533353347916}
-  - component: {fileID: 3467728797828354521}
   - component: {fileID: 3722790864181016354}
+  - component: {fileID: -7167671288598408718}
   m_Layer: 0
   m_Name: LifeSiphonPivotTarget
   m_TagString: Untagged
@@ -33,45 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4089362533353347916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702417821268765495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d91cef27bc05842b47dc73966d72f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3467728797828354521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702417821268765495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d28473a294857a245aa7956a839ac78d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onStartEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4089362533353347916}
-        m_TargetAssemblyTypeName: GamedevsToolbox.Utils.TimedDestroy, GamedevsToolbox
-        m_MethodName: DoDestroy
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 2
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &3722790864181016354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runtimeSingle: {fileID: 11400000, guid: 48eb986d4b4915f48b05aa4d2b22b8c1, type: 2}
   component: {fileID: 2092635199200390930}
+--- !u!114 &-7167671288598408718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702417821268765495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c11fc9fce05b5468790ce5a396a0df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 2
+  destroyTime: 2.1

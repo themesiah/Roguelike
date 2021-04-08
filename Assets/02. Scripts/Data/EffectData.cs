@@ -5,6 +5,14 @@ namespace Laresistance.Data
     [System.Serializable]
     public class EffectData
     {
+        [System.Serializable]
+        public struct PrefabEffectData
+        {
+            public GameObject prefab;
+            public float delay;
+            public Vector3 offset;
+        }
+
         [SerializeField]
         private EffectType effectType = default;
         public EffectType EffectType { get { return effectType; } }
@@ -19,12 +27,12 @@ namespace Laresistance.Data
 
         [SerializeField]
         [Tooltip("Prefabs that will show on the caster")]
-        private GameObject[] selfEffectPrefabs = default;
-        public GameObject[] SelfEffectPrefabs { get { return selfEffectPrefabs; } }
+        private PrefabEffectData[] selfEffectPrefabs = default;
+        public PrefabEffectData[] SelfEffectPrefabs { get { return selfEffectPrefabs; } }
 
         [SerializeField]
         [Tooltip("Prefabs that will show on every entity that is a target of the ability")]
-        private GameObject[] targetEffectPrefabs = default;
-        public GameObject[] TargetEffectPrefabs { get { return targetEffectPrefabs; } }
+        private PrefabEffectData[] targetEffectPrefabs = default;
+        public PrefabEffectData[] TargetEffectPrefabs { get { return targetEffectPrefabs; } }
     }
 }

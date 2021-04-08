@@ -575,7 +575,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -5426,6 +5426,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1093291584335713242}
   - component: {fileID: 5590268370664005476}
+  - component: {fileID: -4290473978857678009}
   m_Layer: 0
   m_Name: LifeSiphonEffect
   m_TagString: Untagged
@@ -5463,3 +5464,44 @@ MonoBehaviour:
   targetRef: {fileID: 11400000, guid: 48eb986d4b4915f48b05aa4d2b22b8c1, type: 2}
   moveDelay: 0.3
   timeToArrive: 0.5
+--- !u!114 &-4290473978857678009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8022404941955971924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c11fc9fce05b5468790ce5a396a0df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 1
+  destroyTime: 1.1
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5590268370664005476}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.LifeSiphonMain, GameScripts
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2564789220993168186}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

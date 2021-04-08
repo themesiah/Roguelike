@@ -22,6 +22,7 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference stopTimeDelay = default;
         [Tooltip("Time for an ability to go from the 'queued' state to 'executing'. It should be pretty small for the player not to notice it too much")]
         public ScriptableFloatReference abilityToUseDequeueTimer = default;
+
         [Header("Status constants")]
         [Tooltip("Time in seconds of duration for speed buffs and debuffs")]
         public ScriptableFloatReference speedModifierDuration = default;
@@ -35,12 +36,15 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference shieldDuration = default;
         [Tooltip("Time in seconds for the effect of blind to wear off")]
         public ScriptableFloatReference blindDuration = default;
+
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]
         public ScriptableFloatReference siphonPercent = default;
+
         [Header("Effect constants")]
         [Tooltip("Max intensity for chromatic aberration when stopping time")]
         public ScriptableFloatReference chromaticAberrationMaxIntensity = default;
+
         [Header("Enemy map constants")]
         [Tooltip("Vertical raycast length")]
         public ScriptableFloatReference enemyMapVerticalRaycastLength = default;
@@ -50,6 +54,10 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference enemyMapHorizontalRaycastLength = default;
         [Tooltip("Horizontal raycast up offset")]
         public ScriptableFloatReference enemyMapHorizontalRaycastOffsetUp = default;
+
+        [Header("Camera constants")]
+        [Tooltip("Affects the zoom on battles")]
+        public ScriptableFloatReference battleGroupRadius = default;
 
         private void Awake()
         {

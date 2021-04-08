@@ -213,16 +213,22 @@ namespace Laresistance.Battle
             }
         }
 
-        public void Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
+        public IEnumerator Perform(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
+            int expectedSignals = 0;
+            int signalsReceived = 0;
             foreach (var effect in effects)
             {
-                effect.PerformEffect(allies, targets, level, equipmentsContainer, animator, bloodRef);
+                expectedSignals += effect.PerformEffect(allies, targets, level, equipmentsContainer, animator, bloodRef, ()=>signalsReceived++);
             }
             statusManager.ConsumeEnergy(energyCost);
             SetCooldownAsUsed();
             statusManager.AbilityExecuted(this, CurrentPlayerSlot);
             CurrentPlayerSlot = -1;
+            while (signalsReceived < expectedSignals)
+            {
+                yield return null;
+            }
         }
 
         public void CancelByTargetDeath()
@@ -269,7 +275,13 @@ namespace Laresistance.Battle
 
         private string GetAnimationTrigger()
         {
-            return effects[0].GetAnimationTrigger();
+            if (string.IsNullOrEmpty(data.AnimationTriggerOverride))
+            {
+                return effects[0].GetAnimationTrigger();
+            } else
+            {
+                return data.AnimationTriggerOverride;
+            }
         }
 
         public bool IsPrioritary()

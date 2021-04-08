@@ -38,6 +38,10 @@ namespace Laresistance.Data
         public Sprite FrameGraphic { get { return frameGraphic; } }
 
         [SerializeField]
+        private string animationTriggerOverride = default;
+        public string AnimationTriggerOverride { get { return animationTriggerOverride; } }
+
+        [SerializeField]
         private bool isBasicSkill = false;
         public bool IsBasicSkill { get { return isBasicSkill; } }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using UnityEngine.Events;
 
 namespace Laresistance.Battle
 {
@@ -51,7 +52,7 @@ namespace Laresistance.Battle
             Power = power;
         }
 
-        public void PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentsContainer equipments, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
+        public int PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentsContainer equipments, IBattleAnimator animator, ScriptableIntReference bloodRef, UnityAction onEffectFinished)
         {
             List<BattleStatusManager> targets = GetTargets(allies, enemies);
             if (primaryEffect)
@@ -69,30 +70,35 @@ namespace Laresistance.Battle
                 targetPoint = targetPoint / targets.Count;
                 animator.SetAttackPosition(targetPoint);
             }
-            SpawnSelfPrefabs(allies[0]);
-            targets.ForEach((target) => SpawnAbilityPrefabs(target));
+            SpawnSelfPrefabs(allies[0], onEffectFinished);
+            targets.ForEach((target) => SpawnAbilityPrefabs(target, onEffectFinished));
             targets.ForEach((target) => PerformEffectOnTarget(target, level, equipments, bloodRef));
+            return effectData.SelfEffectPrefabs.Length + effectData.TargetEffectPrefabs.Length * targets.Count;
         }
 
-        private void SpawnSelfPrefabs(BattleStatusManager self)
+        private void SpawnSelfPrefabs(BattleStatusManager self, UnityAction callback)
         {
             foreach (var prefab in effectData.SelfEffectPrefabs)
             {
-                GameObject go = GameObject.Instantiate(prefab, self.TargetPivot, true);
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localScale = prefab.transform.localScale;
-                GameObject.Destroy(go, 5f);
+                GameObject go = GameObject.Instantiate(prefab.prefab, self.TargetPivot, true);
+                go.transform.localPosition = prefab.offset;
+                go.transform.localScale = prefab.prefab.transform.localScale;
+                var effectCallback = go.GetComponent<BattleEffectCallback>();
+                UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
+                effectCallback.ConfigureBattleEffectCallback(callback, prefab.delay);
             }
         }
 
-        private void SpawnAbilityPrefabs(BattleStatusManager target)
+        private void SpawnAbilityPrefabs(BattleStatusManager target, UnityAction callback)
         {
             foreach(var prefab in effectData.TargetEffectPrefabs)
             {
-                GameObject go = GameObject.Instantiate(prefab, target.TargetPivot, true);
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localScale = prefab.transform.localScale;
-                GameObject.Destroy(go, 5f);
+                GameObject go = GameObject.Instantiate(prefab.prefab, target.TargetPivot, true);
+                go.transform.localPosition = prefab.offset;
+                go.transform.localScale = prefab.prefab.transform.localScale;
+                var effectCallback = go.GetComponent<BattleEffectCallback>();
+                UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
+                effectCallback.ConfigureBattleEffectCallback(callback, prefab.delay);
             }
         }
 

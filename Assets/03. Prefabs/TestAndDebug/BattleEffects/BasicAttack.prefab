@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 5371403847739300389}
   - component: {fileID: 1630685035231895697}
   - component: {fileID: 7646051571657257642}
-  - component: {fileID: 6860682915445030547}
-  - component: {fileID: 1134535323417984084}
+  - component: {fileID: -1036287897286824932}
   m_Layer: 0
   m_Name: BasicAttack
   m_TagString: Untagged
@@ -74,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 1735178081
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5096709518755458082, guid: 09872854a08a04a44903901ef3304e5b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -82,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 1.25, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &7646051571657257642
@@ -104,7 +103,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6860682915445030547
+--- !u!114 &-1036287897286824932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,33 +112,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1276422351659941230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d91cef27bc05842b47dc73966d72f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 59c11fc9fce05b5468790ce5a396a0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1134535323417984084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1276422351659941230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d28473a294857a245aa7956a839ac78d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onStartEvent:
+  effectDuration: 0.5
+  destroyTime: 0.6
+  onPlay:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6860682915445030547}
-        m_TargetAssemblyTypeName: GamedevsToolbox.Utils.TimedDestroy, GamedevsToolbox
-        m_MethodName: DoDestroy
-        m_Mode: 4
+      - m_Target: {fileID: 7646051571657257642}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: 
+          m_FloatArgument: 0
+          m_StringArgument: BasicAttack
           m_BoolArgument: 0
         m_CallState: 2

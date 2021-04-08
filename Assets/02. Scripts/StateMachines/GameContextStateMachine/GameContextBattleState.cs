@@ -44,11 +44,11 @@ namespace Laresistance.StateMachines
             int position = 0;
             if (targetGroupRef.Get().FindMember(playerObject.transform) < 0)
             {
-                targetGroupRef.Get().AddMember(playerObject.transform, 1f, 5f);
+                targetGroupRef.Get().AddMember(playerObject.transform, 1f, GameConstantsBehaviour.Instance.battleGroupRadius.GetValue());
             }
             foreach(var enemy in enemyObjects)
             {
-                targetGroupRef.Get().AddMember(enemy.transform, 1f, 5f);
+                targetGroupRef.Get().AddMember(enemy.transform, 1f, GameConstantsBehaviour.Instance.battleGroupRadius.GetValue());
             }
             if (!battlePositionData.direction)
             {
