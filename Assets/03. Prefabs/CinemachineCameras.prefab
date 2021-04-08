@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 8889747726432113116}
   - component: {fileID: 8889747726432113118}
   - component: {fileID: 8889747726432113119}
+  - component: {fileID: 7626308094946671767}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -302,6 +303,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &7626308094946671767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889747726432113117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 30d3679d00c78bb43a5dfbc8c316e1da, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &8889747726566744578
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,6 +577,8 @@ GameObject:
   - component: {fileID: 8889747727309662887}
   - component: {fileID: 8889747727309662881}
   - component: {fileID: 8889747727309662886}
+  - component: {fileID: 6047668945861464482}
+  - component: {fileID: 8824170792554311083}
   m_Layer: 0
   m_Name: VirtualCamMap
   m_TagString: Untagged
@@ -674,6 +694,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   confiner: {fileID: 8889747727309662887}
+--- !u!114 &6047668945861464482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889747727309662906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df2e775c88ee36498520ca4284ad28d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vcam: {fileID: 8889747727309662885}
+  traumaDecreaseRate: 0.8
+  traumaForce: 20
+--- !u!114 &8824170792554311083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8889747727309662906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d818aa59603f994cbb72e1c13958286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: f6a8139211ed3234fa1b30624903485b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6047668945861464482}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.CinemachineShake, GameScripts
+        m_MethodName: AddTrauma
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8889747727625854725
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,7 +767,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8889747727625854725}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 281.9, y: 287.1, z: -10}
+  m_LocalPosition: {x: 281.9, y: 285.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8889747728134134959}
@@ -817,8 +880,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vcam: {fileID: 8889747727625854724}
-  traumaDecreaseRate: 0.3
-  traumaForce: 2
+  traumaDecreaseRate: 0.8
+  traumaForce: 20
 --- !u!114 &7094952139927328357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,7 +889,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8889747727625854725}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d818aa59603f994cbb72e1c13958286, type: 3}
   m_Name: 
@@ -947,7 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_NoiseProfile: {fileID: 11400000, guid: 30d3679d00c78bb43a5dfbc8c316e1da, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 1
