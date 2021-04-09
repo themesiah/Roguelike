@@ -76,7 +76,8 @@ namespace Laresistance.Behaviours
                 if (movingPhysics)
                 {
                     Vector3 newPos = Vector3.MoveTowards(elevatorBody.position, currentTargetPosition, elevatorSpeed * Time.fixedDeltaTime);
-                    elevatorBody.MovePosition(newPos);
+                    transform.position = newPos;
+                    //elevatorBody.MovePosition(newPos);
                 } else
                 {
                     Vector3 newPos = Vector3.MoveTowards(movingBone.position, currentTargetPosition, currentSpeed * Time.fixedDeltaTime);
