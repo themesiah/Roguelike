@@ -21,6 +21,10 @@ namespace Laresistance.Data
         private int power = default;
         public int Power { get { return power; } }
 
+        [SerializeField] [Tooltip("Delay for executing the next effect after this effect is executed")]
+        private float delay = default;
+        public float Delay { get { return delay; } }
+
         [SerializeField]
         private EffectTargetType targetType = default;
         public EffectTargetType TargetType { get { return targetType; } }

@@ -1,6 +1,7 @@
 ﻿using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Behaviours;
@@ -52,7 +53,7 @@ namespace Laresistance.Battle
             Power = power;
         }
 
-        public int PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentsContainer equipments, IBattleAnimator animator, ScriptableIntReference bloodRef, UnityAction onEffectFinished)
+        public IEnumerator PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentsContainer equipments, IBattleAnimator animator, ScriptableIntReference bloodRef, UnityAction onEffectFinished, UnityAction<int> signalsAmount)
         {
             List<BattleStatusManager> targets = GetTargets(allies, enemies);
             if (primaryEffect)
@@ -73,7 +74,8 @@ namespace Laresistance.Battle
             SpawnSelfPrefabs(allies[0], onEffectFinished);
             targets.ForEach((target) => SpawnAbilityPrefabs(target, onEffectFinished));
             targets.ForEach((target) => PerformEffectOnTarget(target, level, equipments, bloodRef));
-            return effectData.SelfEffectPrefabs.Length + effectData.TargetEffectPrefabs.Length * targets.Count;
+            signalsAmount.Invoke(effectData.SelfEffectPrefabs.Length + effectData.TargetEffectPrefabs.Length * targets.Count);
+            yield return new WaitForSeconds(effectData.Delay);
         }
 
         private void SpawnSelfPrefabs(BattleStatusManager self, UnityAction callback)

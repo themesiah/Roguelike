@@ -16,7 +16,7 @@ namespace Laresistance.Battle
 {
     public class BattleAbility : ShowableElement
     {
-        private static int MAX_EFFECTS = 2;
+        private static int MAX_EFFECTS = 200;
         private int energyCost;
         private List<BattleEffect> effects = default;
         private EquipmentsContainer equipmentsContainer;
@@ -219,7 +219,7 @@ namespace Laresistance.Battle
             int signalsReceived = 0;
             foreach (var effect in effects)
             {
-                expectedSignals += effect.PerformEffect(allies, targets, level, equipmentsContainer, animator, bloodRef, ()=>signalsReceived++);
+                yield return effect.PerformEffect(allies, targets, level, equipmentsContainer, animator, bloodRef, () => signalsReceived++, (amount) => expectedSignals = amount);
             }
             statusManager.ConsumeEnergy(energyCost);
             SetCooldownAsUsed();
