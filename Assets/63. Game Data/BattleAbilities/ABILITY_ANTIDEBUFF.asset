@@ -15,7 +15,13 @@ MonoBehaviour:
   effectsData:
   - effectType: 7
     power: 0
+    delay: 0
     targetType: 2
+    selfEffectPrefabs: []
+    targetEffectPrefabs:
+    - prefab: {fileID: 4071143765616747825, guid: 78aa88701c5d8ca45ada40c048bdbb2f, type: 3}
+      delay: 0
+      offset: {x: 0, y: 0, z: 0}
   shortDesc: SIMPLE_EFF_ANTIDEBUFF
   cost: 0
   weight: 1
@@ -23,4 +29,6 @@ MonoBehaviour:
   castTime: 0
   icon: {fileID: 21300000, guid: cbf75fe68278b1a4281d7c4cb763fba8, type: 3}
   frameGraphic: {fileID: 21300000, guid: b19d10cb9ee2f364686b75d54cba1376, type: 3}
+  animationTriggerOverride: 
   isBasicSkill: 0
+  isComboSkill: 0
