@@ -71,9 +71,9 @@ namespace Laresistance.Battle
                 targetPoint = targetPoint / targets.Count;
                 animator.SetAttackPosition(targetPoint);
             }
+            targets.ForEach((target) => PerformEffectOnTarget(target, level, equipments, bloodRef));
             SpawnSelfPrefabs(allies[0], onEffectFinished);
             targets.ForEach((target) => SpawnAbilityPrefabs(target, onEffectFinished));
-            targets.ForEach((target) => PerformEffectOnTarget(target, level, equipments, bloodRef));
             signalsAmount.Invoke(effectData.SelfEffectPrefabs.Length + effectData.TargetEffectPrefabs.Length * targets.Count);
             yield return new WaitForSeconds(effectData.Delay);
         }
@@ -87,7 +87,7 @@ namespace Laresistance.Battle
                 go.transform.localScale = prefab.prefab.transform.localScale;
                 var effectCallback = go.GetComponent<BattleEffectCallback>();
                 UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
-                effectCallback.ConfigureBattleEffectCallback(callback, prefab.delay);
+                effectCallback.ConfigureBattleEffectCallback(self, callback, prefab.delay);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Laresistance.Battle
                 go.transform.localScale = prefab.prefab.transform.localScale;
                 var effectCallback = go.GetComponent<BattleEffectCallback>();
                 UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
-                effectCallback.ConfigureBattleEffectCallback(callback, prefab.delay);
+                effectCallback.ConfigureBattleEffectCallback(target, callback, prefab.delay);
             }
         }
 

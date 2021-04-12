@@ -14,15 +14,20 @@ namespace Laresistance.Battle
         private UnityEvent onPlay = default;
 
         private UnityAction OnFinishSignal = delegate { };
+        protected BattleStatusManager target;
 
         private void Awake()
         {
-            UnityEngine.Assertions.Assert.IsTrue(destroyTime > effectDuration);
-            Destroy(gameObject, 10f); // TIMEOUT, just in case
+            UnityEngine.Assertions.Assert.IsTrue(destroyTime <= 0f || destroyTime > effectDuration);
+            if (destroyTime > 0f)
+            {
+                Destroy(gameObject, 10f); // TIMEOUT, just in case
+            }
         }
 
-        public void ConfigureBattleEffectCallback(UnityAction callback, float delay)
+        public virtual void ConfigureBattleEffectCallback(BattleStatusManager target, UnityAction callback, float delay)
         {
+            this.target = target;
             OnFinishSignal += callback;
             StartCoroutine(EffectCoroutine(delay));
         }
@@ -30,7 +35,10 @@ namespace Laresistance.Battle
         private IEnumerator EffectCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            Destroy(gameObject, destroyTime);
+            if (destroyTime > 0f)
+            {
+                Destroy(gameObject, destroyTime);
+            }
             onPlay?.Invoke();
             yield return new WaitForSeconds(effectDuration);
             OnFinishSignal?.Invoke();

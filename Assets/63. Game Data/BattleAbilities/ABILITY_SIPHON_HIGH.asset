@@ -15,13 +15,16 @@ MonoBehaviour:
   effectsData:
   - effectType: 13
     power: 12
+    delay: 0
     targetType: 1
     selfEffectPrefabs:
     - prefab: {fileID: 1702417821268765495, guid: f075636251149e542ad9903e874ce098, type: 3}
       delay: 0
+      offset: {x: 0, y: 0, z: 0}
     targetEffectPrefabs:
-    - prefab: {fileID: 8022404941955971924, guid: d27333f05269e304b8e78667d07ac03c, type: 3}
+    - prefab: {fileID: 5755730009144616426, guid: 64645fc00aa495943a027100eb3f887a, type: 3}
       delay: 0
+      offset: {x: 0, y: 0, z: 0}
   shortDesc: SIMPLE_EFF_SIPHON3
   cost: 0
   weight: 1
@@ -29,5 +32,6 @@ MonoBehaviour:
   castTime: 0
   icon: {fileID: 21300000, guid: e6b12fe84c60b944c8ee7764342519da, type: 3}
   frameGraphic: {fileID: 21300000, guid: a8f53e4c1498da044b595cc1fdacc2dd, type: 3}
+  animationTriggerOverride: 
   isBasicSkill: 0
   isComboSkill: 0

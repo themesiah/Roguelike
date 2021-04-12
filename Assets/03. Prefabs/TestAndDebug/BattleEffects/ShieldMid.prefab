@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 5792082971026757826}
   - component: {fileID: 8258854784859710421}
+  - component: {fileID: 6752329300010232140}
   m_Layer: 9
-  m_Name: ShieldEffect
+  m_Name: ShieldMid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5792082971026757826
 Transform:
   m_ObjectHideFlags: 0
@@ -82,3 +83,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6752329300010232140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242143511973339177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3762870debbb0e498318e94c40cee48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 0.5
+  destroyTime: 0
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
