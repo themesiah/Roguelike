@@ -7034,6 +7034,7 @@ GameObject:
   - component: {fileID: 1029216011}
   - component: {fileID: 1029216017}
   - component: {fileID: 1029216010}
+  - component: {fileID: 1029216018}
   m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7192,6 +7193,29 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1029216018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029216009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Event: event:/Music/AbyssMusic
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &1033202676
 GameObject:
   m_ObjectHideFlags: 0
@@ -15271,15 +15295,15 @@ PrefabInstance:
     - target: {fileID: 3704770702281637061, guid: 754db506d92358644a75da51db5f41f5, type: 3}
       propertyPath: startingMinions.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 4a574eb35a20557478de9b56da473226, type: 2}
+      objectReference: {fileID: 11400000, guid: 70207bf0c942b6940ac6e0a5a75bb563, type: 2}
     - target: {fileID: 3704770702281637061, guid: 754db506d92358644a75da51db5f41f5, type: 3}
       propertyPath: startingMinions.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 4a574eb35a20557478de9b56da473226, type: 2}
+      objectReference: {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
     - target: {fileID: 3704770702281637061, guid: 754db506d92358644a75da51db5f41f5, type: 3}
       propertyPath: startingMinions.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 4a574eb35a20557478de9b56da473226, type: 2}
+      objectReference: {fileID: 11400000, guid: 0a5354d826c4d034ebe2eb623fadd640, type: 2}
     - target: {fileID: 8683580369926790991, guid: 754db506d92358644a75da51db5f41f5, type: 3}
       propertyPath: m_SortingLayer
       value: 7
@@ -16062,7 +16086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8889747727625854727, guid: 56069e2fb358be44ca0f927de9660a3a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 289.1
+      value: 285.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56069e2fb358be44ca0f927de9660a3a, type: 3}
