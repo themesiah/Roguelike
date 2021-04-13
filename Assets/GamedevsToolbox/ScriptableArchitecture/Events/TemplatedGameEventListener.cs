@@ -28,17 +28,17 @@ namespace GamedevsToolbox.ScriptableArchitecture.Events
 
         public void Register()
         {
-            Event.RegisterListener(this);
+            Event?.RegisterListener(this);
         }
 
         public void Unregister()
         {
-            Event.UnregisterListener(this);
+            Event?.UnregisterListener(this);
         }
 
         public virtual void OnEventRaised(T data)
         {
-            Response.Invoke(data);
+            Response?.Invoke(data);
         }
     }
 }

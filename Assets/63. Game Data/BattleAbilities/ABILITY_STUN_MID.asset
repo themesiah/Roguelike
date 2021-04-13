@@ -15,11 +15,20 @@ MonoBehaviour:
   effectsData:
   - effectType: 5
     power: 150
+    delay: 0
     targetType: 1
+    selfEffectPrefabs: []
+    targetEffectPrefabs:
+    - prefab: {fileID: 944182778377292689, guid: 7d2576389cc4b024aa893ed75d9fcb7e, type: 3}
+      delay: 0
+      offset: {x: 0, y: 0, z: 0}
   shortDesc: SIMPLE_EFF_STUN2
   cost: 0
   weight: 2
   cooldown: 0
+  castTime: 0
   icon: {fileID: 21300000, guid: d8094e4388189e141974e5b4ed159cc3, type: 3}
   frameGraphic: {fileID: 21300000, guid: 8daf4f92d99e11345a6980ccb2ad392d, type: 3}
+  animationTriggerOverride: 
   isBasicSkill: 0
+  isComboSkill: 0

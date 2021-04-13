@@ -1,6 +1,5 @@
 ﻿using GamedevsToolbox.Utils;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,6 +27,8 @@ namespace Laresistance.Behaviours
         private float animationDuration = 1f;
         [SerializeField]
         private Collider2D interactionCollider = default;
+        [SerializeField]
+        private Collider2D topCollider = default;
 
         [Header("Normal behaviour configuration")]
         [SerializeField]
@@ -200,6 +201,7 @@ namespace Laresistance.Behaviours
             moving = false;
             startDone = true;
             interactionCollider.enabled = true;
+            topCollider.enabled = true;
         }
 
         private IEnumerator ElevatorMoveCoroutine(bool goUp)

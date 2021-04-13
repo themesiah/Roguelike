@@ -1,0 +1,714 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8176616377806600164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_SIPHON/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &-7735048962339580167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Battle.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Project/Build/Desktop/Battle.bank
+  Name: Battle
+  StudioPath: bank:/Battle
+  lastModified: 637539173591420854
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-7726297934049481097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_DAMAGEIMPROVE/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &-7663504087146419741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_DOT
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_DOT
+  guid: fdaf5c6ffa0ea74fa13165840e29fe08
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 6311758738243093357}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1705
+--- !u!114 &-6032028008056651114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_ANTIBUFF
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_ANTIBUFF
+  guid: 74cacc46b359534c92404c235eff691f
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 6542314036595283623}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1358
+--- !u!114 &-6013580706399143282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_SHIELD/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &-5636922718783472219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_ATTACK_LOW
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_ATTACK_LOW
+  guid: 4c122d4f8ebfd8499dcd1c90201d5d63
+  Banks:
+  - {fileID: -3625234307154515254}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 3790613337865142010}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1260
+--- !u!114 &-5360135521761787640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_STUN/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &-3681223271548833196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ATTACK/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &-3625234307154515254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Project/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 637539173590271515
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-3252224475652214754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Project/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 637539173590511381
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1382
+  Exists: 1
+--- !u!114 &-3177793852486021503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ACCELERATE/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &-1400159421372231314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_ATTACK
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_ATTACK
+  guid: 4c122d4f8ebfd8499dcd1c90201d5d63
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -3681223271548833196}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 491
+--- !u!114 &-193476159793389916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_SIPHON
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_SIPHON
+  guid: 94eee208b8071044a85183b71b3294d9
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -8176616377806600164}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2440
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: -3252224475652214754}
+  - {fileID: -3625234307154515254}
+  - {fileID: -7735048962339580167}
+  EditorEvents:
+  - {fileID: 3654185605024654946}
+  - {fileID: 4568501846630808320}
+  - {fileID: -1400159421372231314}
+  - {fileID: 3403795716293447150}
+  - {fileID: 1333604615985977055}
+  - {fileID: -6032028008056651114}
+  - {fileID: 9038399653065245408}
+  - {fileID: -193476159793389916}
+  - {fileID: 6560545887449730476}
+  - {fileID: 3281736932504225227}
+  - {fileID: 3335550283743636072}
+  - {fileID: 9018052375404215603}
+  - {fileID: -7663504087146419741}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: -3625234307154515254}
+  StringsBanks:
+  - {fileID: -3252224475652214754}
+  stringsBankWriteTime: 637539173590511381
+  cacheVersion: 6
+--- !u!114 &344122734244740857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_SLOW/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &1333604615985977055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_ACCELERATE
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_ACCELERATE
+  guid: 649c9cc5aa77ec45be1337f82f46a4f1
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -3177793852486021503}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2416
+--- !u!114 &2834915649486280931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ANTIDEBUFF/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &3104360787972471532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_BLIND/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &3281736932504225227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_BLIND
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_BLIND
+  guid: c2c360620342e842a8bc83416d6b2b75
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 3104360787972471532}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1358
+--- !u!114 &3335550283743636072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_ANTIDEBUFF
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_ANTIDEBUFF
+  guid: d213624b04af214487cd201092b88f69
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 2834915649486280931}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2416
+--- !u!114 &3403795716293447150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_SLOW
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_SLOW
+  guid: 63f1f8ce43026248b01bdee99fbab9ba
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 344122734244740857}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1358
+--- !u!114 &3654185605024654946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_HEAL
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_HEAL
+  guid: 30f6a37cbb02c04db8f2568178374f00
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 3862870227441902350}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1829
+--- !u!114 &3790613337865142010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ATTACK_LOW/ParameterTest1
+  m_EditorClassIdentifier: 
+  Name: ParameterTest1
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &3862870227441902350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_HEAL/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &4568501846630808320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_DAMAGEIMPROVE
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_DAMAGEIMPROVE
+  guid: 380a0e0224a87346930e72d4417dc7b3
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -7726297934049481097}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2416
+--- !u!114 &6311758738243093357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_DOT/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &6542314036595283623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ANTIBUFF/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &6560545887449730476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_STUN
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_STUN
+  guid: b830e4cb75ce0f4ea054352b16fa2a81
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -5360135521761787640}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2496
+--- !u!114 &6673803277591508963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_DAMAGENERF/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
+--- !u!114 &9018052375404215603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_SHIELD
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_SHIELD
+  guid: dc2a73598ead41408cc370ce8d1878e5
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -6013580706399143282}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 824
+--- !u!114 &9038399653065245408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BattleAbilities/ABILITY_DAMAGENERF
+  m_EditorClassIdentifier: 
+  Path: event:/BattleAbilities/ABILITY_DAMAGENERF
+  guid: 90c8247b01c9b74da7aab5a547acc580
+  Banks:
+  - {fileID: -7735048962339580167}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 6673803277591508963}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1358

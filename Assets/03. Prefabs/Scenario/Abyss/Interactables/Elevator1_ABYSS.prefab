@@ -110,7 +110,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3358783870531882841}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -176,6 +176,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  eventOnlyOnPerformed: 0
 --- !u!114 &1925784653737338452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +241,7 @@ MonoBehaviour:
   animatorTriggerName: ElevatorStart
   animationDuration: 4
   interactionCollider: {fileID: 3653179195289210054}
+  topCollider: {fileID: 8208431090794247001}
   upPoint: {fileID: 0}
   bottomPoint: {fileID: 0}
   elevatorSpeed: 20
