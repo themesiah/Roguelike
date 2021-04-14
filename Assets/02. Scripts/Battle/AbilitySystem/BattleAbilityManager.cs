@@ -18,6 +18,7 @@ namespace Laresistance.Battle
         public static BattleStatusManager[] currentTargets;
 
         private static bool battling = false;
+        public static bool Battling => battling;
 
         public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
         {

@@ -87,21 +87,6 @@ namespace Laresistance.Behaviours
             }
         }
 
-        public void ManageInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                if (firstTime)
-                {
-                    firstTime = false;
-                    ElevatorLeverActivation(false);
-                } else
-                {
-                    ActivateElevator();
-                }
-            }
-        }
-
         public void ActivateElevator()
         {
             if (!doingStartingAnimation)

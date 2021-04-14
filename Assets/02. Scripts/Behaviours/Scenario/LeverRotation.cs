@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -11,6 +12,10 @@ namespace Laresistance.Behaviours
         private float moveTime = 1f;
         [SerializeField]
         private Transform pivot = default;
+        [SerializeField]
+        private UnityEvent onRotateStart = default;
+        [SerializeField]
+        private UnityEvent onRotateEnd = default;
 
         private bool positive = true;
         private Coroutine leverCoroutine = null;
@@ -38,6 +43,7 @@ namespace Laresistance.Behaviours
 
         private IEnumerator MoveLeverCoroutine()
         {
+            onRotateStart?.Invoke();
             float target = positive ? targetAngle : -targetAngle;
             var euler = pivot.eulerAngles;
             while (currentTime < moveTime)
@@ -49,6 +55,7 @@ namespace Laresistance.Behaviours
                 yield return null;
             }
             currentTime = moveTime;
+            onRotateEnd?.Invoke();
         }
     }
 }
