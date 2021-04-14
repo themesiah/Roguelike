@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7646051571657257642}
   - component: {fileID: -1036287897286824932}
   - component: {fileID: 1012645513597239640}
-  - component: {fileID: -765794650062034213}
   m_Layer: 0
   m_Name: AttackHigh
   m_TagString: Untagged
@@ -134,14 +133,15 @@ MonoBehaviour:
           m_StringArgument: BasicAttack
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -765794650062034213}
-        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+      - m_Target: {fileID: 11400000, guid: 5c121d5ddafba70468b2eebe0a5f366c, type: 2}
+        m_TargetAssemblyTypeName: Laresistance.Audio.ScriptableFMODBattleAbilityEventEmitter,
+          GameScripts
         m_MethodName: Play
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -174,28 +174,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &-765794650062034213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1276422351659941230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  Event: event:/BattleAbilities/ABILITY_ATTACK
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params:
-  - Name: AttackPotency
-    Value: 2
-  OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 0
