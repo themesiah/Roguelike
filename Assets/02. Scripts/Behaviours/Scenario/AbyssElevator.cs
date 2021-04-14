@@ -55,8 +55,6 @@ namespace Laresistance.Behaviours
         private Vector3 currentTargetPosition = Vector3.zero;
         private float currentSpeed = 0f;
 
-        private bool firstTime = true;
-
         private void Awake()
         {
             UnityEngine.Assertions.Assert.IsNotNull(startingPoint);
