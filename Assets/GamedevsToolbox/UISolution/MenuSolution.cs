@@ -22,7 +22,6 @@ namespace GamedevsToolbox.UISolution
                 states.Add(data.menuName, new UIState(data));
             }
             stateMachine.SetStates(states);
-            StartCoroutine(StateMachineCoroutine());
         }
 
         public void ReceiveSignal(string signal)
@@ -34,8 +33,24 @@ namespace GamedevsToolbox.UISolution
         {
             while (true)
             {
-                yield return stateMachine.Update(null);
+                if (stateMachine != null)
+                {
+                    yield return stateMachine.Update(null);
+                } else
+                {
+                    yield return null;
+                }
             }
+        }
+
+        private void OnEnable()
+        {
+            StartCoroutine(StateMachineCoroutine());
+        }
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
         }
     }
 }

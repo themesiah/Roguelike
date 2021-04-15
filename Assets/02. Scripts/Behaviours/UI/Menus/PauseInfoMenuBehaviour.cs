@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using UnityEngine.Events;
 
@@ -23,33 +24,41 @@ namespace Laresistance.Behaviours
         private bool infoMenuOpened = false;
         private bool AnyMenuOpened { get { return pauseMenuOpened || infoMenuOpened; } }
 
-        public void TogglePauseMenu()
+        public void TogglePauseMenu(InputAction.CallbackContext context)
         {
-            if (!AnyMenuOpened)
+            if (context.performed)
             {
-                pauseMenuOpened = true;
-                pauseResumeGameStateChange?.Raise(true);
-                onPauseMenuOpen?.Invoke();
-            } else if (pauseMenuOpened)
-            {
-                pauseMenuOpened = false;
-                pauseResumeGameStateChange?.Raise(false);
-                onPauseMenuClose?.Invoke();
+                if (!AnyMenuOpened)
+                {
+                    pauseMenuOpened = true;
+                    pauseResumeGameStateChange?.Raise(true);
+                    onPauseMenuOpen?.Invoke();
+                }
+                else if (pauseMenuOpened)
+                {
+                    pauseMenuOpened = false;
+                    pauseResumeGameStateChange?.Raise(false);
+                    onPauseMenuClose?.Invoke();
+                }
             }
         }
 
-        public void ToggleInfoMenu()
+        public void ToggleInfoMenu(InputAction.CallbackContext context)
         {
-            if (!AnyMenuOpened)
+            if (context.performed)
             {
-                infoMenuOpened = true;
-                pauseResumeGameStateChange?.Raise(true);
-                onInfoMenuOpen?.Invoke();
-            } else if (infoMenuOpened)
-            {
-                infoMenuOpened = false;
-                pauseResumeGameStateChange?.Raise(false);
-                onInfoMenuClose?.Invoke();
+                if (!AnyMenuOpened)
+                {
+                    infoMenuOpened = true;
+                    pauseResumeGameStateChange?.Raise(true);
+                    onInfoMenuOpen?.Invoke();
+                }
+                else if (infoMenuOpened)
+                {
+                    infoMenuOpened = false;
+                    pauseResumeGameStateChange?.Raise(false);
+                    onInfoMenuClose?.Invoke();
+                }
             }
         }
     }
