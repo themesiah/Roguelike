@@ -9,8 +9,6 @@ namespace Laresistance.Behaviours
     {
         [SerializeField]
         private Animator animator = default;
-        [SerializeField]
-        private GameObject[] attackObjects = default;
 
         private bool animating = false;
         private float lastAnimatorSpeed = 0f;
@@ -74,14 +72,6 @@ namespace Laresistance.Behaviours
         public void Stop()
         {
             animator.SetTrigger("Stop");
-        }
-
-        public void SetAttackPosition(Vector3 position)
-        {
-            foreach (var go in attackObjects)
-            {
-                go.transform.position = position;
-            }
         }
     }
 }

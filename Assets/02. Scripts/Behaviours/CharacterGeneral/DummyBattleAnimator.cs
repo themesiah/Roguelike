@@ -18,8 +18,5 @@ namespace Laresistance.Behaviours
 
         public void Stop()
         {}
-
-        public void SetAttackPosition(Vector3 position)
-        {}
     }
 }

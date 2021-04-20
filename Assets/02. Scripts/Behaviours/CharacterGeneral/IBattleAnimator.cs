@@ -8,6 +8,5 @@ namespace Laresistance.Behaviours
     {
         IEnumerator PlayAnimation(string trigger);
         void Stop();
-        void SetAttackPosition(Vector3 position);
     }
 }
