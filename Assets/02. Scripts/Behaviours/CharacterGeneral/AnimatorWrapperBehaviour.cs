@@ -9,6 +9,10 @@ namespace Laresistance.Behaviours
     {
         [SerializeField]
         private Animator animator = default;
+        [SerializeField]
+        private string horizontalSpeedParameterName = default;
+        [SerializeField]
+        private string verticalSpeedParameterName = default;
 
         private bool animating = false;
         private float lastAnimatorSpeed = 0f;
@@ -72,6 +76,16 @@ namespace Laresistance.Behaviours
         public void Stop()
         {
             animator.SetTrigger("Stop");
+        }
+
+        public void SetHorizontalSpeed(float speed)
+        {
+            animator.SetFloat(horizontalSpeedParameterName, speed);
+        }
+
+        public void SetVerticalSpeed(float speed)
+        {
+            animator.SetFloat(verticalSpeedParameterName, speed);
         }
     }
 }
