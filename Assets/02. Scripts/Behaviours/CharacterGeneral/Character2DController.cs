@@ -25,6 +25,7 @@ namespace Laresistance.Behaviours
 
         [Header("Events")]
         public UnityEvent<Vector3> OnLand = default;
+        public UnityEvent<Vector3> OnStartFall = default;
         public UnityEvent<Vector3> OnJump = default;
         public UnityEvent<bool> OnFlip = default;
         public UnityEvent<float> OnHorizontalVelocityChanged = default;
@@ -32,6 +33,7 @@ namespace Laresistance.Behaviours
 
         // State
         private bool isGrounded = false;
+        private bool falling = false;
         private bool facingRight = true;
         private int performedJumps = 0;
         private bool isPaused = false;
@@ -147,12 +149,15 @@ namespace Laresistance.Behaviours
             OnHorizontalVelocityChanged?.Invoke(body.velocity.x);
             if (body.velocity.y <= 0f)
             {
+                bool collided = false;
                 Collider2D[] colliders = GetGroundColliders();
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     if (colliders[i].gameObject != gameObject)
                     {
+                        collided = true;
                         isGrounded = true;
+                        falling = false;
                         notGroundedTime = 0f;
                         if (!wasGrounded)
                         {
@@ -160,6 +165,15 @@ namespace Laresistance.Behaviours
                             OnLand?.Invoke(groundCheck.position);
                         }
                         break;
+                    }
+                }
+
+                if (!collided)
+                {
+                    if (falling == false)
+                    {
+                        falling = true;
+                        OnStartFall?.Invoke(groundCheck.position);
                     }
                 }
             }

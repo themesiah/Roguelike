@@ -19,7 +19,7 @@ namespace Laresistance.Behaviours
         {
             if (maxHorizontalSpeedReference != null && maxHorizontalSpeedReference.GetValue() != 0f)
             {
-                OnHorizontalSpeedConverted?.Invoke(speed / maxHorizontalSpeedReference.GetValue());
+                OnHorizontalSpeedConverted?.Invoke(Mathf.Abs(speed / maxHorizontalSpeedReference.GetValue()));
             } else
             {
                 OnHorizontalSpeedConverted?.Invoke(speed);
@@ -30,7 +30,7 @@ namespace Laresistance.Behaviours
         {
             if (maxVerticalSpeedReference != null && maxVerticalSpeedReference.GetValue() != 0f)
             {
-                OnVerticalSpeedConverted?.Invoke(speed / maxVerticalSpeedReference.GetValue());
+                OnVerticalSpeedConverted?.Invoke(Mathf.Abs(speed / maxVerticalSpeedReference.GetValue()));
             }
             else
             {

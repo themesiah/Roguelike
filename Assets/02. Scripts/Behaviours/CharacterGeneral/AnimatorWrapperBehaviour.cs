@@ -87,5 +87,10 @@ namespace Laresistance.Behaviours
         {
             animator.SetFloat(verticalSpeedParameterName, speed);
         }
+
+        public void SetTrigger(string trigger)
+        {
+            animator.SetTrigger(trigger);
+        }
     }
 }
