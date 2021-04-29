@@ -30,6 +30,11 @@ namespace Laresistance.Behaviours
             }
         }
 
+        public void PlayAnimationSync(string trigger)
+        {
+            StartCoroutine(PlayAnimation(trigger));
+        }
+
         public IEnumerator PlayAnimation(string trigger)
         {
             animating = true;

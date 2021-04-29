@@ -82,6 +82,24 @@ namespace Laresistance.Battle
             return distance;
         }
 
+        private static Vector2 GetRaycastedCenter(Vector2 nonRaycastedCenter, int centerCheckLayerMask)
+        {
+            List<RaycastHit2D> results = new List<RaycastHit2D>();
+            ContactFilter2D raycastFilters = new ContactFilter2D();
+            raycastFilters.layerMask = centerCheckLayerMask;
+            raycastFilters.useTriggers = false;
+            raycastFilters.useLayerMask = true;
+            int intRes = Physics2D.Raycast(nonRaycastedCenter, Vector2.down, raycastFilters, results);
+            if (intRes > 0)
+            {
+                return results[0].point;
+            }
+            else
+            {
+                return nonRaycastedCenter;
+            }
+        }
+
         public static BattlePositionData MoveCharacters(GameObject playerObject, GameObject[] enemyObjects, int centerCheckLayerMask)
         {
             BattlePositionData bpd = new BattlePositionData();
@@ -96,6 +114,7 @@ namespace Laresistance.Battle
             Turn(enemyObjects[0], !playerLookingRight);
 
             Vector3 center = enemyObjects[0].transform.position;
+            center = GetRaycastedCenter(center, centerCheckLayerMask);
             float distanceToLeft = GetDistanceToLeft(center, centerCheckLayerMask);
             float distanceToRight = GetDistanceToRight(center, centerCheckLayerMask);
             UnityEngine.Assertions.Assert.IsTrue(distanceToLeft + distanceToRight >= MIN_DISTANCE_FOR_SETUP, string.Format("No space to battle. Available space is {0} and {1} is required", distanceToRight+distanceToLeft, MIN_DISTANCE_FOR_SETUP));
