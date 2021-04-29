@@ -23,6 +23,8 @@ namespace Laresistance.Behaviours
         [SerializeField] [Tooltip("If the object tries to jump when it is not grounded or do not have more available jumps, it waits JUMP_ATTEMPT_TIMER time for retry the jump, augmenting responsivity.")]
         private bool allowJumpAttempt = false;
         [SerializeField]
+        private float notGroundedTimeToBeNotGrounded = 3f / 60f;
+        [SerializeField]
         private float delayAfterLanding = 0.3f;
 
         [Header("Events")]
@@ -149,6 +151,7 @@ namespace Laresistance.Behaviours
                 return;
             CheckGrounded();
             CheckJumpAttempt();
+            CheckNotGroundedTime();
             CheckJumpGraceTime();
             if (delayAfterLandingTimer > 0f)
             {
@@ -174,12 +177,17 @@ namespace Laresistance.Behaviours
                         collided = true;
                         isGrounded = true;
                         falling = false;
-                        notGroundedTime = 0f;
-                        if (!wasGrounded)
+                        //notGroundedTime = 0f;
+                        if (!wasGrounded && notGroundedTime >= notGroundedTimeToBeNotGrounded)
                         {
+                            delayAfterLandingTimer = delayAfterLanding;
+                            if (delayAfterLanding > 0f)
+                            {
+                                body.velocity = Vector3.zero;
+                                OnHorizontalVelocityChanged?.Invoke(0f);
+                            }
                             performedJumps = 0;
                             OnLand?.Invoke(groundCheck.position);
-                            delayAfterLandingTimer = delayAfterLanding;
                         }
                         break;
                     }
@@ -209,13 +217,22 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private void CheckJumpGraceTime()
+        private void CheckNotGroundedTime()
         {
             if (isGrounded)
             {
                 notGroundedTime = 0f;
-            } else {
+            }
+            else
+            {
                 notGroundedTime += Time.deltaTime;
+            }
+        }
+
+        private void CheckJumpGraceTime()
+        {
+            if (!isGrounded)
+            {
                 if (notGroundedTime >= JUMP_GRACE_TIME && performedJumps == 0)
                 {
                     performedJumps = 1;
