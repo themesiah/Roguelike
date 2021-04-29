@@ -22,6 +22,8 @@ namespace Laresistance.Behaviours
         private LayerMask groundLayers = default;
         [SerializeField] [Tooltip("If the object tries to jump when it is not grounded or do not have more available jumps, it waits JUMP_ATTEMPT_TIMER time for retry the jump, augmenting responsivity.")]
         private bool allowJumpAttempt = false;
+        [SerializeField]
+        private float delayAfterLanding = 0.3f;
 
         [Header("Events")]
         public UnityEvent<Vector3> OnLand = default;
@@ -38,6 +40,7 @@ namespace Laresistance.Behaviours
         private int performedJumps = 0;
         private bool isPaused = false;
         private float notGroundedTime = 0f;
+        private float delayAfterLandingTimer = 0f;
 
         // Jump Attempt
         private float jumpAttemptTimer = 0f;
@@ -58,9 +61,16 @@ namespace Laresistance.Behaviours
             Flip(!FacingRight);
         }
 
+        private bool HaveAfterLandDelay()
+        {
+            return delayAfterLandingTimer > 0f;
+        }
+
         public void Jump(Vector2 force, int jumpLimit)
         {
             if (isPaused)
+                return;
+            if (HaveAfterLandDelay())
                 return;
             if (isGrounded || performedJumps < jumpLimit)
             {
@@ -102,6 +112,8 @@ namespace Laresistance.Behaviours
         {
             if (isPaused)
                 return;
+            if (HaveAfterLandDelay())
+                return;
             Vector3 targetVelocity = new Vector2(movement, body.velocity.y);
             body.velocity = targetVelocity;
             if (movement > 0 && !facingRight)
@@ -138,6 +150,10 @@ namespace Laresistance.Behaviours
             CheckGrounded();
             CheckJumpAttempt();
             CheckJumpGraceTime();
+            if (delayAfterLandingTimer > 0f)
+            {
+                delayAfterLandingTimer -= Time.fixedDeltaTime;
+            }
         }
 
         private void CheckGrounded()
@@ -163,6 +179,7 @@ namespace Laresistance.Behaviours
                         {
                             performedJumps = 0;
                             OnLand?.Invoke(groundCheck.position);
+                            delayAfterLandingTimer = delayAfterLanding;
                         }
                         break;
                     }
