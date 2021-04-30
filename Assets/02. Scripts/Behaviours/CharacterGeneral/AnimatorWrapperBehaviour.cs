@@ -104,5 +104,10 @@ namespace Laresistance.Behaviours
         {
             animator.SetTrigger(trigger);
         }
+
+        public void ResetTrigger(string trigger)
+        {
+            animator.ResetTrigger(trigger);
+        }
     }
 }
