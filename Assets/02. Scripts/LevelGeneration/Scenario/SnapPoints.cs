@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -16,6 +15,7 @@ namespace Laresistance.LevelGeneration
 
         public Transform[] Points => snapPoints;
 
+#if UNITY_EDITOR
         public SnapPoints[] SceneSnapPoints()
         {
             return FindObjectsOfType<SnapPoints>(true);
@@ -76,6 +76,6 @@ namespace Laresistance.LevelGeneration
             gameObject.transform.position = pos;
             Debug.Log("Changing pos");
         }
+#endif
     }
 }
-#endif

@@ -90,7 +90,6 @@ namespace Laresistance.Behaviours
             isLevelEnd = true;
         }
 
-#if UNITY_EDITOR
         public void OnDrawGizmos()
         {
             if (nextRoom != null && nextRoom.GetRoomChangeData().exitPoint != null)
@@ -109,6 +108,5 @@ namespace Laresistance.Behaviours
                 }
             }
         }
-#endif
     }
 }

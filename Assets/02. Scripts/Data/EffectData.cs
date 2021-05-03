@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.Data
 {
@@ -8,7 +9,7 @@ namespace Laresistance.Data
         [System.Serializable]
         public struct PrefabEffectData
         {
-            public GameObject prefab;
+            public AssetReference prefabReference;
             public float delay;
             public Vector3 offset;
         }
