@@ -33,7 +33,10 @@ namespace Laresistance.Behaviours
 
         private void Start()
         {
-            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
+            playerDataRef.RegisterOnSetEvent((playerDataBehaviour) => {
+                rewardSystem = new RewardSystem(playerDataBehaviour.player, bloodReference, hardCurrencyReference, uiLibrary);
+            });
+            //rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
         }
 
         public void Obtain()

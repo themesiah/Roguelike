@@ -52,7 +52,7 @@ namespace Laresistance.LevelGeneration
         public IEnumerator GenerateRoom()
         {
             // Configuration
-            roomObject.GetComponent<RoomConfiguration>().ConfigureRoom(mapData, roomData, biome);
+            yield return roomObject.GetComponent<RoomConfiguration>().ConfigureRoom(mapData, roomData, biome);
             yield return null;
         }
     }

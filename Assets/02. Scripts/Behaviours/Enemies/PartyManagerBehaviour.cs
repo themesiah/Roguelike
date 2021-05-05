@@ -1,6 +1,6 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Selectors;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.Behaviours
 {
@@ -9,7 +9,7 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform partyHolder = default;
         [SerializeField]
-        private ScriptableGameObjectSelector[] partyMemberSelectors = default;
+        private ScriptableAssetReferenceSelector[] partyMemberSelectorsRef = default;
 
         private void Start()
         {
@@ -18,13 +18,16 @@ namespace Laresistance.Behaviours
 
         public void SpawnParty()
         {
-            foreach (ScriptableGameObjectSelector selector in partyMemberSelectors)
+            foreach(ScriptableAssetReferenceSelector selector in partyMemberSelectorsRef)
             {
-                GameObject prefab = selector.Get();
-                if (prefab != null)
+                AssetReference assetRef = selector.Get();
+                if (assetRef.IsValid())
                 {
-                    GameObject go = Instantiate(prefab, partyHolder);
-                    go.GetComponent<EnemyBattleBehaviour>().InitEnemy(0);
+                    var op = assetRef.InstantiateAsync(partyHolder);
+                    op.Completed += (handle) =>
+                    {
+                        handle.Result.GetComponent<EnemyBattleBehaviour>().InitEnemy(0);
+                    };
                 }
             }
 

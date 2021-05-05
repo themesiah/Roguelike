@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using GamedevsToolbox.ScriptableArchitecture.Selectors;
 
 namespace Laresistance.LevelGeneration
 {
@@ -13,11 +12,11 @@ namespace Laresistance.LevelGeneration
         public string BiomeDescription { get { return biomeDescription; } }
 
         [SerializeField]
-        private GameObject[] normalEnemies = default;
-        public GameObject[] NormalEnemies { get { return normalEnemies; } }
+        private ScriptableAssetReferenceSelector normalEnemies = default;
+        public ScriptableAssetReferenceSelector NormalEnemies { get { return normalEnemies; } }
 
         [SerializeField]
-        private GameObject[] minibossEnemies = default;
-        public GameObject[] MinibossEnemies { get { return minibossEnemies; } }
+        private ScriptableAssetReferenceSelector minibossEnemies = default;
+        public ScriptableAssetReferenceSelector MinibossEnemies { get { return minibossEnemies; } }
     }
 }

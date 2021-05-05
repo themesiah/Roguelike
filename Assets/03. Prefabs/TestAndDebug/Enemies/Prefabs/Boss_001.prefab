@@ -194,62 +194,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
---- !u!114 &7369854939580062959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5183781580845121291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9bec5134f352d3438adba38e6a3ca42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healPerTick: 1
-  battleBehaviourRef: {fileID: 4124163653421989833}
---- !u!114 &8732005774202866069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5183781580845121291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90ba7489c0383b545b0f45b11e2d5531, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  percentDifferenceToFlee: 0.1
-  bossMapBehaviour: {fileID: 8416028516385629277}
-  bossColliders:
-  - {fileID: 8416028516385629254}
-  contextSignal: {fileID: 11400000, guid: 53ecdae93c93f2f42923896b5f5c9505, type: 2}
-  bossBarriers: {fileID: 11400000, guid: 56c400706e1f7e048a9a439b6e8f18a3, type: 2}
-  mapBehaviuour: {fileID: 8416028516385629277}
-  partyManager: {fileID: 5749416126499448178}
-  disappearSpeed:
-    useConstant: 1
-    value: {fileID: 0}
-    constantValue: 20
-    useRandom: 0
-    minMax:
-      useConstant: 1
-      value: {fileID: 0}
-      constantValue: {x: 0, y: 0}
-  disappearDistance:
-    useConstant: 1
-    value: {fileID: 0}
-    constantValue: 30
-    useRandom: 0
-    minMax:
-      useConstant: 1
-      value: {fileID: 0}
-      constantValue: {x: 0, y: 0}
-  floorLocations:
-  - {fileID: 11400000, guid: a7913ba1cf5f70b408f80871a56c902b, type: 2}
-  - {fileID: 11400000, guid: b84772f78ae73aa4c866ae2bbe7ca1c9, type: 2}
-  - {fileID: 11400000, guid: faa011f5d1e2c6e47a750dc890669a71, type: 2}
 --- !u!1 &4037884096820805644
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +395,62 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
+--- !u!114 &7369854939580062959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183781580845121291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9bec5134f352d3438adba38e6a3ca42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healPerTick: 1
+  battleBehaviourRef: {fileID: 4124163653421989833}
+--- !u!114 &8732005774202866069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183781580845121291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ba7489c0383b545b0f45b11e2d5531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percentDifferenceToFlee: 0.1
+  bossMapBehaviour: {fileID: 8416028516385629277}
+  bossColliders:
+  - {fileID: 8416028516385629254}
+  contextSignal: {fileID: 11400000, guid: 53ecdae93c93f2f42923896b5f5c9505, type: 2}
+  bossBarriers: {fileID: 11400000, guid: 56c400706e1f7e048a9a439b6e8f18a3, type: 2}
+  mapBehaviuour: {fileID: 8416028516385629277}
+  partyManager: {fileID: 5749416126499448178}
+  disappearSpeed:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 20
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  disappearDistance:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 30
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  floorLocations:
+  - {fileID: 11400000, guid: a7913ba1cf5f70b408f80871a56c902b, type: 2}
+  - {fileID: 11400000, guid: b84772f78ae73aa4c866ae2bbe7ca1c9, type: 2}
+  - {fileID: 11400000, guid: faa011f5d1e2c6e47a750dc890669a71, type: 2}
 --- !u!1 &5606839784479213156
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,6 +872,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6252518509512114618, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
+      propertyPath: partyMemberSelectorsRef.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252518509512114618, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
       propertyPath: partyMemberSelectors.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 133afd2e23f04f9408a6ac11fbec4401, type: 2}
@@ -879,9 +883,17 @@ PrefabInstance:
       propertyPath: partyMemberSelectors.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 133afd2e23f04f9408a6ac11fbec4401, type: 2}
+    - target: {fileID: 6252518509512114618, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
+      propertyPath: partyMemberSelectorsRef.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 87f9fecb411e1b141be387a2ed486a35, type: 2}
+    - target: {fileID: 6252518509512114618, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
+      propertyPath: partyMemberSelectorsRef.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 87f9fecb411e1b141be387a2ed486a35, type: 2}
     - target: {fileID: 7091910226950142374, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7909678482288378004, guid: 880b87d20ba8c524180a06206468e6de, type: 3}
       propertyPath: OnHealthChangedPercent.m_PersistentCalls.m_Calls.Array.size
