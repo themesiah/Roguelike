@@ -2,16 +2,23 @@
 using System.Collections;
 using GamedevsToolbox.StateMachine;
 using Laresistance.Behaviours;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.StateMachines
 {
     public class GameManagerMapState : ICoroutineState
     {
         private string nextState = null;
+        private AssetReference targetScene;
+
+        public GameManagerMapState(AssetReference targetScene)
+        {
+            this.targetScene = targetScene;
+        }
 
         public IEnumerator EnterState()
         {
-            yield return GameSceneManager.Instance.SceneLoadAndChange("Scenario2");
+            yield return GameSceneManager.Instance.SceneLoadAndChange(targetScene);
         }
 
         public IEnumerator ExitState()

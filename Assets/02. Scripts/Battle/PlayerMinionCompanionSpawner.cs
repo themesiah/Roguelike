@@ -28,20 +28,23 @@ namespace Laresistance.Battle
             {
                 if (player.GetMinions()[i] != null)
                 {
-                    GameObject go = GameObject.Instantiate(player.GetMinions()[i].Data.Prefab, playerObject.transform);
-                    switch (i)
-                    {
-                        case 0:
-                            go.transform.localPosition = go.transform.localPosition + Vector3.right * MINION_HORIZONTAL_OFFSET * modifier;
-                            break;
-                        case 1:
-                            go.transform.localPosition = go.transform.localPosition + Vector3.down * MINION_VERTICAL_OFFSET;
-                            break;
-                        case 2:
-                            go.transform.localPosition = go.transform.localPosition + Vector3.left * MINION_HORIZONTAL_OFFSET * modifier;
-                            break;
-                    }
-                    minionObjects.Add(go);
+                    int index = i;
+                    player.GetMinions()[i].Data.PrefabReference.InstantiateAsync(playerObject.transform).Completed += (handler) => {
+                        GameObject go = handler.Result;
+                        switch (index)
+                        {
+                            case 0:
+                                go.transform.localPosition = go.transform.localPosition + Vector3.right * MINION_HORIZONTAL_OFFSET * modifier;
+                                break;
+                            case 1:
+                                go.transform.localPosition = go.transform.localPosition + Vector3.down * MINION_VERTICAL_OFFSET;
+                                break;
+                            case 2:
+                                go.transform.localPosition = go.transform.localPosition + Vector3.left * MINION_HORIZONTAL_OFFSET * modifier;
+                                break;
+                        }
+                        minionObjects.Add(go);
+                    };
                 }
             }
         }

@@ -43,12 +43,14 @@ namespace Laresistance.Behaviours
                 {
                     Destroy(child.gameObject);
                 }
-                GameObject go = Instantiate(m.Data.Prefab, currentMinionPrefabHolders[i]);
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localScale = go.transform.localScale * scaleMultiplier;
-                SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
-                renderer.sortingOrder = sortingOrder;
-                renderer.material = unlitMaterial;
+                m.Data.PrefabReference.InstantiateAsync(currentMinionPrefabHolders[i]).Completed += (handler) => {
+                    GameObject go = handler.Result;
+                    go.transform.localPosition = Vector3.zero;
+                    go.transform.localScale = go.transform.localScale * scaleMultiplier;
+                    SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
+                    renderer.sortingOrder = sortingOrder;
+                    renderer.material = unlitMaterial;
+                };
             }
             // End show 3 current minions
 

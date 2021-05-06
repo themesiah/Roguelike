@@ -2,16 +2,23 @@
 using System.Collections;
 using GamedevsToolbox.StateMachine;
 using Laresistance.Behaviours;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.StateMachines
 {
     public class GameManagerMainMenuState : ICoroutineState
     {
         private string nextScene = null;
+        private AssetReference menuSceneReference;
+
+        public GameManagerMainMenuState(AssetReference menuSceneReference)
+        {
+            this.menuSceneReference = menuSceneReference;
+        }
 
         public IEnumerator EnterState()
         {
-            yield return GameSceneManager.Instance.SceneLoadAndChange("MainMenu");
+            yield return GameSceneManager.Instance.SceneLoadAndChange(menuSceneReference);
         }
 
         public IEnumerator ExitState()

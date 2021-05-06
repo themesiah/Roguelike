@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 
 namespace Laresistance.Behaviours
 {
+    [DefaultExecutionOrder(100)]
     public class RoomConfiguration : MonoBehaviour
     {
         // How many more space than actual content is needed to consider the room too big for the requirements.
@@ -45,7 +46,7 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RuntimeSetAssetReference spawnableMinionList = default;
         [SerializeField]
-        private GameObject[] interactableList = default;
+        private AssetReference[] interactableList = default;
 
         [Header("References")]
         [SerializeField]
@@ -73,7 +74,7 @@ namespace Laresistance.Behaviours
 
         private IEnumerator InitMock()
         {
-            RoomData rd = new RoomData(0, null);
+            RoomData rd = new RoomData(9, null);
             for (int i = 0; i < possibleEnemySpawnPoints.Length; ++i)
             {
                 rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
@@ -84,7 +85,8 @@ namespace Laresistance.Behaviours
             }
             for (int i = 0; i < possibleInteractablePositions.Length; ++i)
             {
-                rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
+                //rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
+                rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.Pilgrim });
             }
             if (bottomRoomConnection != null)
             {
@@ -256,7 +258,7 @@ namespace Laresistance.Behaviours
             // Spawn enemies
             yield return ConfigureEnemies(mapData, roomData, biome);
             // Spawn interactables
-            ConfigureInteractables(roomData, biome);
+            yield return ConfigureInteractables(roomData, biome);
 
             if (mockTest)
             {
@@ -392,15 +394,19 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private void ConfigureInteractables(RoomData roomData, RoomBiome biome)
+        private IEnumerator ConfigureInteractables(RoomData roomData, RoomBiome biome)
         {
             List<Transform> tempInteractablePositions = new List<Transform>(possibleInteractablePositions);
             foreach(var interactable in roomData.GetInteractables())
             {
                 Transform randomPosition = tempInteractablePositions[Random.Range(0, tempInteractablePositions.Count)];
-                GameObject go = Instantiate(interactableList[(int)interactable.roomInteractableType], randomPosition);
+                var op = interactableList[(int)interactable.roomInteractableType].InstantiateAsync(randomPosition);
+                op.Completed += (handler) => {
+                    GameObject go = handler.Result;
+                    go.transform.localPosition = Vector3.zero;
+                };
+                yield return op;
                 tempInteractablePositions.Remove(randomPosition);
-                go.transform.localPosition = Vector3.zero;
             }
         }
 

@@ -23,10 +23,14 @@ namespace Laresistance.Battle
         public event OnAbilityCooldownProgressHandler OnAbilityCooldownProgress;
 
 
-        public EnemyAbilityManager(BattleAbility[] abilities, int level, IBattleAnimator animator)
+        public EnemyAbilityManager(BattleAbility[] abilities, int level)
         {
             this.abilities = abilities;
             this.level = level;
+        }
+
+        public void SetAnimator(IBattleAnimator animator)
+        {
             this.animator = animator;
         }
 

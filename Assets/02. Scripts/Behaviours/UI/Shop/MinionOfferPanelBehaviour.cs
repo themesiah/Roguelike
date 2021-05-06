@@ -33,12 +33,15 @@ namespace Laresistance.Behaviours
             minionNameReference.text = Texts.GetText(offer.Reward.minion.Name);
             abilityTextReference.text = offer.Reward.minion.GetAbilityText();
             levelTextReference.text = Texts.GetText("MINION_PANEL_002", offer.Reward.minion.Level);
-            GameObject go = Instantiate(offer.Reward.minion.Data.Prefab, minionPrefabHolder);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localScale = go.transform.localScale * scaleMultiplier;
-            SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
-            renderer.sortingOrder = sortingOrder;
-            renderer.material = unlitMaterial;
+            offer.Reward.minion.Data.PrefabReference.InstantiateAsync(minionPrefabHolder).Completed += (handler) => {
+                GameObject go = handler.Result;
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = go.transform.localScale * scaleMultiplier;
+                SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
+                renderer.sortingOrder = sortingOrder;
+                renderer.sortingLayerName = "UI";
+                renderer.material = unlitMaterial;
+            };
         }
 
         public override void SetCost(int cost)

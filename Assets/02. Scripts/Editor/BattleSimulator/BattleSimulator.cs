@@ -286,7 +286,8 @@ namespace Laresistance.Simulator
                 abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], new EquipmentsContainer(), enemyStatus);
             }
 
-            IAbilityInputProcessor abilityInput = new EnemyAbilityManager(abilities, 1, new DummyBattleAnimator());
+            IAbilityInputProcessor abilityInput = new EnemyAbilityManager(abilities, 1);
+            ((EnemyAbilityManager)abilityInput).SetAnimator(new DummyBattleAnimator());
 
             CharacterBattleManager enemy = new CharacterBattleManager(enemyStatus, abilityInput, (IAbilityExecutor)abilityInput, new DummyTargetSelection(), new DummyBattleAnimator());
             return enemy;
