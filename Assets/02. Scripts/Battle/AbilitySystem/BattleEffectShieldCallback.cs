@@ -9,7 +9,7 @@ namespace Laresistance.Battle
             base.ConfigureBattleEffectCallback(target, callback, delay);
             target.health.OnShieldsChanged += DestroyShield;
             target.OnResetStatus += OnBattleEnd;
-            if (!BattleAbilityManager.Battling)
+            if (!BattleAbilityManager.Instance.Battling)
             {
                 OnBattleEnd(target);
             }

@@ -151,7 +151,7 @@ namespace Laresistance.Battle
 
         public void Tick(float delta)
         {
-            if (!BattleAbilityManager.Executing || BattleAbilityManager.executingBasicSkill)
+            if (!BattleAbilityManager.Instance.Executing || BattleAbilityManager.Instance.executingBasicSkill)
             {
                 currentShields.ForEach((s) =>
                 {

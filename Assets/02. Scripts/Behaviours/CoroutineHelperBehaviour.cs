@@ -23,5 +23,10 @@ namespace Laresistance.Behaviours
             }
             return instance;
         }
+
+        private void OnDestroy()
+        {
+            instance = null;
+        }
     }
 }

@@ -24,6 +24,11 @@ namespace Laresistance.Behaviours
             }
         }
 
+        private void OnDestroy()
+        {
+            instance = null;
+        }
+
         public static GameSceneManager Instance { get { return instance; } }
 
         public void ChangeScene(AssetReference targetScene)

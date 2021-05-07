@@ -76,11 +76,11 @@ namespace Laresistance.Battle
             UpdateAvailableAbilities(delta);
 
             // Step up the shuffle timer if necessary
-            if (!BattleAbilityManager.Executing && !BattleAbilityManager.AbilityInQueue && !battleStatus.Stunned)
+            if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && !battleStatus.Stunned)
             {
                 shuffleTimer -= delta;
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
-            } else if (!BattleAbilityManager.Executing && !battleStatus.Stunned)
+            } else if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned)
             {
                 abilitiesToUseDequeueTimer -= delta;
             }
@@ -169,7 +169,7 @@ namespace Laresistance.Battle
             OnAbilityOnQueue?.Invoke(this, abilityInternalIndex, true);
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
             OnAbilitiesToUseChanged?.Invoke(this);
-            BattleAbilityManager.AbilityInQueue = true;
+            BattleAbilityManager.Instance.AbilityInQueue = true;
         }
 
         private AbilityExecutionData DequeueAbilityToUse()
@@ -199,7 +199,7 @@ namespace Laresistance.Battle
                     OnAbilitiesToUseChanged?.Invoke(this);
                     if (abilitiesToUseIndexList.Count == 0)
                     {
-                        BattleAbilityManager.AbilityInQueue = false;
+                        BattleAbilityManager.Instance.AbilityInQueue = false;
                     }
                     return new AbilityExecutionData() { index = i + 20, selectedTarget = GetSelectedTarget(), ability = combo.comboAbility };
                 }
@@ -222,7 +222,7 @@ namespace Laresistance.Battle
             OnAbilitiesToUseChanged?.Invoke(this);
             if (abilitiesToUseIndexList.Count == 0)
             {
-                BattleAbilityManager.AbilityInQueue = false;
+                BattleAbilityManager.Instance.AbilityInQueue = false;
             }
             return aed;
         }
@@ -265,7 +265,7 @@ namespace Laresistance.Battle
 
         public void Shuffle()
         {
-            if (!BattleAbilityManager.Executing && !BattleAbilityManager.AbilityInQueue && shuffleTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
+            if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && shuffleTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
             {
                 renewTimer = TotalCardRenewCooldown;
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
@@ -311,7 +311,7 @@ namespace Laresistance.Battle
 
             // 1- Set which abilities have complete cooldown and are not in availableAbilities
             // 2- Get a random one for every null in availableAbilities. Remove it.
-            if (!BattleAbilityManager.Executing && !BattleAbilityManager.AbilityInQueue && !battleStatus.Stunned)
+            if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && !battleStatus.Stunned)
             {
                 if (nextAbilitiesQueue.Count != 0)
                 {

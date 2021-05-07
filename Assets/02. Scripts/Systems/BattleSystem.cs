@@ -64,7 +64,7 @@ namespace Laresistance.Systems
             }
             SelectNext();
             battling = true;
-            BattleAbilityManager.StartBattle();
+            BattleAbilityManager.Instance.StartBattle();
             OnTimeStopDeltaModifier?.Invoke(this, 0f);
         }
 
@@ -72,7 +72,7 @@ namespace Laresistance.Systems
         {
             UnityEngine.Debug.Log("End battle!");
             PerformTimeStop(false);
-            BattleAbilityManager.StopBattle();
+            BattleAbilityManager.Instance.StopBattle();
             Unselect();
             playerBattleManager.EndBattle();
             foreach (var enemy in enemiesBattleManager)

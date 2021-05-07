@@ -21,6 +21,11 @@ namespace Laresistance.Tools
             GamedevsToolbox.Utils.Utils.DeleteFile(filename);
         }
 
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
+
         public void AddTime(string key)
         {
             if (timestamps.ContainsKey(key))

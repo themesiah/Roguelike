@@ -63,5 +63,10 @@ namespace Laresistance.Behaviours
         {
             GameConstantsBehaviour.Instance = this;
         }
+
+        private void OnDestroy()
+        {
+            GameConstantsBehaviour.Instance = null;
+        }
     }
 }
