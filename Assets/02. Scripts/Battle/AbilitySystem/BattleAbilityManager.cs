@@ -2,25 +2,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using Laresistance.Behaviours;
-using UnityEngine.Analytics;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Battle
 {
-    public class BattleAbilityManager
+    public class BattleAbilityManager : MonoBehaviour
     {
-        private static bool currentlyExecuting = false;
-        private static List<BattleAbility> abilityQueue;
+        public static BattleAbilityManager Instance;
+
+        private bool currentlyExecuting = false;
+        private List<BattleAbility> abilityQueue;
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
-        private static IBattleAnimator currentAnimator = null;
-        public static BattleAbility currentAbility;
-        public static bool executingBasicSkill = false;
-        public static BattleStatusManager[] currentTargets;
+        private IBattleAnimator currentAnimator = null;
+        public BattleAbility currentAbility;
+        public bool executingBasicSkill = false;
+        public BattleStatusManager[] currentTargets;
 
-        private static bool battling = false;
-        public static bool Battling => battling;
+        private bool battling = false;
+        public bool Battling => battling;
 
-        public static IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
+
+        public IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
         {
             if (abilityQueue == null)
                 abilityQueue = new List<BattleAbility>();
@@ -88,12 +99,12 @@ namespace Laresistance.Battle
             }
         }
 
-        public static void StartBattle()
+        public void StartBattle()
         {
             battling = true;
         }
 
-        public static void StopBattle()
+        public void StopBattle()
         {
             CancelAllExecutions();
             battling = false;
@@ -101,7 +112,7 @@ namespace Laresistance.Battle
             AbilityInQueue = false;
         }
 
-        public static void CancelAllExecutions()
+        public void CancelAllExecutions()
         {
             if (currentAbility != null)
             {
@@ -110,7 +121,7 @@ namespace Laresistance.Battle
             abilityQueue.Clear();
         }
 
-        public static void CancelExecution(BattleAbility abilityToCancel)
+        public void CancelExecution(BattleAbility abilityToCancel)
         {
             if (abilityQueue == null || !abilityQueue.Contains(abilityToCancel))
                 return;
@@ -119,7 +130,7 @@ namespace Laresistance.Battle
             abilityQueue.Remove(abilityToCancel);
         }
 
-        public static bool Executing => currentlyExecuting;
-        public static bool AbilityInQueue = false;
+        public bool Executing => currentlyExecuting;
+        public bool AbilityInQueue = false;
     }
 }

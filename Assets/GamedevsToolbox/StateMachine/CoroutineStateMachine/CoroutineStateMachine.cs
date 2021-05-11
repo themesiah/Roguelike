@@ -52,7 +52,11 @@ namespace GamedevsToolbox.StateMachine {
                 }
                 else
                 {
-                    Debug.LogError("Your state machine of type " + this.GetType().Name + " is trying to switch to the state " + newState + " which is not in the State Machine dictionary");
+                    Debug.LogError("Your state machine of type " + this.GetType().Name + " is trying to switch to the state " + newState + " which is not in the State Machine dictionary. Available states: ");
+                    foreach(var state in states.Keys)
+                    {
+                        Debug.LogError(state);
+                    }
                 }
             }
             else

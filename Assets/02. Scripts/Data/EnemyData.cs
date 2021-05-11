@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.Data
 {
@@ -16,8 +15,8 @@ namespace Laresistance.Data
         public int MaxHealth { get { return maxHealth; } }
 
         [SerializeField]
-        private GameObject prefab = default;
-        public GameObject Prefab { get { return prefab; } }
+        private AssetReference prefabReference = default;
+        public AssetReference PrefabReference { get { return prefabReference; } }
 
         [SerializeField]
         private AbilityData[] abilitiesData = default;

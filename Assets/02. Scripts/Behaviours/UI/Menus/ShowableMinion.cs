@@ -63,10 +63,13 @@ namespace Laresistance.Behaviours
 
                 if (minionPortraitParent != null)
                 {
-                    GameObject go = Instantiate(minion.Data.Prefab, minionPortraitParent);
-                    go.transform.localPosition = Vector3.zero;
-                    go.transform.localScale = go.transform.localScale * scaleMultiplier;
-                    go.GetComponent<SpriteRenderer>().sortingOrder = sortingOrder;
+                    minion.Data.PrefabReference.InstantiateAsync(minionPortraitParent).Completed += (handler) => {
+                        GameObject go = handler.Result;
+                        go.transform.localPosition = Vector3.zero;
+                        go.transform.localScale = go.transform.localScale * scaleMultiplier;
+                        go.GetComponent<SpriteRenderer>().sortingOrder = sortingOrder;
+                        go.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
+                    };
                 }
             }
         }

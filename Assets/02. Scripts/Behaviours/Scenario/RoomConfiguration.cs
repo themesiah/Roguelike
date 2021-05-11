@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Laresistance.LevelGeneration;
 using Laresistance.Data;
 using System.Collections.Generic;
+using System.Collections;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
 using GamedevsToolbox.ScriptableArchitecture.Events;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.Behaviours
 {
+    [DefaultExecutionOrder(100)]
     public class RoomConfiguration : MonoBehaviour
     {
         // How many more space than actual content is needed to consider the room too big for the requirements.
@@ -40,9 +44,9 @@ namespace Laresistance.Behaviours
 
         [Header("Data")]
         [SerializeField]
-        private RuntimeSetGameObject spawnableMinionList = default;
+        private RuntimeSetAssetReference spawnableMinionList = default;
         [SerializeField]
-        private GameObject[] interactableList = default;
+        private AssetReference[] interactableList = default;
 
         [Header("References")]
         [SerializeField]
@@ -60,17 +64,17 @@ namespace Laresistance.Behaviours
 
         public LayerMask enemySpaceLayerMask;
 
-        private void Start()
+        private IEnumerator Start()
         {
             if (mockTest)
             {
-                InitMock();
+                yield return InitMock();
             }
         }
 
-        private void InitMock()
+        private IEnumerator InitMock()
         {
-            RoomData rd = new RoomData(0, null);
+            RoomData rd = new RoomData(9, null);
             for (int i = 0; i < possibleEnemySpawnPoints.Length; ++i)
             {
                 rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
@@ -81,7 +85,8 @@ namespace Laresistance.Behaviours
             }
             for (int i = 0; i < possibleInteractablePositions.Length; ++i)
             {
-                rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
+                //rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
+                rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.Pilgrim });
             }
             if (bottomRoomConnection != null)
             {
@@ -144,7 +149,7 @@ namespace Laresistance.Behaviours
                     player.position = spawnPosition.position;
                 }
             }
-            ConfigureRoom(null, rd, roomBiome);
+            yield return ConfigureRoom(null, rd, roomBiome);
         }
 
 
@@ -242,7 +247,7 @@ namespace Laresistance.Behaviours
             }
         }
 
-        public void ConfigureRoom(MapData mapData, RoomData roomData, RoomBiome biome)
+        public IEnumerator ConfigureRoom(MapData mapData, RoomData roomData, RoomBiome biome)
         {
             // Configure level start
             ConfigureLevelStart(roomData);
@@ -251,9 +256,9 @@ namespace Laresistance.Behaviours
             // Configure links
             ConfigureLinks(mapData, roomData, biome);
             // Spawn enemies
-            ConfigureEnemies(mapData, roomData, biome);
+            yield return ConfigureEnemies(mapData, roomData, biome);
             // Spawn interactables
-            ConfigureInteractables(roomData, biome);
+            yield return ConfigureInteractables(roomData, biome);
 
             if (mockTest)
             {
@@ -333,56 +338,75 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private void ConfigureEnemies(MapData mapData, RoomData roomData, RoomBiome biome)
+        private IEnumerator ConfigureEnemies(MapData mapData, RoomData roomData, RoomBiome biome)
         {
             List<Transform> tempEnemySpawnPositions = new List<Transform>(possibleEnemySpawnPoints);
             float relativeValue = GetRoomRelativeValue(mapData, roomData);
             int levelOverride = GetRoomLevel(relativeValue, new Vector2Int(1, 10));
+            int index = 0;
+            int finishedIndex = 0;
             foreach (var enemy in roomData.GetRoomEnemies())
             {
-                GameObject go = null;
+                Tools.SimpleTimeProfiler.Instance?.AddTime(string.Format("Enemy {0}", index));
+                AsyncOperationHandle<GameObject> op = default;
                 switch (enemy.roomEnemyType)
                 {
                     case RoomEnemyType.Miniboss:
-                        go = Instantiate(biome.MinibossEnemies[Random.Range(0, biome.MinibossEnemies.Length)], possibleMinibossSpawnPoint);
+                        op = biome.MinibossEnemies.Get().InstantiateAsync(possibleMinibossSpawnPoint);
                         break;
                     case RoomEnemyType.Enemy:
                         Transform randomPosition = tempEnemySpawnPositions[Random.Range(0, tempEnemySpawnPositions.Count)];
-                        go = Instantiate(biome.NormalEnemies[Random.Range(0, biome.NormalEnemies.Length)], randomPosition);
+                        op = biome.NormalEnemies.Get().InstantiateAsync(randomPosition);
                         tempEnemySpawnPositions.Remove(randomPosition);
                         break;
                     case RoomEnemyType.Minion:
                         Transform randomPositionMinion = tempEnemySpawnPositions[Random.Range(0, tempEnemySpawnPositions.Count)];
-                        go = Instantiate(spawnableMinionList.Items[Random.Range(0, spawnableMinionList.Items.Count)], randomPositionMinion);
+                        op = spawnableMinionList.Items[Random.Range(0, spawnableMinionList.Items.Count)].InstantiateAsync(randomPositionMinion);
                         tempEnemySpawnPositions.Remove(randomPositionMinion);
                         break;
                 }
-                UnityEngine.Assertions.Assert.IsNotNull(go);
-                go.transform.localPosition = Vector3.zero;
-                go.GetComponent<EnemyBattleBehaviour>().InitEnemy(levelOverride);
-                if (Random.Range(0, 1) == 0)
+                int i = index;
+                op.Completed += (handle) =>
                 {
-                    var scale = go.transform.localScale;
-                    scale.x = -1;
-                    go.transform.localScale = scale;
-                }
-                // Depending on room value
-                if (relativeValue <= ROOM_VALUE_PARTY_THRESHOLD)
-                {
-                    go.GetComponent<PartyManagerBehaviour>().enabled = false;
-                }
+                    Tools.SimpleTimeProfiler.Instance?.AddTime(string.Format("Enemy {0}", i));
+                    GameObject go = handle.Result;
+                    UnityEngine.Assertions.Assert.IsNotNull(go);
+                    go.transform.localPosition = Vector3.zero;
+                    go.GetComponent<EnemyBattleBehaviour>().InitEnemy(levelOverride);
+                    if (Random.Range(0, 1) == 0)
+                    {
+                        var scale = go.transform.localScale;
+                        scale.x = -1;
+                        go.transform.localScale = scale;
+                    }
+                    // Depending on room value
+                    if (relativeValue <= ROOM_VALUE_PARTY_THRESHOLD)
+                    {
+                        go.GetComponent<PartyManagerBehaviour>().enabled = false;
+                    }
+                    finishedIndex++;
+                };
+                index++;
+            }
+            while(finishedIndex < roomData.GetRoomEnemies().Length)
+            {
+                yield return null;
             }
         }
 
-        private void ConfigureInteractables(RoomData roomData, RoomBiome biome)
+        private IEnumerator ConfigureInteractables(RoomData roomData, RoomBiome biome)
         {
             List<Transform> tempInteractablePositions = new List<Transform>(possibleInteractablePositions);
             foreach(var interactable in roomData.GetInteractables())
             {
                 Transform randomPosition = tempInteractablePositions[Random.Range(0, tempInteractablePositions.Count)];
-                GameObject go = Instantiate(interactableList[(int)interactable.roomInteractableType], randomPosition);
+                var op = interactableList[(int)interactable.roomInteractableType].InstantiateAsync(randomPosition);
+                op.Completed += (handler) => {
+                    GameObject go = handler.Result;
+                    go.transform.localPosition = Vector3.zero;
+                };
+                yield return op;
                 tempInteractablePositions.Remove(randomPosition);
-                go.transform.localPosition = Vector3.zero;
             }
         }
 

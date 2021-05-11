@@ -97,7 +97,7 @@ namespace Laresistance.Battle
 
         public void ProcessStatus(float delta, float speedModifier)
         {
-            if (!BattleAbilityManager.Executing || BattleAbilityManager.executingBasicSkill)
+            if (!BattleAbilityManager.Instance.Executing || BattleAbilityManager.Instance.executingBasicSkill)
             {
                 int totalDamage = 0;
                 for(int i = damageOverTimes.Count-1; i >= 0; --i)

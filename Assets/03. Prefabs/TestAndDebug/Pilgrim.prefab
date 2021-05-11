@@ -1496,6 +1496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3435983438040988438}
   - component: {fileID: 3750333347544274737}
+  - component: {fileID: 3291194912532195807}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -1536,7 +1537,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: b3551a25415184749be03442f7696e05, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1568,6 +1569,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3291194912532195807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7220640635820912153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 970877ed6688ae14f8b5303443e19468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererToChange: {fileID: 3750333347544274737}
+  variableName: _Activated
 --- !u!1 &8143128956821773520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1780,60 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   controlsObject: {fileID: 5530757634292297540}
+  OnInteractionZoneEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3291194912532195807}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.MaterialValueChanger, GameScripts
+        m_MethodName: ChangeVariableFloatValue
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5530757634292297540}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnInteractionZoneExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3291194912532195807}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.MaterialValueChanger, GameScripts
+        m_MethodName: ChangeVariableFloatValue
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5530757634292297540}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   isEquip: 0
 --- !u!114 &4248127086323305579
 MonoBehaviour:

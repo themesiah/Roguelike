@@ -175,7 +175,7 @@ namespace Laresistance.Battle
 
         public void Tick(float deltaTime)
         {
-            if (!BattleAbilityManager.Executing && cooldownTimer > 0f)
+            if (!BattleAbilityManager.Instance.Executing && cooldownTimer > 0f)
             {
                 cooldownTimer -= deltaTime * statusManager.GetSpeedModifier();
             }
@@ -207,7 +207,7 @@ namespace Laresistance.Battle
             {
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
-                yield return BattleAbilityManager.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
+                yield return BattleAbilityManager.Instance.ExecuteAbility(this, allies, targets, level, animator, GetAnimationTrigger(), bloodRef);
                 allies[0].health.OnDeath -= CancelExecution;
                 executingAbility = false;
             }
@@ -249,7 +249,7 @@ namespace Laresistance.Battle
         public void CancelExecution(CharacterHealth sender)
         {
             if (executingAbility)
-                BattleAbilityManager.CancelExecution(this);
+                BattleAbilityManager.Instance.CancelExecution(this);
         }
 
         public bool CanBeUsed()
@@ -260,7 +260,7 @@ namespace Laresistance.Battle
             }
             if (IsBasicSkill)
             {
-                return statusManager.CanExecute(energyCost) && !BattleAbilityManager.Executing;
+                return statusManager.CanExecute(energyCost) && !BattleAbilityManager.Instance.Executing;
             }
             else
             {

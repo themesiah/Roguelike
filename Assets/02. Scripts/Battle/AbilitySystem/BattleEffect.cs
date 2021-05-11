@@ -61,12 +61,15 @@ namespace Laresistance.Battle
         {
             foreach (var prefab in effectData.SelfEffectPrefabs)
             {
-                GameObject go = GameObject.Instantiate(prefab.prefab, self.TargetPivot, true);
-                go.transform.localPosition = prefab.offset;
-                go.transform.localScale = prefab.prefab.transform.localScale;
-                var effectCallback = go.GetComponent<BattleEffectCallback>();
-                UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
-                effectCallback.ConfigureBattleEffectCallback(self, callback, prefab.delay);
+                var op = prefab.prefabReference.InstantiateAsync(self.TargetPivot, true);
+                op.Completed += (obj) => {
+                    GameObject go = obj.Result;
+                    go.transform.localPosition = prefab.offset;
+                    //go.transform.localScale = prefab.prefab.transform.localScale;
+                    var effectCallback = go.GetComponent<BattleEffectCallback>();
+                    UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
+                    effectCallback.ConfigureBattleEffectCallback(self, callback, prefab.delay);
+                };
             }
         }
 
@@ -74,12 +77,16 @@ namespace Laresistance.Battle
         {
             foreach(var prefab in effectData.TargetEffectPrefabs)
             {
-                GameObject go = GameObject.Instantiate(prefab.prefab, target.TargetPivot, true);
-                go.transform.localPosition = prefab.offset;
-                go.transform.localScale = prefab.prefab.transform.localScale;
-                var effectCallback = go.GetComponent<BattleEffectCallback>();
-                UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
-                effectCallback.ConfigureBattleEffectCallback(target, callback, prefab.delay);
+                var op = prefab.prefabReference.InstantiateAsync(target.TargetPivot, true);
+                op.Completed += (obj) =>
+                {
+                    GameObject go = obj.Result;
+                    go.transform.localPosition = prefab.offset;
+                    //go.transform.localScale = prefab.prefab.transform.localScale;
+                    var effectCallback = go.GetComponent<BattleEffectCallback>();
+                    UnityEngine.Assertions.Assert.IsNotNull(effectCallback);
+                    effectCallback.ConfigureBattleEffectCallback(target, callback, prefab.delay);
+                };                
             }
         }
 

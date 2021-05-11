@@ -38,7 +38,7 @@ namespace Laresistance.Battle
                 {
                     if (abilities[i].IsShieldAbility)
                     {
-                        BattleAbility currentAbility = BattleAbilityManager.currentAbility;
+                        BattleAbility currentAbility = BattleAbilityManager.Instance.currentAbility;
                         if (currentAbility == null || (currentAbility.GetStatusManager() != battleStatus && currentAbility.IsOffensiveAbility))
                         {
                             return new AbilityExecutionData() { index = i, selectedTarget = null }; ;

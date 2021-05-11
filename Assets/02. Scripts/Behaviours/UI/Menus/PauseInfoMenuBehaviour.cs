@@ -28,18 +28,23 @@ namespace Laresistance.Behaviours
         {
             if (context.performed)
             {
-                if (!AnyMenuOpened)
-                {
-                    pauseMenuOpened = true;
-                    pauseResumeGameStateChange?.Raise(true);
-                    onPauseMenuOpen?.Invoke();
-                }
-                else if (pauseMenuOpened)
-                {
-                    pauseMenuOpened = false;
-                    pauseResumeGameStateChange?.Raise(false);
-                    onPauseMenuClose?.Invoke();
-                }
+                TogglePauseMenu();
+            }
+        }
+
+        public void TogglePauseMenu()
+        {
+            if (!AnyMenuOpened)
+            {
+                pauseMenuOpened = true;
+                pauseResumeGameStateChange?.Raise(true);
+                onPauseMenuOpen?.Invoke();
+            }
+            else if (pauseMenuOpened)
+            {
+                pauseMenuOpened = false;
+                pauseResumeGameStateChange?.Raise(false);
+                onPauseMenuClose?.Invoke();
             }
         }
 
@@ -47,18 +52,23 @@ namespace Laresistance.Behaviours
         {
             if (context.performed)
             {
-                if (!AnyMenuOpened)
-                {
-                    infoMenuOpened = true;
-                    pauseResumeGameStateChange?.Raise(true);
-                    onInfoMenuOpen?.Invoke();
-                }
-                else if (infoMenuOpened)
-                {
-                    infoMenuOpened = false;
-                    pauseResumeGameStateChange?.Raise(false);
-                    onInfoMenuClose?.Invoke();
-                }
+                ToggleInfoMenu();
+            }
+        }
+
+        public void ToggleInfoMenu()
+        {
+            if (!AnyMenuOpened)
+            {
+                infoMenuOpened = true;
+                pauseResumeGameStateChange?.Raise(true);
+                onInfoMenuOpen?.Invoke();
+            }
+            else if (infoMenuOpened)
+            {
+                infoMenuOpened = false;
+                pauseResumeGameStateChange?.Raise(false);
+                onInfoMenuClose?.Invoke();
             }
         }
     }

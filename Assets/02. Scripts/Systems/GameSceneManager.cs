@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.Behaviours
 {
     public class GameSceneManager : MonoBehaviour
     {
         [SerializeField]
-        private string loadingScene = default;
+        private AssetReference loadingScene = default;
+        [SerializeField]
+        private AssetReference blankScene = default;
 
         private static GameSceneManager instance = null;
         private bool currentlyLoadingScene = false;
@@ -20,31 +24,32 @@ namespace Laresistance.Behaviours
             }
         }
 
+        private void OnDestroy()
+        {
+            instance = null;
+        }
+
         public static GameSceneManager Instance { get { return instance; } }
 
-        public void ChangeScene(string targetScene)
+        public void ChangeScene(AssetReference targetScene)
         {
             StartCoroutine(SceneLoadAndChange(targetScene));
         }
 
-        public IEnumerator SceneLoadAndChange(string targetScene)
+        public IEnumerator SceneLoadAndChange(AssetReference targetScene)
         {
             if (!currentlyLoadingScene)
             {
                 currentlyLoadingScene = true;
-                SceneManager.LoadScene(loadingScene, LoadSceneMode.Single);
-                yield return new WaitForSeconds(1f);
-                var newSceneOperation = SceneManager.LoadSceneAsync(targetScene, LoadSceneMode.Additive);
-                while (!newSceneOperation.isDone)
-                {
-                    yield return null;
-                }
-                var unloadLoadingSceneOperation = SceneManager.UnloadSceneAsync(loadingScene);
-                yield return new WaitForSeconds(1f);
-                while (!unloadLoadingSceneOperation.isDone)
-                {
-                    yield return null;
-                }
+
+                var blankSceneOp = blankScene.LoadSceneAsync(LoadSceneMode.Single);
+                yield return blankSceneOp;
+                var loadingSceneOp = loadingScene.LoadSceneAsync(LoadSceneMode.Additive);
+                yield return loadingSceneOp;
+                var newSceneOp = targetScene.LoadSceneAsync(LoadSceneMode.Additive, true);
+                yield return newSceneOp;
+                yield return Addressables.UnloadSceneAsync(loadingSceneOp);
+
                 currentlyLoadingScene = false;
             }
         }

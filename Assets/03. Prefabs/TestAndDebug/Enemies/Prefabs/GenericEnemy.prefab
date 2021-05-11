@@ -122,13 +122,24 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4097
   allowJumpAttempt: 0
+  notGroundedTimeToBeNotGrounded: 0.05
+  delayAfterLanding: 0.3
   OnLand:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartFall:
     m_PersistentCalls:
       m_Calls: []
   OnJump:
     m_PersistentCalls:
       m_Calls: []
   OnFlip:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHorizontalVelocityChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnVerticalVelocityChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &7909678482288378001
@@ -644,6 +655,9 @@ MonoBehaviour:
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
   playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
+  playerDataRefRef:
+    m_AssetGUID: c3245c85c7994f7488fafaca1358588e
+    m_SubObjectName: 
   levelVarianceRef:
     useConstant: 0
     value: {fileID: 11400000, guid: ba95aa8e601b68d4d9e85fe0a035d958, type: 2}
@@ -705,8 +719,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partyHolder: {fileID: 8478128905058416120}
-  partyMemberSelectors:
-  - {fileID: 11400000, guid: 6242e66a88ba260409f5d0f5bc6dd301, type: 2}
+  partyMemberSelectorsRef:
+  - {fileID: 11400000, guid: 8570699827272a0409d79c08e5e46c9b, type: 2}
 --- !u!114 &2625714541003188601
 MonoBehaviour:
   m_ObjectHideFlags: 0

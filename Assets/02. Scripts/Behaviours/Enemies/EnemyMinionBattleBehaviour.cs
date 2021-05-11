@@ -16,7 +16,11 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputProcessor()
         {
-            AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level, animator);
+            AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level);
+            if (animator != null)
+            {
+                ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(animator);
+            }
         }
 
         public override RewardData GetReward()
@@ -30,7 +34,12 @@ namespace Laresistance.Behaviours
             EnemyPrefabConfiguration epc = GetComponent<EnemyPrefabConfiguration>();
             if (epc != null)
             {
-                epc.ConfigurePrefab(enemyData.Prefab, SetAnimator);
+                epc.ConfigurePrefab(enemyData.PrefabReference, (anim) =>
+                {
+                    SetAnimator(anim);
+                    if (AbilityInputProcessor != null)
+                        ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(anim);
+                });
             }
         }
 

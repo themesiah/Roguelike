@@ -8,7 +8,9 @@ namespace Laresistance.Behaviours.Platforms
         [SerializeField]
         private UnityEvent interactionEvent = default;
         [SerializeField]
-        private GameObject controlsObject = default;
+        private UnityEvent OnInteractionZoneEnter = default;
+        [SerializeField]
+        private UnityEvent OnInteractionZoneExit = default;
         [SerializeField]
         private bool isEquip = false;
 
@@ -19,12 +21,12 @@ namespace Laresistance.Behaviours.Platforms
 
         public void EnterInteractionZone()
         {
-            controlsObject?.SetActive(true);
+            OnInteractionZoneEnter?.Invoke();
         }
 
         public void ExitInteractionZone()
         {
-            controlsObject?.SetActive(false);
+            OnInteractionZoneExit?.Invoke();
         }
 
         public bool IsEquip => isEquip;
