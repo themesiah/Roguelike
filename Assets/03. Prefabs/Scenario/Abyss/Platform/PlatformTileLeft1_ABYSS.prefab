@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5630257281919978107}
   - component: {fileID: 1798436955535834322}
+  - component: {fileID: 167187107110643933}
   m_Layer: 0
   m_Name: Ground_tile
   m_TagString: Untagged
@@ -71,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 1461613905
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 676097681480095849, guid: 2137b3cc515d3124fb3663edbb622555, type: 3}
+  m_Sprite: {fileID: -6094730596439950098, guid: 033002739c97b964393317c0edb04653, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -82,6 +83,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &167187107110643933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794802132105823923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 320c92564284fad4587168f4618c5308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetList:
+  - {fileID: -6094730596439950098, guid: 033002739c97b964393317c0edb04653, type: 3}
+  - {fileID: -8069176184218702822, guid: 033002739c97b964393317c0edb04653, type: 3}
+  targetReference: {fileID: 1798436955535834322}
 --- !u!1 &3951253011777276254
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +170,7 @@ SpriteRenderer:
   m_SortingLayerID: 1461613905
   m_SortingLayer: 3
   m_SortingOrder: 10
-  m_Sprite: {fileID: 8340912713732567295, guid: 2137b3cc515d3124fb3663edbb622555, type: 3}
+  m_Sprite: {fileID: 2663576074847003040, guid: 033002739c97b964393317c0edb04653, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
