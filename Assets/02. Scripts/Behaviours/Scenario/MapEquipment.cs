@@ -59,7 +59,7 @@ namespace Laresistance.Behaviours
         {
             spriteRenderer.enabled = false;
             gameContextSignal.Raise("UI");
-            yield return rewardSystem.GetReward(new RewardData(0, 0, null, null, e, null));
+            yield return rewardSystem.GetReward(new RewardData(0, 0, null, null, e, null, null));
             gameContextSignal.Raise("Map");
             Destroy(gameObject);
         }

@@ -7,7 +7,6 @@ using Laresistance.Data;
 using Laresistance.Systems;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -117,7 +116,7 @@ namespace Laresistance.Behaviours
                 if (!selectedMinionIndexes.Contains(index))
                 {
                     Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], 1, player.GetEquipmentContainer(), statusManager);
-                    shopSystem.AddOffer(new ShopOffer(minion.Data.BaseBloodPrice, false, new RewardData(0, 0, minion, null, null, null)));
+                    shopSystem.AddOffer(new ShopOffer(minion.Data.BaseBloodPrice, false, new RewardData(0, 0, minion, null, null, null, null)));
                     selectedMinionIndexes.Add(index);
                 }
             }
@@ -127,7 +126,7 @@ namespace Laresistance.Behaviours
                 if (!selectedConsumableIndexes.Contains(index))
                 {
                     Consumable c = ConsumableFactory.GetConsumable(consumableDatas[index], player.GetEquipmentContainer(), statusManager);
-                    shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null)));
+                    shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null, null)));
                     selectedConsumableIndexes.Add(index);
                 }
             }
@@ -137,7 +136,7 @@ namespace Laresistance.Behaviours
                 if (!selectedEquipmentIndexes.Contains(index))
                 {
                     Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[index], playerDataBehaviourReference.Get().StatusManager);
-                    shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null)));
+                    shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null, null)));
                     selectedEquipmentIndexes.Add(index);
                 }
             }
@@ -146,7 +145,7 @@ namespace Laresistance.Behaviours
                 int index = Random.Range(0, mapAbilityDatas.Count);
                 if (!selectedMapAbilityIndexes.Contains(index))
                 {
-                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index])));
+                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index], null)));
                     selectedMapAbilityIndexes.Add(index);
                 }
             }
@@ -173,6 +172,20 @@ namespace Laresistance.Behaviours
                 Destroy(t.gameObject);
             }
             shopUpgradeUIList.Clear();
+            // Player upgrade
+            {
+                GameObject go = Instantiate(offerPanelPrefabs[5], upgradeCanvas);
+                IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
+                shopUpgradeUIList.Add(shopOfferUI);
+                shopOfferUI.SetOfferKey(offerKeys[0]);
+                int upgradeCost = player.GetUpgradeCost();
+                upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
+                shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, player)));
+                int currentIndex = 0;
+                shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
+                shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && player.CanUpgrade());
+            }
+            // Minion upgrade
             for (int i = 0; i < player.GetMinions().Length; ++i)
             {
                 Minion m = player.GetMinions()[i];
@@ -181,23 +194,32 @@ namespace Laresistance.Behaviours
                     GameObject go = Instantiate(offerPanelPrefabs[4], upgradeCanvas);
                     IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
                     shopUpgradeUIList.Add(shopOfferUI);
-                    shopOfferUI.SetOfferKey(offerKeys[i]);
+                    shopOfferUI.SetOfferKey(offerKeys[i+1]);
                     int upgradeCost = m.GetUpgradeCost();
                     upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
-                    shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
+                    shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null)));
                     int currentIndex = i;
-                    shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
+                    shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex+1; });
                     shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
                 }
             }
         }
 
+        private void UpdatePlayerUpgradePanel()
+        {
+            IShopOfferUI shopOfferUI = shopUpgradeUIList[0];
+            int upgradeCost = player.GetUpgradeCost();
+            upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
+            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, player)));
+            shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && player.CanUpgrade());
+        }
+
         private void UpdateSingleMinionUpgradePanel(int index, Minion m)
         {
-            IShopOfferUI shopOfferUI = shopUpgradeUIList[index];
+            IShopOfferUI shopOfferUI = shopUpgradeUIList[index+1];
             int upgradeCost = m.GetUpgradeCost();
             upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
-            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null)));
+            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null)));
             shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
         }        
 
@@ -222,13 +244,16 @@ namespace Laresistance.Behaviours
             if (offer.Reward.minion != null)
             {
                 return offerPanelPrefabs[0];
-            } else if (offer.Reward.equip != null)
+            }
+            else if (offer.Reward.equip != null)
             {
                 return offerPanelPrefabs[1];
-            } else if (offer.Reward.consumable != null)
+            }
+            else if (offer.Reward.consumable != null)
             {
                 return offerPanelPrefabs[2];
-            } else if (offer.Reward.mapAbilityData != null)
+            }
+            else if (offer.Reward.mapAbilityData != null)
             {
                 return offerPanelPrefabs[3];
             } else
@@ -286,13 +311,13 @@ namespace Laresistance.Behaviours
         {
             gameContextSignal.Raise("UI");
             int reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null));
+            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null));
             UpdateShopPanel();
             // Show all shop panels. Wait for input.
             yield return OpenShopUI();
             // If there are reserved minions, convert them into hard currency and do reward manager thing.
             reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null));
+            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null));
             gameContextSignal.Raise("Map");
         }
 
@@ -368,21 +393,33 @@ namespace Laresistance.Behaviours
                         }
                         else
                         {
-                            minionToUpgrade = player.GetMinions()[offerSelected];
-                            if (minionToUpgrade.Upgrade())
+                            if (offerSelected == 0)
                             {
-                                bloodReference.SetValue(bloodReference.GetValue() - cost);
+                                if (player.Upgrade())
+                                {
+                                    bloodReference.SetValue(bloodReference.GetValue() - cost);
+                                }
+                                UpdatePlayerUpgradePanel();
                             }
-                            for(int i = 0; i < player.EquippedMinionsQuantity; ++i)
+                            else
                             {
-                                UpdateSingleMinionUpgradePanel(i, player.GetMinions()[i]);
+                                minionToUpgrade = player.GetMinions()[offerSelected-1];
+                                if (minionToUpgrade.Upgrade())
+                                {
+                                    bloodReference.SetValue(bloodReference.GetValue() - cost);
+                                }
+                                for (int i = 0; i < player.EquippedMinionsQuantity; ++i)
+                                {
+                                    UpdateSingleMinionUpgradePanel(i, player.GetMinions()[i]);
+                                }
                             }
                             if (shopUpgradeUIList[offerSelected].IsInteractable())
                             {
                                 shopUpgradeUIList[offerSelected].SelectButton();
-                            } else
+                            }
+                            else
                             {
-                                foreach(var upgradeUI in shopUpgradeUIList)
+                                foreach (var upgradeUI in shopUpgradeUIList)
                                 {
                                     if (upgradeUI.IsInteractable())
                                     {
@@ -391,7 +428,6 @@ namespace Laresistance.Behaviours
                                     }
                                 }
                             }
-                            
                             UpdateShopPanel();
                         }
                     }

@@ -10,8 +10,9 @@ namespace Laresistance.Data
         public Consumable consumable { get; private set; }
         public Equipment equip { get; private set; }
         public MapAbilityData mapAbilityData { get; private set; }
+        public Player player { get; private set; }
 
-        public RewardData(int bloodAmount, int hardCurrencyAmount, Minion minion, Consumable consumable, Equipment equip, MapAbilityData mapAbilityData)
+        public RewardData(int bloodAmount, int hardCurrencyAmount, Minion minion, Consumable consumable, Equipment equip, MapAbilityData mapAbilityData, Player player)
         {
             this.bloodAmount = bloodAmount;
             this.hardCurrencyAmount = hardCurrencyAmount;
@@ -19,6 +20,7 @@ namespace Laresistance.Data
             this.consumable = consumable;
             this.equip = equip;
             this.mapAbilityData = mapAbilityData;
+            this.player = player;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Laresistance.Battle;
 using Laresistance.Equipments;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Laresistance.Core
 {
@@ -9,11 +10,16 @@ namespace Laresistance.Core
     {
         private static int MAX_MINIONS = 3;
         private static int MAX_CONSUMABLES = 3;
+        private static int MAX_PLAYER_LEVEL = 10;
+        private static int BASE_UPGRADE_PRICE = 1000;
 
         private Minion[] minions;
         private List<Minion> reservedMinions;
         private Consumable[] consumables;
         private EquipmentsContainer equipmentsContainer;
+
+        public int Level { get; private set; }
+
         public BattleStatusManager statusManager { get; private set; }
         public BattleAbility[] characterAbilities { get; private set; }
         public BattleAbility ultimateAbility { get; private set; }
@@ -26,6 +32,28 @@ namespace Laresistance.Core
             equipmentsContainer = new EquipmentsContainer();
             consumables = new Consumable[MAX_CONSUMABLES];
             this.statusManager = statusManager;
+            Level = 1;
+        }
+
+        public bool Upgrade()
+        {
+            if (CanUpgrade())
+            {
+                Level++;
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanUpgrade()
+        {
+            return Level < MAX_PLAYER_LEVEL;
+        }
+
+        public int GetUpgradeCost()
+        {
+            //return Data.BaseBloodPrice + Data.BaseBloodPrice / 10 * (Level-1);
+            return BASE_UPGRADE_PRICE * Level;
         }
 
         #region Minions
@@ -256,6 +284,7 @@ namespace Laresistance.Core
         #endregion
 
         #region Abilities
+
         public BattleAbility[] GetAbilities()
         {
             BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 4];
@@ -325,6 +354,24 @@ namespace Laresistance.Core
         {
             characterAbilities = abilities;
             ultimateAbility = ultimate;
+            foreach(var ability in characterAbilities)
+            {
+                ability.SetParentPlayer(this);
+            }
+            ultimateAbility.SetParentPlayer(this);
+        }
+
+        public string GetAbilityText(int level)
+        {
+            //return Abilities[0].GetAbilityText(Level);
+            StringBuilder builder = new StringBuilder();
+            foreach (var ability in characterAbilities)
+            {
+                builder.Append("- ");
+                builder.Append(ability.GetShortAbilityText(level));
+                builder.Append("\n");
+            }
+            return builder.ToString();
         }
         #endregion
 
@@ -332,6 +379,10 @@ namespace Laresistance.Core
         public void SetCombos(Combo[] combos)
         {
             this.combos = combos;
+            foreach(var combo in combos)
+            {
+                combo.comboAbility.SetParentPlayer(this);
+            }
         }
         #endregion
     }

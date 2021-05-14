@@ -25,7 +25,7 @@ namespace Laresistance.Behaviours
 
         public override RewardData GetReward()
         {
-            RewardData rewardData = new RewardData(0, 0, minion, null, null, null);
+            RewardData rewardData = new RewardData(0, 0, minion, null, null, null, null);
             return rewardData;
         }
 

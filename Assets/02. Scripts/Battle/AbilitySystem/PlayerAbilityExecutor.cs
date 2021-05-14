@@ -23,10 +23,10 @@ namespace Laresistance.Battle
         {
             if (abilityIndex >= 0 && abilityIndex < 4)
             {
-                yield return player.characterAbilities[abilityIndex].ExecuteAbility(allies, enemies, 1, animator, bloodRef);
+                yield return player.characterAbilities[abilityIndex].ExecuteAbility(allies, enemies, player.Level, animator, bloodRef);
             } else if (abilityIndex == 4)
             {
-                yield return player.ultimateAbility.ExecuteAbility(allies, enemies, 1, animator, bloodRef);
+                yield return player.ultimateAbility.ExecuteAbility(allies, enemies, player.Level, animator, bloodRef);
             } else if (abilityIndex >= 5 && abilityIndex  < 17)
             {
                 int minionIndex = Mathf.FloorToInt((abilityIndex - 5) / 4);
@@ -40,7 +40,7 @@ namespace Laresistance.Battle
             } else
             {
                 Combo c = player.combos[abilityIndex - 20];
-                yield return c.comboAbility.ExecuteAbility(allies, enemies, 1, animator);
+                yield return c.comboAbility.ExecuteAbility(allies, enemies, player.Level, animator);
             }
         }
     }

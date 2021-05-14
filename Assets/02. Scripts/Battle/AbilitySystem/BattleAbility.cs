@@ -32,15 +32,19 @@ namespace Laresistance.Battle
         public Sprite AbilityIcon { get; private set; }
         public Sprite AbilityFrame { get; private set; }
         public Minion parentMinion { get; private set; }
+        public Player parentPlayer { get; private set; }
         public int AbilityLevel { 
             get 
             { 
-                if (parentMinion == null)
+                if (parentMinion == null && parentPlayer == null)
                 {
                     return 1;
-                } else
+                } else if (parentMinion != null)
                 {
                     return parentMinion.Level;
+                } else
+                {
+                    return parentPlayer.Level;
                 }
             }
         }
@@ -297,6 +301,11 @@ namespace Laresistance.Battle
         public void SetParentMinion(Minion m)
         {
             parentMinion = m;
+        }
+
+        public void SetParentPlayer(Player p)
+        {
+            parentPlayer = p;
         }
     }
 }
