@@ -45,7 +45,7 @@ namespace Laresistance.Behaviours
             }
             if (effectText != null)
             {
-                effectText.text = Texts.GetText(combo.comboAbility.GetShortAbilityText(1));
+                effectText.text = Texts.GetText(combo.comboAbility.GetShortAbilityText(combo.comboAbility.AbilityLevel));
             }
         }
     }

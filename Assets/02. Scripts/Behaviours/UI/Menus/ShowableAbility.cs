@@ -22,6 +22,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Color nonInteractableColor = default;
 
+        private BattleAbility ability;
+
         private Player player;
 
         public void SetPlayer(Player player)
@@ -33,6 +35,7 @@ namespace Laresistance.Behaviours
         {
             if (showableElement == null)
             {
+                ability = null;
                 if (icon != null)
                 {
                     icon.gameObject.SetActive(false);
@@ -46,7 +49,7 @@ namespace Laresistance.Behaviours
                     shortText.text = "";
                 }
             } else {
-                BattleAbility ability = (BattleAbility)showableElement;
+                ability = (BattleAbility)showableElement;
 
                 if (frame != null)
                 {
@@ -93,6 +96,14 @@ namespace Laresistance.Behaviours
             if (frame != null)
             {
                 frame.sprite = newFrame;
+            }
+        }
+
+        public void UpdateAbilityValues()
+        {
+            if (ability != null)
+            {
+                SetupShowableElement(ability);
             }
         }
     }

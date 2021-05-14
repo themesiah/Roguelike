@@ -250,6 +250,8 @@ namespace Laresistance.Behaviours
             isPaused = true;
             body.simulated = false;
             body.velocity = Vector3.zero;
+            OnHorizontalVelocityChanged?.Invoke(0f);
+            OnHorizontalVelocityChanged?.Invoke(0f);
         }
 
         public void Resume()

@@ -52,9 +52,11 @@ namespace Laresistance.Behaviours
 
         private ScriptablePool particlesPool;
         private RectTransform emptyQueueAnimatorObject;
+        private List<ShowableAbility> nextShowableAbilities;
 
         private void Awake()
         {
+            nextShowableAbilities = new List<ShowableAbility>();
             particlesPool = PoolInitializerBehaviour.GetPool("Energy");
             nextAbilityQueuePool.InitPool();
             abilityToUsePool.InitPool();
@@ -117,6 +119,10 @@ namespace Laresistance.Behaviours
                 {
                     subscriptions[i].OnAvailabilityChanged?.Invoke(true);
                     subscriptions[i].OnShowableAbility?.Invoke(availableAbilities[i]);
+                    foreach(var showableAbility in nextShowableAbilities)
+                    {
+                        showableAbility.UpdateAbilityValues();
+                    }
                 }
             }
             if (cardIndicationPositionSelected == false)
@@ -185,7 +191,9 @@ namespace Laresistance.Behaviours
             foreach (BattleAbility ability in sender.nextAbilitiesQueue)
             {
                 GameObject instance = nextAbilityQueuePool.GetInstance(nextAbilityQueueParent);
-                instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
+                ShowableAbility sa = instance.GetComponent<ShowableAbility>();
+                sa.SetupShowableElement(ability);
+                nextShowableAbilities.Add(sa);
                 instance.transform.localScale = Vector3.one;
             }
         }
@@ -195,6 +203,7 @@ namespace Laresistance.Behaviours
             if (nextAbilityQueueParent.childCount > 0)
             {
                 nextAbilityQueuePool.FreeInstance(nextAbilityQueueParent.GetChild(0).gameObject);
+                nextShowableAbilities.RemoveAt(0);
             }
             ActivateQueueAnimator();
         }
