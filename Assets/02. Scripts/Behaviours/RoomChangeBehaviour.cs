@@ -35,6 +35,7 @@ namespace Laresistance.Behaviours
 
         public Transform RoomEnterPoint => roomEnterPoint;
         public Transform RoomExitPoint => roomExitPoint;
+        public RoomChangeBehaviour NextRoom => nextRoom;
 
         private void Awake()
         {

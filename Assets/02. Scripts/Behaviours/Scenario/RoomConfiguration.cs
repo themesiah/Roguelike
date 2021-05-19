@@ -58,6 +58,10 @@ namespace Laresistance.Behaviours
         public RoomBiome roomBiome;
         public bool mockTest;
         public bool playerStartPoint;
+        public bool spawnMiniboss;
+        public int mockIndex = 0;
+        public List<RoomEnemyType> enemyTypesSpawn;
+        public List<RoomInteractableType> interactableTypesSpawn;
 
         public Transform[] EnemySpawns => possibleEnemySpawnPoints;
         public Transform MinibossSpawn => possibleMinibossSpawnPoint;
@@ -74,34 +78,67 @@ namespace Laresistance.Behaviours
 
         private IEnumerator InitMock()
         {
-            RoomData rd = new RoomData(9, null);
+            RoomData rd = new RoomData(mockIndex, null);
             for (int i = 0; i < possibleEnemySpawnPoints.Length; ++i)
             {
-                rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Enemy });
+                RoomEnemyType enemyType = RoomEnemyType.Enemy;
+                if (enemyTypesSpawn.Count > i)
+                {
+                    enemyType = enemyTypesSpawn[i];
+                }
+                else
+                {
+                    enemyType = (RoomEnemyType)Random.Range(0, (int)RoomEnemyType.Miniboss);
+                }
+                rd.AddEnemy(new RoomEnemy() { roomEnemyType = enemyType });
             }
-            if (possibleMinibossSpawnPoint != null)
+            if (possibleMinibossSpawnPoint != null && spawnMiniboss)
             {
                 rd.AddEnemy(new RoomEnemy() { roomEnemyType = RoomEnemyType.Miniboss });
             }
             for (int i = 0; i < possibleInteractablePositions.Length; ++i)
             {
-                //rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.BloodReward });
-                rd.AddInteractable(new RoomInteractable() { roomInteractableType = RoomInteractableType.Pilgrim });
+                RoomInteractableType interactableType = RoomInteractableType.BloodReward;
+                if (interactableTypesSpawn.Count > i)
+                {
+                    interactableType = interactableTypesSpawn[i];
+                }
+                else
+                {
+                    interactableType = (RoomInteractableType)Random.Range(0, (int)RoomInteractableType.LevelStart);
+                    while (interactableType == RoomInteractableType.Lore)
+                    {
+                        interactableType = (RoomInteractableType)Random.Range(0, (int)RoomInteractableType.LevelStart);
+                    }
+                }
+                rd.AddInteractable(new RoomInteractable() { roomInteractableType = interactableType });
             }
             if (bottomRoomConnection != null)
             {
+                if (bottomRoomConnection.NextRoom == null)
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = false });
+                else
                 rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = false });
             }
             if (topRoomConnection != null)
             {
+                if (topRoomConnection.NextRoom == null)
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Stairs, minimalPath = false });
+                else
                 rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Stairs, minimalPath = false });
             }
             if (leftRoomConnection != null)
             {
+                if (leftRoomConnection.NextRoom == null)
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = false });
+                else
                 rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 2, linkLocation = RoomLinkLocation.Left, linkType = RoomLinkType.Horizontal, minimalPath = false });
             }
             if (rightRoomConnection != null)
             {
+                if (rightRoomConnection.NextRoom == null)
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = false });
+                else
                 rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 3, linkLocation = RoomLinkLocation.Right, linkType = RoomLinkType.Horizontal, minimalPath = false });
             }
             rd.SetAsMinimalPathRoom();
@@ -260,7 +297,7 @@ namespace Laresistance.Behaviours
             // Spawn interactables
             yield return ConfigureInteractables(roomData, biome);
 
-            if (mockTest)
+            if (playerStartPoint)
             {
                 boundsChangeEvent?.Raise(roomLimits);
             }
@@ -323,9 +360,9 @@ namespace Laresistance.Behaviours
                     {
                         foreach (var link in roomData.GetLinks())
                         {
-                            if (link.linkLocation == connectionLocation)
+                            //if (link.linkLocation == connectionLocation)
                             {
-                                roomChangeBehaviour.SetNextRoom(roomChangeBehaviour);
+                                //roomChangeBehaviour.SetNextRoom(roomChangeBehaviour);
                                 roomChangeBehaviour.SetRoomBounds(roomLimits);
                             }
                         }
