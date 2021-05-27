@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 2625714541003188601}
   - component: {fileID: 446708115831583630}
   - component: {fileID: 2522166762512252910}
+  - component: {fileID: 8162774514312405274}
   m_Layer: 8
   m_Name: GenericEnemy
   m_TagString: Enemy
@@ -118,12 +119,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 7909678482288378000}
   groundCheck: {fileID: -5111762809530828207}
+  nonFrictionMaterial: {fileID: 6200000, guid: 0d9a4212dedfa874a97110e32f8f8973, type: 2}
+  frictionMaterial: {fileID: 6200000, guid: efdda3cc684e9ec4a9a5be290e9773fc, type: 2}
   groundLayers:
     serializedVersion: 2
     m_Bits: 4097
+  groundedCircleRadius: 0.2
   allowJumpAttempt: 0
-  notGroundedTimeToBeNotGrounded: 0.05
+  notGroundedTimeToBeNotGrounded: 0.2
   delayAfterLanding: 0.3
+  slopeCheckDistance: 0.5
+  maxSlopeAngle: 45
+  timeToFall: 0.1
   OnLand:
     m_PersistentCalls:
       m_Calls: []
@@ -135,7 +142,19 @@ MonoBehaviour:
       m_Calls: []
   OnFlip:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8162774514312405274}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.NonReferencedFlipper, GameScripts
+        m_MethodName: Flip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHorizontalVelocityChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -655,9 +674,6 @@ MonoBehaviour:
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
   playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
-  playerDataRefRef:
-    m_AssetGUID: c3245c85c7994f7488fafaca1358588e
-    m_SubObjectName: 
   levelVarianceRef:
     useConstant: 0
     value: {fileID: 11400000, guid: ba95aa8e601b68d4d9e85fe0a035d958, type: 2}
@@ -801,6 +817,18 @@ MonoBehaviour:
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
   disintegrationMaterials: []
+--- !u!114 &8162774514312405274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: -2378162190959191101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 397fbfccfb4263243a32c384421f8849, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2701484051182293183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,6 +2434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8478128905058416120}
+  - component: {fileID: 2739776711898343630}
   m_Layer: 8
   m_Name: Party
   m_TagString: Untagged
@@ -2427,6 +2456,19 @@ Transform:
   m_Father: {fileID: -5111762809530828207}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2739776711898343630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410598202582482540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adccf773897332b4d80cd5dcace4262d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originallyRight: 1
 --- !u!1 &8609324465037099402
 GameObject:
   m_ObjectHideFlags: 0

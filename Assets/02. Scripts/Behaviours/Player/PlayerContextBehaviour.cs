@@ -98,11 +98,11 @@ namespace Laresistance.Behaviours
                     enemies = pmb.GetFullParty();
                 }
 
-                foreach(GameObject enemy in enemies)
-                {
-                    if (enemy == enemies[0]) continue;
-                    enemy.transform.SetParent(enemies[0].transform.parent);
-                }
+                //foreach(GameObject enemy in enemies)
+                //{
+                //    if (enemy == enemies[0]) continue;
+                //    enemy.transform.SetParent(enemies[0].transform.parent);
+                //}
                 battleState.SetEnemyObjects(enemies);
                 stateMachine.ReceiveSignal("Battle");
             }

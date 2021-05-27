@@ -17,8 +17,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Text abilityAfterTextReference = default;
         [SerializeField]
-        private Transform playerPrefabHolder = default;
-        [SerializeField]
         private Text levelTextReference = default;
 
         //[SerializeField]

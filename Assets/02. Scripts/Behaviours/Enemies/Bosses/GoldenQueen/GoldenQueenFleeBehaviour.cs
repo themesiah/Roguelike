@@ -236,7 +236,7 @@ namespace Laresistance.Behaviours
             }
             // Activate map behaviour
             bossMapBehaviour.ResumeMapBehaviour();
-            partyManager.SpawnParty();
+            partyManager.SpawnParty(0);
         }
     }
 }

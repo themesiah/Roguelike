@@ -46,9 +46,12 @@ namespace GamedevsToolbox.StateMachine {
             {
                 if (states.ContainsKey(newState))
                 {
-                    yield return currentState.ExitState();
-                    currentState = states[newState];
-                    yield return currentState.EnterState();
+                    if (currentState != states[newState])
+                    {
+                        yield return currentState.ExitState();
+                        currentState = states[newState];
+                        yield return currentState.EnterState();
+                    }
                 }
                 else
                 {
@@ -58,6 +61,7 @@ namespace GamedevsToolbox.StateMachine {
                         Debug.LogError(state);
                     }
                 }
+                newState = null;
             }
             else
             {

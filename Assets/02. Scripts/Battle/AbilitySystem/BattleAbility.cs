@@ -307,5 +307,41 @@ namespace Laresistance.Battle
         {
             parentPlayer = p;
         }
+
+        public List<BattleStatusManager> GetListOfTargets(BattleStatusManager[] allies, BattleStatusManager[] enemies)
+        {
+            List<BattleStatusManager> statuses = new List<BattleStatusManager>();
+            foreach(var effect in effects)
+            {
+                var effectStatuses = effect.GetTargets(allies, enemies);
+                foreach(var status in effectStatuses)
+                {
+                    if (!statuses.Contains(status))
+                    {
+                        statuses.Add(status);
+                    }
+                }
+            }
+            return statuses;
+        }
+
+        public bool IsInListOfTargets(BattleStatusManager[] allies, BattleStatusManager[] enemies, BattleStatusManager[] statusesToCheck)
+        {
+            var statuses = GetListOfTargets(allies, enemies);
+            foreach(var statusToCheck in statusesToCheck)
+            {
+                if (statuses.Contains(statusToCheck))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsInListOfTargets(BattleStatusManager[] allies, BattleStatusManager[] enemies, BattleStatusManager statusToCheck)
+        {
+            var statuses = GetListOfTargets(allies, enemies);
+            return statuses.Contains(statusToCheck);
+        }
     }
 }

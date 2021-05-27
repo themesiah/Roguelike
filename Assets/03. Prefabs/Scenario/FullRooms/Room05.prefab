@@ -529,7 +529,8 @@ MonoBehaviour:
   mockTest: 0
   playerStartPoint: 0
   spawnMiniboss: 0
-  mockIndex: 0
+  mockIndex: -1
+  mockTotalRooms: 9
   enemyTypesSpawn: 
   interactableTypesSpawn: 
   enemySpaceLayerMask:
@@ -7529,7 +7530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 949447639347783491, guid: 4de88c95a2f13ed40a684f9d93067c13, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3351043157557661696, guid: 4de88c95a2f13ed40a684f9d93067c13, type: 3}
       propertyPath: m_SortingOrder
@@ -8746,9 +8747,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3311745557781561534, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
+      propertyPath: alternativeObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311745557781561534, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
       propertyPath: nextRoom
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3311745557781561534, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
+      propertyPath: alternativeObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 80921914519016484}
     - target: {fileID: 7087729635357471124, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
       propertyPath: m_Name
       value: StairsLeft

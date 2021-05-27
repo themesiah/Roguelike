@@ -29,7 +29,14 @@ namespace Laresistance.Battle
         {
             this.target = target;
             OnFinishSignal += callback;
-            StartCoroutine(EffectCoroutine(delay));
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(EffectCoroutine(delay));
+            } else
+            {
+                OnFinishSignal?.Invoke();
+                Destroy(gameObject);
+            }
         }
 
         private IEnumerator EffectCoroutine(float delay)

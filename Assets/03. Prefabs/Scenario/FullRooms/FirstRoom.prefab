@@ -409,7 +409,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4499769442936231071}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.470001, y: 4, z: 0}
+  m_LocalPosition: {x: 14.71, y: 3.62, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4499769442959230691}
@@ -460,7 +460,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 7.674809, y: 7.2564087}
+  m_Size: {x: 22.781954, y: 7.2564087}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1142,7 +1142,11 @@ MonoBehaviour:
   roomBiome: {fileID: 11400000, guid: 0e2255d66eb1aaa4c80b32da8ff0f122, type: 2}
   mockTest: 1
   playerStartPoint: 1
-  mockIndex: 0
+  spawnMiniboss: 0
+  mockIndex: -1
+  mockTotalRooms: 9
+  enemyTypesSpawn: 01000000
+  interactableTypesSpawn: 
   enemySpaceLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -6710,6 +6714,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigHeight1_ABYSS
       objectReference: {fileID: 0}
+    - target: {fileID: 3506968320848877687, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3994024617385592038, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.33
@@ -6798,6 +6806,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 6793605299132900553, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7428206126501970046, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -6805,6 +6817,10 @@ PrefabInstance:
     - target: {fileID: 7528462407463842593, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964191534521283598, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.77
       objectReference: {fileID: 0}
     - target: {fileID: 8076992068762046079, guid: 1c71d925cb0579e41ac37be3b38984e4, type: 3}
       propertyPath: m_IsActive
@@ -9440,6 +9456,10 @@ PrefabInstance:
     - target: {fileID: 94672971290371717, guid: 554f710145a8a9f4bafd040359dbf336, type: 3}
       propertyPath: m_Name
       value: GroundHeightRight1_ABYSS
+      objectReference: {fileID: 0}
+    - target: {fileID: 961714437935488702, guid: 554f710145a8a9f4bafd040359dbf336, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5658817365241615777, guid: 554f710145a8a9f4bafd040359dbf336, type: 3}
       propertyPath: m_LocalPosition.x

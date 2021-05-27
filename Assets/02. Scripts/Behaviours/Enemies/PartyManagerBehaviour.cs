@@ -11,24 +11,25 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private ScriptableAssetReferenceSelector[] partyMemberSelectorsRef = default;
 
-        private void Start()
+        public void SpawnParty(int level)
         {
-            SpawnParty();
-        }
-
-        public void SpawnParty()
-        {
+            int index = 1;
             foreach(ScriptableAssetReferenceSelector selector in partyMemberSelectorsRef)
             {
+                int i = index;
                 AssetReference assetRef = selector.Get();
-                if (assetRef.IsValid())
+                if (!string.IsNullOrEmpty((string)assetRef.RuntimeKey))
                 {
                     var op = assetRef.InstantiateAsync(partyHolder);
                     op.Completed += (handle) =>
                     {
-                        handle.Result.GetComponent<EnemyBattleBehaviour>().InitEnemy(0);
+                        GameObject go = handle.Result;
+                        UnityEngine.Assertions.Assert.IsNotNull(go);
+                        go.transform.localPosition = Vector3.zero - Vector3.right * 1.5f * i;
+                        go.GetComponent<EnemyBattleBehaviour>().InitEnemy(level);
                     };
                 }
+                index++;
             }
 
             SpriteRenderer[] renderers = partyHolder.GetComponentsInChildren<SpriteRenderer>();

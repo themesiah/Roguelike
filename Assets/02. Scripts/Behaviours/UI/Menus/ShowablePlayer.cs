@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Laresistance.Core;
 using GamedevsToolbox.ScriptableArchitecture.Pools;
@@ -23,6 +21,8 @@ namespace Laresistance.Behaviours
         private RectTransform portraitParent = default;
         [SerializeField]
         private Text playerName = default;
+        [SerializeField]
+        private Text playerLevel = default;
 
         public void SetupShowableElement(ShowableElement showableElement)
         {
@@ -65,6 +65,11 @@ namespace Laresistance.Behaviours
                     go.GetComponent<ShowableCombo>().SetupShowableElement(player.combos[i]);
                     go.transform.localScale = Vector3.one;
                 }
+            }
+
+            if (playerLevel != null)
+            {
+                playerLevel.text = player.Level.ToString();
             }
         }
     }

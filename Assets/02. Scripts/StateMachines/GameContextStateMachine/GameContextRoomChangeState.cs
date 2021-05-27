@@ -33,6 +33,8 @@ namespace Laresistance.StateMachines
         {
             // Put rigid body to non simulate
             body.simulated = false;
+            // Keep animating movement
+            characterController.StartChangingRoom();
             // Move character to border
             Vector3 targetPoint = playerTransform.position;
             targetPoint.x = currentRoomData.exitPoint.position.x;
@@ -45,6 +47,7 @@ namespace Laresistance.StateMachines
             // Auto-move character to next room
             playerTransform.position = currentRoomData.nextRoom.GetRoomChangeData().exitPoint.position;
             finished = true;
+            // Set next room bounds for the camera confinement
             boundsChangeEvent?.Raise(currentRoomData.nextRoom.GetRoomChangeData().bounds);
             yield return null;
         }

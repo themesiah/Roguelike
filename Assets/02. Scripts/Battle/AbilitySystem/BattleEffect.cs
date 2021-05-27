@@ -52,7 +52,11 @@ namespace Laresistance.Battle
             List<BattleStatusManager> targets = GetTargets(allies, enemies);
             targets.ForEach((target) => PerformEffectOnTarget(target, level, equipments, bloodRef));
             SpawnSelfPrefabs(allies[0], onEffectFinished);
-            targets.ForEach((target) => SpawnAbilityPrefabs(target, onEffectFinished));
+
+            targets.ForEach((target)=> {
+                SpawnAbilityPrefabs(target, onEffectFinished);
+            });
+
             signalsAmount.Invoke(effectData.SelfEffectPrefabs.Length + effectData.TargetEffectPrefabs.Length * targets.Count);
             yield return new WaitForSeconds(effectData.Delay);
         }

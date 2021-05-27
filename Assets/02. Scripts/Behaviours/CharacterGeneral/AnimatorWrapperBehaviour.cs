@@ -66,6 +66,7 @@ namespace Laresistance.Behaviours
 
         public void ReceiveAnimationEndSignal()
         {
+            Debug.Log("Received animation end signal");
             animating = false;
         }
 

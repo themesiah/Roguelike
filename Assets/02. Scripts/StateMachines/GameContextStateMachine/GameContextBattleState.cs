@@ -54,6 +54,11 @@ namespace Laresistance.StateMachines
             {
                 position = 1;
             }
+            foreach (GameObject enemy in enemyObjects)
+            {
+                if (enemy == enemyObjects[0]) continue;
+                enemy.transform.SetParent(enemyObjects[0].transform.parent);
+            }
             battlePositionIntReference.SetValue(position);
             // Move Camera
             // TODO: Change virtual camera

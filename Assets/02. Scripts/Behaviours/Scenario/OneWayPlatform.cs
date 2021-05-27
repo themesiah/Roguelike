@@ -13,6 +13,10 @@ namespace Laresistance.Behaviours.Platforms
         [SerializeField]
         private float targetAngle = 180f;
 
+        [SerializeField]
+        private LayerMask changedLayerMask = default;
+        private LayerMask originalLayerMask;
+
         private PlatformEffector2D platformEffector;
         private float startingAngle;
 
@@ -21,18 +25,21 @@ namespace Laresistance.Behaviours.Platforms
         {
             platformEffector = GetComponent<PlatformEffector2D>();
             startingAngle = platformEffector.rotationalOffset;
+            originalLayerMask = gameObject.layer;
         }
 
         public void ActivateFallingPlatform()
         {
             platformEffector.rotationalOffset = targetAngle;
             StartCoroutine(ReturnToStartingStatus());
+            gameObject.layer = changedLayerMask;
         }
 
         private IEnumerator ReturnToStartingStatus()
         {
             yield return new WaitForSeconds(statusReturnTime.GetValue());
             platformEffector.rotationalOffset = startingAngle;
+            gameObject.layer = originalLayerMask;
         }
     }
 }

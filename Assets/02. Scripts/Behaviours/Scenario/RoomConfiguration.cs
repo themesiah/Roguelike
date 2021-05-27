@@ -59,7 +59,8 @@ namespace Laresistance.Behaviours
         public bool mockTest;
         public bool playerStartPoint;
         public bool spawnMiniboss;
-        public int mockIndex = 0;
+        public int mockIndex = -1;
+        public int mockTotalRooms = 9;
         public List<RoomEnemyType> enemyTypesSpawn;
         public List<RoomInteractableType> interactableTypesSpawn;
 
@@ -72,6 +73,10 @@ namespace Laresistance.Behaviours
         {
             if (mockTest)
             {
+                if (mockIndex == -1)
+                {
+                    mockIndex = transform.GetSiblingIndex();
+                }
                 yield return InitMock();
             }
         }
@@ -384,6 +389,7 @@ namespace Laresistance.Behaviours
             int finishedIndex = 0;
             foreach (var enemy in roomData.GetRoomEnemies())
             {
+                bool isMinion = false;
                 Tools.SimpleTimeProfiler.Instance?.AddTime(string.Format("Enemy {0}", index));
                 AsyncOperationHandle<GameObject> op = default;
                 switch (enemy.roomEnemyType)
@@ -400,6 +406,7 @@ namespace Laresistance.Behaviours
                         Transform randomPositionMinion = tempEnemySpawnPositions[Random.Range(0, tempEnemySpawnPositions.Count)];
                         op = spawnableMinionList.Items[Random.Range(0, spawnableMinionList.Items.Count)].InstantiateAsync(randomPositionMinion);
                         tempEnemySpawnPositions.Remove(randomPositionMinion);
+                        isMinion = true;
                         break;
                 }
                 int i = index;
@@ -409,17 +416,17 @@ namespace Laresistance.Behaviours
                     GameObject go = handle.Result;
                     UnityEngine.Assertions.Assert.IsNotNull(go);
                     go.transform.localPosition = Vector3.zero;
+                    // Depending on room value
+                    if ((!isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD) || isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD/2f)
+                    {
+                        go.GetComponent<PartyManagerBehaviour>().enabled = false;
+                    }
                     go.GetComponent<EnemyBattleBehaviour>().InitEnemy(levelOverride);
                     if (Random.Range(0, 1) == 0)
                     {
                         var scale = go.transform.localScale;
                         scale.x = -1;
                         go.transform.localScale = scale;
-                    }
-                    // Depending on room value
-                    if (relativeValue <= ROOM_VALUE_PARTY_THRESHOLD)
-                    {
-                        go.GetComponent<PartyManagerBehaviour>().enabled = false;
                     }
                     finishedIndex++;
                 };
@@ -451,7 +458,14 @@ namespace Laresistance.Behaviours
         {
             if (mapData == null)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (mockTest)
+                {
+                    return (float)mockIndex / (float)mockTotalRooms;
+                }
+#else
                 return 0f;
+#endif
             }
             RoomData minimalPathRoom = GetNearestMinimalPathRoom(mapData, roomData);
             int index = 0;

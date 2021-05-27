@@ -9,6 +9,7 @@ namespace GamedevsToolbox.Utils {
 
         private void OnEnable()
         {
+            Debug.LogFormat("Doing OnEnable of object {0}", gameObject.name);
             onEnableEvent.Invoke();
         }
     }

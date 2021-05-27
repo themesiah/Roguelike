@@ -92,7 +92,6 @@ namespace Laresistance.Battle
             blindStatuses = new List<BlindStatus>();
             this.energyPerSecond = energyPerSecond;
             this.TargetPivot = targetPivot;
-            CurrentEnergy = 10f;
         }
 
         public void ProcessStatus(float delta, float speedModifier)

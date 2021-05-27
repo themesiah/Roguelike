@@ -24,6 +24,8 @@ namespace Laresistance.Behaviours
         protected UnityEvent<string> OnEnemyName;
         [SerializeField]
         protected UnityEvent<int> OnEnemyLevel;
+        [SerializeField]
+        protected bool partyMember = false;
 
         protected int enemyLevel = 0;
 
@@ -34,6 +36,11 @@ namespace Laresistance.Behaviours
                 enemyLevel = overrideLevel;
             }
             Init();
+            PartyManagerBehaviour enemyParty = GetComponent<PartyManagerBehaviour>();
+            if (enemyParty != null && enemyParty.enabled == true)
+            {
+                enemyParty.SpawnParty(enemyLevel);
+            }
         }
 
         protected void GenerateEnemyLevel()
@@ -82,7 +89,7 @@ namespace Laresistance.Behaviours
                     SetAnimator(anim);
                     if (AbilityInputProcessor != null)
                         ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(anim);
-                });
+                }, partyMember);
             }
         }
 

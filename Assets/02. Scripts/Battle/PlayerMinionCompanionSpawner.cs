@@ -1,4 +1,5 @@
-﻿using Laresistance.Core;
+﻿using Laresistance.Behaviours;
+using Laresistance.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,6 +44,8 @@ namespace Laresistance.Battle
                                 go.transform.localPosition = go.transform.localPosition + Vector3.left * MINION_HORIZONTAL_OFFSET * modifier;
                                 break;
                         }
+                        Flipper flipper = go.GetComponent<Flipper>();
+                        flipper?.Flip(!right);
                         minionObjects.Add(go);
                     };
                 }

@@ -382,12 +382,20 @@ namespace Laresistance.Behaviours
             }
             while (offerSelected > -2)
             {
-                if (offerSelected >= 0 && offerSelected < player.EquippedMinionsQuantity)
+                if (offerSelected >= 0 && offerSelected < player.EquippedMinionsQuantity+1)
                 {
-                    Minion minionToUpgrade = player.GetMinions()[offerSelected];
-                    if (minionToUpgrade != null)
+                    
+                    if (offerSelected == 0 || player.GetMinions()[offerSelected - 1] != null)
                     {
-                        int cost = player.GetMinions()[offerSelected].GetUpgradeCost();
+                        int cost = 0;
+                        if (offerSelected == 0)
+                        {
+                            cost = player.GetUpgradeCost();
+                        }
+                        else
+                        {
+                            cost = player.GetMinions()[offerSelected - 1].GetUpgradeCost();
+                        }
                         if (bloodReference.GetValue() < cost)
                         {
                         }
@@ -399,19 +407,21 @@ namespace Laresistance.Behaviours
                                 {
                                     bloodReference.SetValue(bloodReference.GetValue() - cost);
                                 }
-                                UpdatePlayerUpgradePanel();
+                                
                             }
                             else
                             {
+                                Minion minionToUpgrade = player.GetMinions()[offerSelected - 1];
                                 minionToUpgrade = player.GetMinions()[offerSelected-1];
                                 if (minionToUpgrade.Upgrade())
                                 {
                                     bloodReference.SetValue(bloodReference.GetValue() - cost);
                                 }
-                                for (int i = 0; i < player.EquippedMinionsQuantity; ++i)
-                                {
-                                    UpdateSingleMinionUpgradePanel(i, player.GetMinions()[i]);
-                                }
+                            }
+                            UpdatePlayerUpgradePanel();
+                            for (int i = 0; i < player.EquippedMinionsQuantity; ++i)
+                            {
+                                UpdateSingleMinionUpgradePanel(i, player.GetMinions()[i]);
                             }
                             if (shopUpgradeUIList[offerSelected].IsInteractable())
                             {

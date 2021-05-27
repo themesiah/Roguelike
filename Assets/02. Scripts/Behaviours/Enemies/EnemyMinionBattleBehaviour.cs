@@ -39,7 +39,7 @@ namespace Laresistance.Behaviours
                     SetAnimator(anim);
                     if (AbilityInputProcessor != null)
                         ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(anim);
-                });
+                }, partyMember);
             }
         }
 
