@@ -417,7 +417,7 @@ namespace Laresistance.Behaviours
                     UnityEngine.Assertions.Assert.IsNotNull(go);
                     go.transform.localPosition = Vector3.zero;
                     // Depending on room value
-                    if ((!isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD) || isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD/2f)
+                    if (!isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD)
                     {
                         go.GetComponent<PartyManagerBehaviour>().enabled = false;
                     }
@@ -486,11 +486,14 @@ namespace Laresistance.Behaviours
             float flevel;
             if (relativeValue <= ROOM_VALUE_PARTY_THRESHOLD)
             {
-                float val = Mathf.InverseLerp(0f, ROOM_VALUE_PARTY_THRESHOLD, relativeValue);
+                //float val = Mathf.InverseLerp(0f, ROOM_VALUE_PARTY_THRESHOLD, relativeValue);
+                float val = relativeValue;
                 flevel = Mathf.Lerp(minMax.x, minMax.y, val);
             } else
             {
-                float val = Mathf.InverseLerp(ROOM_VALUE_PARTY_THRESHOLD, 1f, relativeValue);
+                //float val = Mathf.InverseLerp(ROOM_VALUE_PARTY_THRESHOLD, 1f, relativeValue);
+                float val = relativeValue / 2f;
+
                 flevel = Mathf.Lerp(minMax.x, minMax.y, val);
             }
             return Mathf.RoundToInt(flevel);

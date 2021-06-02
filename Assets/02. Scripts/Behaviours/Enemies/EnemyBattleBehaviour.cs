@@ -26,7 +26,7 @@ namespace Laresistance.Behaviours
         protected UnityEvent<int> OnEnemyLevel;
         [SerializeField]
         protected bool partyMember = false;
-
+        [SerializeField]
         protected int enemyLevel = 0;
 
         public void InitEnemy(int overrideLevel)

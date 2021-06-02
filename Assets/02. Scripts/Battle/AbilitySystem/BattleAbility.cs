@@ -16,6 +16,13 @@ namespace Laresistance.Battle
 {
     public class BattleAbility : ShowableElement
     {
+        public enum AbilityState
+        {
+            Idle = 0,
+            WaitingInQueue,
+            Executing,
+            Finished
+        }
         private static int MAX_EFFECTS = 200;
         private int energyCost;
         private List<BattleEffect> effects = default;
@@ -23,6 +30,7 @@ namespace Laresistance.Battle
         private BattleStatusManager statusManager;
         private bool executingAbility = false;
         private float cooldownTimer = 0f;
+        private AbilityState abilityState;
         public AbilityData data { get; private set; }
         public int Weight { get; private set; }
         public float Cooldown { get; private set; }
@@ -33,6 +41,7 @@ namespace Laresistance.Battle
         public Sprite AbilityFrame { get; private set; }
         public Minion parentMinion { get; private set; }
         public Player parentPlayer { get; private set; }
+        public AbilityState State => abilityState;
         public int AbilityLevel { 
             get 
             { 
@@ -86,6 +95,11 @@ namespace Laresistance.Battle
             ability.CurrentPlayerSlot = CurrentPlayerSlot;
 
             return ability;
+        }
+
+        public void SetAbilityState(AbilityState state)
+        {
+            abilityState = state;
         }
 
         public void SetShieldAbility()

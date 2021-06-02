@@ -39,7 +39,7 @@ namespace Laresistance.Battle
 
         public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            return string.Format("{0}s", GetSeconds(GetPower(level, equipments)).ToString());
+            return string.Format("{0}s", GetSeconds(GetPower(level, equipments)).ToString("0.0"));
         }
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)

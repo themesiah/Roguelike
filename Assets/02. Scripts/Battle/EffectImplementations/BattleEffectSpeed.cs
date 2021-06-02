@@ -74,7 +74,7 @@ namespace Laresistance.Battle
             {
                 modifier = 1f - modifier;
             }
-            return string.Format("{0}%", modifier*100f); ;
+            return string.Format("{0}%", (modifier*100f).ToString("00")); ;
         }
 
         public override string GetAnimationTrigger()

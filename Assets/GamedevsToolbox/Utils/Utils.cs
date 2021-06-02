@@ -23,27 +23,15 @@ namespace GamedevsToolbox.Utils
             return currentEpochTime;
 		}
 
-		const string DATA_PATH = "data/";
 		public static string Path(string filename) {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             return Application.dataPath + "/../" + filename;
-            #elif UNITY_STANDALONE_OSX || UNITY_IOS
-            return System.IO.Path.Combine(Application.temporaryCachePath, filename);
-            #else
-            return System.IO.Path.Combine(Application.persistentDataPath, filename);
-            #endif
-        }
-
-		public static void InitFolder() {
-            #if !UNITY_EDITOR
-            if (!System.IO.Directory.Exists (Application.persistentDataPath)) {
-                System.IO.Directory.CreateDirectory (Application.persistentDataPath);
-            }
-            if (!System.IO.Directory.Exists (Application.temporaryCachePath)) {
-                System.IO.Directory.CreateDirectory (Application.temporaryCachePath);
-            }
-            #endif
-        }
+			//return System.IO.Path.Combine(Application.dataPath, "/../", filename);
+#elif UNITY_STANDALONE
+			return Application.dataPath + "/../" + filename;
+            //return System.IO.Path.Combine(Application.dataPath, "/../", filename);
+#endif
+		}
 
 		public static bool Exists(string filename) {
 			string path = Path (filename);

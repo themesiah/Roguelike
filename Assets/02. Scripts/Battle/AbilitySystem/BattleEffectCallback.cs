@@ -13,8 +13,9 @@ namespace Laresistance.Battle
         [SerializeField]
         private UnityEvent onPlay = default;
 
-        private UnityAction OnFinishSignal = delegate { };
+        protected UnityAction OnFinishSignal = delegate { };
         protected BattleStatusManager target;
+        private bool finishSignalCalled = false;
 
         private void Awake()
         {
@@ -35,6 +36,7 @@ namespace Laresistance.Battle
             } else
             {
                 OnFinishSignal?.Invoke();
+                finishSignalCalled = true;
                 Destroy(gameObject);
             }
         }
@@ -48,7 +50,16 @@ namespace Laresistance.Battle
             }
             onPlay?.Invoke();
             yield return new WaitForSeconds(effectDuration);
+            finishSignalCalled = true;
             OnFinishSignal?.Invoke();
+        }
+
+        private void OnDestroy()
+        {
+            if (!finishSignalCalled)
+            {
+                OnFinishSignal?.Invoke();
+            }
         }
     }
 }

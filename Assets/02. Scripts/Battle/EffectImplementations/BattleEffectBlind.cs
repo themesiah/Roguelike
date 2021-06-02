@@ -47,7 +47,7 @@ namespace Laresistance.Battle
 
         public override string GetShortEffectString(int level, EquipmentsContainer equipments)
         {
-            float modifier = GetPower(level, equipments);
+            int modifier = GetPower(level, equipments);
             return string.Format("{0}%", modifier.ToString());
         }
 

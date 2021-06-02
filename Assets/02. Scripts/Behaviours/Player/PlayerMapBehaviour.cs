@@ -110,7 +110,7 @@ namespace Laresistance.Behaviours
         }
         public void PlatformFall(InputAction.CallbackContext context)
         {
-            if (context.started)
+            if (context.started && characterController.IsGrounded)
             {
                 fallSignal = true;
                 OnPlatformFallStart?.Invoke();

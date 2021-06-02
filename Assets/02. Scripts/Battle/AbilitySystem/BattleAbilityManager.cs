@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Laresistance.Behaviours;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using GamedevsToolbox.Utils;
 
 namespace Laresistance.Battle
 {
@@ -10,6 +11,8 @@ namespace Laresistance.Battle
     {
         [SerializeField]
         private bool logDebug = false;
+        [SerializeField]
+        private string logFileName = "BattleAbilityManager.log";
 
         public static BattleAbilityManager Instance;
 
@@ -30,10 +33,28 @@ namespace Laresistance.Battle
         public bool AbilityInQueue = false;
         private bool battling = false;
         public bool Battling => battling;
+        public bool QueueIsEmpty
+        {
+            get
+            {
+                if (abilityQueue == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return abilityQueue.Count == 0;
+                }
+            }
+        }
 
         private void Awake()
         {
             Instance = this;
+            if (logDebug)
+            {
+                Utils.DeleteFile(logFileName);
+            }
         }
 
         private void OnDestroy()
@@ -44,7 +65,11 @@ namespace Laresistance.Battle
         private void Log(string message, BattleAbility abilityToExecute, string animationTrigger)
         {
             if (logDebug)
-                Debug.LogFormat("[BattleAbilityManager] {0}. (with ability {1} and trigger {2})", message, abilityToExecute.data.name, animationTrigger);
+            {
+                string textToLog = string.Format("{0}. (with ability {1} and trigger {2})", message, abilityToExecute.data.name, animationTrigger);
+                Debug.LogFormat("[BattleAbilityManager] {0}.", textToLog);
+                Utils.AppendText(logFileName, textToLog);
+            }
         }
 
         public IEnumerator ExecuteAbility(BattleAbility abilityToExecute, BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, string animationTrigger, ScriptableIntReference bloodRef)
@@ -65,7 +90,8 @@ namespace Laresistance.Battle
 
             bool stillExecuting = true;
             Log("Waiting to queue", abilityToExecute, animationTrigger);
-            while (abilityQueue.Count > 0 && abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator))
+            abilityToExecute.SetAbilityState(BattleAbility.AbilityState.WaitingInQueue);
+            while ((abilityQueue.Count > 0 && abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator)) || abilityQueue[0].State == BattleAbility.AbilityState.Finished)
             {
                 if (abilityQueue.Count == 0)
                 {
@@ -82,6 +108,7 @@ namespace Laresistance.Battle
             }
             if (stillExecuting)
             {
+                abilityToExecute.SetAbilityState(BattleAbility.AbilityState.Executing);
                 Log("Still executing. setting animator and needPause", abilityToExecute, animationTrigger);
                 IBattleAnimator lastAnimator = currentAnimator;
                 bool needPause = abilityQueue[0] != abilityToExecute;
@@ -115,6 +142,7 @@ namespace Laresistance.Battle
                 {
                     Log("Starting ability animation", abilityToExecute, animationTrigger);
                     yield return animator?.PlayAnimation(animationTrigger);
+                    abilityToExecute.SetAbilityState(BattleAbility.AbilityState.Finished);
                     if (battling)
                     {
                         Log("Performing ability", abilityToExecute, animationTrigger);
@@ -145,6 +173,7 @@ namespace Laresistance.Battle
                 }
             }
             Log("Finished ability execution", abilityToExecute, animationTrigger);
+            abilityToExecute.SetAbilityState(BattleAbility.AbilityState.Idle);
         }
 
         public void StartBattle()
@@ -173,8 +202,9 @@ namespace Laresistance.Battle
         {
             if (abilityQueue == null || !abilityQueue.Contains(abilityToCancel))
                 return;
-                //throw new System.Exception("The ability has not been executed, so it can't be cancelled");
+            //throw new System.Exception("The ability has not been executed, so it can't be cancelled");
 
+            abilityToCancel.SetAbilityState(BattleAbility.AbilityState.Idle);
             abilityQueue.Remove(abilityToCancel);
         }
     }

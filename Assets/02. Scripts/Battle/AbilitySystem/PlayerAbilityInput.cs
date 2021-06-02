@@ -76,7 +76,7 @@ namespace Laresistance.Battle
             UpdateAvailableAbilities(delta);
 
             // Step up the shuffle timer if necessary
-            if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && !battleStatus.Stunned)
+            if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty)
             {
                 shuffleTimer -= delta;
                 OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
@@ -86,9 +86,12 @@ namespace Laresistance.Battle
             }
 
             // Tick abilities to reduce the current cooldown and those things
-            foreach (var ability in player.GetAbilities())
+            if (BattleAbilityManager.Instance.QueueIsEmpty)
             {
-                ability?.Tick(delta);
+                foreach (var ability in player.GetAbilities())
+                {
+                    ability?.Tick(delta);
+                }
             }
 
             // Check if the player selected any ability
