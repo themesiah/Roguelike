@@ -237,15 +237,16 @@ namespace Laresistance.Battle
             {
                 damageModifier *= modifier.coeficient;
             }
-            float totalModifier = 0f;
+            //float totalModifier = 1f;
             for (int i = tempDamageModifications.Count -1; i >= 0; --i)
             {
                 var modifier = tempDamageModifications[i];
-                totalModifier += modifier.modifier;
+                //totalModifier += modifier.modifier;
+                damageModifier *= modifier.modifier;
             }
 
             // Total modifier adds the damage after damage improvement, which is infinite and "special"
-            damageModifier += totalModifier;
+            //damageModifier += totalModifier;
 
             return damageModifier;
         }

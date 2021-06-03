@@ -56,8 +56,11 @@ namespace Laresistance.Battle
 
 
             // fall
-            hits = Physics2D.Raycast(pointCheck + Vector3.up * 0.1f, Vector2.down, raycastFilters, results);
-            UnityEngine.Assertions.Assert.IsTrue(hits > 0, "Where the hell is the floor?");
+            float upOffset = 0.1f;
+            Debug.DrawLine(pointCheck + Vector3.down * 0.2f + Vector3.left * 0.2f + Vector3.up * upOffset, pointCheck + Vector3.up * 0.2f + Vector3.right * 0.2f + Vector3.up * upOffset);
+            Debug.DrawLine(pointCheck + Vector3.down * 0.2f + Vector3.right * 0.2f + Vector3.up * upOffset, pointCheck + Vector3.up * 0.2f + Vector3.left * 0.2f + Vector3.up * upOffset);
+            hits = Physics2D.Raycast(pointCheck + Vector3.up * upOffset, Vector2.down, raycastFilters, results);
+            UnityEngine.Assertions.Assert.AreNotEqual(0, hits, "Where the hell is the floor?");
             float height = results[0].distance+0.1f;
 
             //hits = 1;

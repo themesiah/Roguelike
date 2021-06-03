@@ -53,13 +53,13 @@ namespace Laresistance.Behaviours
 
         public override void PauseMapBehaviour()
         {
-            base.PauseMapBehaviour();
+            //base.PauseMapBehaviour();
             movementManager?.Pause();
         }
 
         public override void ResumeMapBehaviour()
         {
-            base.ResumeMapBehaviour();
+            //base.ResumeMapBehaviour();
             movementManager?.Resume();
         }
     }

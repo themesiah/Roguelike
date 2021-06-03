@@ -27,6 +27,10 @@ namespace Laresistance.Behaviours
         [Tooltip("Alternative objects to activate in case this connection is not used")]
         private GameObject[] alternativeObjects = default;
 
+        [SerializeField]
+        [Tooltip("Aditional objects to deactivate in case this connection is not used")]
+        private GameObject[] aditionalObjects = default;
+
         public bool ChangeRoomOnEnterTrigger => changeRoomOnEnterTrigger;
         public bool IsLevelEnd => isLevelEnd;
 
@@ -47,6 +51,10 @@ namespace Laresistance.Behaviours
             foreach(var go in alternativeObjects)
             {
                 go.SetActive(true);
+            }
+            foreach(var go in aditionalObjects)
+            {
+                go.SetActive(false);
             }
             gameObject.SetActive(false);
         }
