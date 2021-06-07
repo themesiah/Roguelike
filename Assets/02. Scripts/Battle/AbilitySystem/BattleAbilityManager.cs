@@ -18,6 +18,7 @@ namespace Laresistance.Battle
 
         private bool currentlyExecuting = false;
         private List<BattleAbility> abilityQueue;
+        private List<IBattleAnimator> animatorQueue;
         public delegate IEnumerator AnimationToExecuteHandler(string trigger);
         private IBattleAnimator currentAnimator = null;
         [HideInInspector]
@@ -25,6 +26,7 @@ namespace Laresistance.Battle
         [HideInInspector]
         public BattleStatusManager[] currentTargets;
         private BattleAbility executingAbilityCheckPriority;
+        private Dictionary<BattleAbility, BattleStatusManager> casterMap;
 
         public bool Executing => currentlyExecuting;
         [HideInInspector]
@@ -49,6 +51,7 @@ namespace Laresistance.Battle
         private void Awake()
         {
             Instance = this;
+            casterMap = new Dictionary<BattleAbility, BattleStatusManager>();
             if (logDebug)
             {
                 Utils.DeleteFile(logFileName);
@@ -74,22 +77,40 @@ namespace Laresistance.Battle
         {
             if (abilityQueue == null)
                 abilityQueue = new List<BattleAbility>();
+            if (animatorQueue == null)
+                animatorQueue = new List<IBattleAnimator>();
 
-            if (abilityToExecute.IsPrioritary() && abilityQueue.Count > 0)
+            if (abilityToExecute.IsPrioritary() && abilityQueue.Count > 0 && !CasterHasAbilitiesInQueue(allies[0]))
             {
-                abilityQueue.Insert(1, abilityToExecute);
+                animatorQueue[0].Pause();
+                abilityQueue.Insert(0, abilityToExecute);
+                animatorQueue.Insert(0, animator);
                 Log("Added as prioritary", abilityToExecute, animationTrigger);
+            }
+            else if (abilityToExecute.IsPrioritary() && abilityQueue.Count > 0 && CasterHasAbilitiesInQueue(allies[0]))
+            {
+                int position = GetFirstAbilityInQueue(allies[0]);
+                abilityQueue.Insert(position + 1, abilityToExecute);
+                animatorQueue.Insert(position + 1, animator);
+                Log("Added as a secondary priority in position " + (position+1).ToString(), abilityToExecute, animationTrigger);
             }
             else
             {
                 abilityQueue.Add(abilityToExecute);
+                animatorQueue.Add(animator);
                 Log("Added with normal priority", abilityToExecute, animationTrigger);
             }
+            if (casterMap.ContainsKey(abilityToExecute))
+            {
+                casterMap.Remove(abilityToExecute);
+            }
+            casterMap.Add(abilityToExecute, allies[0]);
 
             bool stillExecuting = true;
             Log("Waiting to queue", abilityToExecute, animationTrigger);
             abilityToExecute.SetAbilityState(BattleAbility.AbilityState.WaitingInQueue);
-            while ((abilityQueue.Count > 0 && abilityQueue[0] != abilityToExecute && (!abilityToExecute.IsPrioritary() || currentAnimator == animator)) || abilityQueue[0].State == BattleAbility.AbilityState.Finished)
+            while ((abilityQueue.Count > 0 && abilityQueue[0] != abilityToExecute)
+                || abilityQueue[0].State == BattleAbility.AbilityState.Finished)
             {
                 if (abilityQueue.Count == 0)
                 {
@@ -108,14 +129,6 @@ namespace Laresistance.Battle
             {
                 abilityToExecute.SetAbilityState(BattleAbility.AbilityState.Executing);
                 Log("Still executing. setting animator and needPause", abilityToExecute, animationTrigger);
-                IBattleAnimator lastAnimator = currentAnimator;
-                bool needPause = abilityQueue[0] != abilityToExecute;
-                if (abilityToExecute.IsPrioritary() && needPause)
-                {
-                    Log("Pausing last animator, as the ability is prioritary and there is another ability on queue", abilityToExecute, animationTrigger);
-                    lastAnimator?.Pause();
-                    executingAbilityCheckPriority = abilityQueue[0];
-                }
                 currentlyExecuting = true;
                 if (abilityToExecute.IsOffensiveAbility)
                 {
@@ -145,30 +158,50 @@ namespace Laresistance.Battle
                 }
                 Log("Ending process. Nullifying variables and removing ability from queue", abilityToExecute, animationTrigger);
                 currentAbility = null;
-                abilityQueue.Remove(abilityToExecute);
+                abilityQueue?.Remove(abilityToExecute);
+                animatorQueue?.Remove(animator);
+                if (animatorQueue.Count > 0)
+                {
+                    animatorQueue[0]?.Resume();
+                }
                 currentTargets = null;
                 currentlyExecuting = false;
                 Log("Ability removed from queue", abilityToExecute, animationTrigger);
                 Log("Checking if there is need to resume the last animator", abilityToExecute, animationTrigger);
-                if (abilityToExecute.IsPrioritary() && needPause)
-                {
-                    Log("Resuming last animator", abilityToExecute, animationTrigger);
-                    lastAnimator?.Resume();
-                    if (abilityQueue.Count > 0 && executingAbilityCheckPriority == abilityQueue[0])
-                    {
-                        Log("There are other abilities in queue, so currentlyExecuting must be true", abilityToExecute, animationTrigger);
-                        currentlyExecuting = true;
-                    }
-                    currentAnimator = lastAnimator;
-                }
             }
             Log("Finished ability execution", abilityToExecute, animationTrigger);
             abilityToExecute.SetAbilityState(BattleAbility.AbilityState.Idle);
+            if (casterMap.ContainsKey(abilityToExecute))
+            {
+                casterMap.Remove(abilityToExecute);
+            }
+        }
+
+        private bool CasterHasAbilitiesInQueue(BattleStatusManager caster)
+        {
+            foreach(var ability in abilityQueue)
+            {
+                if (casterMap.ContainsKey(ability) && casterMap[ability] == caster)
+                    return true;
+            }
+            return false;
+        }
+
+        private int GetFirstAbilityInQueue(BattleStatusManager caster)
+        {
+            for (int i = 0; i < abilityQueue.Count; ++i)
+            {
+                var ability = abilityQueue[i];
+                if (casterMap.ContainsKey(ability) && casterMap[ability] == caster)
+                    return i;
+            }
+            return -1;
         }
 
         public void StartBattle()
         {
             battling = true;
+            casterMap.Clear();
         }
 
         public void StopBattle()
@@ -177,6 +210,7 @@ namespace Laresistance.Battle
             battling = false;
             currentAnimator?.Stop();
             AbilityInQueue = false;
+            casterMap.Clear();
         }
 
         public void CancelAllExecutions()

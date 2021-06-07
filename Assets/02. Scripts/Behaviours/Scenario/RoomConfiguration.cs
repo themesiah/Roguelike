@@ -64,6 +64,7 @@ namespace Laresistance.Behaviours
         public int mockTotalRooms = 9;
         public List<RoomEnemyType> enemyTypesSpawn;
         public List<RoomInteractableType> interactableTypesSpawn;
+        public List<AssetReference> enemyToSpawnOverride;
 
         public Transform[] EnemySpawns => possibleEnemySpawnPoints;
         public Transform MinibossSpawn => possibleMinibossSpawnPoint;
@@ -396,16 +397,33 @@ namespace Laresistance.Behaviours
                 switch (enemy.roomEnemyType)
                 {
                     case RoomEnemyType.Miniboss:
-                        op = biome.MinibossEnemies.Get().InstantiateAsync(possibleMinibossSpawnPoint);
+                        if (mockTest && enemyToSpawnOverride.Count > index && !string.IsNullOrEmpty(enemyToSpawnOverride[index].RuntimeKey.ToString())) {
+                            op = enemyToSpawnOverride[index].InstantiateAsync(possibleMinibossSpawnPoint);
+                        } else {
+                            op = biome.MinibossEnemies.Get().InstantiateAsync(possibleMinibossSpawnPoint);
+                        }
                         break;
                     case RoomEnemyType.Enemy:
                         Transform randomPosition = tempEnemySpawnPositions[Random.Range(0, tempEnemySpawnPositions.Count)];
-                        op = biome.NormalEnemies.Get().InstantiateAsync(randomPosition);
+                        if (mockTest && enemyToSpawnOverride.Count > index && !string.IsNullOrEmpty(enemyToSpawnOverride[index].RuntimeKey.ToString()))
+                        {
+                            op = enemyToSpawnOverride[index].InstantiateAsync(randomPosition);
+                        } else
+                        {
+                            op = biome.NormalEnemies.Get().InstantiateAsync(randomPosition);
+                        }
                         tempEnemySpawnPositions.Remove(randomPosition);
                         break;
                     case RoomEnemyType.Minion:
                         Transform randomPositionMinion = tempEnemySpawnPositions[Random.Range(0, tempEnemySpawnPositions.Count)];
-                        op = spawnableMinionList.Items[Random.Range(0, spawnableMinionList.Items.Count)].InstantiateAsync(randomPositionMinion);
+                        if (mockTest && enemyToSpawnOverride.Count > index && !string.IsNullOrEmpty(enemyToSpawnOverride[index].RuntimeKey.ToString()))
+                        {
+                            op = enemyToSpawnOverride[index].InstantiateAsync(randomPositionMinion);
+                        }
+                        else
+                        {
+                            op = spawnableMinionList.Items[Random.Range(0, spawnableMinionList.Items.Count)].InstantiateAsync(randomPositionMinion);
+                        }
                         tempEnemySpawnPositions.Remove(randomPositionMinion);
                         isMinion = true;
                         break;

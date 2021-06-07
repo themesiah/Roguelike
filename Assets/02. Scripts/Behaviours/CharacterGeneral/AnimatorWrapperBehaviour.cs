@@ -20,6 +20,7 @@ namespace Laresistance.Behaviours
         private float lastAnimatorSpeed = 0f;
         private float timer = 0f;
         private static float TIMEOUT = 5f;
+        private bool paused = false;
 
         public void Start()
         {
@@ -72,14 +73,21 @@ namespace Laresistance.Behaviours
 
         public void Pause()
         {
-            lastAnimatorSpeed = animator.speed;
-            animator.speed = 0f;
+            if (!paused)
+            {
+                paused = true;
+                lastAnimatorSpeed = animator.speed;
+                animator.speed = 0f;
+            }
         }
 
         public void Resume()
         {
-            if (lastAnimatorSpeed != 0f)
+            if (paused)
+            {
                 animator.speed = lastAnimatorSpeed;
+                paused = false;
+            }
         }
 
         public void Stop()
