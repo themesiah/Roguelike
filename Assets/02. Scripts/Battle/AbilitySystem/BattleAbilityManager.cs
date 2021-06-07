@@ -23,8 +23,6 @@ namespace Laresistance.Battle
         [HideInInspector]
         public BattleAbility currentAbility;
         [HideInInspector]
-        public bool executingBasicSkill = false;
-        [HideInInspector]
         public BattleStatusManager[] currentTargets;
         private BattleAbility executingAbilityCheckPriority;
 
@@ -119,10 +117,6 @@ namespace Laresistance.Battle
                     executingAbilityCheckPriority = abilityQueue[0];
                 }
                 currentlyExecuting = true;
-                if (abilityToExecute.IsBasicSkill)
-                {
-                    executingBasicSkill = true;
-                }
                 if (abilityToExecute.IsOffensiveAbility)
                 {
                     Log("Setting current targets", abilityToExecute, animationTrigger);
@@ -155,10 +149,6 @@ namespace Laresistance.Battle
                 currentTargets = null;
                 currentlyExecuting = false;
                 Log("Ability removed from queue", abilityToExecute, animationTrigger);
-                if (abilityToExecute.IsBasicSkill)
-                {
-                    executingBasicSkill = false;
-                }
                 Log("Checking if there is need to resume the last animator", abilityToExecute, animationTrigger);
                 if (abilityToExecute.IsPrioritary() && needPause)
                 {

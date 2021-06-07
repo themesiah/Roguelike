@@ -16,7 +16,7 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputProcessor()
         {
-            AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level);
+            AbilityInputProcessor = new EnemyAbilityManager(minion.Abilities, minion.Level, StatusManager);
             if (animator != null)
             {
                 ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(animator);

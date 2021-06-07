@@ -32,6 +32,7 @@ namespace Laresistance.Core
         public event OnSelectedHandler OnSelected;
 
         public bool dead { get; private set; }
+        public CharacterBattleManager[] Enemies => enemies;
 
         public CharacterBattleManager(BattleStatusManager statusManager, IAbilityInputProcessor inputProcessor, IAbilityExecutor abilityExecutor, ITargetSelection targetSelector, IBattleAnimator animator)
         {
@@ -43,6 +44,7 @@ namespace Laresistance.Core
             selected = false;
             dead = false;
             abilitiesToUse = new List<int>();
+            StatusManager.SetCharacterBattleManager(this);
         }
 
         public void StartBattle()
@@ -193,6 +195,16 @@ namespace Laresistance.Core
             foreach(CharacterBattleManager manager in allies)
             {
                 if (manager == cbm)
+                    return true;
+            }
+            return false;
+        }
+
+        public bool IsAlly(BattleStatusManager bsm)
+        {
+            foreach(CharacterBattleManager manager in allies)
+            {
+                if (manager.StatusManager == bsm)
                     return true;
             }
             return false;

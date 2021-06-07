@@ -17,6 +17,7 @@ namespace Laresistance.Behaviours
         // For example, assigning a 1 enemy room to a room with 6 enemy spots available may result in a boring, empty room.
         private static int TOO_MUCH_SPACE_THRESHOLD = 2;
         private static float ROOM_VALUE_PARTY_THRESHOLD = 0.7f;
+        private static float ROOM_VALUE_MINION_PARTY_THRESHOLD = 0.2f;
 
         [Header("Configuration")]
         [SerializeField]
@@ -417,7 +418,7 @@ namespace Laresistance.Behaviours
                     UnityEngine.Assertions.Assert.IsNotNull(go);
                     go.transform.localPosition = Vector3.zero;
                     // Depending on room value
-                    if (!isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD)
+                    if ((!isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD) || relativeValue <= ROOM_VALUE_MINION_PARTY_THRESHOLD)
                     {
                         go.GetComponent<PartyManagerBehaviour>().enabled = false;
                     }

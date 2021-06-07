@@ -36,10 +36,6 @@ namespace Laresistance.Battle
             {
                 battleAbility.SetOffensiveAbility();
             }
-            if (abilityData.IsBasicSkill)
-            {
-                battleAbility.SetBasicSkill();
-            }
             return battleAbility;
         }
     }

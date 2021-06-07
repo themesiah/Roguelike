@@ -1,4 +1,6 @@
 ﻿using Laresistance.Behaviours;
+using Laresistance.Core;
+using Laresistance.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +14,8 @@ namespace Laresistance.Battle
         private BattleAbility[] abilities;
         private int level;
         private IBattleAnimator animator;
+        private BattleStatusManager selfStatus;
+        private CharacterBattleManager selfBattleManager;
 
         private BattleAbility nextAbility = null;
         private float nextAbilityTimer = NEXT_ABILITY_COOLDOWN;
@@ -23,10 +27,12 @@ namespace Laresistance.Battle
         public event OnAbilityCooldownProgressHandler OnAbilityCooldownProgress;
 
 
-        public EnemyAbilityManager(BattleAbility[] abilities, int level)
+        public EnemyAbilityManager(BattleAbility[] abilities, int level, BattleStatusManager selfStatus)
         {
             this.abilities = abilities;
             this.level = level;
+            this.selfStatus = selfStatus;
+            this.selfStatus.SetBattleManager += SetCharacterBattleManager;
         }
 
         public void SetAnimator(IBattleAnimator animator)
@@ -34,22 +40,34 @@ namespace Laresistance.Battle
             this.animator = animator;
         }
 
+        public void SetCharacterBattleManager(CharacterBattleManager battleManager)
+        {
+            selfBattleManager = battleManager;
+        }
+
         public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
+            // If there is no ability in queue we select one and configure the timers.
             if (nextAbility == null)
             {
-                nextAbility = GetRandomAbilityFromWeights();
-                battleStatus.SetNextAbility(nextAbility);
-                if (nextAbility.data.CastTime != 0)
+                nextAbility = GetRandomAbilityFromWeights(AbilityDataAISpecification.Always);
+                if (nextAbility != null)
                 {
-                    nextAbilityTimer = nextAbility.data.CastTime;
-                } else
-                {
-                    nextAbilityTimer = NEXT_ABILITY_COOLDOWN + Random.Range(-NEXT_ABILITY_COOLDOWN_VARIANCE, NEXT_ABILITY_COOLDOWN_VARIANCE);
+                    battleStatus.SetNextAbility(nextAbility);
+                    if (nextAbility.data.CastTime != 0)
+                    {
+                        nextAbilityTimer = nextAbility.data.CastTime;
+                    }
+                    else
+                    {
+                        nextAbilityTimer = NEXT_ABILITY_COOLDOWN + Random.Range(-NEXT_ABILITY_COOLDOWN_VARIANCE, NEXT_ABILITY_COOLDOWN_VARIANCE);
+                    }
+                    nextAbilityCooldown = nextAbilityTimer;
                 }
-                nextAbilityCooldown = nextAbilityTimer;
             }
 
+
+            // Cooldowns. This is the ability charge process. When it finishes, the enemy executes the ability.
             for(int i = 0; i < abilities.Length; ++i)
             {
                 if (abilities[i] == null)
@@ -57,6 +75,7 @@ namespace Laresistance.Battle
                 abilities[i].Tick(delta);
             }
 
+            // Check if any ability can be used right now (timer at 0 AND is the next ability) and returns the data.
             for (int i = 0; i < abilities.Length; ++i)
             {
                 if (abilities[i] == null)
@@ -72,11 +91,45 @@ namespace Laresistance.Battle
                     }
                 }
             }
+
+
+            // Situational skills
+            var abilityToCast = CheckSelfDebuffAbilities();
+            if (abilityToCast != -1)
+            {
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+            }
+            abilityToCast = CheckEnemyBuffAbilities();
+            if (abilityToCast != -1)
+            {
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+            }
+            abilityToCast = CheckNeedShield();
+            if (abilityToCast != -1)
+            {
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+            }
+            abilityToCast = CheckNotFullLife();
+            if (abilityToCast != -1)
+            {
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+            }
+
+            // The timers and cooldowns only advance if there is no other ability executing right now.
             if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty && !BattleAbilityManager.Instance.AbilityInQueue)
             {
                 nextAbilityTimer -= delta;
                 OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);
+                // Internal Cooldowns. This is the ability cooldown if the ability is executed in an special situation.
+                for (int i = 0; i < abilities.Length; ++i)
+                {
+                    if (abilities[i] == null)
+                        continue;
+                    abilities[i].TickInternalCooldown(delta);
+                }
             }
+
+            // Default return data. This means no ability is going to be used this frame by this enemy.
             return new AbilityExecutionData() { index = -1, selectedTarget = null};
         }
 
@@ -85,7 +138,8 @@ namespace Laresistance.Battle
             if (abilityIndex < 0 || abilityIndex > abilities.Length - 1)
                 throw new System.Exception("Invalid index for executing ability");
             yield return abilities[abilityIndex].ExecuteAbility(allies, enemies, level, animator);
-            nextAbility = null;
+            if (abilities[abilityIndex].data.AiSpecification == AbilityDataAISpecification.Always)
+                nextAbility = null;
         }
 
         public BattleAbility[] GetAbilities()
@@ -103,16 +157,22 @@ namespace Laresistance.Battle
 
         }
 
-        private BattleAbility GetRandomAbilityFromWeights()
+        private BattleAbility GetRandomAbilityFromWeights(AbilityDataAISpecification aiSpecification, bool requireInternalTimer = false)
         {
             List<BattleAbility> weightedAbilities = new List<BattleAbility>();
-            foreach(var ability in abilities)
+            foreach (var ability in abilities)
             {
                 if (ability != null)
                 {
-                    for (int i = 0; i < ability.Weight; ++i)
+                    if (!requireInternalTimer || ability.CanBeUsedInternalTimer())
                     {
-                        weightedAbilities.Add(ability);
+                        for (int i = 0; i < ability.Weight; ++i)
+                        {
+                            if (ability.data.AiSpecification == aiSpecification)
+                            {
+                                weightedAbilities.Add(ability);
+                            }
+                        }
                     }
                 }
             }
@@ -120,11 +180,104 @@ namespace Laresistance.Battle
             {
                 return null; // This should only be the case for an enemy with only a reactive skill, like a shield minion
             }
+
+            // Default case in case something goes wrong.
             return weightedAbilities[Random.Range(0, weightedAbilities.Count)];
         }
 
         public void PerformTimeStop(bool activate)
         {
+        }
+
+        private int GetAbilityIndex(BattleAbility ability)
+        {
+            for (int i = 0; i < abilities.Length; ++i)
+            {
+                if (abilities[i] == ability)
+                    return i;
+            }
+            return -1;
+        }
+
+        private int CheckSelfDebuffAbilities()
+        {
+            // Check if self debuff ability exists and can be used
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenSelfHaveDebuff, true);
+            if (ability != null)
+            {
+                // Check if self have debuffs
+                if (selfStatus.HaveDebuff())
+                {
+                    return GetAbilityIndex(ability);
+                }
+            }
+            return -1;
+        }
+
+        private int CheckEnemyBuffAbilities()
+        {
+            // Check if enemy buff ability exists and can be used
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenEnemyHaveBuff, true);
+            if (ability != null && selfBattleManager != null && selfBattleManager.Enemies.Length > 0)
+            {
+                // Check if enemy have buffs
+                if (selfBattleManager.Enemies[0].StatusManager.HaveBuff())
+                {
+                    return GetAbilityIndex(ability);
+                }
+            }
+            return -1;
+        }
+
+        private int CheckNeedShield()
+        {
+            // Check if self shield ability exists and can be used
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
+            if (ability != null)
+            {
+                // Check if enemy is attacking self
+                if (BattleAbilityManager.Instance.currentAbility != null && BattleAbilityManager.Instance.currentAbility.IsOffensiveAbility)
+                {
+                    if (BattleAbilityManager.Instance.currentTargets[0] == selfStatus)
+                    {
+                        return GetAbilityIndex(ability);
+                    }
+                }
+            }
+
+            // Check if ally shield ability exists
+            ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
+            if (ability != null)
+            {
+                // Check if enemy is attacking self or ally
+                if (BattleAbilityManager.Instance.currentAbility != null && BattleAbilityManager.Instance.currentAbility.IsOffensiveAbility)
+                {
+                    foreach (var target in BattleAbilityManager.Instance.currentTargets)
+                    {
+                        if (selfBattleManager != null && selfBattleManager.IsAlly(target))
+                        {
+                            return GetAbilityIndex(ability);
+                        }
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        private int CheckNotFullLife()
+        {
+            // Check if heal ability exists and can be used
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenNotFullLife, true);
+            if (ability != null)
+            {
+                // Check if self health is less than 100%
+                if (selfStatus.health.GetPercentHealth() < 1f)
+                {
+                    return GetAbilityIndex(ability);
+                }
+            }
+            return -1;
         }
     }
 }

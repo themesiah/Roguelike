@@ -8,5 +8,6 @@ namespace Laresistance.Behaviours
     {
         IEnumerator PlayAnimation(string trigger);
         void Stop();
+        bool IsAnimating();
     }
 }

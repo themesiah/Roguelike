@@ -78,6 +78,8 @@ namespace Laresistance.Battle
         public delegate void OnStatusesRemovedHandler(BattleStatusManager sender);
         public event OnStatusesRemovedHandler OnBuffsRemoved;
         public event OnStatusesRemovedHandler OnDebuffsRemoved;
+        public delegate void OnSetBattleManager(CharacterBattleManager cbm);
+        public event OnSetBattleManager SetBattleManager;
         #endregion
 
         #region Public methods
@@ -96,7 +98,7 @@ namespace Laresistance.Battle
 
         public void ProcessStatus(float delta, float speedModifier)
         {
-            if (!BattleAbilityManager.Instance.Executing || BattleAbilityManager.Instance.executingBasicSkill)
+            if (!BattleAbilityManager.Instance.Executing)
             {
                 int totalDamage = 0;
                 for(int i = damageOverTimes.Count-1; i >= 0; --i)
@@ -370,6 +372,53 @@ namespace Laresistance.Battle
         public void AbilityExecuted(BattleAbility ability, int slotIndex)
         {
             OnAbilityExecuted?.Invoke(ability, slotIndex);
+        }
+
+        public bool HaveDebuff()
+        {
+            foreach(var speedModifier in speedModifiers)
+            {
+                if (speedModifier.speedCoeficient < 1f)
+                    return true;
+            }
+            foreach(var damageModification in tempDamageModifications)
+            {
+                if (damageModification.modifier < 0f)
+                    return true;
+            }
+            if (blindStatuses.Count > 0)
+            {
+                return true;
+            }
+            if (damageOverTimes.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool HaveBuff()
+        {
+            foreach (var speedModifier in speedModifiers)
+            {
+                if (speedModifier.speedCoeficient > 1f)
+                    return true;
+            }
+            foreach (var damageModification in tempDamageModifications)
+            {
+                if (damageModification.modifier > 0f)
+                    return true;
+            }
+            if (damageImprovements.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void SetCharacterBattleManager(CharacterBattleManager cbm)
+        {
+            SetBattleManager?.Invoke(cbm);
         }
         #endregion
     }

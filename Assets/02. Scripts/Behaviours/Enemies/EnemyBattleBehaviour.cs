@@ -72,7 +72,7 @@ namespace Laresistance.Behaviours
                 abilities[i] = BattleAbilityFactory.GetBattleAbility(enemyData.AbilitiesData[i], new EquipmentsContainer(), StatusManager);
             }
 
-            AbilityInputProcessor = new EnemyAbilityManager(abilities, enemyLevel);
+            AbilityInputProcessor = new EnemyAbilityManager(abilities, enemyLevel, StatusManager);
             if (animator != null)
             {
                 ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(animator);

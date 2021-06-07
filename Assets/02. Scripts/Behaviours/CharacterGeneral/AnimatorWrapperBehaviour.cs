@@ -44,7 +44,7 @@ namespace Laresistance.Behaviours
                 timer = 0f;
                 while (animating == true && timer < TIMEOUT)
                 {
-                    timer += Time.deltaTime;
+                    timer += Time.deltaTime * animator.speed;
                     yield return null;
                 }
                 animating = false;
@@ -78,7 +78,8 @@ namespace Laresistance.Behaviours
 
         public void Resume()
         {
-            animator.speed = lastAnimatorSpeed;
+            if (lastAnimatorSpeed != 0f)
+                animator.speed = lastAnimatorSpeed;
         }
 
         public void Stop()
@@ -109,6 +110,11 @@ namespace Laresistance.Behaviours
         public void ResetTrigger(string trigger)
         {
             animator.ResetTrigger(trigger);
+        }
+
+        public bool IsAnimating()
+        {
+            return animating;
         }
     }
 }

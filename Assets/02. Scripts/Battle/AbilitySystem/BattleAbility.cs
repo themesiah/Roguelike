@@ -30,13 +30,14 @@ namespace Laresistance.Battle
         private BattleStatusManager statusManager;
         private bool executingAbility = false;
         private float cooldownTimer = 0f;
+        private float internalCooldown = 0f; // Only for enemies, for non standard skills with special AISpecification
         private AbilityState abilityState;
         public AbilityData data { get; private set; }
         public int Weight { get; private set; }
         public float Cooldown { get; private set; }
+        public float InternalCooldown { get; private set; }
         public bool IsShieldAbility { get; private set; }
         public bool IsOffensiveAbility { get; private set; }
-        public bool IsBasicSkill { get; private set; }
         public Sprite AbilityIcon { get; private set; }
         public Sprite AbilityFrame { get; private set; }
         public Minion parentMinion { get; private set; }
@@ -72,6 +73,11 @@ namespace Laresistance.Battle
             this.energyCost = energyCost;
             this.Weight = weight;
             this.Cooldown = cooldown;
+            if (data != null)
+            {
+                this.InternalCooldown = data.InternalCooldown;
+                this.internalCooldown = data.InternalCooldown;
+            }
             this.AbilityIcon = icon;
             this.AbilityFrame = data.FrameGraphic;
             this.data = data;
@@ -87,10 +93,6 @@ namespace Laresistance.Battle
             if (IsOffensiveAbility)
             {
                 ability.SetOffensiveAbility();
-            }
-            if (IsBasicSkill)
-            {
-                ability.SetBasicSkill();
             }
             ability.CurrentPlayerSlot = CurrentPlayerSlot;
 
@@ -110,11 +112,6 @@ namespace Laresistance.Battle
         public void SetOffensiveAbility()
         {
             IsOffensiveAbility = true;
-        }
-
-        public void SetBasicSkill()
-        {
-            IsBasicSkill = true;
         }
 
         public void SetEquipmentsContainer(EquipmentsContainer equipments)
@@ -199,6 +196,14 @@ namespace Laresistance.Battle
             }
         }
 
+        public void TickInternalCooldown(float deltaTime)
+        {
+            if (!BattleAbilityManager.Instance.Executing && internalCooldown > 0f)
+            {
+                internalCooldown -= deltaTime * statusManager.GetSpeedModifier();
+            }
+        }
+
         public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             // We need to actually start a new coroutine here because prioritary abilities can and should be processed BEFORE non prioritary abilities.
@@ -257,11 +262,13 @@ namespace Laresistance.Battle
         public void SetCooldownAsUsed()
         {
             cooldownTimer = Cooldown;
+            internalCooldown = InternalCooldown;
         }
 
         public void ResetCooldown()
         {
             cooldownTimer = 0f;
+            internalCooldown = 0f;
         }
 
         public void CancelExecution(CharacterHealth sender)
@@ -276,14 +283,16 @@ namespace Laresistance.Battle
             {
                 return false;
             }
-            if (IsBasicSkill)
+            return statusManager.CanExecute(energyCost) && cooldownTimer <= 0f;
+        }
+
+        public bool CanBeUsedInternalTimer()
+        {
+            if (executingAbility)
             {
-                return statusManager.CanExecute(energyCost) && !BattleAbilityManager.Instance.Executing;
+                return false;
             }
-            else
-            {
-                return statusManager.CanExecute(energyCost) && cooldownTimer <= 0f;
-            }
+            return statusManager.CanExecute(energyCost) && internalCooldown <= 0f;
         }
 
         public int GetCost()

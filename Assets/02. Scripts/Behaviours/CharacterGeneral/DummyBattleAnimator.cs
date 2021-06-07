@@ -5,6 +5,11 @@ namespace Laresistance.Behaviours
 {
     public class DummyBattleAnimator : IBattleAnimator
     {
+        public bool IsAnimating()
+        {
+            return false;
+        }
+
         public void Pause()
         {}
 
