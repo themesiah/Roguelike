@@ -36,6 +36,10 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference shieldDuration = default;
         [Tooltip("Time in seconds for the effect of blind to wear off")]
         public ScriptableFloatReference blindDuration = default;
+        [Tooltip("Duration for parry preparation. During the duration, the enemy will parry attacks")]
+        public ScriptableFloatReference parryPreparationTime = default;
+        [Tooltip("Duration for shield preparation. During the duration, the enemy will block attacks")]
+        public ScriptableFloatReference shieldPreparationTime = default;
 
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]

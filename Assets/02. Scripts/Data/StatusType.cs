@@ -9,5 +9,7 @@
     DoTFire,
     Shield,
     DamageImprovement,
-    Blind
+    Blind,
+    ParryPrepared,
+    ShieldPrepared
 }

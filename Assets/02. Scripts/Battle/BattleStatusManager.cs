@@ -2,6 +2,7 @@
 using Laresistance.Core;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Laresistance.Battle
 {
@@ -49,7 +50,11 @@ namespace Laresistance.Battle
         public bool Stunned { get; private set; }
         private float stunTimer;
         private float energyPerSecond;
-        // Damage, heal and shield modifiers
+        private float parryPreparedTimer;
+        private float shieldPreparedTimer;
+
+        private UnityAction onShieldStatusFinished;
+        private UnityAction onParryStatusFinished;
         #endregion
 
         #region Public variables
@@ -78,6 +83,8 @@ namespace Laresistance.Battle
         public delegate void OnStatusesRemovedHandler(BattleStatusManager sender);
         public event OnStatusesRemovedHandler OnBuffsRemoved;
         public event OnStatusesRemovedHandler OnDebuffsRemoved;
+        public delegate void OnSingletonStatusRemovedHandler(BattleStatusManager sender, StatusType statusType);
+        public event OnSingletonStatusRemovedHandler OnSingletonStatusRemoved;
         public delegate void OnSetBattleManager(CharacterBattleManager cbm);
         public event OnSetBattleManager SetBattleManager;
         #endregion
@@ -144,6 +151,24 @@ namespace Laresistance.Battle
                         blindStatuses.Remove(bs);
                     }
                 }
+                if (parryPreparedTimer > 0f)
+                {
+                    parryPreparedTimer -= delta * speedModifier;
+                    parryPreparedTimer = Mathf.Max(parryPreparedTimer, 0f);
+                    if (parryPreparedTimer == 0f)
+                    {
+                        onParryStatusFinished?.Invoke();
+                    }
+                }
+                if (shieldPreparedTimer > 0f)
+                {
+                    shieldPreparedTimer -= delta * speedModifier;
+                    shieldPreparedTimer = Mathf.Max(shieldPreparedTimer, 0f);
+                    if (shieldPreparedTimer == 0f)
+                    {
+                        onShieldStatusFinished?.Invoke();
+                    }
+                }
                 if (totalDamage > 0)
                 {
                     health.TakeDamage(totalDamage, GetEquipmentsContainer(), new EquipmentsContainer());
@@ -168,6 +193,8 @@ namespace Laresistance.Battle
                 OnTick?.Invoke(this, delta);
             }
         }
+
+        #region Status getters and setters
 
         public void ApplySpeedModifier(float coeficient)
         {
@@ -239,16 +266,12 @@ namespace Laresistance.Battle
             {
                 damageModifier *= modifier.coeficient;
             }
-            //float totalModifier = 1f;
+
             for (int i = tempDamageModifications.Count -1; i >= 0; --i)
             {
                 var modifier = tempDamageModifications[i];
-                //totalModifier += modifier.modifier;
                 damageModifier *= modifier.modifier;
             }
-
-            // Total modifier adds the damage after damage improvement, which is infinite and "special"
-            //damageModifier += totalModifier;
 
             return damageModifier;
         }
@@ -264,16 +287,49 @@ namespace Laresistance.Battle
             OnResetStatus?.Invoke(this);
         }
 
-        public void BattleEnd()
-        {
-            CurrentEnergy = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.AfterBattleEnergyLoss, CurrentEnergy);
-        }
-
         public void Stun(float time)
         {
             OnStatusApplied?.Invoke(this, StatusType.Stun, time);
             Stunned = true;
             stunTimer = time;
+        }
+
+        public void PrepareParry(UnityAction onParryStatusFinished)
+        {
+            parryPreparedTimer = GameConstantsBehaviour.Instance.parryPreparationTime.GetValue();
+            OnStatusApplied?.Invoke(this, StatusType.ParryPrepared, parryPreparedTimer);
+            this.onParryStatusFinished = onParryStatusFinished;
+        }
+
+        public void PrepareShield(UnityAction onShieldStatusFinished)
+        {
+            shieldPreparedTimer = GameConstantsBehaviour.Instance.shieldPreparationTime.GetValue();
+            OnStatusApplied?.Invoke(this, StatusType.ShieldPrepared, shieldPreparedTimer);
+            this.onShieldStatusFinished = onShieldStatusFinished;
+        }
+
+        public bool WillParry()
+        {
+            return parryPreparedTimer > 0f;
+        }
+
+        public bool WillBlock()
+        {
+            return shieldPreparedTimer > 0f;
+        }
+
+        public void ParryExecuted()
+        {
+            Debug.LogWarning("Parry Executed");
+            parryPreparedTimer = 0f;
+            OnSingletonStatusRemoved?.Invoke(this, StatusType.ParryPrepared);
+        }
+
+        public void BlockExecuted()
+        {
+            Debug.LogWarning("Block Executed");
+            shieldPreparedTimer = 0f;
+            OnSingletonStatusRemoved?.Invoke(this, StatusType.ShieldPrepared);
         }
 
         public void Cure()
@@ -315,7 +371,57 @@ namespace Laresistance.Battle
                 }
             }
             damageImprovements.Clear();
+            shieldPreparedTimer = 0f;
+            parryPreparedTimer = 0f;
             OnBuffsRemoved?.Invoke(this);
+        }
+
+        public bool HaveDebuff()
+        {
+            foreach (var speedModifier in speedModifiers)
+            {
+                if (speedModifier.speedCoeficient < 1f)
+                    return true;
+            }
+            foreach (var damageModification in tempDamageModifications)
+            {
+                if (damageModification.modifier < 0f)
+                    return true;
+            }
+            if (blindStatuses.Count > 0)
+            {
+                return true;
+            }
+            if (damageOverTimes.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool HaveBuff()
+        {
+            foreach (var speedModifier in speedModifiers)
+            {
+                if (speedModifier.speedCoeficient > 1f)
+                    return true;
+            }
+            foreach (var damageModification in tempDamageModifications)
+            {
+                if (damageModification.modifier > 0f)
+                    return true;
+            }
+            if (damageImprovements.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        #endregion
+
+        public void BattleEnd()
+        {
+            CurrentEnergy = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.AfterBattleEnergyLoss, CurrentEnergy);
         }
 
         public void SetEquipmentsContainer(EquipmentsContainer equipments)
@@ -372,48 +478,6 @@ namespace Laresistance.Battle
         public void AbilityExecuted(BattleAbility ability, int slotIndex)
         {
             OnAbilityExecuted?.Invoke(ability, slotIndex);
-        }
-
-        public bool HaveDebuff()
-        {
-            foreach(var speedModifier in speedModifiers)
-            {
-                if (speedModifier.speedCoeficient < 1f)
-                    return true;
-            }
-            foreach(var damageModification in tempDamageModifications)
-            {
-                if (damageModification.modifier < 0f)
-                    return true;
-            }
-            if (blindStatuses.Count > 0)
-            {
-                return true;
-            }
-            if (damageOverTimes.Count > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool HaveBuff()
-        {
-            foreach (var speedModifier in speedModifiers)
-            {
-                if (speedModifier.speedCoeficient > 1f)
-                    return true;
-            }
-            foreach (var damageModification in tempDamageModifications)
-            {
-                if (damageModification.modifier > 0f)
-                    return true;
-            }
-            if (damageImprovements.Count > 0)
-            {
-                return true;
-            }
-            return false;
         }
 
         public void SetCharacterBattleManager(CharacterBattleManager cbm)

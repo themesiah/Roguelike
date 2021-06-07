@@ -11,6 +11,7 @@ namespace Laresistance.Battle
     {
         private static float NEXT_ABILITY_COOLDOWN = 3f;
         private static float NEXT_ABILITY_COOLDOWN_VARIANCE = 0.5f;
+        private static float LAST_ABILITY_REACTED_TO_TIMER_START = 1f;
         private BattleAbility[] abilities;
         private int level;
         private IBattleAnimator animator;
@@ -20,11 +21,14 @@ namespace Laresistance.Battle
         private BattleAbility nextAbility = null;
         private float nextAbilityTimer = NEXT_ABILITY_COOLDOWN;
         private float nextAbilityCooldown = NEXT_ABILITY_COOLDOWN;
+        private float lastAbilityReactedToTimer = 0f; // This timer avoids to stop reacting to the same ability. After the timer reaches 0, the last ability reacted to is considered expired.
 
         public float CooldownProgress { get { return 1f-(nextAbilityTimer / nextAbilityCooldown); } }
 
         public delegate void OnAbilityCooldownProgressHandler(EnemyAbilityManager enemyAbilityManager, float progress);
         public event OnAbilityCooldownProgressHandler OnAbilityCooldownProgress;
+
+        private BattleAbility lastAbilityReactedTo = null;
 
 
         public EnemyAbilityManager(BattleAbility[] abilities, int level, BattleStatusManager selfStatus)
@@ -75,6 +79,17 @@ namespace Laresistance.Battle
                 abilities[i].Tick(delta);
             }
 
+            // Last ability reaction expiration time
+            if (lastAbilityReactedToTimer > 0f)
+            {
+                lastAbilityReactedToTimer -= delta;
+                lastAbilityReactedToTimer = Mathf.Max(0f, lastAbilityReactedToTimer);
+                if (lastAbilityReactedToTimer == 0f)
+                {
+                    lastAbilityReactedTo = null;
+                }
+            }
+
             // Check if any ability can be used right now (timer at 0 AND is the next ability) and returns the data.
             for (int i = 0; i < abilities.Length; ++i)
             {
@@ -97,22 +112,34 @@ namespace Laresistance.Battle
             var abilityToCast = CheckSelfDebuffAbilities();
             if (abilityToCast != -1)
             {
-                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
             }
             abilityToCast = CheckEnemyBuffAbilities();
             if (abilityToCast != -1)
             {
-                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
-            }
-            abilityToCast = CheckNeedShield();
-            if (abilityToCast != -1)
-            {
-                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
             }
             abilityToCast = CheckNotFullLife();
             if (abilityToCast != -1)
             {
-                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null }; ; ;
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
+            }
+
+            // Update shield timers and set status if necessary
+            UpdateShieldTimers();
+            // Update parry timers and set status if necessary
+            UpdateParryTimers();
+            // Check if should execute shield
+            abilityToCast = CheckUseShield();
+            if (abilityToCast != -1)
+            {
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
+            }
+            // Check if should execute parry
+            abilityToCast = CheckUseParry();
+            if (abilityToCast != -1)
+            {
+                return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
             }
 
             // The timers and cooldowns only advance if there is no other ability executing right now.
@@ -229,39 +256,66 @@ namespace Laresistance.Battle
             return -1;
         }
 
-        private int CheckNeedShield()
+        private void UpdateShieldTimers()
         {
             // Check if self shield ability exists and can be used
-            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
-            if (ability != null)
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
+            if (ability != null && !selfStatus.WillBlock())
             {
-                // Check if enemy is attacking self
-                if (BattleAbilityManager.Instance.currentAbility != null && BattleAbilityManager.Instance.currentAbility.IsOffensiveAbility)
-                {
-                    if (BattleAbilityManager.Instance.currentTargets[0] == selfStatus)
-                    {
-                        return GetAbilityIndex(ability);
-                    }
-                }
+                selfStatus.PrepareShield(()=> { ability.SetCooldownAsUsed(); });
             }
+        }
 
-            // Check if ally shield ability exists
-            ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
-            if (ability != null)
+        private void UpdateParryTimers()
+        {
+            // Check if self parry ability exists and can be used
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
+            if (ability != null && !selfStatus.WillParry())
+            {
+                selfStatus.PrepareParry(() => { ability.SetCooldownAsUsed(); });
+            }
+        }
+
+        private int CheckUseShield()
+        {
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
+            if (ability != null && selfStatus.WillBlock())
             {
                 // Check if enemy is attacking self or ally
-                if (BattleAbilityManager.Instance.currentAbility != null && BattleAbilityManager.Instance.currentAbility.IsOffensiveAbility)
+                if (BattleAbilityManager.Instance.currentAbility != null && BattleAbilityManager.Instance.currentAbility.IsOffensiveAbility && lastAbilityReactedTo != BattleAbilityManager.Instance.currentAbility)
                 {
                     foreach (var target in BattleAbilityManager.Instance.currentTargets)
                     {
                         if (selfBattleManager != null && selfBattleManager.IsAlly(target))
                         {
+                            selfStatus.BlockExecuted();
+                            lastAbilityReactedTo = BattleAbilityManager.Instance.currentAbility;
+                            lastAbilityReactedToTimer = LAST_ABILITY_REACTED_TO_TIMER_START;
                             return GetAbilityIndex(ability);
                         }
                     }
                 }
             }
+            return -1;
+        }
 
+        private int CheckUseParry()
+        {
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
+            if (ability != null && selfStatus.WillParry())
+            {
+                // Check if enemy is attacking self
+                if (BattleAbilityManager.Instance.currentAbility != null && BattleAbilityManager.Instance.currentAbility.IsOffensiveAbility && lastAbilityReactedTo != BattleAbilityManager.Instance.currentAbility)
+                {
+                    if (BattleAbilityManager.Instance.currentTargets[0] == selfStatus)
+                    {
+                        selfStatus.ParryExecuted();
+                        lastAbilityReactedTo = BattleAbilityManager.Instance.currentAbility;
+                        lastAbilityReactedToTimer = LAST_ABILITY_REACTED_TO_TIMER_START;
+                        return GetAbilityIndex(ability);
+                    }
+                }
+            }
             return -1;
         }
 

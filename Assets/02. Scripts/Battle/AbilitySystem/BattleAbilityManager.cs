@@ -25,7 +25,6 @@ namespace Laresistance.Battle
         public BattleAbility currentAbility;
         [HideInInspector]
         public BattleStatusManager[] currentTargets;
-        private BattleAbility executingAbilityCheckPriority;
         private Dictionary<BattleAbility, BattleStatusManager> casterMap;
 
         public bool Executing => currentlyExecuting;
@@ -159,13 +158,16 @@ namespace Laresistance.Battle
                 Log("Ending process. Nullifying variables and removing ability from queue", abilityToExecute, animationTrigger);
                 currentAbility = null;
                 abilityQueue?.Remove(abilityToExecute);
+                if (abilityQueue.Count == 0)
+                {
+                    currentlyExecuting = false;
+                }
                 animatorQueue?.Remove(animator);
                 if (animatorQueue.Count > 0)
                 {
                     animatorQueue[0]?.Resume();
                 }
                 currentTargets = null;
-                currentlyExecuting = false;
                 Log("Ability removed from queue", abilityToExecute, animationTrigger);
                 Log("Checking if there is need to resume the last animator", abilityToExecute, animationTrigger);
             }

@@ -37,6 +37,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnShieldsChanged += OnShieldsChanged;
             battleBehaviour.StatusManager.OnBuffsRemoved += OnRemoveBuffs;
             battleBehaviour.StatusManager.OnDebuffsRemoved += OnRemoveDebuffs;
+            battleBehaviour.StatusManager.OnSingletonStatusRemoved += OnRemoveSingleton;
         }
 
         private void OnDisable()
@@ -46,6 +47,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnShieldsChanged -= OnShieldsChanged;
             battleBehaviour.StatusManager.OnBuffsRemoved -= OnRemoveBuffs;
             battleBehaviour.StatusManager.OnDebuffsRemoved -= OnRemoveDebuffs;
+            battleBehaviour.StatusManager.OnSingletonStatusRemoved -= OnRemoveSingleton;
         }
 
         private void OnStatusApplied(BattleStatusManager sender, StatusType statusType, float duration)
@@ -78,7 +80,7 @@ namespace Laresistance.Behaviours
             if (statusType == StatusType.Blind || statusType == StatusType.Debuff || statusType == StatusType.DoT || statusType == StatusType.DoTFire || statusType == StatusType.Slow || statusType == StatusType.Stun)
             {
                 debuffList.Add(sim);
-            } else if (statusType == StatusType.Buff || statusType == StatusType.DamageImprovement || statusType == StatusType.Speed)
+            } else if (statusType == StatusType.Buff || statusType == StatusType.DamageImprovement || statusType == StatusType.Speed || statusType == StatusType.ParryPrepared || statusType == StatusType.ShieldPrepared)
             {
                 buffList.Add(sim);
             }
@@ -151,6 +153,26 @@ namespace Laresistance.Behaviours
                 sim.ManualTermination();
             }
             debuffList.Clear();
+        }
+
+        private void OnRemoveSingleton(BattleStatusManager statusManager, StatusType statusType)
+        {
+            for (int i = 0; i < buffList.Count; ++i)
+            {
+                if (buffList[i].GetStatusType == statusType)
+                {
+                    buffList[i].ManualTermination();
+                    break;
+                }
+            }
+            for (int i = 0; i < debuffList.Count; ++i)
+            {
+                if (debuffList[i].GetStatusType == statusType)
+                {
+                    debuffList[i].ManualTermination();
+                    break;
+                }
+            }
         }
     }
 }

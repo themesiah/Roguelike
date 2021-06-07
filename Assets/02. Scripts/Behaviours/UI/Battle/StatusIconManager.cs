@@ -21,6 +21,7 @@ namespace Laresistance.Behaviours
 
         public delegate void OnStatusTerminatedHandler(StatusIconManager sender, StatusType statusType);
         public event OnStatusTerminatedHandler OnStatusTerminated;
+        public StatusType GetStatusType => statusType;
 
         public void InitStatusIcon(StatusType statusType, Sprite frameSprite, Sprite iconSprite, Color frameColor, float duration, BattleStatusManager statusManager, ScriptablePool pool)
         {
