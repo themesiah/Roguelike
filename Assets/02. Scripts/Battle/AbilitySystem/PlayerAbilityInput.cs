@@ -155,7 +155,7 @@ namespace Laresistance.Battle
             else
             {
                 AbilityExecutionData aed = new AbilityExecutionData() { index = IndexOfAbility(availableAbilities[abilityInternalIndex]), selectedTarget = GetSelectedTarget(), ability = availableAbilities[abilityInternalIndex] };
-                if (availableAbilities[abilityInternalIndex].IsPrioritary())
+                if (availableAbilities[abilityInternalIndex].IsPrioritary() && (abilitiesToUseList.Count == 0 || BattleAbilityManager.Instance.Executing))
                 {
                     abilitiesToUseList.Insert(0, aed);
                     abilitiesToUseIndexList.Insert(0, abilityInternalIndex);

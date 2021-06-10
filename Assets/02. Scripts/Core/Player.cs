@@ -52,8 +52,9 @@ namespace Laresistance.Core
 
         public int GetUpgradeCost()
         {
-            //return Data.BaseBloodPrice + Data.BaseBloodPrice / 10 * (Level-1);
-            return BASE_UPGRADE_PRICE * Level;
+            int cost = BASE_UPGRADE_PRICE * Level;
+            cost = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.UpgradePrice, cost);
+            return cost;
         }
 
         #region Minions

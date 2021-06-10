@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e1f9ce4bc66b4f977b8933b60586a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logDebug: 0
+  logDebug: 1
   logFileName: BattleAbilityManager.log
   AbilityInQueue: 0
 --- !u!1 &4844187094489483476
@@ -1440,7 +1440,7 @@ MonoBehaviour:
   stopTimeDelay:
     useConstant: 1
     value: {fileID: 0}
-    constantValue: 0.15
+    constantValue: 0.05
     useRandom: 0
     minMax:
       useConstant: 1
@@ -1450,6 +1450,24 @@ MonoBehaviour:
     useConstant: 1
     value: {fileID: 0}
     constantValue: 0.3
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  nextAbilityCooldownDefault:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 4
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  nextAbilityCooldownVariance:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 0.5
     useRandom: 0
     minMax:
       useConstant: 1
@@ -1512,7 +1530,7 @@ MonoBehaviour:
   parryPreparationTime:
     useConstant: 1
     value: {fileID: 0}
-    constantValue: 2
+    constantValue: 1.5
     useRandom: 0
     minMax:
       useConstant: 1

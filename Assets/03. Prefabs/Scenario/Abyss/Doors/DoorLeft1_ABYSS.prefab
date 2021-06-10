@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4050720898097877948}
   - component: {fileID: 4608213252403509964}
   - component: {fileID: 1975135400590371286}
+  - component: {fileID: 7325128119996659354}
   m_Layer: 0
   m_Name: DoorLeft1_ABYSS
   m_TagString: ChangeRoom
@@ -106,6 +107,7 @@ MonoBehaviour:
   nextRoom: {fileID: 4050720898097877948}
   roomChangeEvent: {fileID: 11400000, guid: e3b0f15f6b2002a49a4e21f914f04ca0, type: 2}
   alternativeObjects: []
+  aditionalObjects: []
 --- !u!61 &4608213252403509964
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -119,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.06351, y: 6.09111}
+  m_Offset: {x: -1.06351, y: 5.396225}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -130,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.3175716, y: 6.124237}
+  m_Size: {x: 6.3175716, y: 4.7344666}
   m_EdgeRadius: 0
 --- !u!61 &1975135400590371286
 BoxCollider2D:
@@ -157,6 +159,32 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 3.5327072, y: 9.012512}
+  m_EdgeRadius: 0
+--- !u!61 &7325128119996659354
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498073470159121605}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -2.6513977, y: 10.4410095}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.1537476, y: 5.34552}
   m_EdgeRadius: 0
 --- !u!1 &617801849607202999
 GameObject:

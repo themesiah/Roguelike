@@ -179,7 +179,6 @@ namespace Laresistance.Behaviours
                 shopUpgradeUIList.Add(shopOfferUI);
                 shopOfferUI.SetOfferKey(offerKeys[0]);
                 int upgradeCost = player.GetUpgradeCost();
-                upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
                 shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, player)));
                 int currentIndex = 0;
                 shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
@@ -195,8 +194,7 @@ namespace Laresistance.Behaviours
                     IShopOfferUI shopOfferUI = go.GetComponent<IShopOfferUI>();
                     shopUpgradeUIList.Add(shopOfferUI);
                     shopOfferUI.SetOfferKey(offerKeys[i+1]);
-                    int upgradeCost = m.GetUpgradeCost();
-                    upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
+                    int upgradeCost = m.GetUpgradeCost(player.GetEquipmentContainer());
                     shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null)));
                     int currentIndex = i;
                     shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex+1; });
@@ -209,7 +207,6 @@ namespace Laresistance.Behaviours
         {
             IShopOfferUI shopOfferUI = shopUpgradeUIList[0];
             int upgradeCost = player.GetUpgradeCost();
-            upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
             shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, player)));
             shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && player.CanUpgrade());
         }
@@ -217,8 +214,7 @@ namespace Laresistance.Behaviours
         private void UpdateSingleMinionUpgradePanel(int index, Minion m)
         {
             IShopOfferUI shopOfferUI = shopUpgradeUIList[index+1];
-            int upgradeCost = m.GetUpgradeCost();
-            upgradeCost = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.UpgradePrice, upgradeCost);
+            int upgradeCost = m.GetUpgradeCost(player.GetEquipmentContainer());
             shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null)));
             shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
         }        
@@ -394,7 +390,7 @@ namespace Laresistance.Behaviours
                         }
                         else
                         {
-                            cost = player.GetMinions()[offerSelected - 1].GetUpgradeCost();
+                            cost = player.GetMinions()[offerSelected - 1].GetUpgradeCost(player.GetEquipmentContainer());
                         }
                         if (bloodReference.GetValue() < cost)
                         {

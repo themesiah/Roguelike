@@ -23,6 +23,13 @@ namespace Laresistance.Behaviours
         [Tooltip("Time for an ability to go from the 'queued' state to 'executing'. It should be pretty small for the player not to notice it too much")]
         public ScriptableFloatReference abilityToUseDequeueTimer = default;
 
+        [Header("Enemy in battle constants")]
+        [Tooltip("Time between abilities cast by enemies in battle, unless overrided by the ability")]
+        public ScriptableFloatReference nextAbilityCooldownDefault = default;
+        [Tooltip("Variance in the time between abilities by enemies in battle, as a +/-")]
+        public ScriptableFloatReference nextAbilityCooldownVariance = default;
+
+
         [Header("Status constants")]
         [Tooltip("Time in seconds of duration for speed buffs and debuffs")]
         public ScriptableFloatReference speedModifierDuration = default;

@@ -21,7 +21,7 @@ namespace Laresistance.Battle
                 {
                     shield = true;
                 }
-                if (effectData.EffectType == EffectType.Damage || effectData.EffectType == EffectType.BasicAttack)
+                if (effectData.EffectType == EffectType.Damage || effectData.EffectType == EffectType.BasicAttack || effectData.EffectType == EffectType.LifeSiphon)
                 {
                     offensive = true;
                 }

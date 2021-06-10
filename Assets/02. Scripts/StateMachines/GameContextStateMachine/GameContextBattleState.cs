@@ -9,6 +9,7 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Data;
 using Laresistance.Core;
 using GamedevsToolbox.ScriptableArchitecture.Events;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.StateMachines
 {
@@ -158,7 +159,6 @@ namespace Laresistance.StateMachines
             this.companionSpawner = new PlayerMinionCompanionSpawner(player);
             this.battleSystem = new BattleSystem();
             this.battlePositionIntReference = battlePositionIntReference;
-            playerObject.GetComponent<CharacterBattleBehaviour>().StatusManager.health.OnDeath += PlayerDeath;
             this.battleSystem.OnEnemyRemoved += EnemyFlee;
             this.virtualCameraChangeEvent = virtualCameraChangeEvent;
             this.targetGroupRef = targetGroupRef;
@@ -209,11 +209,6 @@ namespace Laresistance.StateMachines
             {
                 goToMap = true;
             }
-        }
-
-        private void PlayerDeath(CharacterHealth health)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Scenario2");
         }
         #endregion
     }

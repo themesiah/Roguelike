@@ -684,7 +684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2.06}
+  m_AnchoredPosition: {x: 0, y: -2.0600586}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6019800998245553797
@@ -2741,9 +2741,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5b7a5bb287deba94ba642c313f4d0e49, type: 2}
   useStartingData: 0
   startingMinions:
-  - {fileID: 11400000, guid: 70207bf0c942b6940ac6e0a5a75bb563, type: 2}
   - {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
-  - {fileID: 11400000, guid: 0a5354d826c4d034ebe2eb623fadd640, type: 2}
+  - {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
+  - {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
   startingConsumables: []
   startingEquipments: []
   playerDataBehaviourReference: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
@@ -3908,7 +3908,20 @@ MonoBehaviour:
         m_CallState: 2
   OnDie:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 3b074aaa37b14fe4eabb46b3dba95650, type: 2}
+        m_TargetAssemblyTypeName: Laresistance.Systems.ScriptableGameSceneManager,
+          GameScripts
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHealthChangedString:
     m_PersistentCalls:
       m_Calls: []
@@ -6418,7 +6431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5026825936307919926, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00039382704
+      value: -0.0003952241
       objectReference: {fileID: 0}
     - target: {fileID: 5026825936307919926, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_LocalRotation.w

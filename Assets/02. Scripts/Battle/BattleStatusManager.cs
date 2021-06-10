@@ -222,6 +222,7 @@ namespace Laresistance.Battle
 
         public void ApplyTempDamageModification(float coeficient)
         {
+            Debug.LogFormat("Applying damage modification of {0}", coeficient);
             tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, timer = 0f });
             if (coeficient > 1f)
             {

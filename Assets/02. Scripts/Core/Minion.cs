@@ -88,10 +88,12 @@ namespace Laresistance.Core
             return builder.ToString();
         }
 
-        public int GetUpgradeCost()
+        public int GetUpgradeCost(EquipmentsContainer equipments)
         {
             //return Data.BaseBloodPrice + Data.BaseBloodPrice / 10 * (Level-1);
-            return Data.BaseBloodPrice * Level;
+            int cost = Data.BaseBloodPrice * Level;
+            cost = equipments.ModifyValue(Equipments.EquipmentSituation.UpgradePrice, cost);
+            return cost;
         }
 
         public bool Upgrade()
