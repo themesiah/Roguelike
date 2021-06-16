@@ -101,6 +101,8 @@ namespace Laresistance.Battle
             blindStatuses = new List<BlindStatus>();
             this.energyPerSecond = energyPerSecond;
             this.TargetPivot = targetPivot;
+
+            CurrentEnergy = 10f;
         }
 
         public void ProcessStatus(float delta, float speedModifier)
@@ -222,7 +224,6 @@ namespace Laresistance.Battle
 
         public void ApplyTempDamageModification(float coeficient)
         {
-            Debug.LogFormat("Applying damage modification of {0}", coeficient);
             tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, timer = 0f });
             if (coeficient > 1f)
             {
@@ -275,6 +276,12 @@ namespace Laresistance.Battle
             }
 
             return damageModifier;
+        }
+
+        public void BattleStart()
+        {
+            ResetStatus();
+            health.BattleStart();
         }
 
         public void ResetStatus()
@@ -443,9 +450,9 @@ namespace Laresistance.Battle
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
         }
 
-        public bool ConsumeEnergy(int energy)
+        public bool ConsumeEnergy(int energy, bool canBeUsedStunned)
         {
-            if (!CanExecute(energy))
+            if (!CanExecute(energy, canBeUsedStunned))
             {
                 return false;
             }
@@ -454,9 +461,9 @@ namespace Laresistance.Battle
             return true;
         }
 
-        public bool CanExecute(int energy)
+        public bool CanExecute(int energy, bool canBeUsedStunned)
         {
-            return UsableEnergy >= energy && !Stunned;
+            return UsableEnergy >= energy && (!Stunned || canBeUsedStunned);
         }
 
         public void RemoveEnergy(float energy)

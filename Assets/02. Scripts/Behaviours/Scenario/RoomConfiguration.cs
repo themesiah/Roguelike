@@ -71,6 +71,9 @@ namespace Laresistance.Behaviours
 
         public LayerMask enemySpaceLayerMask;
 
+        private float relativeRoomValue = 0f;
+        private int roomLevel = 0;
+
         private IEnumerator Start()
         {
             if (mockTest)
@@ -293,6 +296,8 @@ namespace Laresistance.Behaviours
 
         public IEnumerator ConfigureRoom(MapData mapData, RoomData roomData, RoomBiome biome)
         {
+            // Configure the room level for various uses
+            ConfigureRoomLevel(mapData, roomData);
             // Configure level start
             ConfigureLevelStart(roomData);
             // Configure level end
@@ -308,6 +313,12 @@ namespace Laresistance.Behaviours
             {
                 boundsChangeEvent?.Raise(roomLimits);
             }
+        }
+
+        private void ConfigureRoomLevel(MapData mapData, RoomData roomData)
+        {
+            relativeRoomValue = GetRoomRelativeValue(mapData, roomData);
+            roomLevel = GetRoomLevel(relativeRoomValue, new Vector2Int(1, 10));
         }
 
         private void ConfigureLevelStart(RoomData roomData)
@@ -385,8 +396,7 @@ namespace Laresistance.Behaviours
         private IEnumerator ConfigureEnemies(MapData mapData, RoomData roomData, RoomBiome biome)
         {
             List<Transform> tempEnemySpawnPositions = new List<Transform>(possibleEnemySpawnPoints);
-            float relativeValue = GetRoomRelativeValue(mapData, roomData);
-            int levelOverride = GetRoomLevel(relativeValue, new Vector2Int(1, 10));
+            
             int index = 0;
             int finishedIndex = 0;
             foreach (var enemy in roomData.GetRoomEnemies())
@@ -436,11 +446,11 @@ namespace Laresistance.Behaviours
                     UnityEngine.Assertions.Assert.IsNotNull(go);
                     go.transform.localPosition = Vector3.zero;
                     // Depending on room value
-                    if ((!isMinion && relativeValue <= ROOM_VALUE_PARTY_THRESHOLD) || relativeValue <= ROOM_VALUE_MINION_PARTY_THRESHOLD)
+                    if ((!isMinion && relativeRoomValue <= ROOM_VALUE_PARTY_THRESHOLD) || relativeRoomValue <= ROOM_VALUE_MINION_PARTY_THRESHOLD)
                     {
                         go.GetComponent<PartyManagerBehaviour>().enabled = false;
                     }
-                    go.GetComponent<EnemyBattleBehaviour>().InitEnemy(levelOverride);
+                    go.GetComponent<EnemyBattleBehaviour>().InitEnemy(roomLevel);
                     if (Random.Range(0, 1) == 0)
                     {
                         var scale = go.transform.localScale;
@@ -467,6 +477,10 @@ namespace Laresistance.Behaviours
                 op.Completed += (handler) => {
                     GameObject go = handler.Result;
                     go.transform.localPosition = Vector3.zero;
+                    if (interactable.roomInteractableType == RoomInteractableType.Pilgrim)
+                    {
+                        go.GetComponent<PilgrimBehaviour>().SetCurrentLevel(roomLevel);
+                    }
                 };
                 yield return op;
                 tempInteractablePositions.Remove(randomPosition);

@@ -15,6 +15,7 @@ namespace Laresistance.Behaviours
             public UnityEvent<bool> OnAvailabilityChanged = default;
             public UnityEvent<bool> OnAvailabilityChangedColor = default;
             public UnityEvent<BattleAbility> OnShowableAbility = default;
+            public UnityEvent OnUpdateAbility = default;
         }
 
         [SerializeField]
@@ -99,6 +100,18 @@ namespace Laresistance.Behaviours
         private PlayerAbilityInput GetPlayerInput()
         {
             return (PlayerAbilityInput)battleBehaviour.AbilityInputProcessor;
+        }
+
+        public void OnAbilitiesNeedUpdate()
+        {
+            foreach(var showableAbilitySubscription in subscriptions)
+            {
+                showableAbilitySubscription?.OnUpdateAbility?.Invoke();
+            }
+            foreach (var showableAbility in nextShowableAbilities)
+            {
+                showableAbility.UpdateAbilityValues();
+            }
         }
 
         private void OnAvailableSkillsChanged(PlayerAbilityInput sender, BattleAbility[] availableAbilities)

@@ -47,6 +47,11 @@ namespace Laresistance.Battle
             Power = power;
         }
 
+        public virtual bool EffectCanBeUsedStunned()
+        {
+            return false;
+        }
+
         public IEnumerator PerformEffect(BattleStatusManager[] allies, BattleStatusManager[] enemies, int level, EquipmentsContainer equipments, IBattleAnimator animator, ScriptableIntReference bloodRef, UnityAction onEffectFinished, UnityAction<int> signalsAmount)
         {
             List<BattleStatusManager> targets = GetTargets(allies, enemies);

@@ -355,6 +355,7 @@ namespace Laresistance.Core
         {
             characterAbilities = abilities;
             ultimateAbility = ultimate;
+            ultimateAbility.CurrentPlayerSlot = -1;
             foreach(var ability in characterAbilities)
             {
                 ability.SetParentPlayer(this);

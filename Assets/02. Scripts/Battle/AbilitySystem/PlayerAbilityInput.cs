@@ -83,6 +83,9 @@ namespace Laresistance.Battle
             } else if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned)
             {
                 abilitiesToUseDequeueTimer -= delta;
+            } else if (!BattleAbilityManager.Instance.Executing && battleStatus.Stunned && (abilitiesToUseList.Count > 0 && abilitiesToUseList[0].ability.CanBeUsed()))
+            {
+                abilitiesToUseDequeueTimer = 0f;
             }
 
             // Tick abilities to reduce the current cooldown and those things

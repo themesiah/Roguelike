@@ -25,7 +25,7 @@ namespace Laresistance.Behaviours
                     {
                         GameObject go = handle.Result;
                         UnityEngine.Assertions.Assert.IsNotNull(go);
-                        go.transform.localPosition = Vector3.zero - Vector3.right * 1.5f * i;
+                        go.transform.localPosition = Vector3.zero - Vector3.right * GameConstantsBehaviour.Instance.enemyMapPartyOffset.GetValue() * i;
                         go.GetComponent<EnemyBattleBehaviour>().InitEnemy(level);
                     };
                 }

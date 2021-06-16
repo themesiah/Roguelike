@@ -15,7 +15,7 @@ namespace Laresistance.Battle
             }
         }
 
-        private void DestroyShield(CharacterHealth sender, int delta, int totalShields, bool isDamage)
+        private void DestroyShield(CharacterHealth sender, int delta, int totalShields, bool isDamage, float shieldPercent)
         {
             sender.OnShieldsChanged -= DestroyShield;
             target.OnResetStatus -= OnBattleEnd;

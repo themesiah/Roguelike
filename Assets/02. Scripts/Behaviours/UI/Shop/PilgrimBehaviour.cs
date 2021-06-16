@@ -73,13 +73,24 @@ namespace Laresistance.Behaviours
         private int offerSelected = -1;
         private List<IShopOfferUI> shopOfferUIList;
         private List<IShopOfferUI> shopUpgradeUIList;
+        private int currentLevel = -1;
+        private bool started = false;
 
         #region Initialization
         private void Start()
         {
             shopOfferUIList = new List<IShopOfferUI>();
             shopUpgradeUIList = new List<IShopOfferUI>();
-            Init();
+            started = true;
+            if (currentLevel != -1)
+                Init();
+        }
+
+        public void SetCurrentLevel(int level)
+        {
+            currentLevel = level;
+            if (started == true)
+                Init();
         }
 
         private void Init()
@@ -115,8 +126,10 @@ namespace Laresistance.Behaviours
                 int index = Random.Range(0, buyableMinionList.minionList.Count - 1);
                 if (!selectedMinionIndexes.Contains(index))
                 {
-                    Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], 1, player.GetEquipmentContainer(), statusManager);
-                    shopSystem.AddOffer(new ShopOffer(minion.Data.BaseBloodPrice, false, new RewardData(0, 0, minion, null, null, null, null)));
+                    Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], GetRandomMinionLevel(), player.GetEquipmentContainer(), statusManager);
+                    int cost = (int)(minion.GetFullCost(player.GetEquipmentContainer()) * (1f - GameConstantsBehaviour.Instance.minionDiscount.GetValue()));
+                    cost = (int)System.Math.Round((double)cost / 100d, 0) * 100;
+                    shopSystem.AddOffer(new ShopOffer(cost, false, new RewardData(0, 0, minion, null, null, null, null)));
                     selectedMinionIndexes.Add(index);
                 }
             }
@@ -500,6 +513,11 @@ namespace Laresistance.Behaviours
             {
                 shopOfferUIList[i].SetOfferKey(offerKeys[i]);
             }
+        }
+
+        private int GetRandomMinionLevel()
+        {
+            return System.Math.Max(1, Random.Range(currentLevel - 1, currentLevel + 2));
         }
     }
 }

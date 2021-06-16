@@ -83,7 +83,9 @@ namespace Laresistance.Behaviours
             {
                 if (subscription.abilityIndex >= 0 && subscription.abilityIndex < abilities.Length && abilities[subscription.abilityIndex] != null)
                 {
-                    subscription.OnAvailabilityChanged?.Invoke(battleBehaviour.StatusManager.CanExecute(abilities[subscription.abilityIndex].GetCost()));
+
+                    //subscription.OnAvailabilityChanged?.Invoke(battleBehaviour.StatusManager.CanExecute(abilities[subscription.abilityIndex].GetCost()));
+                    subscription.OnAvailabilityChanged?.Invoke(abilities[subscription.abilityIndex].CanBeUsed());
                     subscription.OnProgress?.Invoke(currentEnergy / abilities[subscription.abilityIndex].GetCost());
                 }
             }

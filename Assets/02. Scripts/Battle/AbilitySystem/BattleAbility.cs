@@ -244,7 +244,7 @@ namespace Laresistance.Battle
             {
                 yield return effect.PerformEffect(allies, targets, level, equipmentsContainer, animator, bloodRef, () => signalsReceived++, (amount) => expectedSignals = amount);
             }
-            statusManager.ConsumeEnergy(energyCost);
+            statusManager.ConsumeEnergy(energyCost, CanBeUsedStunned());
             SetCooldownAsUsed();
             statusManager.AbilityExecuted(this, CurrentPlayerSlot);
             CurrentPlayerSlot = -1;
@@ -277,13 +277,24 @@ namespace Laresistance.Battle
                 BattleAbilityManager.Instance.CancelExecution(this);
         }
 
+        private bool CanBeUsedStunned()
+        {
+            foreach (var effect in effects)
+            {
+                if (effect.EffectCanBeUsedStunned())
+                    return true;
+            }
+            return false;
+        }
+
         public bool CanBeUsed()
         {
             if (executingAbility)
             {
                 return false;
             }
-            return statusManager.CanExecute(energyCost) && cooldownTimer <= 0f;
+            
+            return statusManager.CanExecute(energyCost, CanBeUsedStunned()) && cooldownTimer <= 0f;
         }
 
         public bool CanBeUsedInternalTimer()
@@ -292,7 +303,7 @@ namespace Laresistance.Battle
             {
                 return false;
             }
-            return statusManager.CanExecute(energyCost) && internalCooldown <= 0f;
+            return statusManager.CanExecute(energyCost, CanBeUsedStunned()) && internalCooldown <= 0f;
         }
 
         public int GetCost()

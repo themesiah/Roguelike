@@ -21,6 +21,11 @@ namespace Laresistance.Battle
             return 1;
         }
 
+        public override bool EffectCanBeUsedStunned()
+        {
+            return true;
+        }
+
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
@@ -44,5 +49,7 @@ namespace Laresistance.Battle
         {
             return "Effect";
         }
+
+        public override bool IsPrioritary => true;
     }
 }

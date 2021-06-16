@@ -4,6 +4,7 @@ using UnityEngine;
 using Laresistance.Data;
 using Laresistance.Battle;
 using GamedevsToolbox.ScriptableArchitecture.Pools;
+using UnityEngine.Events;
 
 namespace Laresistance.Behaviours
 {
@@ -15,6 +16,8 @@ namespace Laresistance.Behaviours
         private Transform statusIndicatorsHolder = default;
         [SerializeField]
         private CharacterBattleBehaviour battleBehaviour = default;
+        [SerializeField]
+        private UnityEvent OnAbilitiesNeedUpdate = default;
 
         private bool haveShields = false;
         private bool haveDamageImprovement = false;
@@ -57,6 +60,10 @@ namespace Laresistance.Behaviours
 
         private void OnStatusApplied(StatusType statusType, float duration)
         {
+            if (statusType == StatusType.Buff || statusType == StatusType.DamageImprovement || statusType == StatusType.Debuff)
+            {
+                OnAbilitiesNeedUpdate?.Invoke();
+            }
             if ((statusType == StatusType.Shield && haveShields) || (statusType == StatusType.DamageImprovement && haveDamageImprovement))
             {
                 return;
@@ -86,7 +93,7 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private void OnShieldsChanged(CharacterHealth sender, int delta, int total, bool isDamage)
+        private void OnShieldsChanged(CharacterHealth sender, int delta, int total, bool isDamage, float shieldPercent)
         {
             if (total > 0)
             {

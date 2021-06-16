@@ -264,7 +264,7 @@ namespace Laresistance.Battle
         {
             // Check if self shield ability exists and can be used
             var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
-            if (ability != null && !selfStatus.WillBlock())
+            if (ability != null && !selfStatus.WillBlock() && !selfStatus.WillParry())
             {
                 selfStatus.PrepareShield(()=> { ability.SetCooldownAsUsed(); });
             }
@@ -274,7 +274,7 @@ namespace Laresistance.Battle
         {
             // Check if self parry ability exists and can be used
             var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
-            if (ability != null && !selfStatus.WillParry())
+            if (ability != null && !selfStatus.WillParry() && !selfStatus.WillBlock())
             {
                 selfStatus.PrepareParry(() => { ability.SetCooldownAsUsed(); });
             }

@@ -50,7 +50,7 @@ namespace Laresistance.Core
         public void StartBattle()
         {
             OnBattleStart?.Invoke();
-            StatusManager.ResetStatus();
+            StatusManager.BattleStart();
             AbilityInputProcessor.BattleStart();
         }
 

@@ -96,6 +96,17 @@ namespace Laresistance.Core
             return cost;
         }
 
+        public int GetFullCost(EquipmentsContainer equipments)
+        {
+            int cost = Data.BaseBloodPrice;
+            for (int i = 1; i <= Level; ++i)
+            {
+                cost += Data.BaseBloodPrice * i;
+            }
+            //cost = equipments.ModifyValue(Equipments.EquipmentSituation.UpgradePrice, cost);
+            return cost;
+        }
+
         public bool Upgrade()
         {
             if (CanUpgrade())

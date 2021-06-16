@@ -65,10 +65,16 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference enemyMapHorizontalRaycastLength = default;
         [Tooltip("Horizontal raycast up offset")]
         public ScriptableFloatReference enemyMapHorizontalRaycastOffsetUp = default;
+        [Tooltip("Distance between enemy party members")]
+        public ScriptableFloatReference enemyMapPartyOffset = default;
 
         [Header("Camera constants")]
         [Tooltip("Affects the zoom on battles")]
         public ScriptableFloatReference battleGroupRadius = default;
+
+        [Header("Pilgrim constants")]
+        [Tooltip("Discount for minions buying at the pilgrim. (0~1)")]
+        public ScriptableFloatReference minionDiscount = default;
 
         private void Awake()
         {
