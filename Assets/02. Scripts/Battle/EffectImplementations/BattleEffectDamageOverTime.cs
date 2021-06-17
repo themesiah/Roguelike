@@ -22,7 +22,7 @@ namespace Laresistance.Battle
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.DotDamage, power);
-            power = (int)(power * SelfStatus.GetDamageModifier());
+            power = (int)(power * SelfStatus.GetValueModifier(StatusType.DamageModification));
             return power;
         }
 
@@ -30,7 +30,7 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
-            target.ApplyDamageOverTime(GetPower(level, equipments));
+            target.ApplyStatusEffect(StatusType.DoT, GetPower(level, equipments));
         }
 
         public override string GetEffectString(int level, EquipmentsContainer equipments)

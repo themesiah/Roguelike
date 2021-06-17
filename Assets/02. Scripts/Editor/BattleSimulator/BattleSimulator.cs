@@ -212,7 +212,7 @@ namespace Laresistance.Simulator
             {
                 yield return battleSystem.Tick(BATTLE_SIMULATION_TIME_PER_TICK);
                 battleTimer += BATTLE_SIMULATION_TIME_PER_TICK;
-                string power = string.Format("Enemy power modifier is {0}", battleSystem.GetEnemies()[2].StatusManager.GetDamageModifier());
+                string power = string.Format("Enemy power modifier is {0}", battleSystem.GetEnemies()[2].StatusManager.GetValueModifier(StatusType.DamageModification));
                 //Utils.AppendText("simulation.log", power);
                 //Debug.Log(power);
                 //Debug.LogFormat("Simulated {0} seconds. Player health is {1}. Enemy health is {2}", battleTimer.ToString(), battleSystem.GetPlayer().StatusManager.health.GetCurrentHealth(), battleSystem.GetEnemies()[0].StatusManager.health.GetCurrentHealth());

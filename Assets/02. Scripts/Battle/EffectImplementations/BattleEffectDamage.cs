@@ -23,7 +23,7 @@ namespace Laresistance.Battle
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AttackPower, power);
-            power = (int)(power * SelfStatus.GetDamageModifier());
+            power = (int)(power * SelfStatus.GetValueModifier(StatusType.DamageModification));
             power = System.Math.Max(1, power);
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
@@ -39,7 +39,7 @@ namespace Laresistance.Battle
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
             int damageDone = 0;
-            if (UnityEngine.Random.value <= SelfStatus.GetHitChance())
+            if (UnityEngine.Random.value <= SelfStatus.GetValueModifier(StatusType.Blind))
             {
                 int damage = GetPower(level, equipments);
                 damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer(), equipments);

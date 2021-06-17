@@ -38,7 +38,7 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
-            target.ApplySpeedModifier(GetModifier(level, equipments));
+            target.ApplyStatusEffect(StatusType.Speed, GetModifier(level, equipments));
         }
 
         private float GetModifier(int level, EquipmentsContainer equipments)

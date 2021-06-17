@@ -8,53 +8,12 @@ namespace Laresistance.Battle
 {
     public class BattleStatusManager
     {
-        #region Inner Classes
-        public class SpeedEffect
-        {
-            public float speedCoeficient;
-            public float timer;
-        }
-
-        public class DamageOverTime
-        {
-            public int power;
-            public float timer;
-            public int ticked;
-        }
-
-        public class DamageImprovement // Infinite
-        {
-            public float coeficient;
-        }
-
-        public class TempDamageChange
-        {
-            public float modifier;
-            public float timer;
-        }
-
-        public class BlindStatus
-        {
-            public float timer;
-            public float coeficient;
-        }
-        #endregion
 
         #region Private Variables
-        private List<SpeedEffect> speedModifiers;
-        private List<DamageOverTime> damageOverTimes;
-        private List<DamageImprovement> damageImprovements;
-        private List<TempDamageChange> tempDamageModifications;
-        private List<BlindStatus> blindStatuses;
         private EquipmentsContainer equipmentsContainer;
-        public bool Stunned { get; private set; }
-        private float stunTimer;
+        private Dictionary<StatusType, StatusEffect> statusEffects;
+        private List<StatusEffect> statusEffectsList;
         private float energyPerSecond;
-        private float parryPreparedTimer;
-        private float shieldPreparedTimer;
-
-        private UnityAction onShieldStatusFinished;
-        private UnityAction onParryStatusFinished;
         #endregion
 
         #region Public variables
@@ -63,11 +22,15 @@ namespace Laresistance.Battle
         public int UsableEnergy { get { return Mathf.FloorToInt(CurrentEnergy); } }
         public Transform TargetPivot { get; private set; }
         public BattleAbility NextAbility { get; private set; }
+
+        public bool Stunned => GetStatus(StatusType.Stun).HaveDebuff();
+        public bool WillParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
+        public bool WillBlock => GetStatus(StatusType.ShieldPrepared).HaveBuff();
         #endregion
 
         #region Events
-        public delegate void OnStatusAppliedHandler(BattleStatusManager sender, StatusType statusType, float duration);
-        public event OnStatusAppliedHandler OnStatusApplied;
+        public delegate void OnStatusAppliedHandler(BattleStatusManager sender, StatusIconType statusType, float duration);
+        public OnStatusAppliedHandler OnStatusApplied;
         public delegate void OnEnergyChangedHandler(float currentEnergy, int usableEnergy);
         public event OnEnergyChangedHandler OnEnergyChanged;
         public delegate void OnNextAbilityChangedHandler(BattleAbility nextAbility);
@@ -83,7 +46,7 @@ namespace Laresistance.Battle
         public delegate void OnStatusesRemovedHandler(BattleStatusManager sender);
         public event OnStatusesRemovedHandler OnBuffsRemoved;
         public event OnStatusesRemovedHandler OnDebuffsRemoved;
-        public delegate void OnSingletonStatusRemovedHandler(BattleStatusManager sender, StatusType statusType);
+        public delegate void OnSingletonStatusRemovedHandler(BattleStatusManager sender, StatusIconType statusType);
         public event OnSingletonStatusRemovedHandler OnSingletonStatusRemoved;
         public delegate void OnSetBattleManager(CharacterBattleManager cbm);
         public event OnSetBattleManager SetBattleManager;
@@ -94,102 +57,41 @@ namespace Laresistance.Battle
         {
             equipmentsContainer = new EquipmentsContainer();
             this.health = health;
-            speedModifiers = new List<SpeedEffect>();
-            damageOverTimes = new List<DamageOverTime>();
-            damageImprovements = new List<DamageImprovement>();
-            tempDamageModifications = new List<TempDamageChange>();
-            blindStatuses = new List<BlindStatus>();
+            statusEffectsList = new List<StatusEffect>();
+            statusEffects = new Dictionary<StatusType, StatusEffect>();
             this.energyPerSecond = energyPerSecond;
             this.TargetPivot = targetPivot;
+            health.OnDeath += OnDeath;
+        }
 
-            CurrentEnergy = 10f;
+        private void OnDeath(CharacterHealth sender)
+        {
+            ResetStatus();
         }
 
         public void ProcessStatus(float delta, float speedModifier)
         {
             if (!BattleAbilityManager.Instance.Executing)
             {
-                int totalDamage = 0;
-                for(int i = damageOverTimes.Count-1; i >= 0; --i)
+                float totalDelta = delta * speedModifier;
+                foreach (var statusEffect in statusEffectsList)
                 {
-                    DamageOverTime dot = damageOverTimes[i];
-                    dot.timer += delta * speedModifier;
-                    if (dot.timer >= GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue())
-                    {
-                        totalDamage += dot.power;
-                        dot.ticked++;
-                        dot.timer = dot.timer - GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue();
-                        if (dot.ticked >= Mathf.CeilToInt(GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
-                        {
-                            damageOverTimes.Remove(dot);
-                        }
-                    }
+                    statusEffect.Tick(totalDelta);
                 }
-                totalDamage = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.DotDamageReceived, totalDamage);
-                for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
-                {
-                    TempDamageChange tdm = tempDamageModifications[i];
-                    tdm.timer += delta * speedModifier;
-                    if (tdm.timer >= GameConstantsBehaviour.Instance.damageModifierDuration.GetValue())
-                    {
-                        tempDamageModifications.Remove(tdm);
-                    }
-                }
-                for (int i = speedModifiers.Count - 1; i >= 0; --i)
-                {
-                    SpeedEffect se = speedModifiers[i];
-                    se.timer += delta * speedModifier;
-                    if (se.timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
-                    {
-                        speedModifiers.Remove(se);
-                    }
-                }
-                for (int i = blindStatuses.Count - 1; i >= 0; --i)
-                {
-                    BlindStatus bs = blindStatuses[i];
-                    bs.timer += delta * speedModifier;
-                    if (bs.timer >= GameConstantsBehaviour.Instance.blindDuration.GetValue())
-                    {
-                        blindStatuses.Remove(bs);
-                    }
-                }
-                if (parryPreparedTimer > 0f)
-                {
-                    parryPreparedTimer -= delta * speedModifier;
-                    parryPreparedTimer = Mathf.Max(parryPreparedTimer, 0f);
-                    if (parryPreparedTimer == 0f)
-                    {
-                        onParryStatusFinished?.Invoke();
-                    }
-                }
-                if (shieldPreparedTimer > 0f)
-                {
-                    shieldPreparedTimer -= delta * speedModifier;
-                    shieldPreparedTimer = Mathf.Max(shieldPreparedTimer, 0f);
-                    if (shieldPreparedTimer == 0f)
-                    {
-                        onShieldStatusFinished?.Invoke();
-                    }
-                }
-                if (totalDamage > 0)
-                {
+
+                int totalDamage = (int)GetValueModifier(StatusType.DoT);
+                if (totalDamage > 0) {
+                    totalDamage = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.DotDamageReceived, totalDamage);
                     health.TakeDamage(totalDamage, GetEquipmentsContainer(), new EquipmentsContainer());
                 }
+                
                 health.Tick(delta);
             
-                if (Stunned)
-                {
-                    stunTimer -= delta * speedModifier;
-                    if (stunTimer <= 0f)
-                    {
-                        Stunned = false;
-                    }
-                }
-                else
+                if (!Stunned)
                 {
                     float currentProduction = energyPerSecond;
                     currentProduction = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, currentProduction);
-                    CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetSpeedModifier() * speedModifier);
+                    CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + currentProduction * delta * GetValueModifier(StatusType.Speed) * speedModifier);
                     OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
                 }
                 OnTick?.Invoke(this, delta);
@@ -198,84 +100,25 @@ namespace Laresistance.Battle
 
         #region Status getters and setters
 
-        public void ApplySpeedModifier(float coeficient)
+        private StatusEffect GetStatus(StatusType type)
         {
-            speedModifiers.Add(new SpeedEffect() { speedCoeficient = coeficient, timer = 0f });
-            if (coeficient > 1f)
+            if (!statusEffects.ContainsKey(type))
             {
-                OnStatusApplied?.Invoke(this, StatusType.Speed, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
-            } else
-            {
-                OnStatusApplied?.Invoke(this, StatusType.Slow, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
+                StatusEffect se = StatusEffectFactory.GetStatusEffect(type, this);
+                statusEffects.Add(type, se);
+                statusEffectsList.Add(se);
             }
+            return statusEffects[type];
         }
 
-        public void ApplyDamageOverTime(int power)
+        public void ApplyStatusEffect(StatusType type, float value)
         {
-            damageOverTimes.Add(new DamageOverTime() { power = power, timer = 0, ticked = 0 });
-            OnStatusApplied?.Invoke(this, StatusType.DoT, GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue());
+            GetStatus(type).AddValue(value);
         }
 
-        public void ApplyDamageImprovement(float coeficient)
+        public float GetValueModifier(StatusType statusType)
         {
-            damageImprovements.Add(new DamageImprovement() { coeficient = coeficient });
-            OnStatusApplied?.Invoke(this, StatusType.DamageImprovement, -1f);
-        }
-
-        public void ApplyTempDamageModification(float coeficient)
-        {
-            tempDamageModifications.Add(new TempDamageChange() { modifier = coeficient, timer = 0f });
-            if (coeficient > 1f)
-            {
-                OnStatusApplied?.Invoke(this, StatusType.Buff, GameConstantsBehaviour.Instance.damageModifierDuration.GetValue());
-            } else
-            {
-                OnStatusApplied?.Invoke(this, StatusType.Debuff, GameConstantsBehaviour.Instance.damageModifierDuration.GetValue());
-            }
-        }
-
-        public void ApplyBlind(float coeficient)
-        {
-            blindStatuses.Add(new BlindStatus() { coeficient = coeficient, timer = 0f });
-            OnStatusApplied?.Invoke(this, StatusType.Blind, GameConstantsBehaviour.Instance.blindDuration.GetValue());
-        }
-
-        public float GetSpeedModifier()
-        {
-            float speedModifier = 1f;
-            for (int i = speedModifiers.Count - 1; i >= 0; --i)
-            {
-                SpeedEffect se = speedModifiers[i];
-                speedModifier *= se.speedCoeficient;
-            }
-            return speedModifier;
-        }
-
-        public float GetHitChance()
-        {
-            float chance = 1f;
-            foreach(BlindStatus bs in blindStatuses)
-            {
-                chance *= (1f - bs.coeficient);
-            }
-            return chance;
-        }
-
-        public float GetDamageModifier()
-        {
-            float damageModifier = 1f;
-            foreach(var modifier in damageImprovements)
-            {
-                damageModifier *= modifier.coeficient;
-            }
-
-            for (int i = tempDamageModifications.Count -1; i >= 0; --i)
-            {
-                var modifier = tempDamageModifications[i];
-                damageModifier *= modifier.modifier;
-            }
-
-            return damageModifier;
+            return GetStatus(statusType).GetValue();
         }
 
         public void BattleStart()
@@ -286,142 +129,75 @@ namespace Laresistance.Battle
 
         public void ResetStatus()
         {
-            damageImprovements.Clear();
-            speedModifiers.Clear();
-            damageOverTimes.Clear();
-            tempDamageModifications.Clear();
-            blindStatuses.Clear();
-            Stunned = false;
+            foreach(var statusEffect in statusEffectsList)
+            {
+                statusEffect.Cure();
+                statusEffect.RemoveBuff();
+            }
             OnResetStatus?.Invoke(this);
-        }
-
-        public void Stun(float time)
-        {
-            OnStatusApplied?.Invoke(this, StatusType.Stun, time);
-            Stunned = true;
-            stunTimer = time;
         }
 
         public void PrepareParry(UnityAction onParryStatusFinished)
         {
-            parryPreparedTimer = GameConstantsBehaviour.Instance.parryPreparationTime.GetValue();
-            OnStatusApplied?.Invoke(this, StatusType.ParryPrepared, parryPreparedTimer);
-            this.onParryStatusFinished = onParryStatusFinished;
+            GetStatus(StatusType.ParryPrepared).AddValue(0f);
+            ((ParryPreparedStatusEffect)GetStatus(StatusType.ParryPrepared)).SetCallback(onParryStatusFinished);
         }
 
         public void PrepareShield(UnityAction onShieldStatusFinished)
         {
-            shieldPreparedTimer = GameConstantsBehaviour.Instance.shieldPreparationTime.GetValue();
-            OnStatusApplied?.Invoke(this, StatusType.ShieldPrepared, shieldPreparedTimer);
-            this.onShieldStatusFinished = onShieldStatusFinished;
-        }
-
-        public bool WillParry()
-        {
-            return parryPreparedTimer > 0f;
-        }
-
-        public bool WillBlock()
-        {
-            return shieldPreparedTimer > 0f;
+            GetStatus(StatusType.ShieldPrepared).AddValue(0f);
+            ((ShieldPreparedStatusEffect)GetStatus(StatusType.ShieldPrepared)).SetCallback(onShieldStatusFinished);
         }
 
         public void ParryExecuted()
         {
             Debug.LogWarning("Parry Executed");
-            parryPreparedTimer = 0f;
-            OnSingletonStatusRemoved?.Invoke(this, StatusType.ParryPrepared);
+            GetStatus(StatusType.ParryPrepared).RemoveBuff();
+            OnSingletonStatusRemoved?.Invoke(this, StatusIconType.ParryPrepared);
         }
 
         public void BlockExecuted()
         {
             Debug.LogWarning("Block Executed");
-            shieldPreparedTimer = 0f;
-            OnSingletonStatusRemoved?.Invoke(this, StatusType.ShieldPrepared);
+            GetStatus(StatusType.ShieldPrepared).RemoveBuff();
+            OnSingletonStatusRemoved?.Invoke(this, StatusIconType.ShieldPrepared);
         }
 
         public void Cure()
         {
-            damageOverTimes.Clear();
-            for(int i = tempDamageModifications.Count-1; i >= 0; --i)
+            foreach(var statusEffect in statusEffectsList)
             {
-                if (tempDamageModifications[i].modifier < 0f)
-                {
-                    tempDamageModifications.RemoveAt(i);
-                }
+                statusEffect.Cure();
             }
-            for(int i = speedModifiers.Count-1; i >= 0; --i)
-            {
-                if (speedModifiers[i].speedCoeficient < 1f)
-                {
-                    speedModifiers.RemoveAt(i);
-                }
-            }
-            blindStatuses.Clear();
-            Stunned = false;
             OnDebuffsRemoved?.Invoke(this);
         }
 
         public void RemoveBuffs()
         {
-            for (int i = tempDamageModifications.Count - 1; i >= 0; --i)
+            foreach (var statusEffect in statusEffectsList)
             {
-                if (tempDamageModifications[i].modifier > 0f)
-                {
-                    tempDamageModifications.RemoveAt(i);
-                }
+                statusEffect.RemoveBuff();
             }
-            for (int i = speedModifiers.Count - 1; i >= 0; --i)
-            {
-                if (speedModifiers[i].speedCoeficient > 1f)
-                {
-                    speedModifiers.RemoveAt(i);
-                }
-            }
-            damageImprovements.Clear();
-            shieldPreparedTimer = 0f;
-            parryPreparedTimer = 0f;
             OnBuffsRemoved?.Invoke(this);
         }
 
         public bool HaveDebuff()
         {
-            foreach (var speedModifier in speedModifiers)
+            foreach(var statusEffect in statusEffectsList)
             {
-                if (speedModifier.speedCoeficient < 1f)
+                if (statusEffect.HaveDebuff())
                     return true;
-            }
-            foreach (var damageModification in tempDamageModifications)
-            {
-                if (damageModification.modifier < 0f)
-                    return true;
-            }
-            if (blindStatuses.Count > 0)
-            {
-                return true;
-            }
-            if (damageOverTimes.Count > 0)
-            {
-                return true;
             }
             return false;
         }
 
         public bool HaveBuff()
         {
-            foreach (var speedModifier in speedModifiers)
+
+            foreach (var statusEffect in statusEffectsList)
             {
-                if (speedModifier.speedCoeficient > 1f)
+                if (statusEffect.HaveBuff())
                     return true;
-            }
-            foreach (var damageModification in tempDamageModifications)
-            {
-                if (damageModification.modifier > 0f)
-                    return true;
-            }
-            if (damageImprovements.Count > 0)
-            {
-                return true;
             }
             return false;
         }

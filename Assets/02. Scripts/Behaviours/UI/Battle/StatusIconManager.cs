@@ -13,17 +13,17 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Image statusIcon = default;
 
-        private StatusType statusType;
+        private StatusIconType statusType;
         private float timer;
         private float duration;
         private ScriptablePool pool;
         private BattleStatusManager statusManager;
 
-        public delegate void OnStatusTerminatedHandler(StatusIconManager sender, StatusType statusType);
+        public delegate void OnStatusTerminatedHandler(StatusIconManager sender, StatusIconType statusType);
         public event OnStatusTerminatedHandler OnStatusTerminated;
-        public StatusType GetStatusType => statusType;
+        public StatusIconType GetStatusType => statusType;
 
-        public void InitStatusIcon(StatusType statusType, Sprite frameSprite, Sprite iconSprite, Color frameColor, float duration, BattleStatusManager statusManager, ScriptablePool pool)
+        public void InitStatusIcon(StatusIconType statusType, Sprite frameSprite, Sprite iconSprite, Color frameColor, float duration, BattleStatusManager statusManager, ScriptablePool pool)
         {
             frameImage.sprite = frameSprite;
             frameImage.color = frameColor;
@@ -41,7 +41,7 @@ namespace Laresistance.Behaviours
 
         private void SuscribeToStatusManager(BattleStatusManager statusManager)
         {
-            if (statusType == StatusType.Shield)
+            if (statusType == StatusIconType.Shield)
             {
                 statusManager.health.OnShieldsChanged += OnShieldsChanged;
             } else
@@ -54,7 +54,7 @@ namespace Laresistance.Behaviours
 
         private void UnsuscribeFromStatusManager(BattleStatusManager statusManager)
         {
-            if (statusType == StatusType.Shield)
+            if (statusType == StatusIconType.Shield)
             {
                 statusManager.health.OnShieldsChanged -= OnShieldsChanged;
             } else

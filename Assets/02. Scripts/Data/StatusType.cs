@@ -2,13 +2,8 @@
 {
     Stun,
     Speed,
-    Slow,
-    Buff,
-    Debuff,
+    DamageModification,
     DoT,
-    DoTFire,
-    Shield,
-    DamageImprovement,
     Blind,
     ParryPrepared,
     ShieldPrepared

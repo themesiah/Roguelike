@@ -29,7 +29,7 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
-            target.ApplyDamageImprovement(((float)GetPower(level, equipments) + 100f) / 100f);
+            target.ApplyStatusEffect(StatusType.DamageModification, ((float)GetPower(level, equipments) + 100f) / 100f);
         }
 
         public override string GetEffectString(int level, EquipmentsContainer equipments)

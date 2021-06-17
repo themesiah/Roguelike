@@ -143,7 +143,8 @@ namespace Laresistance.Battle
                 else
                 {
                     Log("Starting ability animation", abilityToExecute, animationTrigger);
-                    animatorQueue[0]?.Resume();
+                    if (animatorQueue.Count > 0)
+                        animatorQueue[0].Resume();
                     yield return animator?.PlayAnimation(animationTrigger);
                     abilityToExecute.SetAbilityState(BattleAbility.AbilityState.Finished);
                     if (battling)

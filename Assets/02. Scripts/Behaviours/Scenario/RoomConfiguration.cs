@@ -480,6 +480,19 @@ namespace Laresistance.Behaviours
                     if (interactable.roomInteractableType == RoomInteractableType.Pilgrim)
                     {
                         go.GetComponent<PilgrimBehaviour>().SetCurrentLevel(roomLevel);
+                    } else  if (interactable.roomInteractableType == RoomInteractableType.BloodReward)
+                    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                        if (mockTest)
+                        {
+                            go.GetComponent<BloodObtain>().SetCurrentLevel(roomLevel);
+                        } else
+                        {
+                            go.GetComponent<BloodObtain>().SetCurrentLevel(1); // TODO
+                        }
+#else
+                        go.GetComponent<BloodObtain>().SetCurrentLevel(roomLevel * roomData.RoomIndex); // TODO
+#endif
                     }
                 };
                 yield return op;

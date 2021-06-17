@@ -6,8 +6,8 @@ namespace Laresistance.Data
     public class StatusData : ScriptableObject
     {
         [SerializeField]
-        private StatusType status = default;
-        public StatusType Status { get { return status; } }
+        private StatusIconType status = default;
+        public StatusIconType Status { get { return status; } }
 
         [SerializeField]
         private Sprite statusSprite = default;

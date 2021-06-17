@@ -12,8 +12,6 @@ namespace Laresistance.Behaviours
         [Header("Values")]
         [SerializeField]
         private ScriptableIntReference baseBloodAmount = default;
-        [SerializeField]
-        private ScriptableIntReference currentFloor = default;
 
         [Header("References")]
         [SerializeField]
@@ -30,10 +28,16 @@ namespace Laresistance.Behaviours
         private SpriteRenderer spriteRenderer = default;
 
         private RewardSystem rewardSystem;
+        private int currentLevel = 1;
 
         private void Start()
         {
             rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
+        }
+
+        public void SetCurrentLevel(int currentLevel)
+        {
+            this.currentLevel = currentLevel;
         }
 
         public void Obtain()
@@ -44,7 +48,7 @@ namespace Laresistance.Behaviours
 
         private int GetBloodAmount()
         {
-            return baseBloodAmount.GetValue() * currentFloor.GetValue();
+            return baseBloodAmount.GetValue() * currentLevel;
         }
 
         private IEnumerator RewardCoroutine(int amount)

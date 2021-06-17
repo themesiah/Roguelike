@@ -23,7 +23,7 @@ namespace Laresistance.Battle
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AttackPower, power);
-            power = (int)(power * SelfStatus.GetDamageModifier());
+            power = (int)(power * SelfStatus.GetValueModifier(StatusType.DamageModification));
             power = System.Math.Max(1, power);
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;

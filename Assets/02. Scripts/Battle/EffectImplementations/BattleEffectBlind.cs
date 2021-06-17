@@ -30,7 +30,7 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
-            target.ApplyBlind(GetModifier(level, equipments));
+            target.ApplyStatusEffect(StatusType.Blind, GetModifier(level, equipments));
         }
 
         private float GetModifier(int level, EquipmentsContainer equipments)

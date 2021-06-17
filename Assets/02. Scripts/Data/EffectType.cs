@@ -17,6 +17,11 @@
         BasicAttack,
         RemoveBuffs,
         LifeSiphon,
-        Blind
+        Blind,
+        Retaliation,
+        Barrier,
+        Exchange,
+        Regeneration,
+        PercentDamage
     }
 }

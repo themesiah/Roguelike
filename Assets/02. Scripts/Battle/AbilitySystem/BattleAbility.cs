@@ -192,7 +192,7 @@ namespace Laresistance.Battle
         {
             if (!BattleAbilityManager.Instance.Executing && cooldownTimer > 0f)
             {
-                cooldownTimer -= deltaTime * statusManager.GetSpeedModifier();
+                cooldownTimer -= deltaTime * statusManager.GetValueModifier(StatusType.Speed);
             }
         }
 
@@ -200,7 +200,7 @@ namespace Laresistance.Battle
         {
             if (!BattleAbilityManager.Instance.Executing && internalCooldown > 0f)
             {
-                internalCooldown -= deltaTime * statusManager.GetSpeedModifier();
+                internalCooldown -= deltaTime * statusManager.GetValueModifier(StatusType.Speed);
             }
         }
 

@@ -10,8 +10,23 @@ namespace Laresistance.Behaviours
 {
     public class StatusSubscription : MonoBehaviour
     {
+        [System.Serializable]
+        public class StatusSubscriptionEvent
+        {
+            [SerializeField]
+            private StatusIconType statusType = default;
+            [SerializeField]
+            private UnityEvent subscriptionEvent = default;
+
+            public bool IsStatusType(StatusIconType type) => this.statusType == type;
+            public void Invoke() => subscriptionEvent?.Invoke();
+        }
         [SerializeField]
         private StatusList statusList = default;
+        [SerializeField]
+        private StatusSubscriptionEvent[] OnStartStatusEvents = default;
+        [SerializeField]
+        private StatusSubscriptionEvent[] OnEndStatusEvents = default;
         [SerializeField]
         private Transform statusIndicatorsHolder = default;
         [SerializeField]
@@ -53,18 +68,18 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.OnSingletonStatusRemoved -= OnRemoveSingleton;
         }
 
-        private void OnStatusApplied(BattleStatusManager sender, StatusType statusType, float duration)
+        private void OnStatusApplied(BattleStatusManager sender, StatusIconType statusType, float duration)
         {
             OnStatusApplied(statusType, duration);
         }
 
-        private void OnStatusApplied(StatusType statusType, float duration)
+        private void OnStatusApplied(StatusIconType statusType, float duration)
         {
-            if (statusType == StatusType.Buff || statusType == StatusType.DamageImprovement || statusType == StatusType.Debuff)
+            if (statusType == StatusIconType.Buff || statusType == StatusIconType.DamageImprovement || statusType == StatusIconType.Debuff)
             {
                 OnAbilitiesNeedUpdate?.Invoke();
             }
-            if ((statusType == StatusType.Shield && haveShields) || (statusType == StatusType.DamageImprovement && haveDamageImprovement))
+            if ((statusType == StatusIconType.Shield && haveShields) || (statusType == StatusIconType.DamageImprovement && haveDamageImprovement))
             {
                 return;
             }
@@ -74,30 +89,31 @@ namespace Laresistance.Behaviours
             StatusIconManager sim = statusIconObject.GetComponent<StatusIconManager>();
             sim.InitStatusIcon(statusType, status.StatusFrame, status.StatusSprite, status.StatusFrameColor, duration, battleBehaviour.StatusManager, statusIndicatorPool);
             sim.OnStatusTerminated += OnStatusTerminated;
-            if (statusType == StatusType.Shield)
+            if (statusType == StatusIconType.Shield)
             {
                 haveShields = true;
             }
 
-            if (statusType == StatusType.DamageImprovement)
+            if (statusType == StatusIconType.DamageImprovement)
             {
                 haveDamageImprovement = true;
             }
 
-            if (statusType == StatusType.Blind || statusType == StatusType.Debuff || statusType == StatusType.DoT || statusType == StatusType.DoTFire || statusType == StatusType.Slow || statusType == StatusType.Stun)
+            if (statusType == StatusIconType.Blind || statusType == StatusIconType.Debuff || statusType == StatusIconType.DoT || statusType == StatusIconType.DoTFire || statusType == StatusIconType.Slow || statusType == StatusIconType.Stun)
             {
                 debuffList.Add(sim);
-            } else if (statusType == StatusType.Buff || statusType == StatusType.DamageImprovement || statusType == StatusType.Speed || statusType == StatusType.ParryPrepared || statusType == StatusType.ShieldPrepared)
+            } else if (statusType == StatusIconType.Buff || statusType == StatusIconType.DamageImprovement || statusType == StatusIconType.Speed || statusType == StatusIconType.ParryPrepared || statusType == StatusIconType.ShieldPrepared)
             {
                 buffList.Add(sim);
             }
+            ExecuteOnStartEvents(statusType);
         }
 
         private void OnShieldsChanged(CharacterHealth sender, int delta, int total, bool isDamage, float shieldPercent)
         {
             if (total > 0)
             {
-                OnStatusApplied(StatusType.Shield, -1f);
+                OnStatusApplied(StatusIconType.Shield, -1f);
             }
         }
 
@@ -107,7 +123,7 @@ namespace Laresistance.Behaviours
             haveDamageImprovement = false;
         }
 
-        private StatusData GetStatus(StatusType statusType)
+        private StatusData GetStatus(StatusIconType statusType)
         {
             foreach(var status in statusList.Statuses)
             {
@@ -119,14 +135,14 @@ namespace Laresistance.Behaviours
             return null;
         }
 
-        private void OnStatusTerminated(StatusIconManager sender, StatusType type)
+        private void OnStatusTerminated(StatusIconManager sender, StatusIconType type)
         {
-            if (type == StatusType.Shield)
+            if (type == StatusIconType.Shield)
             {
                 haveShields = false;
             }
 
-            if (type == StatusType.DamageImprovement)
+            if (type == StatusIconType.DamageImprovement)
             {
                 haveDamageImprovement = false;
             }
@@ -140,6 +156,7 @@ namespace Laresistance.Behaviours
             {
                 debuffList.Remove(sender);
             }
+            ExecuteOnEndEvents(type);
         }
 
         private void OnRemoveBuffs(BattleStatusManager statusManager)
@@ -162,7 +179,7 @@ namespace Laresistance.Behaviours
             debuffList.Clear();
         }
 
-        private void OnRemoveSingleton(BattleStatusManager statusManager, StatusType statusType)
+        private void OnRemoveSingleton(BattleStatusManager statusManager, StatusIconType statusType)
         {
             for (int i = 0; i < buffList.Count; ++i)
             {
@@ -179,6 +196,24 @@ namespace Laresistance.Behaviours
                     debuffList[i].ManualTermination();
                     break;
                 }
+            }
+        }
+
+        private void ExecuteOnStartEvents(StatusIconType statusType)
+        {
+            foreach(var ev in OnStartStatusEvents)
+            {
+                if (ev.IsStatusType(statusType))
+                    ev.Invoke();
+            }
+        }
+
+        private void ExecuteOnEndEvents(StatusIconType statusType)
+        {
+            foreach (var ev in OnEndStatusEvents)
+            {
+                if (ev.IsStatusType(statusType))
+                    ev.Invoke();
             }
         }
     }
