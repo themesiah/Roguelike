@@ -11,5 +11,7 @@
     DamageImprovement,
     Blind,
     ParryPrepared,
-    ShieldPrepared
+    ShieldPrepared,
+    Retaliation,
+    Barrier
 }

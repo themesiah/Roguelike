@@ -42,9 +42,15 @@ namespace Laresistance.Battle
             if (UnityEngine.Random.value <= SelfStatus.GetValueModifier(StatusType.Blind))
             {
                 int damage = GetPower(level, equipments);
+                // Damage barrier
+                damage -= (int)target.GetValueModifier(StatusType.Barrier);
+                damage = System.Math.Max(damage, 1);
+                // Deal damage (equipment shenanigans calculated in TakeDamage)
                 damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer(), equipments);
+                // Check for equipment and buff retaliation and apply if necessary
                 int retaliation = 0;
                 retaliation = target.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.RetaliationDamage, retaliation);
+                retaliation += (int)target.GetValueModifier(StatusType.Retaliation);
                 if (retaliation > 0)
                 {
                     SelfStatus.health.TakeDamage(retaliation, equipments, target.GetEquipmentsContainer());

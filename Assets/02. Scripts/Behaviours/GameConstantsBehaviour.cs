@@ -47,6 +47,10 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference parryPreparationTime = default;
         [Tooltip("Duration for shield preparation. During the duration, the enemy will block attacks")]
         public ScriptableFloatReference shieldPreparationTime = default;
+        [Tooltip("Time in seconds of duration for retaliation buff")]
+        public ScriptableFloatReference retaliationBuffDuration = default;
+        [Tooltip("Time in seconds of duration for barrier buff")]
+        public ScriptableFloatReference barrierBuffDuration = default;
 
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]

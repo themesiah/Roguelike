@@ -6,5 +6,7 @@
     DoT,
     Blind,
     ParryPrepared,
-    ShieldPrepared
+    ShieldPrepared,
+    Retaliation,
+    Barrier
 }
