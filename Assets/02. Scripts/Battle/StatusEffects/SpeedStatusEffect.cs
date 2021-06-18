@@ -100,5 +100,14 @@ namespace Laresistance.Battle
             }
             return false;
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            foreach (var speedEffect in speedEffectInstances)
+            {
+                other.AddValue(speedEffect.speedCoeficient);
+            }
+        }
     }
 }

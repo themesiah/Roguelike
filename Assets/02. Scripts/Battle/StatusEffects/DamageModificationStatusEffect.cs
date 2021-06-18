@@ -103,5 +103,14 @@ namespace Laresistance.Battle
             }
             return false;
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            foreach (var damageModification in damageModifications)
+            {
+                other.AddValue(damageModification.modifier);
+            }
+        }
     }
 }

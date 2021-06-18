@@ -52,5 +52,9 @@ namespace Laresistance.Battle
         {
             return parryPreparedTimer > 0f;
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+        }
     }
 }

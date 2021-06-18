@@ -57,5 +57,14 @@ namespace Laresistance.Battle
         {
             barrierEffectInstances.Clear();
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            foreach(var barrier in barrierEffectInstances)
+            {
+                other.AddValue(barrier.barrier);
+            }
+        }
     }
 }

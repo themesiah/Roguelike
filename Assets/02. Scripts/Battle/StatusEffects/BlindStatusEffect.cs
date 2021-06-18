@@ -57,5 +57,14 @@ namespace Laresistance.Battle
         {
             return blindStatuses.Count > 0;
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            foreach (var blindEffect in blindStatuses)
+            {
+                other.AddValue(blindEffect.coeficient);
+            }
+        }
     }
 }

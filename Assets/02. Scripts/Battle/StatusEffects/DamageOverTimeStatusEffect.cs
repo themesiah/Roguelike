@@ -64,5 +64,14 @@ namespace Laresistance.Battle
         {
             return damageOverTimes.Count > 0;
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            foreach (var dot in damageOverTimes)
+            {
+                other.AddValue(dot.power);
+            }
+        }
     }
 }

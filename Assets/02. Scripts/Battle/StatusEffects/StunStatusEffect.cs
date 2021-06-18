@@ -11,7 +11,7 @@
 
         public override void AddValue(float value)
         {
-            if (stunTimer < value)
+            if (value > 0f && stunTimer < value)
             {
                 stunTimer = value;
                 statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Stun, value);
@@ -39,6 +39,12 @@
         public override bool HaveDebuff()
         {
             return stunTimer > 0f;
+        }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            other.AddValue(stunTimer);
         }
     }
 }

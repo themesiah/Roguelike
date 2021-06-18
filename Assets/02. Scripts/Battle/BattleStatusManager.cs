@@ -100,7 +100,7 @@ namespace Laresistance.Battle
 
         #region Status getters and setters
 
-        private StatusEffect GetStatus(StatusType type)
+        public StatusEffect GetStatus(StatusType type)
         {
             if (!statusEffects.ContainsKey(type))
             {
@@ -109,6 +109,11 @@ namespace Laresistance.Battle
                 statusEffectsList.Add(se);
             }
             return statusEffects[type];
+        }
+
+        public List<StatusEffect> GetAllStatus()
+        {
+            return statusEffectsList;
         }
 
         public void ApplyStatusEffect(StatusType type, float value)

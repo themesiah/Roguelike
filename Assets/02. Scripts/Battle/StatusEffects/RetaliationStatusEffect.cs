@@ -57,5 +57,14 @@ namespace Laresistance.Battle
         {
             retaliationEffectInstances.Clear();
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+            UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
+            foreach (var retaliationEffect in retaliationEffectInstances)
+            {
+                other.AddValue(retaliationEffect.retaliationDamage);
+            }
+        }
     }
 }

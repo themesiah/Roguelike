@@ -51,5 +51,9 @@ namespace Laresistance.Battle
         {
             return shieldPreparedTimer > 0f;
         }
+
+        public override void CopyTo(StatusEffect other)
+        {
+        }
     }
 }
