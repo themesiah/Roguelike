@@ -15,7 +15,7 @@ namespace Laresistance.Core
                 abilities[i] = BattleAbilityFactory.GetBattleAbility(minionData.AbilitiesData[i], equipments, battleStatus);
             }
             
-            Minion minion = new Minion(minionData, abilities, level);
+            Minion minion = new Minion(minionData, abilities, level, battleStatus);
             return minion;
         }
     }

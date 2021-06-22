@@ -1,75 +1,67 @@
-﻿using Laresistance.Core;
+﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
     public class EquipmentObtainedBehaviour : RewardPanelBehaviour
     {
-        [Header("New equip panel")]
-        [SerializeField]
-        private Text newEquipNameText = default;
-        [SerializeField]
-        private Text newEquipDescriptionText = default;
-        [SerializeField]
-        private Text newEquipSlotText = default;
-        [SerializeField]
-        private Image newEquipImage = default;
-        [Header("Current equip panel")]
-        [SerializeField]
-        private Text currentEquipNameText = default;
-        [SerializeField]
-        private Text currentEquipDescriptionText = default;
-        [SerializeField]
-        private Text currentEquipSlotText = default;
-        [SerializeField]
-        private Image currentEquipImage = default;
-        [Header("No current equip panel")]
-        [SerializeField]
-        private Text noEquipSlotText = default;
         [Header("General")]
         [SerializeField]
-        private Image[] panels = default;
+        private GameObject[] equipmentPanels = default;
+        [Header("Current equipments")]
+        [SerializeField]
+        private Text[] currentEquipmentsName = default;
+        [SerializeField]
+        private Text[] currentEquipmentsDescription = default;
+        [SerializeField]
+        private Image[] currentEquipmentsImages = default;
+        [SerializeField]
+        private Text[] currentEquipmentsButtonPressNotice = default;
+        [Header("New equip panel")]
+        [SerializeField]
+        private LocalizedStringTextBehaviour newEquipNameText = default;
+        [SerializeField]
+        private Text newEquipDescriptionText = default;
         [Header("Droped equipment")]
         [SerializeField]
         private GameObject mapEquipmentPrefab = default;
         [SerializeField]
         private float force = 10f;
 
-        protected override void SetButtonCallbacks()
-        {
-            selectableButtons[0].onClick.AddListener(() => { selectedOptionIndex = -1; });
-            selectableButtons[1].onClick.AddListener(() => { selectedOptionIndex = -1; });
-            selectableButtons[2].onClick.AddListener(() => { selectedOptionIndex = 0; });
-        }
-
         protected override IEnumerator StartingTween(RewardData rewardData)
         {
             Player player = playerDataReference.Get().player;
-            newEquipNameText.text = rewardData.equip.Name;
+            newEquipNameText.ChangeVariable(rewardData.equip.Name);
             newEquipDescriptionText.text = rewardData.equip.GetEquipmentEffectDescription();
-            newEquipSlotText.text = rewardData.equip.SlotName;
-            newEquipImage.sprite = rewardData.equip.Data.SpriteReference;
-            noEquipSlotText.text = rewardData.equip.SlotName;
 
-            // Show current equipment
-            Equipment currentEquip = player.GetEquipments()[rewardData.equip.Slot];
-            if (currentEquip == null)
+            foreach(var panel in equipmentPanels)
             {
-                panels[1].gameObject.SetActive(false);
-                panels[2].gameObject.SetActive(true);
-            } else
+                panel.SetActive(false);
+            }
+
+            var equipments = player.GetEquipments();
+            for(int i = 0; i <= player.EquipmentMaxSlotAllowed; ++i)
             {
-                panels[1].gameObject.SetActive(true);
-                panels[2].gameObject.SetActive(false);
-                currentEquipNameText.text = currentEquip.Name;
-                currentEquipDescriptionText.text = currentEquip.GetEquipmentEffectDescription();
-                currentEquipSlotText.text = currentEquip.SlotName;
-                currentEquipImage.sprite = currentEquip.Data.SpriteReference;
+                equipmentPanels[i].SetActive(true);
+                if (equipments[i] != null)
+                {
+                    currentEquipmentsName[i].text = equipments[i].Name;
+                    currentEquipmentsDescription[i].text = equipments[i].GetEquipmentEffectDescription();
+                    currentEquipmentsImages[i].sprite = equipments[i].Data.SpriteReference;
+                    currentEquipmentsImages[i].enabled = true;
+                    currentEquipmentsButtonPressNotice[i].text = Texts.GetText("REWARD_EQUIPMENT_002");
+                } else
+                {
+                    currentEquipmentsName[i].text = "NO EQUIP";
+                    currentEquipmentsDescription[i].text = "";
+                    currentEquipmentsImages[i].sprite = null;
+                    currentEquipmentsImages[i].enabled = false;
+                    currentEquipmentsButtonPressNotice[i].text = Texts.GetText("REWARD_EQUIPMENT_002-2");
+                }
             }
 
             yield return base.StartingTween(rewardData);
@@ -86,10 +78,10 @@ namespace Laresistance.Behaviours
             }
             if (selectedOptionIndex >= 0)
             {
-                dropedEquipment = player.GetEquipments()[rewardData.equip.Slot];
+                dropedEquipment = player.GetEquipments()[selectedOptionIndex];
                 if (dropedEquipment != null)
-                    player.UnequipEquipment(dropedEquipment);
-                player.EquipEquipment(rewardData.equip);
+                    player.UnequipEquipment(selectedOptionIndex);
+                player.EquipEquipment(rewardData.equip, selectedOptionIndex);
             }
             else
             {

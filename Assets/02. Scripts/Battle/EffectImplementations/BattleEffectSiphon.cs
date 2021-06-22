@@ -33,7 +33,8 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
-            int damageDone = PerformAttackEffect(target, level, equipments, bloodRef);
+            int damage = GetPower(level, equipments);
+            int damageDone = PerformAttackEffect(target, damage, equipments, bloodRef);
             if (damageDone > 0)
             {
                 int healAmount = Mathf.FloorToInt(damageDone * GameConstantsBehaviour.Instance.siphonPercent.GetValue());

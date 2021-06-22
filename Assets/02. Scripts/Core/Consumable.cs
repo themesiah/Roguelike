@@ -15,7 +15,7 @@ namespace Laresistance.Core
             Ability = ability;
         }
 
-        public bool SetInSlot(Player player)
+        public bool SetInSlot(Player player, int slot)
         {
             return player.AddConsumable(this);
         }

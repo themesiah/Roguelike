@@ -174,10 +174,6 @@ namespace Laresistance.Simulator
                     while (equipments.Count != equipmentsAmount)
                     {
                         EquipmentData ed = simulatorData.PossibleEquipments[Random.Range(0, simulatorData.PossibleEquipments.Length)];
-                        while (equipments.Any((EquipmentData anyEquip) => anyEquip.Slot == ed.Slot) || (allowCorruptedEquipment == false && ed.Corrupted))
-                        {
-                            ed = simulatorData.PossibleEquipments[Random.Range(0, simulatorData.PossibleEquipments.Length)];
-                        }
                         equipments.Add(ed);
                     }
                 }
@@ -261,10 +257,11 @@ namespace Laresistance.Simulator
                 player.EquipMinion(m);
             }
 
-            foreach (var equipmentData in playerEquipments)
+            for (int i = 0; i < playerEquipments.Length; ++i)
             {
+                var equipmentData = playerEquipments[i];
                 Equipment equip = EquipmentFactory.GetEquipment(equipmentData, playerStatus);
-                if (!player.EquipEquipment(equip))
+                if (!player.EquipEquipment(equip, i))
                 {
                     Assert.IsTrue(false, "The simulation contains more than one equipment of the same slot");
                 }

@@ -1,6 +1,4 @@
-﻿using GamedevsToolbox.ScriptableArchitecture.Values;
-using Laresistance.Battle;
-using Laresistance.Equipments;
+﻿using Laresistance.Battle;
 using System.Collections.Generic;
 using System.Text;
 
@@ -180,14 +178,30 @@ namespace Laresistance.Core
             }
         }
 
-        public bool EquipEquipment(Equipment equipment)
+        public int EquipmentMaxSlotAllowed
         {
-            return equipmentsContainer.EquipEquipment(equipment);
+            get
+            {
+                return EquippedMinionsQuantity;
+            }
         }
 
-        public bool UnequipEquipment(Equipment equipment)
+        public bool EquipEquipment(Equipment equipment, int slot)
         {
-            return equipmentsContainer.UnequipEquipment(equipment);
+            UnityEngine.Assertions.Assert.IsTrue(slot >= 0);
+            UnityEngine.Assertions.Assert.IsTrue(slot < GetEquipments().Length);
+            if (slot > EquipmentMaxSlotAllowed)
+            {
+                return false;
+            }
+            return equipmentsContainer.EquipEquipment(equipment, slot);
+        }
+
+        public bool UnequipEquipment(int slot)
+        {
+            UnityEngine.Assertions.Assert.IsTrue(slot >= 0);
+            UnityEngine.Assertions.Assert.IsTrue(slot < GetEquipments().Length);
+            return equipmentsContainer.UnequipEquipment(slot);
         }
         #endregion
 

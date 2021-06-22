@@ -51,6 +51,10 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference retaliationBuffDuration = default;
         [Tooltip("Time in seconds of duration for barrier buff")]
         public ScriptableFloatReference barrierBuffDuration = default;
+        [Tooltip("Time in seconds of duration for heal over time effects")]
+        public ScriptableFloatReference healOverTimeDuration = default;
+        [Tooltip("Time in seconds between heals in heal over time effects")]
+        public ScriptableFloatReference healOverTimeTickDelay = default;
 
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]

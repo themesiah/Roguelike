@@ -31,17 +31,17 @@ namespace Laresistance.Battle
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            PerformAttackEffect(target, level, equipments, bloodRef);
+            int damage = GetPower(level, equipments);
+            PerformAttackEffect(target, damage, equipments, bloodRef);
         }
 
-        protected int PerformAttackEffect(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
+        protected int PerformAttackEffect(BattleStatusManager target, int damage, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
             int damageDone = 0;
             if (UnityEngine.Random.value <= SelfStatus.GetValueModifier(StatusType.Blind))
             {
-                int damage = GetPower(level, equipments);
                 // Damage barrier
                 damage -= (int)target.GetValueModifier(StatusType.Barrier);
                 damage = System.Math.Max(damage, 1);

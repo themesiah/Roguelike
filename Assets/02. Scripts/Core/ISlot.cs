@@ -2,6 +2,6 @@
 {
     public interface ISlot
     {
-        bool SetInSlot(Player player);
+        bool SetInSlot(Player player, int slot);
     }
 }

@@ -13,5 +13,6 @@
     ParryPrepared,
     ShieldPrepared,
     Retaliation,
-    Barrier
+    Barrier,
+    Regeneration
 }

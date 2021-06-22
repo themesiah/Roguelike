@@ -9,7 +9,7 @@ namespace Laresistance.Core
         {
             UnityEngine.Assertions.Assert.IsNotNull(equipmentData.EquipmentEffects);
             UnityEngine.Assertions.Assert.IsTrue(equipmentData.EquipmentEffects.Count > 0);
-            Equipment equip = new Equipment((int)equipmentData.Slot, equipmentData, statusManager);
+            Equipment equip = new Equipment(equipmentData, statusManager);
             return equip;
         }
     }

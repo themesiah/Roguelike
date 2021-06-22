@@ -9,8 +9,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Text equipmentName = default;
         [SerializeField]
-        private Text equipmentSlot = default;
-        [SerializeField]
         private Text equipmentDescription = default;
         [SerializeField]
         private Image equipmentIcon = default;
@@ -22,10 +20,6 @@ namespace Laresistance.Behaviours
                 if (equipmentName != null)
                 {
                     equipmentName.text = "";
-                }
-                if (equipmentSlot != null)
-                {
-                    equipmentSlot.text = "";
                 }
                 if (equipmentDescription != null)
                 {
@@ -42,10 +36,6 @@ namespace Laresistance.Behaviours
                 if (equipmentName != null)
                 {
                     equipmentName.text = equipment.Name;
-                }
-                if (equipmentSlot != null)
-                {
-                    equipmentSlot.text = equipment.SlotName;
                 }
                 if (equipmentDescription != null)
                 {

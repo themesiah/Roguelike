@@ -59,24 +59,24 @@ namespace Laresistance.Core
             return reference;
         }
 
-        public bool EquipEquipment(Equipment equipment)
+        public bool EquipEquipment(Equipment equipment, int slot)
         {
-            if (equipment == null || equipment.Slot == -1)
+            if (equipment == null || slot == -1)
                 throw new System.Exception("Can't equip. Equipment does not exist.");
-            if (Equipments[equipment.Slot] != null)
+            if (Equipments[slot] != null)
                 throw new System.Exception("Can't equip. Slot already in use.");
-            Equipments[equipment.Slot] = equipment;
+            Equipments[slot] = equipment;
             equipment.EquipEquipment();
             OnEquip?.Invoke(this);
             return true;
         }
 
-        public bool UnequipEquipment(Equipment equipment)
+        public bool UnequipEquipment(int slot)
         {
-            if (equipment == null || equipment.Slot == -1 || Equipments[equipment.Slot] != equipment)
+            if (slot == -1 || Equipments[slot] == null)
                 throw new System.Exception("Can't unequip. Equipment does not exist, or invalid slot");
-            Equipments[equipment.Slot] = null;
-            equipment.UnequipEquipment();
+            Equipments[slot].UnequipEquipment();
+            Equipments[slot] = null;
             OnUnequip?.Invoke(this);
             return true;
         }

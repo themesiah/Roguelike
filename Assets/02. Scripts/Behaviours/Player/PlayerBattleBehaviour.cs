@@ -90,7 +90,6 @@ namespace Laresistance.Behaviours
         public override void OutsideBattleHeal(int heal)
         {
             base.OutsideBattleHeal(heal);
-            StatusManager.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.FountainBlood, bloodReference);
         }
     }
 }

@@ -16,10 +16,6 @@ namespace Laresistance.Data
         public string EquipmentDescriptionReference { get { return equipDescriptionReference; } }
 
         [SerializeField]
-        private EquipmentSlotType slot = default;
-        public EquipmentSlotType Slot { get { return slot; } }
-
-        [SerializeField]
         private int hardCurrencyCost = default;
         public int HardCurrencyCost { get { return hardCurrencyCost; } }
 

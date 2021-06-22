@@ -2,7 +2,6 @@
 using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 using Laresistance.Core;
 
 namespace Laresistance.Behaviours
@@ -30,8 +29,11 @@ namespace Laresistance.Behaviours
         protected override IEnumerator StartingTween(RewardData rewardData)
         {
             Player player = playerDataReference.Get().player;
+            player.statusManager.ResetStatus();
+            rewardData.minion.StatusManager?.ResetStatus();
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
+            
 
             // Show 3 current minions
             for (int i = 0; i < player.GetMinions().Length; ++i)

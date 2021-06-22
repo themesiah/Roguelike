@@ -14,9 +14,11 @@ namespace Laresistance.Core
         public string Name { get { return Texts.GetText(Data.NameRef); }}
         public MinionData Data { get; private set; }
         private BattleAbility[] abilities = default;
+        private EquipmentsContainer equipmentsContainer;
+        public BattleStatusManager StatusManager;
         public int Level { get; private set; }
 
-        public Minion(MinionData data, BattleAbility[] abilities, int level)
+        public Minion(MinionData data, BattleAbility[] abilities, int level, BattleStatusManager statusManager)
         {
             Data = data;
             if (abilities == null)
@@ -29,11 +31,13 @@ namespace Laresistance.Core
             if (level <= 0 || level > MAX_MINION_LEVEL)
                 throw new System.Exception("A minion level must be at least 1 and " + MAX_MINION_LEVEL + " at max");
             Level = level;
+            this.StatusManager = statusManager;
         }
 
         public void SetEquipmentsContainer(EquipmentsContainer equipments)
         {
-            foreach(var ability in abilities)
+            equipmentsContainer = equipments;
+            foreach (var ability in abilities)
             {
                 ability.SetEquipmentsContainer(equipments);
             }
@@ -41,6 +45,7 @@ namespace Laresistance.Core
 
         public void SetStatusManager(BattleStatusManager selfStatus)
         {
+            StatusManager = selfStatus;
             foreach (var ability in abilities)
             {
                 ability.SetStatusManager(selfStatus);
@@ -52,7 +57,7 @@ namespace Laresistance.Core
             return 0;
         }
 
-        public bool SetInSlot(Player player)
+        public bool SetInSlot(Player player, int slot)
         {
             return player.EquipMinion(this);
         }

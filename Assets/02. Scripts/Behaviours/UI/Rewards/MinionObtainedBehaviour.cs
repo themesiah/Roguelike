@@ -24,6 +24,7 @@ namespace Laresistance.Behaviours
 
         protected override IEnumerator StartingTween(RewardData rewardData)
         {
+            rewardData.minion.StatusManager?.ResetStatus();
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
             yield return base.StartingTween(rewardData);

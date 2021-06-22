@@ -82,7 +82,12 @@ namespace Laresistance.Battle
                 int totalDamage = (int)GetValueModifier(StatusType.DoT);
                 if (totalDamage > 0) {
                     totalDamage = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.DotDamageReceived, totalDamage);
-                    health.TakeDamage(totalDamage, GetEquipmentsContainer(), new EquipmentsContainer());
+                    health.TakeDotDamage(totalDamage);
+                }
+
+                int totalHeal = (int)GetValueModifier(StatusType.Regeneration);
+                if (totalHeal > 0) {
+                    health.Heal(totalHeal);
                 }
                 
                 health.Tick(delta);

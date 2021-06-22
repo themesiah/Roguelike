@@ -44,7 +44,7 @@ namespace Laresistance.Systems
 
             if (reward.minion != null)
             {
-                bool autoEquipped = reward.minion.SetInSlot(player);
+                bool autoEquipped = reward.minion.SetInSlot(player,-1);
 
                 if (autoEquipped)
                 {
@@ -60,7 +60,7 @@ namespace Laresistance.Systems
 
             if (reward.consumable != null)
             {
-                bool autoEquipped = reward.consumable.SetInSlot(player);
+                bool autoEquipped = reward.consumable.SetInSlot(player, -1);
 
                 if (autoEquipped)
                 {

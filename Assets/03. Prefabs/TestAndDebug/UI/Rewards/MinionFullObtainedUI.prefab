@@ -1078,7 +1078,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5375015623734031827}
   - component: {fileID: 5375015623734031825}
-  - component: {fileID: 5919055179069214036}
   m_Layer: 5
   m_Name: MinionFullObtainedUI
   m_TagString: Untagged
@@ -1144,87 +1143,6 @@ MonoBehaviour:
   sortingOrder: 101
   scaleMultiplier: 40
   unlitMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
---- !u!114 &5919055179069214036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5375015623734031836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad113c9affbcc094fbf35ba14b3b1378, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputEventList:
-  - Event: {fileID: 11400000, guid: cf5992efdd1dffc4687241acc62ce0ab, type: 2}
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5375015623734031825}
-          m_TargetAssemblyTypeName: Laresistance.Behaviours.MinionsFullObtainedBehaviour,
-            GameScripts
-          m_MethodName: MinionDSelected
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - Event: {fileID: 11400000, guid: f3950ae2055eefc4a9fe454668981088, type: 2}
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5375015623734031825}
-          m_TargetAssemblyTypeName: Laresistance.Behaviours.MinionsFullObtainedBehaviour,
-            GameScripts
-          m_MethodName: MinionSSelected
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - Event: {fileID: 11400000, guid: 89830060e8ad4e74aa6e15dc48624660, type: 2}
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5375015623734031825}
-          m_TargetAssemblyTypeName: Laresistance.Behaviours.MinionsFullObtainedBehaviour,
-            GameScripts
-          m_MethodName: MinionASelected
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - Event: {fileID: 11400000, guid: 89b111a7273415549a2f0d7b459b7eba, type: 2}
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5375015623734031825}
-          m_TargetAssemblyTypeName: Laresistance.Behaviours.MinionsFullObtainedBehaviour,
-            GameScripts
-          m_MethodName: IgnoreSelected
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &5375015623751613382
 GameObject:
   m_ObjectHideFlags: 0

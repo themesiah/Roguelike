@@ -4,6 +4,7 @@ using Laresistance.Core;
 using Laresistance.Data;
 using Laresistance.Systems;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Behaviours
@@ -34,13 +35,41 @@ namespace Laresistance.Behaviours
 
         private RewardSystem rewardSystem;
 
+        public static List<string> GlobalEquipList;
+
         private void Start()
         {
-            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, rewardUILibrary);
-            if (randomDataFromDatas)
+            if (GlobalEquipList == null)
             {
-                SetData(possibleDatas[Random.Range(0, possibleDatas.Length)]);
+                GlobalEquipList = new List<string>();
             }
+            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, rewardUILibrary);
+            if (randomDataFromDatas && data == null)
+            {
+                var data = GetRandomData();
+                AddToGlobalEquipList(data);
+                SetData(data);
+            }
+        }
+
+        public static void AddToGlobalEquipList(EquipmentData data)
+        {
+            if (GlobalEquipList == null)
+                GlobalEquipList = new List<string>();
+            GlobalEquipList.Add(data.EquipmentNameReference);
+        }
+
+        private EquipmentData GetRandomData()
+        {
+            List<EquipmentData> nonRepeatedDatas = new List<EquipmentData>();
+            foreach(var data in possibleDatas)
+            {
+                if (!GlobalEquipList.Contains(data.EquipmentNameReference))
+                {
+                    nonRepeatedDatas.Add(data);
+                }
+            }
+            return nonRepeatedDatas[Random.Range(0, nonRepeatedDatas.Count)];
         }
 
         public void SetData(EquipmentData data)

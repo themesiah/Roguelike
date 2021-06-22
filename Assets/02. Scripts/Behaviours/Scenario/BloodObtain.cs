@@ -53,7 +53,8 @@ namespace Laresistance.Behaviours
 
         private IEnumerator RewardCoroutine(int amount)
         {
-            spriteRenderer.enabled = false;
+            if (spriteRenderer != null)
+                spriteRenderer.enabled = false;
             gameContextSignal.Raise("UI");
             yield return rewardSystem.GetReward(new RewardData(amount, 0, null, null, null, null, null));
             gameContextSignal.Raise("Map");

@@ -16,8 +16,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Text abilityTextReference = default;
         [SerializeField]
-        private Text slotTextReference = default;
-        [SerializeField]
         private Image equipmentSprite = default;
 
         public override void SetupOffer(ShopOffer offer)
@@ -25,7 +23,6 @@ namespace Laresistance.Behaviours
             SetCost(offer.Cost);
             equipmentNameReference.text = Texts.GetText(offer.Reward.equip.Name);
             abilityTextReference.text = offer.Reward.equip.GetEquipmentEffectDescription();
-            slotTextReference.text = offer.Reward.equip.SlotName;
             equipmentSprite.sprite = offer.Reward.equip.Data.SpriteReference;
         }
 

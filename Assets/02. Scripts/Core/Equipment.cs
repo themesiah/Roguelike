@@ -10,34 +10,24 @@ namespace Laresistance.Core
 {
     public class Equipment : ShowableElement, ISlot
     {
-        private int slot = -1;
         private bool equiped = false;
         private BattleStatusManager statusManager;
         private List<string> descriptionReferences;
         private List<string> descriptionVariables;
         public EquipmentData Data { get; private set; }
         public string Name => Texts.GetText(Data.EquipmentNameReference);
-        public string SlotName => Texts.GetText("EQUIPMENT_SLOT_" + Slot.ToString());
-        public int Slot
-        {
-            get
-            {
-                return slot;
-            }
-        }
 
-        public Equipment(int slot, EquipmentData equipmentData, BattleStatusManager statusManager)
+        public Equipment(EquipmentData equipmentData, BattleStatusManager statusManager)
         {
-            this.slot = slot;
             this.Data = equipmentData;
             this.statusManager = statusManager;
             descriptionReferences = new List<string>();
             descriptionVariables = new List<string>();
         }
 
-        public bool SetInSlot(Player player)
+        public bool SetInSlot(Player player, int slot)
         {
-            return player.EquipEquipment(this);
+            return player.EquipEquipment(this, slot);
         }
 
         public void EquipEquipment()

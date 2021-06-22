@@ -2,7 +2,6 @@
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Core;
 using Laresistance.Data;
-using UnityEngine;
 
 namespace Laresistance.Battle
 {

@@ -72,10 +72,12 @@ namespace Laresistance.Behaviours
                     player.AddConsumable(c);
                 }
 
-                foreach (var eq in startingEquipments)
+                for(int i = 0; i < startingEquipments.Count; ++i)
                 {
+                    var eq = startingEquipments[i];
                     Equipment e = EquipmentFactory.GetEquipment(eq, StatusManager);
-                    player.EquipEquipment(e);
+                    player.EquipEquipment(e, i);
+                    MapEquipment.AddToGlobalEquipList(eq);
                 }
             }
         }

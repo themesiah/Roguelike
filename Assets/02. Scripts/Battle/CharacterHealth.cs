@@ -98,7 +98,10 @@ namespace Laresistance.Battle
             if (currentHealth <= 0)
                 return 0;
             int remainingPower = power;
-            
+
+            remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
+            remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
+
             for (int i = currentShields.Count-1; i >= 0; --i)
             {
                 Shield s = currentShields[i];
@@ -124,9 +127,28 @@ namespace Laresistance.Battle
                     currentShields.Remove(s);
                 }
             }
+            
+            currentHealth -= remainingPower;
+            currentHealth = System.Math.Max(currentHealth, 0);
 
-            remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
-            remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
+            if (remainingPower > 0)
+            {
+                OnDamageTaken?.Invoke(this, remainingPower, currentHealth);
+            }
+
+            if (currentHealth <= 0)
+            {
+                OnDeath?.Invoke(this);
+            }
+            return remainingPower;
+        }
+
+        public int TakeDotDamage(int power)
+        {
+            if (currentHealth <= 0)
+                return 0;
+            int remainingPower = power;
+
             currentHealth -= remainingPower;
             currentHealth = System.Math.Max(currentHealth, 0);
 
