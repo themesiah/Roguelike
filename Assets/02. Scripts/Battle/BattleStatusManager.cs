@@ -216,6 +216,10 @@ namespace Laresistance.Battle
         public void BattleEnd()
         {
             CurrentEnergy = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.AfterBattleEnergyLoss, CurrentEnergy);
+            int healAmount = 0;
+            healAmount = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.BattleEndHeal, healAmount);
+            if (healAmount > 0)
+                health.Heal(healAmount);
         }
 
         public void SetEquipmentsContainer(EquipmentsContainer equipments)

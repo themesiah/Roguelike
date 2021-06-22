@@ -25,6 +25,14 @@ namespace Laresistance.Battle
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AttackPower, power);
             power = (int)(power * SelfStatus.GetValueModifier(StatusType.DamageModification));
             power = System.Math.Max(1, power);
+            if (IsComboAbility())
+            {
+                power = equipments.ModifyValue(Equipments.EquipmentSituation.ComboAbilityPower, power);
+            }
+            else
+            {
+                power = equipments.ModifyValue(Equipments.EquipmentSituation.NonComboAbilityPower, power);
+            }
             Assert.IsTrue(power >= 0, "Power should not be negative.");
             return power;
         }

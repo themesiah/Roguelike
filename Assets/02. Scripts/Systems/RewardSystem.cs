@@ -44,6 +44,9 @@ namespace Laresistance.Systems
 
             if (reward.minion != null)
             {
+                int level = reward.minion.Level;
+                level = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.RecruitedMinionLevel, level);
+                reward.minion.SetLevel(level);
                 bool autoEquipped = reward.minion.SetInSlot(player,-1);
 
                 if (autoEquipped)

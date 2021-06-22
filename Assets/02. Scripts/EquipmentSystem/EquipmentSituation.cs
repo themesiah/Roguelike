@@ -29,6 +29,12 @@
         AfterBattleEnergyLoss,
         DotDamageReceived,
         FountainBlood,
-        ShuffleEnergyGain
+        ShuffleEnergyGain,
+        RecruitedMinionLevel,
+        ShieldHealthCost,
+        ComboAbilityPower,
+        NonComboAbilityPower,
+        ShuffleStartingValue,
+        BattleEndHeal
     }
 }

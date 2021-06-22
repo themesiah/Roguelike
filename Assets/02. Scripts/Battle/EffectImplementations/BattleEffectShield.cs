@@ -1,6 +1,5 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using GamedevsToolbox.ScriptableArchitecture.Values;
-using Laresistance.Behaviours;
 using Laresistance.Core;
 using Laresistance.Data;
 using UnityEngine;
@@ -22,6 +21,14 @@ namespace Laresistance.Battle
             int power = Mathf.CeilToInt(Power * (1 + ((level - 1) * 0.1f)));
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.ShieldPower, power);
+            if (IsComboAbility())
+            {
+                power = equipments.ModifyValue(Equipments.EquipmentSituation.ComboAbilityPower, power);
+            }
+            else
+            {
+                power = equipments.ModifyValue(Equipments.EquipmentSituation.NonComboAbilityPower, power);
+            }
             return power;
         }
 
@@ -29,6 +36,12 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.ShieldBloodCost, bloodRef);
+            int healthCost = 0;
+            healthCost = equipments.ModifyValue(Equipments.EquipmentSituation.ShieldHealthCost, healthCost);
+            if (healthCost > 0)
+            {
+                SelfStatus.health.TakeDotDamage(healthCost);
+            }
             target.health.AddShield(GetPower(level, equipments));
         }
 

@@ -31,6 +31,14 @@ namespace Laresistance.Battle
             }
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.EffectPower, power);
+            if (IsComboAbility())
+            {
+                power = equipments.ModifyValue(Equipments.EquipmentSituation.ComboAbilityPower, power);
+            }
+            else
+            {
+                power = equipments.ModifyValue(Equipments.EquipmentSituation.NonComboAbilityPower, power);
+            }
             return power;
         }
 

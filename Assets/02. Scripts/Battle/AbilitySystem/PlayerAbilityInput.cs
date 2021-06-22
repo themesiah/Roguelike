@@ -240,6 +240,7 @@ namespace Laresistance.Battle
             OnAbilitiesToUseChanged?.Invoke(this);
             InitializeCards();
             shuffleTimer = TotalShuffleCooldown;
+            shuffleTimer = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleStartingValue, shuffleTimer);
             renewTimer = TotalCardRenewCooldown;
             abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
         }
@@ -277,7 +278,7 @@ namespace Laresistance.Battle
                 OnNextCardProgress?.Invoke(this, NextCardProgress);
                 int[] discarded = DiscardAvailableAbilities();
                 OnShuffle?.Invoke(this, discarded);
-                int energyValue = discarded.Length;
+                float energyValue = discarded.Length;
                 energyValue = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleEnergyGain, energyValue);
                 battleStatus.AddEnergy(energyValue);
                 RenewAllAbilities();

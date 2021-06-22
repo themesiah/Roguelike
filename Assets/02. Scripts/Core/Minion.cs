@@ -16,7 +16,7 @@ namespace Laresistance.Core
         private BattleAbility[] abilities = default;
         private EquipmentsContainer equipmentsContainer;
         public BattleStatusManager StatusManager;
-        public int Level { get; private set; }
+        public int Level { get; set; }
 
         public Minion(MinionData data, BattleAbility[] abilities, int level, BattleStatusManager statusManager)
         {
@@ -60,6 +60,11 @@ namespace Laresistance.Core
         public bool SetInSlot(Player player, int slot)
         {
             return player.EquipMinion(this);
+        }
+
+        public void SetLevel(int level)
+        {
+            Level = level;
         }
 
         public IEnumerator ExecuteAbility(int skillIndex, BattleStatusManager[] allies, BattleStatusManager[] enemies, IBattleAnimator animator, ScriptableIntReference bloodRef)

@@ -68,6 +68,10 @@ namespace Laresistance.Battle
             if (effectsToSet.Count > MAX_EFFECTS)
                 throw new System.Exception("Abilities can only have up to " + MAX_EFFECTS + " effects");
             effects = effectsToSet;
+            foreach(var effect in effects)
+            {
+                effect.SetParentAbility(this);
+            }
             this.equipmentsContainer = equipments;
             this.statusManager = statusManager;
             this.energyCost = energyCost;

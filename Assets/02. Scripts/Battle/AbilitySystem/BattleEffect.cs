@@ -16,6 +16,7 @@ namespace Laresistance.Battle
         protected EffectTargetType TargetType;
         protected BattleStatusManager SelfStatus;
         private EffectData effectData;
+        private BattleAbility parentAbility;
 
         public BattleEffect(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData)
         {
@@ -28,6 +29,16 @@ namespace Laresistance.Battle
         public void SetStatusManager(BattleStatusManager selfStatus)
         {
             SelfStatus = selfStatus;
+        }
+
+        public void SetParentAbility(BattleAbility ability)
+        {
+            parentAbility = ability;
+        }
+
+        protected bool IsComboAbility()
+        {
+            return parentAbility.data.IsComboSkill;
         }
 
         public BattleStatusManager GetStatusManager()
