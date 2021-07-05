@@ -42,6 +42,11 @@ namespace Laresistance.Battle
 
             int damagePercent = GetPower(level, equipments);
             int damage = (int)(target.health.GetCurrentHealth() * (float)damagePercent / 100f);
+            // Deals half damage to boss types
+            if (target.IsBossType)
+            {
+                damage = damage / 2;
+            }
             PerformAttackEffect(target, damage, equipments, bloodRef);
         }
 

@@ -3884,6 +3884,7 @@ GameObject:
   - component: {fileID: 9125262672345676458}
   - component: {fileID: 4333061527807672565}
   - component: {fileID: 1405283105323133629}
+  - component: {fileID: 7575177876541414949}
   m_Layer: 9
   m_Name: EventsAndSubscriptions
   m_TagString: Untagged
@@ -3987,6 +3988,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Hit
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7575177876541414949}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.RumbleConverter, GameScripts
+        m_MethodName: OnReceiveDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   OnHealReceived:
@@ -4832,6 +4845,75 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnStunned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7575177876541414949}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.RumbleConverter, GameScripts
+        m_MethodName: OnStun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnSlowed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7575177876541414949}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.RumbleConverter, GameScripts
+        m_MethodName: OnSlow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnPoisoned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7575177876541414949}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.RumbleConverter, GameScripts
+        m_MethodName: OnPoison
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7575177876541414949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3897970144034760309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650944fe8a636714c894f72e01ae5214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rumbleEvent: {fileID: 11400000, guid: cfc0df62807674f4eb95ba07e89c4a37, type: 2}
+  damageRumbleTime: 0.3
+  maxDamage: 40
+  stunRumbleTime: 0.2
+  lowRumbleStun: 0.8
+  highRumbleStun: 1
+  slowRumbleTime: 0.5
+  lowRumbleSlow: 0.2
+  highRumbleSlow: 0
+  poisonRumbleTime: 1
+  lowRumblePoison: 0
+  highRumblePoison: 0.1
 --- !u!1 &4227238906830663157
 GameObject:
   m_ObjectHideFlags: 0

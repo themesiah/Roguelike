@@ -11,6 +11,10 @@ namespace Laresistance.Data
         public string NameRef { get { return nameRef; } }
 
         [SerializeField]
+        private bool bossType = false;
+        public bool BossType { get { return bossType; } }
+
+        [SerializeField]
         private int maxHealth = default;
         public int MaxHealth { get { return maxHealth; } }
 

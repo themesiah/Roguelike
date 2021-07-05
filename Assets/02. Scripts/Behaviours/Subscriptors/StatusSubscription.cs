@@ -33,6 +33,12 @@ namespace Laresistance.Behaviours
         private CharacterBattleBehaviour battleBehaviour = default;
         [SerializeField]
         private UnityEvent OnAbilitiesNeedUpdate = default;
+        [SerializeField]
+        private UnityEvent OnStunned = default;
+        [SerializeField]
+        private UnityEvent OnSlowed = default;
+        [SerializeField]
+        private UnityEvent OnPoisoned = default;
 
         private bool haveShields = false;
         private bool haveDamageImprovement = false;
@@ -83,6 +89,20 @@ namespace Laresistance.Behaviours
             {
                 return;
             }
+
+            switch(statusType)
+            {
+                case StatusIconType.Stun:
+                    OnStunned?.Invoke();
+                    break;
+                case StatusIconType.Slow:
+                    OnSlowed?.Invoke();
+                    break;
+                case StatusIconType.DoT:
+                    OnPoisoned?.Invoke();
+                    break;
+            }
+
             StatusData status = GetStatus(statusType);
             GameObject statusIconObject = statusIndicatorPool.GetInstance(instanceParent: statusIndicatorsHolder);
             statusIconObject.transform.localScale = Vector3.one;

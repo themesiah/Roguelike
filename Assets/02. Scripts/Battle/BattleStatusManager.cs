@@ -22,6 +22,7 @@ namespace Laresistance.Battle
         public int UsableEnergy { get { return Mathf.FloorToInt(CurrentEnergy); } }
         public Transform TargetPivot { get; private set; }
         public BattleAbility NextAbility { get; private set; }
+        public bool IsBossType { get; private set; }
 
         public bool Stunned => GetStatus(StatusType.Stun).HaveDebuff();
         public bool WillParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
@@ -281,6 +282,11 @@ namespace Laresistance.Battle
         public void SetCharacterBattleManager(CharacterBattleManager cbm)
         {
             SetBattleManager?.Invoke(cbm);
+        }
+
+        public void SetBossType(bool bossType)
+        {
+            IsBossType = bossType;
         }
         #endregion
     }

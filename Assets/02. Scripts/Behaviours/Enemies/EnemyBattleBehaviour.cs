@@ -56,6 +56,7 @@ namespace Laresistance.Behaviours
         {
             GenerateEnemyLevel();
             StatusManager = new BattleStatusManager(new CharacterHealth((int)(enemyData.MaxHealth * (1f + (enemyLevel - 1) * 0.1f))), effectTargetPivot);
+            StatusManager.SetBossType(enemyData.BossType);
             OnEnemyName?.Invoke(Texts.GetText(enemyData.NameRef));
         }
 
