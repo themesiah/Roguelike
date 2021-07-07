@@ -9,5 +9,7 @@ namespace Laresistance.Behaviours
         IEnumerator PlayAnimation(string trigger);
         void Stop();
         bool IsAnimating();
+        void SetTrigger(string trigger);
+        void ResetTrigger(string trigger);
     }
 }

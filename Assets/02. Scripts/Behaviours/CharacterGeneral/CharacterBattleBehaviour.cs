@@ -20,6 +20,9 @@ namespace Laresistance.Behaviours
         protected Transform selectionArrowPivot = default;
         [SerializeField]
         protected ExtendedBattleInfo extendedBattleInfo = default;
+        [SerializeField]
+        protected AnimatorWrapperBridge animatorBridge = default;
+
         public BattleStatusManager StatusManager { get; protected set; }
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
         public IAbilityExecutor AbilityExecutor { get; protected set; }
@@ -51,6 +54,10 @@ namespace Laresistance.Behaviours
         protected void SetAnimator(IBattleAnimator animator)
         {
             this.animator = animator;
+            battleManager?.SetAnimator(animator);
+            if (animator.GetType() == typeof(AnimatorWrapperBehaviour)) {
+                animatorBridge?.SetAnimatorWrapper((AnimatorWrapperBehaviour)animator);
+            }
         }
 
         private void SelectionArrowOnPivot(bool selected)

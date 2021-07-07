@@ -2552,19 +2552,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
-          GameScripts
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: StartBattle
-          m_BoolArgument: 0
-        m_CallState: 2
   OnBattleBehaviourDisable:
     m_PersistentCalls:
       m_Calls:
@@ -2663,19 +2650,6 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
-          GameScripts
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: StopBattle
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 2519383785215392939}
@@ -2823,11 +2797,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ddd9a3b1597859442a697a2c38348549, type: 2}
   useStartingData: 0
   startingMinions:
-  - {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
-  - {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
-  - {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
+  - {fileID: 11400000, guid: 221910633ab5b7e4bb1c73f5228a0c90, type: 2}
   startingConsumables: []
-  startingEquipments: []
+  startingEquipments:
+  - {fileID: 11400000, guid: 8234a4f9287773841a214b465ac89c1c, type: 2}
   playerDataBehaviourReference: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   effectTargetPivot: {fileID: 5697926345240863743}
   energyProductionRef:

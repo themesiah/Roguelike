@@ -26,6 +26,8 @@ GameObject:
   - component: {fileID: 446708115831583630}
   - component: {fileID: 2522166762512252910}
   - component: {fileID: 8162774514312405274}
+  - component: {fileID: 1014155916375037204}
+  - component: {fileID: 7643532951830851678}
   m_Layer: 8
   m_Name: GenericEnemy
   m_TagString: Enemy
@@ -159,7 +161,20 @@ MonoBehaviour:
         m_CallState: 2
   OnHorizontalVelocityChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7643532951830851678}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.VelocityToAnimatorSpeedConversor,
+          GameScripts
+        m_MethodName: ConvertHorizontalSpeed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnVerticalVelocityChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -234,6 +249,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014155916375037204}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
+          GameScripts
+        m_MethodName: PlayAnimationSync
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Hit
           m_BoolArgument: 0
         m_CallState: 2
   OnHealReceived:
@@ -692,6 +720,7 @@ MonoBehaviour:
   selectionArrowExtendedInfoReference: {fileID: 11400000, guid: 18d829bde98c66d4bb97b0b8b609f265, type: 2}
   selectionArrowPivot: {fileID: 5407031122583928072}
   extendedBattleInfo: {fileID: 6269394419315036166}
+  animatorBridge: {fileID: 1014155916375037204}
   enemyData: {fileID: 11400000, guid: 7c89885e594a6fa42b9df23e0c34b0d3, type: 2}
   currentLevel:
     useConstant: 0
@@ -860,6 +889,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 397fbfccfb4263243a32c384421f8849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1014155916375037204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: -2378162190959191101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb567d268fd6021419131444c8753d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7643532951830851678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: -2378162190959191101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e8d0af969eef9419c32e322ef4b04d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHorizontalSpeedReference:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 5
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  maxVerticalSpeedReference:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 0
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  OnHorizontalSpeedConverted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014155916375037204}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
+          GameScripts
+        m_MethodName: SetHorizontalSpeed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnVerticalSpeedConverted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014155916375037204}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
+          GameScripts
+        m_MethodName: SetVerticalSpeed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &530036859482145158
 GameObject:
   m_ObjectHideFlags: 0

@@ -47,11 +47,17 @@ namespace Laresistance.Core
             StatusManager.SetCharacterBattleManager(this);
         }
 
+        public void SetAnimator(IBattleAnimator animator)
+        {
+            this.animator = animator;
+        }
+
         public void StartBattle()
         {
             OnBattleStart?.Invoke();
             StatusManager.BattleStart();
             AbilityInputProcessor.BattleStart();
+            animator.SetTrigger("StartBattle");
         }
 
         public void EndBattle()
@@ -60,6 +66,7 @@ namespace Laresistance.Core
             StatusManager.ResetStatus();
             StatusManager.BattleEnd();
             AbilityInputProcessor.BattleEnd();
+            animator.SetTrigger("StopBattle");
         }
 
         public bool Select()

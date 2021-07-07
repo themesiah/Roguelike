@@ -18,7 +18,13 @@ namespace Laresistance.Behaviours
             yield return null;
         }
 
+        public void ResetTrigger(string trigger)
+        {}
+
         public void Resume()
+        {}
+
+        public void SetTrigger(string trigger)
         {}
 
         public void Stop()

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Laresistance.Behaviours
 {
-    [RequireComponent(typeof(Animator))]
     public class AnimatorWrapperBehaviour : MonoBehaviour, IBattleAnimator
     {
         [SerializeField]
@@ -24,10 +23,18 @@ namespace Laresistance.Behaviours
 
         public void Start()
         {
+            InitAnimator();
+        }
+
+        public void InitAnimator()
+        {
             if (animator == null)
             {
-                animator = GetComponent<Animator>();
-                lastAnimatorSpeed = animator.speed;
+                animator = GetComponentInChildren<Animator>();
+                if (animator != null)
+                {
+                    lastAnimatorSpeed = animator.speed;
+                }
             }
         }
 
@@ -97,27 +104,32 @@ namespace Laresistance.Behaviours
 
         public void SetHorizontalSpeed(float speed)
         {
-            animator.SetFloat(horizontalSpeedParameterName, speed);
+            if (animator.HasParameter(horizontalSpeedParameterName))
+                animator.SetFloat(horizontalSpeedParameterName, speed);
         }
 
         public void SetVerticalSpeed(float speed)
         {
-            animator.SetFloat(verticalSpeedParameterName, speed);
+            if (animator.HasParameter(verticalSpeedParameterName))
+                animator.SetFloat(verticalSpeedParameterName, speed);
         }
 
         public void SetFalling(bool falling)
         {
-            animator.SetBool(fallingParameterName, falling);
+            if (animator.HasParameter(fallingParameterName))
+                animator.SetBool(fallingParameterName, falling);
         }
 
         public void SetTrigger(string trigger)
         {
-            animator.SetTrigger(trigger);
+            if (animator.HasParameter(trigger))
+                animator.SetTrigger(trigger);
         }
 
         public void ResetTrigger(string trigger)
         {
-            animator.ResetTrigger(trigger);
+            if (animator.HasParameter(trigger))
+                animator.ResetTrigger(trigger);
         }
 
         public bool IsAnimating()
