@@ -4,12 +4,8 @@ namespace Laresistance.Behaviours
 {
     public class AnimatorWrapperBridge : MonoBehaviour
     {
-        private AnimatorWrapperBehaviour animatorWrapper;
-
-        public void SetAnimatorWrapper(AnimatorWrapperBehaviour animatorWrapper)
-        {
-            this.animatorWrapper = animatorWrapper;
-        }
+        [SerializeField]
+        private AnimatorWrapperBehaviour animatorWrapper = default;
 
         public void SetHorizontalSpeed(float speed)
         {

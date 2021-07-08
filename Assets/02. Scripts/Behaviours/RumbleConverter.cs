@@ -68,7 +68,7 @@ namespace Laresistance.Behaviours
             RumbleSystem.RumbleSignal signal = new RumbleSystem.RumbleSignal();
             signal.duration = poisonRumbleTime;
             signal.lowFreq = lowRumblePoison;
-            signal.highFreq = lowRumblePoison;
+            signal.highFreq = highRumblePoison;
             rumbleEvent?.Raise(signal);
         }
     }

@@ -20,7 +20,6 @@ GameObject:
   - component: {fileID: 5483957954753791514}
   - component: {fileID: 5483957954753791515}
   - component: {fileID: 2320645775852034817}
-  - component: {fileID: 7977501592227898785}
   - component: {fileID: 6252518509512114618}
   - component: {fileID: 2625714541003188601}
   - component: {fileID: 446708115831583630}
@@ -720,7 +719,7 @@ MonoBehaviour:
   selectionArrowExtendedInfoReference: {fileID: 11400000, guid: 18d829bde98c66d4bb97b0b8b609f265, type: 2}
   selectionArrowPivot: {fileID: 5407031122583928072}
   extendedBattleInfo: {fileID: 6269394419315036166}
-  animatorBridge: {fileID: 1014155916375037204}
+  animator: {fileID: 0}
   enemyData: {fileID: 11400000, guid: 7c89885e594a6fa42b9df23e0c34b0d3, type: 2}
   currentLevel:
     useConstant: 0
@@ -770,18 +769,6 @@ MonoBehaviour:
         m_CallState: 2
   partyMember: 0
   enemyLevel: 0
---- !u!114 &7977501592227898785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -2378162190959191101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0af7aa98de527d54b9f3204af826021c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6252518509512114618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,6 +888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb567d268fd6021419131444c8753d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animatorWrapper: {fileID: 0}
 --- !u!114 &7643532951830851678
 MonoBehaviour:
   m_ObjectHideFlags: 0

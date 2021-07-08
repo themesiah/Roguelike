@@ -10,8 +10,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private PlayerDataBehaviour playerDataBehaviour = default;
         [SerializeField]
-        private AnimatorWrapperBehaviour animatorReference = default;
-        [SerializeField]
         private ScriptableIntReference bloodReference = default;
 
         protected override void SetupAbilityInputProcessor()
@@ -34,20 +32,9 @@ namespace Laresistance.Behaviours
             TargetSelector = new PlayerTargetSelection();
         }
 
-        protected override void ConfigurePrefab()
-        {
-
-        }
-
         private void Awake()
         {
             Init();
-        }
-
-        public override void Init()
-        {
-            SetAnimator(animatorReference);
-            base.Init();
         }
 
         public void PerformPlayerAction(InputAction.CallbackContext context) => PerformAbility(context, 0);

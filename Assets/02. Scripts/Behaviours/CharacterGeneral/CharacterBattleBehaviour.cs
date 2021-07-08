@@ -21,19 +21,17 @@ namespace Laresistance.Behaviours
         [SerializeField]
         protected ExtendedBattleInfo extendedBattleInfo = default;
         [SerializeField]
-        protected AnimatorWrapperBridge animatorBridge = default;
+        protected AnimatorWrapperBehaviour animator;
 
         public BattleStatusManager StatusManager { get; protected set; }
         public IAbilityInputProcessor AbilityInputProcessor { get; protected set; }
         public IAbilityExecutor AbilityExecutor { get; protected set; }
         public ITargetSelection TargetSelector { get; protected set; }
         public UnityAction OnStatusGenerated = delegate { };
-        protected IBattleAnimator animator;
         public CharacterBattleManager battleManager { get; protected set; }
 
         public virtual void Init()
         {
-            ConfigurePrefab();
             SetupStatusManager();
             SetupAbilityInputProcessor();
             SetupAbilityInputExecutor();
@@ -50,15 +48,6 @@ namespace Laresistance.Behaviours
         protected abstract void SetupAbilityInputProcessor();
         protected abstract void SetupAbilityInputExecutor();
         protected abstract void SetupTargetSelector();
-        protected abstract void ConfigurePrefab();
-        protected void SetAnimator(IBattleAnimator animator)
-        {
-            this.animator = animator;
-            battleManager?.SetAnimator(animator);
-            if (animator.GetType() == typeof(AnimatorWrapperBehaviour)) {
-                animatorBridge?.SetAnimatorWrapper((AnimatorWrapperBehaviour)animator);
-            }
-        }
 
         private void SelectionArrowOnPivot(bool selected)
         {

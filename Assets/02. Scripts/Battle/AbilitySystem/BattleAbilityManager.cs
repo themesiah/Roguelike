@@ -156,7 +156,12 @@ namespace Laresistance.Battle
                 Log("Ending process. Nullifying variables and removing ability from queue", abilityToExecute, animationTrigger);
                 if (battling)
                 {
-                    abilityQueue?.RemoveAt(0);
+                    // Before, it was abilityQueue?.RemoveAt(0). Due to an extreme case with retaliation damage if an enemy killed itself when attacking you and the battle wasn't finished,
+                    // we need to check that the ability actually exists on the queue before removing.
+                    if (abilityQueue.Contains(abilityToExecute))
+                    {
+                        abilityQueue?.Remove(abilityToExecute);
+                    }
                     if (abilityQueue.Count == 0)
                     {
                         currentlyExecuting = false;

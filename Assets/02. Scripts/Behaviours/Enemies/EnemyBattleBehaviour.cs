@@ -80,20 +80,6 @@ namespace Laresistance.Behaviours
             }
         }
 
-        protected override void ConfigurePrefab()
-        {
-            EnemyPrefabConfiguration epc = GetComponent<EnemyPrefabConfiguration>();
-            if (epc != null)
-            {
-                epc.ConfigurePrefab(enemyData.PrefabReference, (anim) =>
-                {
-                    SetAnimator(anim);
-                    if (AbilityInputProcessor != null)
-                        ((EnemyAbilityManager)AbilityInputProcessor).SetAnimator(anim);
-                }, partyMember);
-            }
-        }
-
         protected override void SetupTargetSelector()
         {
             TargetSelector = new DummyTargetSelection();
