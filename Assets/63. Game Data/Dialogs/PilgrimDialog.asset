@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678f2e2e25806bb4eacc8daad9cf66d3, type: 3}
+  m_Name: PilgrimDialog
+  m_EditorClassIdentifier: 
+  listOfDialogs:
+  - normalDialog: 1
+    dialog:
+      dialogTextRef:
+      - DIALOG_PIL_0001
+      - DIALOG_PIL_0002
+      - DIALOG_PIL_0003
+    questionDialog:
+      dialogQuestionRef: 
+      answer1TextRef: 
+      answer2TextRef: 
+      variablesChange: []
+    requiredVariables:
+    - name: PilgrimStatus
+      value: 0
+    variableChanges:
+    - name: PilgrimStatus
+      value: 1
+  - normalDialog: 0
+    dialog:
+      dialogTextRef: []
+    questionDialog:
+      dialogQuestionRef: DIALOG_PIL_0004
+      answer1TextRef: DIALOG_PIL_0005
+      answer2TextRef: DIALOG_PIL_0006
+      variablesChange:
+      - name: PilgrimStatus
+        value: 2
+      - name: PilgrimStatus
+        value: 3
+    requiredVariables:
+    - name: PilgrimStatus
+      value: 1
+    variableChanges: []
+  - normalDialog: 1
+    dialog:
+      dialogTextRef:
+      - DIALOG_PIL_0007
+    questionDialog:
+      dialogQuestionRef: 
+      answer1TextRef: 
+      answer2TextRef: 
+      variablesChange: []
+    requiredVariables:
+    - name: PilgrimStatus
+      value: 2
+    variableChanges:
+    - name: PilgrimStatus
+      value: 2
+  - normalDialog: 1
+    dialog:
+      dialogTextRef:
+      - DIALOG_PIL_0008
+    questionDialog:
+      dialogQuestionRef: 
+      answer1TextRef: 
+      answer2TextRef: 
+      variablesChange: []
+    requiredVariables:
+    - name: PilgrimStatus
+      value: 3
+    variableChanges:
+    - name: PilgrimStatus
+      value: 3
+  characterNameRef: DIALOG_PIL_NAME
+  characterPortrait: {fileID: 21300000, guid: 9ac24212159ea8b48992b7039f036f20, type: 3}

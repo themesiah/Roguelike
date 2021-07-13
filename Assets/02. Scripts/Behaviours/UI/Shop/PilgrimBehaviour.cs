@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Laresistance.Systems.Dialog;
 
 namespace Laresistance.Behaviours
 {
@@ -20,6 +21,12 @@ namespace Laresistance.Behaviours
         private static int OFFER_EQUIPMENTS_QUANTITY = 2;
         private static int OFFER_MAP_ABILITIES_QUANTITY = 1;
 
+
+        [Header("Dialog")]
+        [SerializeField]
+        private CharacterDialogEvent characterDialogEvent = default;
+        [SerializeField]
+        private CharacterDialog characterDialog = default;
         [Header("Buy lists")]
         [SerializeField]
         private MinionList buyableMinionList = default;
@@ -318,6 +325,7 @@ namespace Laresistance.Behaviours
         #region Coroutines
         private IEnumerator OpenShopCoroutine()
         {
+            yield return characterDialogEvent.Raise(characterDialog);
             gameContextSignal.Raise("UI");
             int reserveSize = player.ClearMinionReserve();
             yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null));

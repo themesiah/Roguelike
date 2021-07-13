@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using GamedevsToolbox.ScriptableArchitecture.Localization;
-using DigitalRuby.Tween;
 using UnityEngine.InputSystem;
 using Laresistance.Data;
-using Laresistance.Core;
 
 namespace Laresistance.Behaviours
 {
