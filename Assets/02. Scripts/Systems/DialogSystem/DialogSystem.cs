@@ -102,12 +102,13 @@ namespace Laresistance.Systems.Dialog
             {
                 dialogVariablesStatus.SetVariable(variableData.name, variableData.value);
             }
+            if (singleDialogData.Continue)
+            {
+                yield return StartDialogCoroutine(characterDialog);
+            }
             // Deactivate UI
             dialogPanel.SetActive(false);
             gameContextEventSignal?.Raise("Map");
-            yield return null;
-            yield return null;
-            yield return null;
         }
 
         // Next is called from outside. It's the signal to advance in the dialog, being it showing the next text, finishing or advancing to the next one.

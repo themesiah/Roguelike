@@ -2,6 +2,7 @@
 using GamedevsToolbox.StateMachine;
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace Laresistance.StateMachines
 {
@@ -34,8 +35,15 @@ namespace Laresistance.StateMachines
 
         public void ReceiveSignal(string signal)
         {
+            Debug.LogFormat("Received signal {0} on UI State", signal);
             if (signal == "Map")
+            {
                 returnToMap = true;
+            }
+            else
+            {
+                returnToMap = false;
+            }
         }
 
         public void Resume()
@@ -46,9 +54,13 @@ namespace Laresistance.StateMachines
         {
             if (returnToMap)
             {
+                Debug.LogFormat("Resolving signal {0} on UI State", "Map");
                 resolve("Map");
             }
-            yield return null;
+            else
+            {
+                yield return null;
+            }
         }
     }
 }

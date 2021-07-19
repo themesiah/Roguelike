@@ -10,17 +10,10 @@ namespace Laresistance.Systems.Dialog
     [System.Serializable]
     public class QuestionDialog : DialogBase
     {
-        [SerializeField]
-        private string dialogQuestionRef;
-
-        [SerializeField]
-        private string answer1TextRef = default;
-
-        [SerializeField]
-        private string answer2TextRef = default;
-
-        [SerializeField]
-        private List<DialogVariablesStatus.VariableData> variablesChange = default;
+        public string dialogQuestionRef;
+        public string answer1TextRef = default;
+        public string answer2TextRef = default;
+        public List<DialogVariablesStatus.VariableData> variablesChange = default;
 
         public override void NextDialog()
         {

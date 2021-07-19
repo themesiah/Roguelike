@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 678f2e2e25806bb4eacc8daad9cf66d3, type: 3}
-  m_Name: PilgrimDialog
+  m_Name: PilgrimDialog 1
   m_EditorClassIdentifier: 
   ListOfDialogs:
   - normalDialog: 1
@@ -30,7 +30,7 @@ MonoBehaviour:
     VariableChanges:
     - name: PilgrimStatus
       value: 1
-    gridPosition: {x: 512, y: 619}
+    gridPosition: {x: 18, y: 383}
   - normalDialog: 0
     dialog:
       dialogTextRef: []
@@ -47,7 +47,7 @@ MonoBehaviour:
     - name: PilgrimStatus
       value: 1
     VariableChanges: []
-    gridPosition: {x: 824, y: 622}
+    gridPosition: {x: 292, y: 497}
   - normalDialog: 1
     dialog:
       dialogTextRef:
@@ -59,9 +59,11 @@ MonoBehaviour:
       variablesChange: []
     RequiredVariables:
     - name: PilgrimStatus
-      value: 2
-    VariableChanges: []
-    gridPosition: {x: 1032, y: 731}
+      value: 3
+    VariableChanges:
+    - name: PilgrimStatus
+      value: 4
+    gridPosition: {x: 573, y: 612}
   - normalDialog: 1
     dialog:
       dialogTextRef:
@@ -73,8 +75,28 @@ MonoBehaviour:
       variablesChange: []
     RequiredVariables:
     - name: PilgrimStatus
-      value: 3
-    VariableChanges: []
-    gridPosition: {x: 1092, y: 494}
+      value: 2
+    VariableChanges:
+    - name: PilgrimStatus
+      value: 4
+    gridPosition: {x: 573, y: 383}
+  - normalDialog: 1
+    dialog:
+      dialogTextRef:
+      - Hello again. Wanna trade?
+    questionDialog:
+      dialogQuestionRef: 
+      answer1TextRef: 
+      answer2TextRef: 
+      variablesChange: []
+    RequiredVariables:
+    - name: PilgrimStatus
+      value: 4
+    - name: FinishedGame
+      value: 1
+    VariableChanges:
+    - name: PilgrimStatus
+      value: 5
+    gridPosition: {x: 862, y: 483}
   characterNameRef: DIALOG_PIL_NAME
   characterPortrait: {fileID: 21300000, guid: 9ac24212159ea8b48992b7039f036f20, type: 3}

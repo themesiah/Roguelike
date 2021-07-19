@@ -73,6 +73,8 @@ namespace Laresistance.Behaviours
 
         public void ReceiveSignal(string signal)
         {
+
+            Debug.LogFormat("Received signal {0} for state machine", signal);
             stateMachine.ReceiveSignal(signal);
         }
 

@@ -96,7 +96,10 @@ namespace Laresistance.StateMachines
             {
                 resolve("Map");
             }
-            yield return null;
+            else
+            {
+                yield return null;
+            }
         }
 
         public void SetRoomData(RoomChangeData rcd)

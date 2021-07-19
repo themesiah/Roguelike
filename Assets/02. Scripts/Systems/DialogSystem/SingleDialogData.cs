@@ -6,19 +6,16 @@ namespace Laresistance.Systems.Dialog
     [System.Serializable]
     public class SingleDialogData
     {
-        [SerializeField]
-        private bool normalDialog = true;
-        [SerializeField]
-        private NormalDialog dialog = default;
-        [SerializeField]
-        private QuestionDialog questionDialog = default;
-        [SerializeField]
-        private List<DialogVariablesStatus.VariableData> requiredVariables = default;
-        [SerializeField]
-        private List<DialogVariablesStatus.VariableData> variableChanges = default;
+        public bool normalDialog = true;
+        public NormalDialog dialog = default;
+        public QuestionDialog questionDialog = default;
+        public List<DialogVariablesStatus.VariableData> RequiredVariables = default;
+        public List<DialogVariablesStatus.VariableData> VariableChanges = default;
+
+
+        public Vector2 gridPosition;
 
         public DialogBase Dialog => normalDialog ? (DialogBase)dialog : (DialogBase)questionDialog;
-        public DialogVariablesStatus.VariableData[] RequiredVariables => requiredVariables.ToArray();
-        public DialogVariablesStatus.VariableData[] VariableChanges => variableChanges.ToArray();
+        public bool Continue => !normalDialog;
     }
 }

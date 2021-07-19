@@ -12,7 +12,6 @@ using Unity.EditorCoroutines.Editor;
 using System.Text;
 using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using GamedevsToolbox.Utils;
-using System.Linq;
 
 namespace Laresistance.Simulator
 {

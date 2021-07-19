@@ -83,9 +83,13 @@ namespace Laresistance.StateMachines
 
         public void ReceiveSignal(string signal)
         {
-            if (signal != null)
+            Debug.LogFormat("Received signal {0} on Map State", signal);
+            if (!string.IsNullOrEmpty(signal) && signal != "Map")
             {
                 this.signal = signal;
+            } else
+            {
+                this.signal = null;
             }
         }
 
@@ -98,15 +102,18 @@ namespace Laresistance.StateMachines
 
         public IEnumerator Update(Action<string> resolve)
         {
+            bool resolved = false;
             bloodLossSystem.Tick(Time.deltaTime);
             if (!paused)
             {
-                if (signal != null)
+                if (!string.IsNullOrEmpty(signal))
                 {
                     resolve(signal);
+                    resolved = true;
                 }
             }
-            yield return null;
+            if (!resolved)
+                yield return null;
         }
     }
 }

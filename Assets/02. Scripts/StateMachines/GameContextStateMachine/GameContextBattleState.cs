@@ -123,11 +123,13 @@ namespace Laresistance.StateMachines
 
         public IEnumerator Update(Action<string> resolve)
         {
+            bool resolved = false;
             if (!paused)
             {
                 if (goToMap)
                 {
                     resolve("Map");
+                    resolved = true;
                 } else if (removeFirstEnemy)
                 {
                     removeFirstEnemy = false;
@@ -136,7 +138,8 @@ namespace Laresistance.StateMachines
                     deathCount++;
                 }
             }
-            yield return battleSystem.Tick(Time.deltaTime);
+            if (!resolved)
+                yield return battleSystem.Tick(Time.deltaTime);
         }
         #endregion
 

@@ -49,6 +49,7 @@ namespace GamedevsToolbox.StateMachine {
                     if (currentState != states[newState])
                     {
                         yield return currentState.ExitState();
+                        Debug.LogFormat("Changed state to {0}", newState);
                         currentState = states[newState];
                         yield return currentState.EnterState();
                     }

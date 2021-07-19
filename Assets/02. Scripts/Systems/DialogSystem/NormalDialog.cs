@@ -10,8 +10,7 @@ namespace Laresistance.Systems.Dialog
     [System.Serializable]
     public class NormalDialog : DialogBase
     {
-        [SerializeField]
-        private List<string> dialogTextRef;
+        public List<string> dialogTextRef;
 
         private int currentDialog = 0;
         private TextMeshProUGUI dialogTextMesh;
