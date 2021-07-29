@@ -35,6 +35,7 @@ namespace Laresistance.Systems.Dialog
         private Image portraitRef = default;
 
         private SingleDialogData currentDialogData = null;
+        private bool dialogActive = false;
 
         private void OnEnable()
         {
@@ -70,6 +71,7 @@ namespace Laresistance.Systems.Dialog
             // Activate UI
             dialogPanel.SetActive(true);
             gameContextEventSignal?.Raise("UI");
+            dialogActive = true;
 
             // Search the single dialog data depending on variables (all must be equal)
             SingleDialogData singleDialogData = null;
@@ -108,13 +110,15 @@ namespace Laresistance.Systems.Dialog
             }
             // Deactivate UI
             dialogPanel.SetActive(false);
+            dialogActive = false;
             gameContextEventSignal?.Raise("Map");
         }
 
         // Next is called from outside. It's the signal to advance in the dialog, being it showing the next text, finishing or advancing to the next one.
         public void Next()
         {
-            currentDialogData.Dialog.NextDialog();
+            if (dialogActive)
+                currentDialogData.Dialog.NextDialog();
         }
     }
 }
