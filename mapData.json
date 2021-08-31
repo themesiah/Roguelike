@@ -1,25 +1,16 @@
 {
     "mapSize": {
-        "x": 4,
-        "y": 4
+        "x": 3,
+        "y": 3
     },
     "nodesData": [
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 4,
+                    "linkedRoomIndex": 3,
                     "linkType": 3,
                     "linkLocation": 1,
                     "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 1,
-                    "linkType": 2,
-                    "linkLocation": 3,
-                    "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
                     }
@@ -36,9 +27,6 @@
             ],
             "roomEnemies": [
                 {
-                    "roomEnemyType": 1
-                },
-                {
                     "roomEnemyType": 0
                 }
             ],
@@ -48,9 +36,9 @@
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 0,
-                    "linkType": 2,
-                    "linkLocation": 4,
+                    "linkedRoomIndex": 4,
+                    "linkType": 1,
+                    "linkLocation": 1,
                     "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -60,62 +48,6 @@
                     "linkedRoomIndex": 2,
                     "linkType": 2,
                     "linkLocation": 3,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 5,
-                    "linkType": 3,
-                    "linkLocation": 1,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [
-                {
-                    "roomInteractableType": 2
-                }
-            ],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 1,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 6,
-                    "linkType": 1,
-                    "linkLocation": 1,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 3,
-                    "linkType": 2,
-                    "linkLocation": 3,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 1,
-                    "linkType": 2,
-                    "linkLocation": 4,
                     "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -137,18 +69,68 @@
                 },
                 {
                     "roomEnemyType": 0
+                },
+                {
+                    "roomEnemyType": 0
                 }
             ],
-            "roomIndex": 2,
+            "roomIndex": 1,
             "haveMovementTest": true
         },
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 2,
+                    "linkedRoomIndex": 1,
                     "linkType": 2,
                     "linkLocation": 4,
                     "minimalPath": false,
+                    "roomChangeBehaviour": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "linkedRoomIndex": 5,
+                    "linkType": 1,
+                    "linkLocation": 1,
+                    "minimalPath": false,
+                    "roomChangeBehaviour": {
+                        "instanceID": 0
+                    }
+                }
+            ],
+            "movementTest": {
+                "movementTestType": 0,
+                "movementTestUse": 0
+            },
+            "roomInteractables": [
+                {
+                    "roomInteractableType": 0
+                }
+            ],
+            "roomEnemies": [
+                {
+                    "roomEnemyType": 0
+                }
+            ],
+            "roomIndex": 2,
+            "haveMovementTest": false
+        },
+        {
+            "roomConnections": [
+                {
+                    "linkedRoomIndex": 0,
+                    "linkType": 3,
+                    "linkLocation": 2,
+                    "minimalPath": true,
+                    "roomChangeBehaviour": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "linkedRoomIndex": 6,
+                    "linkType": 2,
+                    "linkLocation": 1,
+                    "minimalPath": true,
                     "roomChangeBehaviour": {
                         "instanceID": 0
                     }
@@ -169,9 +151,6 @@
                 },
                 {
                     "roomEnemyType": 0
-                },
-                {
-                    "roomEnemyType": 0
                 }
             ],
             "roomIndex": 3,
@@ -180,27 +159,9 @@
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 0,
-                    "linkType": 3,
+                    "linkedRoomIndex": 1,
+                    "linkType": 1,
                     "linkLocation": 2,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 5,
-                    "linkType": 2,
-                    "linkLocation": 3,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 8,
-                    "linkType": 2,
-                    "linkLocation": 1,
                     "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -213,13 +174,10 @@
             },
             "roomInteractables": [
                 {
-                    "roomInteractableType": 4
+                    "roomInteractableType": 1
                 }
             ],
             "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                },
                 {
                     "roomEnemyType": 0
                 }
@@ -230,36 +188,18 @@
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 4,
-                    "linkType": 2,
-                    "linkLocation": 4,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 6,
-                    "linkType": 2,
-                    "linkLocation": 3,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 9,
-                    "linkType": 2,
-                    "linkLocation": 1,
+                    "linkedRoomIndex": 2,
+                    "linkType": 1,
+                    "linkLocation": 2,
                     "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
                     }
                 },
                 {
-                    "linkedRoomIndex": 1,
-                    "linkType": 3,
-                    "linkLocation": 2,
+                    "linkedRoomIndex": 8,
+                    "linkType": 1,
+                    "linkLocation": 1,
                     "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -289,9 +229,9 @@
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 5,
+                    "linkedRoomIndex": 3,
                     "linkType": 2,
-                    "linkLocation": 4,
+                    "linkLocation": 2,
                     "minimalPath": true,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -305,15 +245,6 @@
                     "roomChangeBehaviour": {
                         "instanceID": 0
                     }
-                },
-                {
-                    "linkedRoomIndex": 2,
-                    "linkType": 1,
-                    "linkLocation": 2,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
                 }
             ],
             "movementTest": {
@@ -322,15 +253,12 @@
             },
             "roomInteractables": [
                 {
-                    "roomInteractableType": 0
+                    "roomInteractableType": 2
                 }
             ],
             "roomEnemies": [
                 {
                     "roomEnemyType": 2
-                },
-                {
-                    "roomEnemyType": 1
                 },
                 {
                     "roomEnemyType": 0
@@ -351,9 +279,9 @@
                     }
                 },
                 {
-                    "linkedRoomIndex": 11,
-                    "linkType": 3,
-                    "linkLocation": 1,
+                    "linkedRoomIndex": 8,
+                    "linkType": 2,
+                    "linkLocation": 3,
                     "minimalPath": true,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -366,16 +294,10 @@
             },
             "roomInteractables": [
                 {
-                    "roomInteractableType": 3
+                    "roomInteractableType": 4
                 }
             ],
             "roomEnemies": [
-                {
-                    "roomEnemyType": 1
-                },
-                {
-                    "roomEnemyType": 0
-                },
                 {
                     "roomEnemyType": 0
                 }
@@ -386,273 +308,18 @@
         {
             "roomConnections": [
                 {
-                    "linkedRoomIndex": 4,
+                    "linkedRoomIndex": 7,
                     "linkType": 2,
-                    "linkLocation": 2,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 12,
-                    "linkType": 1,
-                    "linkLocation": 1,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [
-                {
-                    "roomInteractableType": 0
-                }
-            ],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 1
-                },
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 8,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 10,
-                    "linkType": 2,
-                    "linkLocation": 3,
-                    "minimalPath": false,
+                    "linkLocation": 4,
+                    "minimalPath": true,
                     "roomChangeBehaviour": {
                         "instanceID": 0
                     }
                 },
                 {
                     "linkedRoomIndex": 5,
-                    "linkType": 2,
-                    "linkLocation": 2,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [
-                {
-                    "roomInteractableType": 2
-                }
-            ],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                },
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 9,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 9,
-                    "linkType": 2,
-                    "linkLocation": 4,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 1,
-                "movementTestUse": 1
-            },
-            "roomInteractables": [
-                {
-                    "roomInteractableType": 1
-                }
-            ],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 10,
-            "haveMovementTest": true
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 7,
-                    "linkType": 3,
-                    "linkLocation": 2,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 15,
-                    "linkType": 1,
-                    "linkLocation": 1,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 11,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 8,
                     "linkType": 1,
                     "linkLocation": 2,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 13,
-                    "linkType": 0,
-                    "linkLocation": 3,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [
-                {
-                    "roomInteractableType": 0
-                }
-            ],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 12,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 12,
-                    "linkType": 0,
-                    "linkLocation": 4,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 14,
-                    "linkType": 2,
-                    "linkLocation": 3,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 13,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 13,
-                    "linkType": 2,
-                    "linkLocation": 4,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 15,
-                    "linkType": 0,
-                    "linkLocation": 3,
-                    "minimalPath": false,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                }
-            ],
-            "movementTest": {
-                "movementTestType": 0,
-                "movementTestUse": 0
-            },
-            "roomInteractables": [
-                {
-                    "roomInteractableType": 0
-                }
-            ],
-            "roomEnemies": [
-                {
-                    "roomEnemyType": 0
-                }
-            ],
-            "roomIndex": 14,
-            "haveMovementTest": false
-        },
-        {
-            "roomConnections": [
-                {
-                    "linkedRoomIndex": 11,
-                    "linkType": 1,
-                    "linkLocation": 2,
-                    "minimalPath": true,
-                    "roomChangeBehaviour": {
-                        "instanceID": 0
-                    }
-                },
-                {
-                    "linkedRoomIndex": 14,
-                    "linkType": 0,
-                    "linkLocation": 4,
                     "minimalPath": false,
                     "roomChangeBehaviour": {
                         "instanceID": 0
@@ -674,9 +341,12 @@
                 },
                 {
                     "roomEnemyType": 0
+                },
+                {
+                    "roomEnemyType": 0
                 }
             ],
-            "roomIndex": 15,
+            "roomIndex": 8,
             "haveMovementTest": false
         }
     ]
