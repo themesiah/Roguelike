@@ -253,6 +253,7 @@ namespace Laresistance.Behaviours
                         collided = true;
                         isGrounded = true;
                         falling = false;
+                        fallingTime = 0f;
                         if (canJumpSignal == false)
                         {
                             canJump = canJumpSignal;
