@@ -267,15 +267,16 @@ namespace Laresistance.Behaviours
                             if (raycastHit.transform == null)
                             {
                                 // Bad landing
-                                foreach(var collider in colliders)
-                                {
-                                    OneWayPlatform platform = collider.GetComponentInChildren<OneWayPlatform>();
-                                    if (platform != null)
-                                    {
-                                        platform.ActivateFallingPlatform();
-                                        break;
-                                    }
-                                }
+                                //Tenerlo activado solo trae problemas. Comentado por ahora.
+                                //foreach (var collider in colliders)
+                                //{
+                                //    OneWayPlatform platform = collider.GetComponentInChildren<OneWayPlatform>();
+                                //    if (platform != null)
+                                //    {
+                                //        platform.ActivateFallingPlatform(); 
+                                //        break;
+                                //    }
+                                //}
                                 isGrounded = false;
                                 falling = true;
                                 //platformFallEvent?.Raise();

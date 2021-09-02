@@ -73,10 +73,5 @@ namespace Laresistance.Behaviours
         {
             return playerDataBehaviour.player.GetAllAbilities();
         }
-
-        public override void OutsideBattleHeal(int heal)
-        {
-            base.OutsideBattleHeal(heal);
-        }
     }
 }
