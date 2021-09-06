@@ -147,7 +147,7 @@ namespace Laresistance.Battle
             }
 
             // The timers and cooldowns only advance if there is no other ability executing right now.
-            if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty && !BattleAbilityManager.Instance.AbilityInQueue)
+            if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty/* && !BattleAbilityManager.Instance.AbilityInQueue*/)
             {
                 nextAbilityTimer -= delta;
                 OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);
