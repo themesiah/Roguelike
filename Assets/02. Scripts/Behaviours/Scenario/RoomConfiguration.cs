@@ -296,6 +296,11 @@ namespace Laresistance.Behaviours
 
         public IEnumerator ConfigureRoom(MapData mapData, RoomData roomData, RoomBiome biome)
         {
+            if (playerStartPoint)
+            {
+                boundsChangeEvent?.Raise(roomLimits);
+            }
+
             // Configure the room level for various uses
             ConfigureRoomLevel(mapData, roomData);
             // Configure level start
@@ -308,11 +313,6 @@ namespace Laresistance.Behaviours
             yield return ConfigureEnemies(mapData, roomData, biome);
             // Spawn interactables
             yield return ConfigureInteractables(roomData, biome);
-
-            if (playerStartPoint)
-            {
-                boundsChangeEvent?.Raise(roomLimits);
-            }
         }
 
         private void ConfigureRoomLevel(MapData mapData, RoomData roomData)
