@@ -31,14 +31,31 @@ namespace Laresistance.StateMachines
 
         public IEnumerator EnterState()
         {
+            // Let the player fall
+            while (!characterController.IsGrounded)
+            {
+                yield return null;
+            }
             // Put rigid body to non simulate
             body.simulated = false;
+            characterController.Pause();
             // Keep animating movement
             characterController.StartChangingRoom();
             // Move character to border
             Vector3 targetPoint = playerTransform.position;
             targetPoint.x = currentRoomData.exitPoint.position.x;
             targetPoint.y = currentRoomData.exitPoint.position.y;
+            // Flip in case player moved just before entering the door
+            if (playerTransform.position.x > targetPoint.x)
+            {
+                // Flip left
+                characterController.Flip(false);
+            }
+            else
+            {
+                // Flip right
+                characterController.Flip(true);
+            }
             while (playerTransform.position != targetPoint)
             {
                 playerTransform.position = Vector3.MoveTowards(playerTransform.position, targetPoint, playerMovementData.HorizontalSpeed.GetValue() * Time.deltaTime);
