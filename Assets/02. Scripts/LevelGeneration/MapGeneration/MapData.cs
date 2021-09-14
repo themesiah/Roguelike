@@ -165,11 +165,6 @@ namespace Laresistance.LevelGeneration
 
         public void GenerateInteractables()
         {
-            // Set start and end level interactables
-            RoomInteractable startInteractable = new RoomInteractable() { roomInteractableType = RoomInteractableType.LevelStart };
-            RoomInteractable endInteractable = new RoomInteractable() { roomInteractableType = RoomInteractableType.LevelEnd };
-            FirstRoom.AddInteractable(startInteractable);
-            LastRoom.AddInteractable(endInteractable);
             // Set pilgrim in minimal path, but not in the first or last room. Just 1 pilgrim.
             GeneratePilgrimInteractable();
             // Set equipment rewards, only in candidate rooms (end of non minimal path).
@@ -598,11 +593,7 @@ namespace Laresistance.LevelGeneration
 
         private bool FilterRoomWithNoRewards(RoomData roomData)
         {
-            // if the room doesn't have any interactable or the only interactable is level start or level end flags
-            return roomData.GetInteractables().Length == 0 || 
-                (roomData.GetInteractables().Length == 1 && 
-                (roomData.GetInteractables()[0].roomInteractableType == RoomInteractableType.LevelStart 
-                || roomData.GetInteractables()[0].roomInteractableType == RoomInteractableType.LevelEnd));
+            return roomData.GetInteractables().Length == 0;
         }
 
         private bool FilterRoomWithRewards(RoomData roomData)
