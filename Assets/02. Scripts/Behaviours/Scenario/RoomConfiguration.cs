@@ -126,16 +126,16 @@ namespace Laresistance.Behaviours
             if (bottomRoomConnection != null)
             {
                 if (bottomRoomConnection.NextRoom == null)
-                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = false });
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Vertical, minimalPath = false });
                 else
-                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Stairs, minimalPath = false });
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 0, linkLocation = RoomLinkLocation.Bottom, linkType = RoomLinkType.Vertical, minimalPath = false });
             }
             if (topRoomConnection != null)
             {
                 if (topRoomConnection.NextRoom == null)
-                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Stairs, minimalPath = false });
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = -1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Vertical, minimalPath = false });
                 else
-                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Stairs, minimalPath = false });
+                rd.AddLink(new RoomLink() { linkedRoom = rd, linkedRoomIndex = 1, linkLocation = RoomLinkLocation.Top, linkType = RoomLinkType.Vertical, minimalPath = false });
             }
             if (leftRoomConnection != null)
             {
@@ -472,7 +472,10 @@ namespace Laresistance.Behaviours
             List<Transform> tempInteractablePositions = new List<Transform>(possibleInteractablePositions);
             foreach(var interactable in roomData.GetInteractables())
             {
+                if ((int)interactable.roomInteractableType > (int)RoomInteractableType.Pilgrim)
+                    continue;
                 Transform randomPosition = tempInteractablePositions[Random.Range(0, tempInteractablePositions.Count)];
+                Debug.LogFormat("Interactable type with index: {0} (index){1}", interactable.roomInteractableType.ToString(), (int)interactable.roomInteractableType);
                 var op = interactableList[(int)interactable.roomInteractableType].InstantiateAsync(randomPosition);
                 op.Completed += (handler) => {
                     GameObject go = handler.Result;

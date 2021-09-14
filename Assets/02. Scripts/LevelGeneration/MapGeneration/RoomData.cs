@@ -124,6 +124,11 @@ namespace Laresistance.LevelGeneration
             return roomEnemies.ToArray();
         }
 
+        public void RemoveLastEnemy()
+        {
+            roomEnemies.RemoveAt(roomEnemies.Count - 1);
+        }
+
         public void SetAsMinimalPathRoom()
         {
             IsMinimalPathRoom = true;

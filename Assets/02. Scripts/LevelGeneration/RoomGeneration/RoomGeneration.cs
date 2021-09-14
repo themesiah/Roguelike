@@ -28,11 +28,27 @@ namespace Laresistance.LevelGeneration
         {
             // Select a room prefab
             List<RoomConfiguration> validPrefabs = new List<RoomConfiguration>();
-            foreach(var prefab in roomPrefabs)
+            int thresholdReduction = 0;
+            int removedEnemies = 0;
+            while (validPrefabs.Count == 0 && removedEnemies < 5) // Extreme case: there are no rooms with that many enemies.
             {
-                if (prefab.CheckRoomRequirements(roomData))
+                thresholdReduction = 0;
+                while (validPrefabs.Count == 0 && thresholdReduction < 5) // If there is no room candidate we make it easier for the generation.
                 {
-                    validPrefabs.Add(prefab);
+                    foreach (var prefab in roomPrefabs)
+                    {
+                        if (prefab.CheckRoomRequirements(roomData, thresholdReduction))
+                        {
+                            validPrefabs.Add(prefab);
+                        }
+                    }
+                    thresholdReduction++;
+                }
+                if (validPrefabs.Count == 0)
+                {
+                    Debug.LogWarningFormat("Not enough candidates for room with index {0}. Removing enemies.", roomData.RoomIndex);
+                    removedEnemies++;
+                    roomData.RemoveLastEnemy();
                 }
             }
             if (validPrefabs.Count > 0)

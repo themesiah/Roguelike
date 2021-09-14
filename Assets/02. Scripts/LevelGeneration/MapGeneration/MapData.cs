@@ -8,16 +8,14 @@ namespace Laresistance.LevelGeneration
     [System.Serializable]
     public class MapData
     {
-        // Room links
-        private static RoomLinkType[] HORIZONTAL_LINK_TYPES = { RoomLinkType.Horizontal, RoomLinkType.FrontDoor };
-        private static RoomLinkType[] VERTICAL_LINK_TYPES = { RoomLinkType.Elevator, RoomLinkType.FrontDoor, RoomLinkType.Stairs };
+        private static string LOG_FILE = "mapDataLog.log";
         // Movement tests
         private static float MOVEMENT_TESTS_PER_NON_MINIMAL_PATH_ROOMS = 0.2f;
         // Interactables
         private static float BLOOD_CLUSTERS_PER_ROOM = 0.4f;
         private static float EQUIPMENTS_PER_CANDIDATE_ROOM = 0.5f; // A candidate room is the end of a non minimal path
-        private static float FOUNTAINS_PER_ROOM = 0.15f;
-        private static float LORE_NPC_PER_ROOM = 0.1f;
+        private static float FOUNTAINS_PER_ROOM = 0.25f;
+        private static float LORE_NPC_PER_ROOM = 0f; // not yet 0.1f;
         // Enemies
         private static int[] NORMAL_ENEMIES_DISTRIBUTION = { 1, 1, 1, 2 };
         private static int[] MINION_ENEMIES_DISTRIBUTION = { 0, 1, 1, 0 };
@@ -221,6 +219,67 @@ namespace Laresistance.LevelGeneration
             GenerateNormalEnemies();
         }
 
+        public void GenerateMapLog()
+        {
+            Utils.DeleteFile(LOG_FILE);
+            // Log minimal path indexes
+            Utils.AppendText(LOG_FILE, "///// MINIMAL PATH /////");
+            System.Text.StringBuilder minimalPathBuilder = new System.Text.StringBuilder();
+            foreach(var room in minimalPath)
+            {
+                minimalPathBuilder.AppendFormat("{0}, ", room.RoomIndex);
+            }
+            Utils.AppendText(LOG_FILE, minimalPathBuilder.ToString());
+            // Log connections per room
+            Utils.AppendText(LOG_FILE, "///// CONNECTIONS /////");
+            foreach (var room in nodesData)
+            {
+                System.Text.StringBuilder roomConnectionsBuilder = new System.Text.StringBuilder();
+                roomConnectionsBuilder.AppendFormat("Room with index {0} connects with {1} rooms: ", room.RoomIndex, room.GetLinks().Length);
+                foreach(var link in room.GetLinks())
+                {
+                    roomConnectionsBuilder.AppendFormat("{0} ", link.linkedRoomIndex);
+                }
+                Utils.AppendText(LOG_FILE, roomConnectionsBuilder.ToString());
+            }
+            // Log movement test rooms
+            Utils.AppendText(LOG_FILE, "///// MOVEMENT TEST /////");
+            System.Text.StringBuilder movementTestBuilder = new System.Text.StringBuilder();
+            movementTestBuilder.Append("Rooms with movement test are: ");
+            foreach (var room in nodesData)
+            {
+                if (room.HaveMovementTest)
+                {
+                    movementTestBuilder.AppendFormat("{0}, ", room.RoomIndex);
+                }
+            }
+            Utils.AppendText(LOG_FILE, movementTestBuilder.ToString());
+            // Log interactables
+            Utils.AppendText(LOG_FILE, "///// INTERACTABLES /////");
+            foreach (var room in nodesData)
+            {
+                System.Text.StringBuilder roomInteractablesBuilder = new System.Text.StringBuilder();
+                roomInteractablesBuilder.AppendFormat("Room with index {0} have {1} interactables: ", room.RoomIndex, room.GetInteractables().Length);
+                foreach (var interactable in room.GetInteractables())
+                {
+                    roomInteractablesBuilder.AppendFormat("{0} ", interactable.roomInteractableType.ToString());
+                }
+                Utils.AppendText(LOG_FILE, roomInteractablesBuilder.ToString());
+            }
+            // Log enemies
+            Utils.AppendText(LOG_FILE, "///// ENEMIES /////");
+            foreach (var room in nodesData)
+            {
+                System.Text.StringBuilder roomEnemiesBuilder = new System.Text.StringBuilder();
+                roomEnemiesBuilder.AppendFormat("Room with index {0} have {1} enemies: ", room.RoomIndex, room.GetRoomEnemies().Length);
+                foreach (var enemy in room.GetRoomEnemies())
+                {
+                    roomEnemiesBuilder.AppendFormat("{0} ", enemy.roomEnemyType.ToString());
+                }
+                Utils.AppendText(LOG_FILE, roomEnemiesBuilder.ToString());
+            }
+        }
+
         public RoomData[] GetMinimalPath()
         {
             return minimalPath.ToArray();
@@ -334,7 +393,7 @@ namespace Laresistance.LevelGeneration
             RoomLinkLocation linkedLocation;
             if (currentCoordinates.x == linkedCoordinates.x) // vertical
             {
-                linkType = VERTICAL_LINK_TYPES[Random.Range(0, VERTICAL_LINK_TYPES.Length)];
+                linkType = RoomLinkType.Vertical;
                 if (currentCoordinates.y > linkedCoordinates.y)
                 {
                     currentLocation = RoomLinkLocation.Bottom;
@@ -347,7 +406,7 @@ namespace Laresistance.LevelGeneration
             }
             else // horizontal
             {
-                linkType = HORIZONTAL_LINK_TYPES[Random.Range(0, HORIZONTAL_LINK_TYPES.Length)];
+                linkType = RoomLinkType.Horizontal;
                 if (currentCoordinates.x > linkedCoordinates.x)
                 {
                     currentLocation = RoomLinkLocation.Left;
@@ -374,7 +433,7 @@ namespace Laresistance.LevelGeneration
 
         private void GenerateBloodInteractables()
         {
-            var bloodCandidates = nodesData.FindAll(FilterRoomWithNoRewards).FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom);
+            var bloodCandidates = nodesData.FindAll(FilterRoomWithNoRewards);
             int numberOfBloodClusters = Mathf.RoundToInt(mapSize.x * mapSize.y * BLOOD_CLUSTERS_PER_ROOM);
             while (numberOfBloodClusters > 0 && bloodCandidates.Count > 0)
             {
@@ -388,7 +447,7 @@ namespace Laresistance.LevelGeneration
 
         private void GenerateLoreInteractables()
         {
-            var loreCandidates = nodesData.FindAll(FilterRoomWithNoRewards).FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom);
+            var loreCandidates = nodesData.FindAll(FilterRoomWithNoRewards);
             int numberOfLoreInteractables = Mathf.RoundToInt(mapSize.x * mapSize.y * LORE_NPC_PER_ROOM);
             while (numberOfLoreInteractables > 0 && loreCandidates.Count > 0)
             {
@@ -539,12 +598,16 @@ namespace Laresistance.LevelGeneration
 
         private bool FilterRoomWithNoRewards(RoomData roomData)
         {
-            return roomData.GetInteractables().Length == 0;
+            // if the room doesn't have any interactable or the only interactable is level start or level end flags
+            return roomData.GetInteractables().Length == 0 || 
+                (roomData.GetInteractables().Length == 1 && 
+                (roomData.GetInteractables()[0].roomInteractableType == RoomInteractableType.LevelStart 
+                || roomData.GetInteractables()[0].roomInteractableType == RoomInteractableType.LevelEnd));
         }
 
         private bool FilterRoomWithRewards(RoomData roomData)
         {
-            return roomData.GetInteractables().Length > 0;
+            return !FilterRoomWithNoRewards(roomData);
         }
 
         private bool FilterNonStartingRoom(RoomData roomData)

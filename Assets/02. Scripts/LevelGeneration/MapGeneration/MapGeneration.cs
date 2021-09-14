@@ -20,15 +20,27 @@ namespace Laresistance.LevelGeneration
         [SerializeField]
         private int seed = -1;
 
+        [SerializeField]
+        private bool generateLogs = false;
+
+        [SerializeField]
+        private bool generateMock = false;
+
         private void Start()
         {
-            GenerateMapMock();
-            //GenerateMap();
+            if (generateMock)
+            {
+                GenerateMapMock();
+            }
+            else
+            {
+                GenerateMap();
+            }
         }
 
         private void GenerateMapMock()
         {
-            XYPair size = new XYPair() { x = 2, y = 2 };
+            XYPair size = new XYPair() { x = 3, y = 3 };
             MapData mapData = new MapData(size);
             mapData.GenerateMapMock();
             StartCoroutine(GenerateRooms(mapData));
@@ -47,6 +59,8 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateInteractables();
             mapData.GenerateMovementTestRooms();
             mapData.GenerateRoomEnemies();
+            if (generateLogs)
+                mapData.GenerateMapLog();
             StartCoroutine(GenerateRooms(mapData));
         }
 

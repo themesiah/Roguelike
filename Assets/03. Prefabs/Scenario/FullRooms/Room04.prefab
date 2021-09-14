@@ -174,7 +174,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1003270292169462270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37, y: -19, z: 0}
+  m_LocalPosition: {x: 35.525, y: -21.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1142164209575476572}
@@ -549,24 +549,29 @@ MonoBehaviour:
   - m_AssetGUID: ce87ced682bd1204c903d9549f3f0747
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: 7a8ebf7c6b57f1a44ba21ff697d11716
     m_SubObjectName: 
     m_SubObjectType: 
-  - m_AssetGUID: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: c5159830dc9a11140afab74bc0694cea
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: b10111bfe7233e9429ae41c198af42fd
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: de4d0c158d4707b498e0af338b4bc279
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   boundsChangeEvent: {fileID: 11400000, guid: 85c18dbbab14d4840b19cb449ce0d153, type: 2}
   roomBiome: {fileID: 11400000, guid: 0e2255d66eb1aaa4c80b32da8ff0f122, type: 2}
-  mockTest: 1
+  mockTest: 0
   playerStartPoint: 0
-  spawnMiniboss: 0
+  spawnMiniboss: 1
   mockIndex: -1
   mockTotalRooms: 9
   enemyTypesSpawn: 000000000100000000000000
@@ -5916,7 +5921,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3337946369134314976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 61.9, y: 4.4, z: 0}
+  m_LocalPosition: {x: 61.9, y: 4.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1142164209575476572}
@@ -6012,7 +6017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4177095240505241592}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.6, y: 19.7, z: 0}
+  m_LocalPosition: {x: 65.6, y: 17.88, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1142164209575476572}
@@ -6094,7 +6099,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5150646788390010172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.9, y: 19.4, z: 0}
+  m_LocalPosition: {x: 21.9, y: 17.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1142164209575476572}
@@ -10129,6 +10134,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5532371541128105452, guid: 6ec5e76a9ee470244a93afc92f7be3d8, type: 3}
+      propertyPath: nextRoom
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ec5e76a9ee470244a93afc92f7be3d8, type: 3}
 --- !u!114 &8772661416202083152 stripped
@@ -12269,6 +12278,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3117413970971479096, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: aditionalObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117413970971479096, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
       propertyPath: alternativeObjects.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -12627,6 +12640,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8194301042212587008}
     m_Modifications:
+    - target: {fileID: 1773075340623344339, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
+      propertyPath: m_Size.x
+      value: 2.9100533
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773075340623344339, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
+      propertyPath: m_Size.y
+      value: 3.6160161
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773075340623344339, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
+      propertyPath: m_Offset.x
+      value: -2.1002407
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773075340623344339, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.4658872
+      objectReference: {fileID: 0}
     - target: {fileID: 1994829599299074837, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
       propertyPath: m_Name
       value: WallCornerRight1_ABYSS
