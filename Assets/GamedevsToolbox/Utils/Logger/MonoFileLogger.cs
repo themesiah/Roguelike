@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GamedevsToolbox.Utils.Logger
 {
@@ -13,19 +11,28 @@ namespace GamedevsToolbox.Utils.Logger
             Utils.DeleteFile(logfileName);
         }
 
-        public override void Log(string message)
+        public override void Log(string message, GameObject go)
         {
-            Utils.AppendText(logfileName, string.Format("[{0}] {1}", "LOG", message));
+            if (go == null)
+                Utils.AppendText(logfileName, string.Format("[{0}] {1}", "LOG", message));
+            else
+                Utils.AppendText(logfileName, string.Format("[{0}][{1}] {2}", "LOG", go.name, message));
         }
 
-        public override void LogWarning(string message)
+        public override void LogWarning(string message, GameObject go)
         {
-            Utils.AppendText(logfileName, string.Format("[{0}] {1}", "WARNING", message));
+            if (go == null)
+                Utils.AppendText(logfileName, string.Format("[{0}] {1}", "WARNING", message));
+            else
+                Utils.AppendText(logfileName, string.Format("[{0}][{1}] {2}", "WARNING", go.name, message));
         }
 
-        public override void LogError(string message)
+        public override void LogError(string message, GameObject go)
         {
-            Utils.AppendText(logfileName, string.Format("[{0}] {1}", "ERROR", message));
+            if (go == null)
+                Utils.AppendText(logfileName, string.Format("[{0}] {1}", "ERROR", message));
+            else
+                Utils.AppendText(logfileName, string.Format("[{0}][{1}] {2}", "ERROR", go.name, message));
         }
     }
 }

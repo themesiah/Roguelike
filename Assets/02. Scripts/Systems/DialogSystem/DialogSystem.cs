@@ -97,6 +97,10 @@ namespace Laresistance.Systems.Dialog
 
             // Change base dialog data (name and portrait)
             dialogNameRef.text = Texts.GetText(characterDialog.CharacterNameRef);
+            if (characterDialog.CharacterPortrait != null)
+                portraitRef.enabled = true;
+            else
+                portraitRef.enabled = false;
             portraitRef.sprite = characterDialog.CharacterPortrait;
             // Show the dialog and wait until signal
             yield return singleDialogData.Dialog.SetDialog(dialogVariablesStatus, dialogRef, questionRef, answer1Ref, answer2Ref, answer1Button, answer2Button);

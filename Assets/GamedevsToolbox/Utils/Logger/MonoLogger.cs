@@ -16,8 +16,8 @@ namespace GamedevsToolbox.Utils.Logger
             Logger.UnregisterLogger(this);
         }
 
-        public abstract void Log(string message);
-        public abstract void LogError(string message);
-        public abstract void LogWarning(string message);
+        public abstract void Log(string message, GameObject go = null);
+        public abstract void LogError(string message, GameObject go = null);
+        public abstract void LogWarning(string message, GameObject go = null);
     }
 }

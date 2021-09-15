@@ -5,9 +5,9 @@ namespace GamedevsToolbox.Utils.Logger
 {
     public static class Logger
     {
-        private static UnityAction<string> logAction = delegate { };
-        private static UnityAction<string> warningAction = delegate { };
-        private static UnityAction<string> errorAction = delegate { };
+        private static UnityAction<string, GameObject> logAction = delegate { };
+        private static UnityAction<string, GameObject> warningAction = delegate { };
+        private static UnityAction<string, GameObject> errorAction = delegate { };
 
         public static void RegisterLogger(GamedevsToolbox.Utils.Logger.ILogger loggerImplementation)
         {
@@ -23,30 +23,30 @@ namespace GamedevsToolbox.Utils.Logger
             errorAction -= loggerImplementation.LogError;
         }
 
-        public static void Log(string text)
+        public static void Log(string text, GameObject go = null)
         {
-            logAction.Invoke(text);
+            logAction.Invoke(text, go);
 #if UNITY_EDITOR
             if (!IsPlaying())
-                Debug.Log(text);
+                Debug.Log(text, go);
 #endif
         }
 
-        public static void LogWarning(string text)
+        public static void LogWarning(string text, GameObject go = null)
         {
-            warningAction.Invoke(text);
+            warningAction.Invoke(text, go);
 #if UNITY_EDITOR
             if (!IsPlaying())
-                Debug.LogWarning(text);
+                Debug.LogWarning(text, go);
 #endif
         }
 
-        public static void LogError(string text)
+        public static void LogError(string text, GameObject go = null)
         {
-            errorAction.Invoke(text);
+            errorAction.Invoke(text, go);
 #if UNITY_EDITOR
             if (!IsPlaying())
-                Debug.LogError(text);
+                Debug.LogError(text, go);
 #endif
         }
 

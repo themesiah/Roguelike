@@ -26,6 +26,8 @@ namespace Laresistance.LevelGeneration
         [SerializeField]
         private bool generateMock = false;
 
+        private int currentSeed = 0;
+
         private void Start()
         {
             if (generateMock)
@@ -48,8 +50,15 @@ namespace Laresistance.LevelGeneration
 
         public void GenerateMap()
         {
+            if (seed == -1)
+            {
+                int newSeed = Random.Range(0, 999999);
+                currentSeed = newSeed;
+                Random.InitState(newSeed);
+            }
             if (seed != -1)
             {
+                currentSeed = seed;
                 Random.InitState(seed);
             }
             XYPair size = GenerateMapSize();
@@ -60,7 +69,7 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateMovementTestRooms();
             mapData.GenerateRoomEnemies();
             if (generateLogs)
-                mapData.GenerateMapLog();
+                mapData.GenerateMapLog(currentSeed);
             StartCoroutine(GenerateRooms(mapData));
         }
 

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
+using System.Collections;
 using Laresistance.Movement;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Battle;
@@ -24,8 +24,9 @@ namespace Laresistance.Behaviours
             movementManager = new EnemySimpleMovementManager(characterController, speedReference, raycastLayerMask.value, raycastPivot);
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return new WaitForSeconds(0.5f);
             if (!partyMember)
             {
                 try
@@ -33,12 +34,12 @@ namespace Laresistance.Behaviours
                     bool enoughSpace = BattlePosition.CheckSpace(transform.position, raycastLayerMask.value);
                     if (!enoughSpace)
                     {
-                        Debug.LogErrorFormat(gameObject, "Enemy {0} have no space to battle", name);
+                        GamedevsToolbox.Utils.Logger.Logger.LogError(string.Format("Enemy {0} have no space to battle", name), gameObject);
                     }
                 } catch(System.Exception e)
                 {
-                    Debug.LogError(e);
-                    Debug.LogErrorFormat("Enemy {0} have no space to battle in room {1}", name, transform.parent.parent.parent.name);
+                    GamedevsToolbox.Utils.Logger.Logger.LogError(e.ToString());
+                    GamedevsToolbox.Utils.Logger.Logger.LogError(string.Format("Enemy {0} have no space to battle in room {1}", name, transform.parent.parent.parent.name));
                 }
             }
         }

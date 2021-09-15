@@ -91,7 +91,7 @@ namespace Laresistance.LevelGeneration
                 {
                     GUI.color = Color.yellow;
                 }
-                else if (rooms[i].HaveMovementTest && false)
+                else if (rooms[i].HaveMovementTest)
                 {
                     GUI.color = Color.blue;
                 } else if (rooms[i].IsPathEnd) {

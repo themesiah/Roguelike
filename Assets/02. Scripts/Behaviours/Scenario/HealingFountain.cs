@@ -27,9 +27,6 @@ namespace Laresistance.Behaviours
             if (bloodObtained > 0)
             {
                 bloodObtain.Obtain();
-            } else
-            {
-                Destroy(gameObject, 0.1f);
             }
         }
     }

@@ -12,6 +12,7 @@ using GamedevsToolbox.ScriptableArchitecture.Events;
 using UnityEngine.InputSystem;
 using Laresistance.Systems;
 using UnityEngine.Events;
+using Laresistance.Systems.Dialog;
 
 namespace Laresistance.Behaviours
 {
@@ -47,6 +48,13 @@ namespace Laresistance.Behaviours
         private StringGameEvent virtualCameraChangeEvent = default;
         [SerializeField] [Tooltip("Group of entities followed by the combat camera")]
         private RuntimeSingleCinemachineTargetGroup targetGroupRef = default;
+        [Header("Dialog")]
+        [SerializeField]
+        private CharacterDialogEvent dialogEvent = default;
+        [SerializeField]
+        private CharacterDialog systemDialog = default;
+        [SerializeField]
+        private DialogVariablesStatus dialogVariablesStatus = default;
 
         private SimpleSignalStateMachine stateMachine;
         private GameContextBattleState battleState;
@@ -127,7 +135,7 @@ namespace Laresistance.Behaviours
         {
             if (rcb.IsLevelEnd)
             {
-                throw new System.NotImplementedException("Next level change is not yet implemented");
+                StartCoroutine(SystemDialogCoroutine(0));
             }
             else
             {
@@ -135,6 +143,12 @@ namespace Laresistance.Behaviours
                 roomChangeState.SetRoomData(rcd);
                 stateMachine.ReceiveSignal("RoomChange");
             }
+        }
+
+        private IEnumerator SystemDialogCoroutine(int dialogValue)
+        {
+            dialogVariablesStatus.SetVariable("SystemStatus", dialogValue);
+            yield return dialogEvent?.Raise(systemDialog);
         }
 
         public void PerformTimeStop(InputAction.CallbackContext context)

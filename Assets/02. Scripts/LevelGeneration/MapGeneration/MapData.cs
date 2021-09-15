@@ -190,14 +190,18 @@ namespace Laresistance.LevelGeneration
                 {
                     int pathEndRoomIndex = Random.Range(0, pathEndRooms.Count);
                     var path = GetUniquePathToEnd(pathEndRooms[pathEndRoomIndex]);
-                    var randomRoom = path[Random.Range(0, path.Count)];
-                    MovementTestType movementTestType = (MovementTestType)Random.Range(0, (int)MovementTestType.MAX);
-                    MovementTest movementTest = new MovementTest() { movementTestType = movementTestType, movementTestUse = MovementTestUse.BlockPath };
-                    if (randomRoom.IsPathEnd)
+                    var nonMinimalRooms = path.FindAll(FilterNonMinimalPathRoom);
+                    if (nonMinimalRooms.Count > 0)
                     {
-                        movementTest.movementTestUse = MovementTestUse.BlockReward;
+                        var randomRoom = nonMinimalRooms[Random.Range(0, nonMinimalRooms.Count)];
+                        MovementTestType movementTestType = (MovementTestType)Random.Range(0, (int)MovementTestType.MAX);
+                        MovementTest movementTest = new MovementTest() { movementTestType = movementTestType, movementTestUse = MovementTestUse.BlockPath };
+                        if (randomRoom.IsPathEnd)
+                        {
+                            movementTest.movementTestUse = MovementTestUse.BlockReward;
+                        }
+                        randomRoom.SetMovementTest(movementTest);
                     }
-                    randomRoom.SetMovementTest(movementTest);
                     pathEndRooms.RemoveAt(pathEndRoomIndex);
                     amountOfMovementTests--;
                 }
@@ -214,9 +218,11 @@ namespace Laresistance.LevelGeneration
             GenerateNormalEnemies();
         }
 
-        public void GenerateMapLog()
+        public void GenerateMapLog(int seed)
         {
             Utils.DeleteFile(LOG_FILE);
+            // Seed
+            Utils.AppendText(LOG_FILE, string.Format("SEED: {0}", seed));
             // Log minimal path indexes
             Utils.AppendText(LOG_FILE, "///// MINIMAL PATH /////");
             System.Text.StringBuilder minimalPathBuilder = new System.Text.StringBuilder();
