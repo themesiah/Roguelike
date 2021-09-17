@@ -70,6 +70,11 @@ namespace Laresistance.Battle
             return totalShields;
         }
 
+        public void RemoveShields()
+        {
+            currentShields.Clear();
+        }
+
         public CharacterHealth(int health)
         {
             maxHealth = health;

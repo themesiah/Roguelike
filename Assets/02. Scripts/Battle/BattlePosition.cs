@@ -131,7 +131,7 @@ namespace Laresistance.Battle
             }
 
             center = center + Vector3.right * offset;
-            playerObject.transform.position = center - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * direction;
+            playerObject.transform.position = center + Vector3.up * 0.1f - Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * direction;
             enemyObjects[0].transform.position = center + Vector3.right * CHARACTERS_HORIZONTAL_OFFSET * direction;
             for (int i = 1; i < enemyObjects.Length; ++i)
             {
