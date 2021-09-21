@@ -79,7 +79,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-9117866834726133151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,7 +199,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-8972415811047006672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-8951388059132422198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,6 +398,26 @@ MonoBehaviour:
   lastModified: 637539349520260116
   LoadResult: 0
   FileSizes: []
+  Exists: 1
+--- !u!114 &-8475883808627159134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_HEAL/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
   Exists: 1
 --- !u!114 &-8419540290775032286
 MonoBehaviour:
@@ -578,7 +598,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-7955518449498141007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,7 +774,7 @@ MonoBehaviour:
   Path: FMOD/Project/Build/Desktop/Battle.bank
   Name: Battle
   StudioPath: bank:/Battle
-  lastModified: 637624676421294550
+  lastModified: 637673906412801739
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -818,10 +838,30 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -8991473048456415503}
+  - {fileID: 5768505577330289729}
   MinDistance: 0
   MaxDistance: 0
   Length: 1705
+--- !u!114 &-7594570346527743923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_SHIELD/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &-7588005704878088025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1503,6 +1543,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 0
+--- !u!114 &-6227440614659240822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_DAMAGENERF/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &-6200040686593399125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,7 +1703,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -8142111673741845338}
+  - {fileID: 7356452425495657447}
   MinDistance: 0
   MaxDistance: 0
   Length: 1358
@@ -2270,7 +2330,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-4281485315206665062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2709,7 +2769,7 @@ MonoBehaviour:
   Path: FMOD/Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637624676423139454
+  lastModified: 637673906414880685
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -2852,7 +2912,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-3527265832641144567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2948,7 +3008,7 @@ MonoBehaviour:
   Path: FMOD/Project/Build/Desktop/Abyss.bank
   Name: Abyss
   StudioPath: bank:/Abyss
-  lastModified: 637624676419251725
+  lastModified: 637673906411635900
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -3027,7 +3087,7 @@ MonoBehaviour:
   Path: FMOD/Project/Build/Desktop/General.bank
   Name: General
   StudioPath: bank:/General
-  lastModified: 637624676423059680
+  lastModified: 637673906414830526
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -3106,7 +3166,7 @@ MonoBehaviour:
   Path: FMOD/Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637624676423159411
+  lastModified: 637673906414890685
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -3292,6 +3352,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 0
+--- !u!114 &-3048702589905449283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ANTIDEBUFF/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &-2896623412873254563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3331,7 +3411,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-2806996708268097473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3611,7 +3691,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-2224116545913269160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3851,7 +3931,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-1782248763934862471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4132,7 +4212,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 7377180829404960997}
+  - {fileID: 3666717952140846172}
   MinDistance: 0
   MaxDistance: 0
   Length: 491
@@ -4215,7 +4295,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-1191333145964474241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4276,6 +4356,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 1
+--- !u!114 &-1061600117557049666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_SIPHON/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &-1056105151978515717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4296,6 +4396,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 0
+--- !u!114 &-1042419172972735110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_BLIND/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &-1014187000127059614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4836,7 +4956,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -3554335109825899171}
+  - {fileID: -1061600117557049666}
   MinDistance: 0
   MaxDistance: 0
   Length: 2440
@@ -4991,7 +5111,7 @@ MonoBehaviour:
   - {fileID: -3625234307154515254}
   StringsBanks:
   - {fileID: -3252224475652214754}
-  stringsBankWriteTime: 637624676423159411
+  stringsBankWriteTime: 637673906414890685
   cacheVersion: 6
 --- !u!114 &67690337517835153
 MonoBehaviour:
@@ -5053,6 +5173,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 1
+--- !u!114 &192524706777157034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ACCELERATE/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &259298566262197094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5072,7 +5212,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &271564554482106414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5311,7 +5451,7 @@ MonoBehaviour:
   Path: FMOD/Project/Build/Desktop/Minions.bank
   Name: Minions
   StudioPath: bank:/Minions
-  lastModified: 637624676423956101
+  lastModified: 637673906415440622
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -5597,7 +5737,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -9137204622353670375}
+  - {fileID: 192524706777157034}
   MinDistance: 0
   MaxDistance: 0
   Length: 2416
@@ -5906,7 +6046,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &1939309337472593238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6207,6 +6347,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 1
+--- !u!114 &2518265314950612361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_SLOW/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &2530541836905276502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6309,7 +6469,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 1231
+  Length: 1400
 --- !u!114 &3078160048950841619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6430,6 +6590,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 1
+--- !u!114 &3237772917640361165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_STUN/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &3281736932504225227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6450,7 +6630,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -2277736903923523744}
+  - {fileID: -1042419172972735110}
   MinDistance: 0
   MaxDistance: 0
   Length: 1358
@@ -6494,7 +6674,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 259298566262197094}
+  - {fileID: -3048702589905449283}
   MinDistance: 0
   MaxDistance: 0
   Length: 2416
@@ -6558,7 +6738,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 1918884022920109509}
+  - {fileID: 2518265314950612361}
   MinDistance: 0
   MaxDistance: 0
   Length: 1358
@@ -6722,10 +6902,30 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -8970073326553570996}
+  - {fileID: -8475883808627159134}
   MinDistance: 0
   MaxDistance: 0
   Length: 1829
+--- !u!114 &3666717952140846172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ATTACK/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &3682656147346778006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6826,6 +7026,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 0
+--- !u!114 &3731773179140495398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_DAMAGEIMPROVE/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &3746055431233455204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7189,7 +7409,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -4304992061348667976}
+  - {fileID: 3731773179140495398}
   MinDistance: 0
   MaxDistance: 0
   Length: 2416
@@ -7856,6 +8076,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 0
+--- !u!114 &5768505577330289729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_DOT/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &5826123707615346076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8376,7 +8616,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -1239528769039464780}
+  - {fileID: 3237772917640361165}
   MinDistance: 0
   MaxDistance: 0
   Length: 2496
@@ -8600,6 +8840,26 @@ MonoBehaviour:
     data1: 0
     data2: 0
   Exists: 0
+--- !u!114 &7356452425495657447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ABILITY_ANTIBUFF/AttackPotency
+  m_EditorClassIdentifier: 
+  Name: AttackPotency
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Exists: 1
 --- !u!114 &7377180829404960997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8619,7 +8879,7 @@ MonoBehaviour:
   ID:
     data1: 0
     data2: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &7464492789925804546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9263,7 +9523,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -1808829488109232081}
+  - {fileID: -7594570346527743923}
   MinDistance: 0
   MaxDistance: 0
   Length: 824
@@ -9287,7 +9547,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -2848639258525760133}
+  - {fileID: -6227440614659240822}
   MinDistance: 0
   MaxDistance: 0
   Length: 1358
