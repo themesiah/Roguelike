@@ -510,19 +510,35 @@ MonoBehaviour:
   interactableList:
   - m_AssetGUID: ce87ced682bd1204c903d9549f3f0747
     m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: 7a8ebf7c6b57f1a44ba21ff697d11716
     m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: b10111bfe7233e9429ae41c198af42fd
     m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   - m_AssetGUID: de4d0c158d4707b498e0af338b4bc279
     m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   boundsChangeEvent: {fileID: 11400000, guid: 85c18dbbab14d4840b19cb449ce0d153, type: 2}
   roomBiome: {fileID: 11400000, guid: 0e2255d66eb1aaa4c80b32da8ff0f122, type: 2}
   mockTest: 0
   playerStartPoint: 0
+  spawnMiniboss: 0
+  mockIndex: -1
+  mockTotalRooms: 9
+  enemyTypesSpawn: 
+  interactableTypesSpawn: 
+  enemyToSpawnOverride: []
   enemySpaceLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -971,7 +987,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5661683952709076193}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
@@ -4543,19 +4559,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -4729,17 +4746,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -6112,6 +6132,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 65.6
       objectReference: {fileID: 0}
@@ -6122,6 +6154,10 @@ PrefabInstance:
     - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
       propertyPath: m_LocalRotation.x
@@ -6136,14 +6172,6 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -6155,14 +6183,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6063682126704424457, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
       propertyPath: m_Name
       value: Background
@@ -6171,10 +6191,6 @@ PrefabInstance:
       propertyPath: m_DrawMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6063682126704424459, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -8747630815905480300, guid: c4c8c971459b7ec44a05aed1ba55aa84, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
 --- !u!1 &1924393060203492778 stripped
