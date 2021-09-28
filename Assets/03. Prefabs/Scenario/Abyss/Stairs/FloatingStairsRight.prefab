@@ -523,11 +523,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2340956421192316456}
   - component: {fileID: 1329445882028446597}
-  - component: {fileID: 7738109356351920052}
   - component: {fileID: 1015288152650681081}
   - component: {fileID: 3311745557781561534}
   - component: {fileID: 4187709931128630008}
   - component: {fileID: 3825200012940200554}
+  - component: {fileID: 4841974601343309729}
   m_Layer: 0
   m_Name: FloatingStairsRight
   m_TagString: ChangeRoom
@@ -576,31 +576,6 @@ MonoBehaviour:
   snapPoints:
   - {fileID: 8759202229317780765}
   - {fileID: 5336152831533680075}
---- !u!68 &7738109356351920052
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087729635357471124}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 7ba511748a0e8e54fb97afe80a223ae5, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -5.529999, y: -3.34}
-  - {x: 7.14082, y: 3.965216}
-  - {x: 7.024853, y: 2.7754328}
-  - {x: -5.529999, y: -4.34}
-  - {x: -5.529999, y: -3.34}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!61 &1015288152650681081
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -700,6 +675,35 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.938843, y: 1.2979412}
   m_EdgeRadius: 0
+--- !u!60 &4841974601343309729
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7087729635357471124}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 7.149399, y: 4.6004333}
+      - {x: -5.2193975, y: -2.7294962}
+      - {x: -5.219398, y: -3.902401}
+      - {x: 7.149399, y: 3.507908}
 --- !u!1 &7981447368282678371
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5719644907487474179
 Transform:
   m_ObjectHideFlags: 0

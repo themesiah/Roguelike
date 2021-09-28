@@ -17,6 +17,11 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private ScriptableBoolReference rumbleActiveReference = default;
 
+        private void Awake()
+        {
+            StopMotors();
+        }
+
         private void OnEnable()
         {
             rumbleActiveReference.RegisterOnChangeAction(OnRumbleOptionChanged);

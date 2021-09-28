@@ -26,13 +26,24 @@ namespace Laresistance.Behaviours.Platforms
             platformEffector = GetComponent<PlatformEffector2D>();
             startingAngle = platformEffector.rotationalOffset;
             originalLayerMask = gameObject.layer;
+            if (platformEffector == null)
+            {
+                Debug.LogErrorFormat(gameObject, "Not assigned platform effector in object {0}", name);
+            }
         }
 
         public void ActivateFallingPlatform()
         {
-            platformEffector.rotationalOffset = targetAngle;
-            StartCoroutine(ReturnToStartingStatus());
-            gameObject.layer = changedLayerMask;
+            try
+            {
+                platformEffector.rotationalOffset = targetAngle;
+                StartCoroutine(ReturnToStartingStatus());
+                gameObject.layer = changedLayerMask;
+            } catch(System.Exception e)
+            {
+                Debug.LogErrorFormat(gameObject, e.Message);
+                Debug.LogErrorFormat(gameObject, "Not assigned platform effector in object {0} with parent {1}", name, transform.parent.name);
+            }
         }
 
         private IEnumerator ReturnToStartingStatus()

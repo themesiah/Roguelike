@@ -97,6 +97,14 @@ namespace Laresistance.Behaviours
             UnityEngine.Assertions.Assert.IsNotNull(groundCheck);
             facingRight = true;
             Flip(!FacingRight);
+            StartCoroutine(TrueFlip());
+        }
+
+        IEnumerator TrueFlip()
+        {
+            yield return new WaitForSeconds(0.1f);
+            Flip(!facingRight);
+            Flip(!facingRight);
         }
 
         private bool HaveAfterLandDelay()
