@@ -48,6 +48,8 @@ namespace Laresistance.Behaviours
         private StringGameEvent virtualCameraChangeEvent = default;
         [SerializeField] [Tooltip("Group of entities followed by the combat camera")]
         private RuntimeSingleCinemachineTargetGroup targetGroupRef = default;
+        [SerializeField]
+        private GameEvent finishedChangingRoomEvent = default;
         [Header("Dialog")]
         [SerializeField]
         private CharacterDialogEvent dialogEvent = default;
@@ -68,7 +70,7 @@ namespace Laresistance.Behaviours
             states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef, virtualCameraChangeEvent));
             battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef);
             states.Add("Battle", battleState);
-            roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent);
+            roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent, finishedChangingRoomEvent);
             states.Add("RoomChange", roomChangeState);
             states.Add("UI", new GameContextUIState(actionMapSwitchEvent));
 

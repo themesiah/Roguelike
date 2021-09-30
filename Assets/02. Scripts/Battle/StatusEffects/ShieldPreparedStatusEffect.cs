@@ -6,9 +6,12 @@ namespace Laresistance.Battle
 {
     public class ShieldPreparedStatusEffect : StatusEffect
     {
+        private static float GRACE_TIME = 0.5f; // THIS WILL BE WHEN PARRY PREPARATION ANIMATION IS FINISHED
 
         private float shieldPreparedTimer;
         private UnityAction onShieldStatusFinished;
+
+        private float PreparationTime => GameConstantsBehaviour.Instance.shieldPreparationTime.GetValue();
 
         public ShieldPreparedStatusEffect(BattleStatusManager statusManager) : base(statusManager) { }
         public override StatusType StatusType => StatusType.ShieldPrepared;
@@ -20,7 +23,7 @@ namespace Laresistance.Battle
 
         public override void AddValue(float value)
         {
-            shieldPreparedTimer = GameConstantsBehaviour.Instance.shieldPreparationTime.GetValue();
+            shieldPreparedTimer = PreparationTime;
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.ShieldPrepared, shieldPreparedTimer);
         }
 
@@ -50,6 +53,11 @@ namespace Laresistance.Battle
         public override bool HaveBuff()
         {
             return shieldPreparedTimer > 0f;
+        }
+
+        public override bool AppliesBuff()
+        {
+            return shieldPreparedTimer > 0f && shieldPreparedTimer < (PreparationTime - GRACE_TIME);
         }
 
         public override void CopyTo(StatusEffect other)

@@ -18,8 +18,9 @@ namespace Laresistance.StateMachines
         private RoomChangeData currentRoomData;
         private PlayerMovementData playerMovementData;
         private Collider2DGameEvent boundsChangeEvent;
+        private GameEvent finishedChangingRoomEvent;
 
-        public GameContextRoomChangeState(GameObject playerObject, Camera camera, PlayerMovementData playerMovementData, Collider2DGameEvent boundsChangeEvent)
+        public GameContextRoomChangeState(GameObject playerObject, Camera camera, PlayerMovementData playerMovementData, Collider2DGameEvent boundsChangeEvent, GameEvent finishedChangingRoomEvent)
         {
             body = playerObject.GetComponent<Rigidbody2D>();
             characterController = playerObject.GetComponent<Character2DController>();
@@ -27,6 +28,7 @@ namespace Laresistance.StateMachines
             this.camera = camera;
             this.playerMovementData = playerMovementData;
             this.boundsChangeEvent = boundsChangeEvent;
+            this.finishedChangingRoomEvent = finishedChangingRoomEvent;
         }
 
         public IEnumerator EnterState()
@@ -92,6 +94,7 @@ namespace Laresistance.StateMachines
             }
             // Put rigid body to simulate
             body.simulated = true;
+            finishedChangingRoomEvent?.Raise();
             yield return null;
         }
 

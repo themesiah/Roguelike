@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using Laresistance.Movement;
 using UnityEngine.InputSystem;
-using GamedevsToolbox.ScriptableArchitecture.Values;
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using Laresistance.Interaction;
 using Laresistance.Behaviours.Platforms;
 using Laresistance.Data;
 using UnityEngine.Events;
+using System.Collections;
 
 namespace Laresistance.Behaviours
 {
@@ -32,6 +31,7 @@ namespace Laresistance.Behaviours
         private bool jumpSignal = false;
         private bool stopJumpSignal = false;
         private float currentMovementValue = 0f;
+        private bool changingRooms = false;
 
         protected void Awake()
         {
@@ -56,8 +56,23 @@ namespace Laresistance.Behaviours
             }
         }
 
+        public void ChangeRoomSignal()
+        {
+            StartCoroutine(ChangeRoomCoroutine());
+        }
+
+        private IEnumerator ChangeRoomCoroutine()
+        {
+            changingRooms = true;
+            currentMovementValue = 0f;
+            yield return new WaitForSeconds(0.5f);
+            changingRooms = false;
+        }
+
         public void Move(InputAction.CallbackContext context)
         {
+            if (changingRooms)
+                return;
             if (context.started || context.performed)
             {
                 float axisValue = context.ReadValue<Vector2>().x;

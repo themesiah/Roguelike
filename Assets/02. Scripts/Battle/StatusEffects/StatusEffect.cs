@@ -16,6 +16,7 @@ namespace Laresistance.Battle
         public virtual void RemoveBuff() { }
         public virtual bool HaveDebuff() { return false; }
         public virtual bool HaveBuff() { return false; }
+        public virtual bool AppliesBuff() { return HaveBuff(); }
         public abstract void CopyTo(StatusEffect other);
     }
 }

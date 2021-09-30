@@ -25,8 +25,10 @@ namespace Laresistance.Battle
         public bool IsBossType { get; private set; }
 
         public bool Stunned => GetStatus(StatusType.Stun).HaveDebuff();
-        public bool WillParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
-        public bool WillBlock => GetStatus(StatusType.ShieldPrepared).HaveBuff();
+        public bool WillParry => GetStatus(StatusType.ParryPrepared).AppliesBuff();
+        public bool WillBlock => GetStatus(StatusType.ShieldPrepared).AppliesBuff();
+        public bool HaveParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
+        public bool HaveBlock => GetStatus(StatusType.ShieldPrepared).HaveBuff();
         #endregion
 
         #region Events
@@ -204,7 +206,6 @@ namespace Laresistance.Battle
 
         public bool HaveBuff()
         {
-
             foreach (var statusEffect in statusEffectsList)
             {
                 if (statusEffect.HaveBuff())

@@ -73,11 +73,14 @@ namespace Laresistance.Battle
 
 
             // Cooldowns. This is the ability charge process. When it finishes, the enemy executes the ability.
-            for(int i = 0; i < abilities.Length; ++i)
+            if (!battleStatus.HaveParry && !battleStatus.HaveBlock)
             {
-                if (abilities[i] == null)
-                    continue;
-                abilities[i].Tick(delta);
+                for (int i = 0; i < abilities.Length; ++i)
+                {
+                    if (abilities[i] == null)
+                        continue;
+                    abilities[i].Tick(delta);
+                }
             }
 
             // Last ability reaction expiration time
@@ -147,16 +150,19 @@ namespace Laresistance.Battle
             }
 
             // The timers and cooldowns only advance if there is no other ability executing right now.
-            if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty/* && !BattleAbilityManager.Instance.AbilityInQueue*/)
+            if (!battleStatus.HaveParry && !battleStatus.HaveBlock)
             {
-                nextAbilityTimer -= delta;
-                OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);
-                // Internal Cooldowns. This is the ability cooldown if the ability is executed in an special situation.
-                for (int i = 0; i < abilities.Length; ++i)
+                if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty && !BattleAbilityManager.Instance.AbilityInQueue) // El abilityinqueue lo tuve comentado un tiempo no recuerdo por qué. Vigilarlo.
                 {
-                    if (abilities[i] == null)
-                        continue;
-                    abilities[i].TickInternalCooldown(delta);
+                    nextAbilityTimer -= delta;
+                    OnAbilityCooldownProgress?.Invoke(this, CooldownProgress);
+                    // Internal Cooldowns. This is the ability cooldown if the ability is executed in an special situation.
+                    for (int i = 0; i < abilities.Length; ++i)
+                    {
+                        if (abilities[i] == null)
+                            continue;
+                        abilities[i].TickInternalCooldown(delta);
+                    }
                 }
             }
 
@@ -264,7 +270,7 @@ namespace Laresistance.Battle
         {
             // Check if self shield ability exists and can be used
             var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
-            if (ability != null && !selfStatus.WillBlock && !selfStatus.WillParry)
+            if (ability != null && !selfStatus.HaveBlock && !selfStatus.HaveParry)
             {
                 selfStatus.PrepareShield(()=> { ability.SetCooldownAsUsed(); });
             }
@@ -274,7 +280,7 @@ namespace Laresistance.Battle
         {
             // Check if self parry ability exists and can be used
             var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
-            if (ability != null && !selfStatus.WillParry && !selfStatus.WillBlock)
+            if (ability != null && !selfStatus.HaveParry && !selfStatus.HaveBlock)
             {
                 selfStatus.PrepareParry(() => { ability.SetCooldownAsUsed(); });
             }

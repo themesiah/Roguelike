@@ -17,8 +17,8 @@ namespace Laresistance.LevelGeneration
         private static float FOUNTAINS_PER_ROOM = 0.25f;
         private static float LORE_NPC_PER_ROOM = 0f; // not yet 0.1f;
         // Enemies
-        private static int[] NORMAL_ENEMIES_DISTRIBUTION = { 1, 1, 1, 2 };
-        private static int[] MINION_ENEMIES_DISTRIBUTION = { 0, 1, 1, 0 };
+        private static int[] NORMAL_ENEMIES_DISTRIBUTION = { 0, 1, 1, 2 };
+        private static int[] MINION_ENEMIES_DISTRIBUTION = { 1, 1, 1, 1 };
         private static float MINIBOSS_ENEMIES_PER_ROOM = 2f / 16f;
 
         [SerializeField]
