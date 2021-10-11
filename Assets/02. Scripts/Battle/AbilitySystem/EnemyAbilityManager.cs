@@ -132,9 +132,17 @@ namespace Laresistance.Battle
                 }
 
                 // Update shield timers and set status if necessary
-                UpdateShieldTimers();
+                abilityToCast = UpdateShieldTimers();
+                if (abilityToCast != -1)
+                {
+                    return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
+                }
                 // Update parry timers and set status if necessary
-                UpdateParryTimers();
+                abilityToCast = UpdateParryTimers();
+                if (abilityToCast != -1)
+                {
+                    return new AbilityExecutionData() { index = abilityToCast, selectedTarget = null };
+                }
                 // Check if should execute shield
                 abilityToCast = CheckUseShield();
                 if (abilityToCast != -1)
@@ -266,24 +274,40 @@ namespace Laresistance.Battle
             return -1;
         }
 
-        private void UpdateShieldTimers()
+        private int UpdateShieldTimers()
         {
             // Check if self shield ability exists and can be used
-            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.PrepareBlock, true);
             if (ability != null && !selfStatus.HaveBlock && !selfStatus.HaveParry)
             {
-                selfStatus.PrepareShield(()=> { ability.SetCooldownAsUsed(); });
+                return GetAbilityIndex(ability);
             }
+            return -1;
         }
 
-        private void UpdateParryTimers()
+        private int UpdateParryTimers()
         {
             // Check if self parry ability exists and can be used
-            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.PrepareParry, true);
             if (ability != null && !selfStatus.HaveParry && !selfStatus.HaveBlock)
             {
-                selfStatus.PrepareParry(() => { ability.SetCooldownAsUsed(); });
+                return GetAbilityIndex(ability);
             }
+            return -1;
+        }
+
+        public void PrepareShield()
+        {
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAllyAttacked, true);
+            if (ability != null)
+                selfStatus.PrepareShield();
+        }
+
+        public void PrepareParry()
+        {
+            var ability = GetRandomAbilityFromWeights(AbilityDataAISpecification.WhenAttacked, true);
+            if (ability != null)
+                selfStatus.PrepareParry();
         }
 
         private int CheckUseShield()

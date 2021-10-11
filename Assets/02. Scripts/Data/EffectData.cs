@@ -6,6 +6,16 @@ namespace Laresistance.Data
     [System.Serializable]
     public class EffectData
     {
+        public EffectData()
+        {
+
+        }
+
+        public EffectData(EffectType type)
+        {
+            effectType = type;
+        }
+
         [System.Serializable]
         public struct PrefabEffectData
         {

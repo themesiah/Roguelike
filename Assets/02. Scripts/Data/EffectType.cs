@@ -22,6 +22,8 @@
         Barrier,
         Exchange,
         Regeneration,
-        PercentDamage
+        PercentDamage,
+        PrepareParry,
+        PrepareBlock
     }
 }

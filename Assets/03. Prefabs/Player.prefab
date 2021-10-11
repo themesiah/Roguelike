@@ -2182,7 +2182,7 @@ GameObject:
   - component: {fileID: 6358223153588258164}
   - component: {fileID: 3093307683954578790}
   - component: {fileID: 606470716}
-  - component: {fileID: 6958609404492200340}
+  - component: {fileID: 8584464741198961604}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -2264,8 +2264,8 @@ MonoBehaviour:
   OnLand:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: SetTrigger
         m_Mode: 5
@@ -2277,8 +2277,8 @@ MonoBehaviour:
           m_StringArgument: Land
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: SetFalling
         m_Mode: 6
@@ -2290,8 +2290,8 @@ MonoBehaviour:
           m_StringArgument: Land
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: ResetTrigger
         m_Mode: 5
@@ -2306,8 +2306,8 @@ MonoBehaviour:
   OnStartFall:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: SetTrigger
         m_Mode: 5
@@ -2319,8 +2319,8 @@ MonoBehaviour:
           m_StringArgument: StartFall
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: SetFalling
         m_Mode: 6
@@ -2335,8 +2335,8 @@ MonoBehaviour:
   OnJump:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: SetTrigger
         m_Mode: 5
@@ -2348,8 +2348,8 @@ MonoBehaviour:
           m_StringArgument: Jump
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: ResetTrigger
         m_Mode: 5
@@ -2655,8 +2655,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2519383785215392939}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBehaviour,
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
           GameScripts
         m_MethodName: SetHorizontalSpeed
         m_Mode: 4
@@ -3207,25 +3207,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 2.1242247}
   m_Size: {x: 1.33, y: 4.234256}
   m_Direction: 0
---- !u!95 &6958609404492200340
-Animator:
-  serializedVersion: 3
+--- !u!114 &8584464741198961604
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591657531686456962}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb567d268fd6021419131444c8753d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatorWrapper: {fileID: 2519383785215392939}
 --- !u!1 &2070820899780721185
 GameObject:
   m_ObjectHideFlags: 0
@@ -4191,6 +4185,22 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Laresistance.Behaviours.DamageTextSpawnerBehaviour,
           GameScripts
         m_MethodName: SpawnMissText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnAttackBlocked:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 6e4b28961a9f4314fb4343f77d8a81da, type: 2}
+        m_TargetAssemblyTypeName: Laresistance.Audio.ScriptableFMODEventEmitter,
+          GameScripts
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

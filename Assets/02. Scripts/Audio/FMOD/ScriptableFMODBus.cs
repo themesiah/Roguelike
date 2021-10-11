@@ -27,6 +27,14 @@ namespace Laresistance.Audio
             bus.setVolume(volume);
         }
 
+        public float GetVolume()
+        {
+            Init();
+            float volume;
+            bus.getVolume(out volume);
+            return volume;
+        }
+
         public void SetMute(bool mute)
         {
             Init();

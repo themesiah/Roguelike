@@ -9,7 +9,6 @@ using System.Collections;
 
 namespace Laresistance.Behaviours
 {
-    [RequireComponent(typeof(Rigidbody2D),typeof(Animator))]
     public class PlayerMapBehaviour : MapBehaviour
     {
         [SerializeField]
@@ -20,9 +19,6 @@ namespace Laresistance.Behaviours
         private UnityEvent OnPlatformFallStart = default;
         [SerializeField]
         private UnityEvent OnPlatformFallEnd = default;
-
-        private Rigidbody2D body;
-        private Animator animator;
 
         private ScenarioInteraction currentInteraction = null;
         private PlayerScenarioInteraction playerInteraction = null;
@@ -35,8 +31,6 @@ namespace Laresistance.Behaviours
 
         protected void Awake()
         {
-            body = GetComponent<Rigidbody2D>();
-            animator = GetComponent<Animator>();
             playerInteraction = new PlayerScenarioInteraction();
         }
 

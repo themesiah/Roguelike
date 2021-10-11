@@ -7,6 +7,8 @@
         WhenNotFullLife,
         WhenSelfHaveDebuff,
         WhenEnemyHaveBuff,
-        WhenAllyAttacked
+        WhenAllyAttacked,
+        PrepareBlock,
+        PrepareParry
     }
 }

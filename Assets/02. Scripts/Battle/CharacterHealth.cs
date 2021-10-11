@@ -37,6 +37,8 @@ namespace Laresistance.Battle
         public event OnHealthChangedHandler OnHealthChanged;
         public delegate void OnAttackMissedHandler(CharacterHealth sender);
         public event OnAttackMissedHandler OnAttackMissed;
+        public delegate void OnAttackBlockedHandler(CharacterHealth sender, int damageBlocked);
+        public event OnAttackBlockedHandler OnAttackBlocked;
         #endregion
 
         #region Public API
@@ -106,6 +108,7 @@ namespace Laresistance.Battle
 
             remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
             remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
+            int finalPowerDealt = remainingPower;
 
             for (int i = currentShields.Count-1; i >= 0; --i)
             {
@@ -131,6 +134,11 @@ namespace Laresistance.Battle
                 {
                     currentShields.Remove(s);
                 }
+            }
+
+            if (remainingPower <= 0)
+            {
+                OnAttackBlocked?.Invoke(this, finalPowerDealt);
             }
             
             currentHealth -= remainingPower;

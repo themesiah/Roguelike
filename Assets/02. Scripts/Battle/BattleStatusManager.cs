@@ -150,16 +150,14 @@ namespace Laresistance.Battle
             OnResetStatus?.Invoke(this);
         }
 
-        public void PrepareParry(UnityAction onParryStatusFinished)
+        public void PrepareParry()
         {
             GetStatus(StatusType.ParryPrepared).AddValue(0f);
-            ((ParryPreparedStatusEffect)GetStatus(StatusType.ParryPrepared)).SetCallback(onParryStatusFinished);
         }
 
-        public void PrepareShield(UnityAction onShieldStatusFinished)
+        public void PrepareShield()
         {
             GetStatus(StatusType.ShieldPrepared).AddValue(0f);
-            ((ShieldPreparedStatusEffect)GetStatus(StatusType.ShieldPrepared)).SetCallback(onShieldStatusFinished);
         }
 
         public void ParryExecuted()

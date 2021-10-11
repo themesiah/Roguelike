@@ -367,10 +367,10 @@ namespace Laresistance.Battle
         {
             if (availableAbilities.Length > slot && slot >= 0 && !ability.data.IsComboSkill)
             {
-                if (GetAbilitiesCount() == 4 || GetAbilitiesCount() == 5)
-                {
-                    nextAbilitiesQueue.Enqueue(availableAbilities[slot]);
-                }
+                //if (GetAbilitiesCount() == 4 || GetAbilitiesCount() == 5) Commented, so abilities are always rotating, even when you already have minions
+                //{
+                nextAbilitiesQueue.Enqueue(availableAbilities[slot]);
+                //}
                 availableAbilities[slot] = null;
                 OnAbilityOnQueue?.Invoke(this, slot, false);
                 OnAvailableSkillsChanged?.Invoke(this, AvailableAbilities);

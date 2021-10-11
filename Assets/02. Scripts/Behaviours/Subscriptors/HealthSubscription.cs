@@ -33,6 +33,8 @@ namespace Laresistance.Behaviours
         private UnityEvent<string> OnMaxHealthChangedString = default;
         [SerializeField]
         private UnityEvent OnMissedAttackReceived = default;
+        [SerializeField]
+        private UnityEvent OnAttackBlocked = default;
 
         private void OnEnable()
         {
@@ -53,6 +55,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnMaxHealthChanged -= MaxHealthChanged;
             battleBehaviour.StatusManager.health.OnHealthChanged -= HealthChanged;
             battleBehaviour.StatusManager.health.OnAttackMissed -= AttackMissed;
+            battleBehaviour.StatusManager.health.OnAttackBlocked -= OnBlock;
         }
 
         private void EnableSuscriptions()
@@ -64,6 +67,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.health.OnMaxHealthChanged += MaxHealthChanged;
             battleBehaviour.StatusManager.health.OnHealthChanged += HealthChanged;
             battleBehaviour.StatusManager.health.OnAttackMissed += AttackMissed;
+            battleBehaviour.StatusManager.health.OnAttackBlocked += OnBlock;
             OnMaxHealth?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth());
             OnMaxHealthChangedString?.Invoke(battleBehaviour.StatusManager.health.GetMaxHealth().ToString());
             OnHealthChanged?.Invoke(battleBehaviour.StatusManager.health.GetCurrentHealth());
@@ -86,6 +90,11 @@ namespace Laresistance.Behaviours
             OnHealthChanged?.Invoke(currentHealth);
             OnHealthChangedString?.Invoke(currentHealth.ToString());
             HealthPercent(sender);
+        }
+
+        private void OnBlock(CharacterHealth sender, int damageBlocked)
+        {
+            OnAttackBlocked?.Invoke();
         }
 
         private void OnShieldsChanged(CharacterHealth sender, int delta, int totalShields, bool isDamage, float shieldPercent)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace Laresistance.Systems.Dialog
 {
     [CreateAssetMenu(menuName = "Laresistance/Data/Dialog variables data")]
+    [System.Serializable]
     public class DialogVariablesStatus : ScriptableObject
     {
         [System.Serializable]
@@ -63,6 +64,16 @@ namespace Laresistance.Systems.Dialog
         public void ResetAll()
         {
             variablesData.Clear();
+        }
+
+        public VariableData[] GetAll()
+        {
+            return variablesData.ToArray();
+        }
+
+        public void SetAll(VariableData[] data)
+        {
+            variablesData = new List<VariableData>(data);
         }
     }
 }

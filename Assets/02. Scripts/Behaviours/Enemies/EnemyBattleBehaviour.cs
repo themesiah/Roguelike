@@ -102,5 +102,15 @@ namespace Laresistance.Behaviours
         {
             return AbilityInputProcessor.GetAbilities();
         }
+
+        public void PrepareShield()
+        {
+            ((EnemyAbilityManager)AbilityInputProcessor).PrepareShield();
+        }
+
+        public void PrepareParry()
+        {
+            ((EnemyAbilityManager)AbilityInputProcessor).PrepareParry();
+        }
     }
 }

@@ -31,5 +31,10 @@ namespace Laresistance.Behaviours
         {
             animatorWrapper?.ResetTrigger(trigger);
         }
+
+        public void SetFalling(bool falling)
+        {
+            animatorWrapper?.SetFalling(falling);
+        }
     }
 }
