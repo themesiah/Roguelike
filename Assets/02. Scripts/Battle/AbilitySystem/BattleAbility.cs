@@ -36,6 +36,7 @@ namespace Laresistance.Battle
         public int Weight { get; private set; }
         public float Cooldown { get; private set; }
         public float InternalCooldown { get; private set; }
+        public float TimerProgress => cooldownTimer / Cooldown;
         public bool IsShieldAbility { get; private set; }
         public bool IsOffensiveAbility { get; private set; }
         public Sprite AbilityIcon { get; private set; }

@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Laresistance.Data;
+﻿using Laresistance.Data;
 using Laresistance.Core;
 using System.Collections.Generic;
 
@@ -13,6 +12,10 @@ namespace Laresistance.Battle
             List<BattleEffect> effects = new List<BattleEffect>();
             bool shield = false;
             bool offensive = false;
+            if (abilityData == null)
+            {
+                return null;
+            }
 
             foreach(EffectData effectData in abilityData.EffectsData)
             {

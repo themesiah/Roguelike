@@ -21,6 +21,7 @@ namespace Laresistance.Core
         public BattleStatusManager statusManager { get; private set; }
         public BattleAbility[] characterAbilities { get; private set; }
         public BattleAbility ultimateAbility { get; private set; }
+        public BattleAbility supportAbility { get; private set; }
         public Combo[] combos { get; private set; }
 
         public Player(BattleStatusManager statusManager)
@@ -330,7 +331,7 @@ namespace Laresistance.Core
         public BattleAbility[] GetAllAbilities()
         {
             // Length is 4 player abilities, 1 ultimate, 4 per minion (3 minions), 3 consumables, and the combos
-            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5 + combos.Length];
+            BattleAbility[] abilities = new BattleAbility[MAX_MINIONS * 4 + MAX_CONSUMABLES + 6 + combos.Length];
             // Player abilities. From 0 to 3.
             abilities[0] = characterAbilities[0];
             abilities[1] = characterAbilities[1];
@@ -357,24 +358,30 @@ namespace Laresistance.Core
             }
             // Ultimate ability. Slot 19
             abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 4] = ultimateAbility;
-            // Combos. From 20 onward
+            // Support ability. Slot 20
+            abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5] = supportAbility;
+            // Combos. From 21 onward
             for (int i = 0; i < combos.Length; ++i)
             {
-                abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 5 + i] = combos[i].comboAbility;
+                abilities[MAX_MINIONS * 4 + MAX_CONSUMABLES + 6 + i] = combos[i].comboAbility;
             }
             return abilities;
         }
 
-        public void SetMainAbilities(BattleAbility[] abilities, BattleAbility ultimate)
+        public void SetMainAbilities(BattleAbility[] abilities, BattleAbility ultimate, BattleAbility support)
         {
             characterAbilities = abilities;
             ultimateAbility = ultimate;
             ultimateAbility.CurrentPlayerSlot = -1;
-            foreach(var ability in characterAbilities)
+
+            supportAbility = support;
+            supportAbility.CurrentPlayerSlot = -1;
+            foreach (var ability in characterAbilities)
             {
                 ability.SetParentPlayer(this);
             }
             ultimateAbility.SetParentPlayer(this);
+            supportAbility.SetParentPlayer(this);
         }
 
         public string GetAbilityText(int level)

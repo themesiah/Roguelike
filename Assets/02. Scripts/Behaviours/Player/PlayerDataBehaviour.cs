@@ -11,7 +11,7 @@ namespace Laresistance.Behaviours
     public class PlayerDataBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private AbilityData[] playerAbilityData = default;
+        private PlayerCharacterData playerCharacterData = default;
         [SerializeField]
         private ComboData[] combosData = default;
         [SerializeField]
@@ -31,6 +31,7 @@ namespace Laresistance.Behaviours
 
         public Player player { get; private set; }
         public BattleStatusManager StatusManager { get; private set; }
+        public PlayerCharacterList characterType => playerCharacterData.PlayerCharacterType;
 
         private void Awake()
         {
@@ -41,13 +42,14 @@ namespace Laresistance.Behaviours
 
             // Abilities
             BattleAbility[] playerAbilities = new BattleAbility[4];
-            playerAbilities[0] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[0], player.GetEquipmentContainer(), StatusManager);
-            playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[1], player.GetEquipmentContainer(), StatusManager);
-            playerAbilities[2] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[2], player.GetEquipmentContainer(), StatusManager);
-            playerAbilities[3] = BattleAbilityFactory.GetBattleAbility(playerAbilityData[3], player.GetEquipmentContainer(), StatusManager);
-            BattleAbility ultimate = BattleAbilityFactory.GetBattleAbility(playerAbilityData[4], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[0] = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerAbilityData[0], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[1] = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerAbilityData[1], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[2] = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerAbilityData[2], player.GetEquipmentContainer(), StatusManager);
+            playerAbilities[3] = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerAbilityData[3], player.GetEquipmentContainer(), StatusManager);
+            BattleAbility ultimate = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerUltimateAbility, player.GetEquipmentContainer(), StatusManager);
+            BattleAbility support = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerSupportAbility, player.GetEquipmentContainer(), StatusManager);
 
-            player.SetMainAbilities(playerAbilities, ultimate);
+            player.SetMainAbilities(playerAbilities, ultimate, support);
 
             // Combos
             Combo[] combos = new Combo[combosData.Length];

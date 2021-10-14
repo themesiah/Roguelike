@@ -15,7 +15,7 @@ namespace Laresistance.Behaviours
     {
         // How many more space than actual content is needed to consider the room too big for the requirements.
         // For example, assigning a 1 enemy room to a room with 6 enemy spots available may result in a boring, empty room.
-        private static int TOO_MUCH_SPACE_THRESHOLD = 2;
+        private static int TOO_MUCH_SPACE_THRESHOLD = 1;
         private static float ROOM_VALUE_PARTY_THRESHOLD = 0.7f;
         private static float ROOM_VALUE_MINION_PARTY_THRESHOLD = 0.2f;
 

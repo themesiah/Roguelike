@@ -2,40 +2,37 @@
 using Laresistance.Core;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Laresistance.Battle
 {
-    public class PlayerAbilityInput : IAbilityInputProcessor, ITargetDependant
+    public abstract class PlayerAbilityInput : IAbilityInputProcessor, ITargetDependant
     {
-        private Player player;
-        private BattleStatusManager battleStatus;
+        protected Player player;
+        protected BattleStatusManager battleStatus;
 
         private int currentAbilityIndex = -1;
         private BattleAbility[] availableAbilities;
-        private float renewTimer;
-        private float shuffleTimer;
+        protected float renewTimer;
         private float abilitiesToUseDequeueTimer;
+
+        public float NextSupportAbilityProgress { get { return 1f - player.supportAbility.TimerProgress; } }
+        public virtual float TotalSupportAbilityCooldown => 0f;
 
         public Queue<BattleAbility> nextAbilitiesQueue { get; private set; }
 
         public BattleAbility[] AvailableAbilities { get { return availableAbilities; } }
         public float NextCardProgress { get { return 1f - (renewTimer / TotalCardRenewCooldown); } }
-        public float NextShuffleProgress { get { return 1f - (shuffleTimer / TotalShuffleCooldown); } }
+        
         public float TotalCardRenewCooldown { get
             {
                 float total = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
                 total = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.RenewCardDelay, total);
                 return total;
             } }
-        public float TotalShuffleCooldown { get
-            {
-                float total = GameConstantsBehaviour.Instance.shuffleCooldown.GetValue();
-                total = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleDelay, total);
-                return total;
-            } }
         public List<int> abilitiesToUseIndexList { get; private set; }
 
-        private List<AbilityExecutionData> abilitiesToUseList;
+        protected List<AbilityExecutionData> abilitiesToUseList;
         private bool timeStopped = false;
         private CharacterBattleManager selectedTarget = null;
 
@@ -48,8 +45,8 @@ namespace Laresistance.Battle
         public event OnNextShuffleProgressHandler OnNextShuffleProgress;
         public delegate void OnAbilityOnQueueHandler(PlayerAbilityInput sender, int slot, bool onQueue);
         public event OnAbilityOnQueueHandler OnAbilityOnQueue;
-        public delegate void OnShuffleHandler(PlayerAbilityInput sender, int[] shuffled);
-        public event OnShuffleHandler OnShuffle;
+        //public delegate void OnShuffleHandler(PlayerAbilityInput sender, int[] shuffled);
+        //public event OnShuffleHandler OnShuffle;
         public delegate void OnRenewAbilitiesHandler(PlayerAbilityInput sender);
         public event OnRenewAbilitiesHandler OnRenewAbilities;
         public delegate void OnAbilityOffQueueHandler(PlayerAbilityInput sender);
@@ -69,18 +66,33 @@ namespace Laresistance.Battle
             abilitiesToUseList = new List<AbilityExecutionData>();
             abilitiesToUseIndexList = new List<int>();
         }
+        protected abstract void AfterUpdateAbilities(float delta);
+        protected abstract void OnBattleStart();
+
+        protected void ExecuteOnShuffle(int[] shuffled)
+        {
+            //OnShuffle?.Invoke(this, shuffled);
+        }
+
+        protected void ExecuteOnNextShuffleProgress(float progress)
+        {
+            OnNextShuffleProgress?.Invoke(this, progress);
+        }
+
+        protected void ExecuteOnNextCardProgress()
+        {
+            OnNextCardProgress?.Invoke(this, NextCardProgress);
+        }
 
         public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
             // Update if any current ability has to change or be added
             UpdateAvailableAbilities(delta);
 
-            // Step up the shuffle timer if necessary
+            AfterUpdateAbilities(delta);
+
             if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty)
-            {
-                shuffleTimer -= delta;
-                OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
-            } else if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned)
+            {} else if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned)
             {
                 abilitiesToUseDequeueTimer -= delta;
             } else if (!BattleAbilityManager.Instance.Executing && battleStatus.Stunned && (abilitiesToUseList.Count > 0 && abilitiesToUseList[0].ability.CanBeUsed()))
@@ -95,6 +107,7 @@ namespace Laresistance.Battle
                 {
                     ability?.Tick(delta);
                 }
+                OnAbilitiesUpdate(delta);
             }
 
             // Check if the player selected any ability
@@ -127,6 +140,11 @@ namespace Laresistance.Battle
             }
         }
 
+        protected virtual void OnAbilitiesUpdate(float delta)
+        {
+
+        }
+
         public void TryToExecuteAbility(int index)
         {
             if (index < -1 || index > 5)
@@ -136,6 +154,10 @@ namespace Laresistance.Battle
             if (index == 4)
             {
                 ability = player.ultimateAbility;
+            }
+            else if (index == 5)
+            {
+                ability = player.supportAbility;
             }
             else
             {
@@ -152,6 +174,11 @@ namespace Laresistance.Battle
             if (abilityInternalIndex == 4)
             {
                 abilitiesToUseList.Add(new AbilityExecutionData() { index = abilityInternalIndex, selectedTarget = GetSelectedTarget(), ability = player.ultimateAbility });
+                abilitiesToUseIndexList.Add(abilityInternalIndex);
+                abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            } else if (abilityInternalIndex == 5)
+            {
+                abilitiesToUseList.Add(new AbilityExecutionData() { index = abilityInternalIndex, selectedTarget = null, ability = player.supportAbility });
                 abilitiesToUseIndexList.Add(abilityInternalIndex);
                 abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
             }
@@ -183,11 +210,15 @@ namespace Laresistance.Battle
             BattleAbility[] abilities = new BattleAbility[abilitiesToUseIndexList.Count];
             for(int i = 0; i < abilitiesToUseIndexList.Count; ++i)
             {
-                if (abilitiesToUseIndexList[i] != 4) {
-                    abilities[i] = availableAbilities[abilitiesToUseIndexList[i]];
-                } else
+                if (abilitiesToUseIndexList[i] == 4)
                 {
                     abilities[i] = player.ultimateAbility;
+                } else if (abilitiesToUseIndexList[i] == 5)
+                {
+                    abilities[i] = player.supportAbility;
+                } else
+                {
+                    abilities[i] = availableAbilities[abilitiesToUseIndexList[i]];
                 }
             }
             for (int i = 0; i < player.combos.Length; ++i)
@@ -238,11 +269,10 @@ namespace Laresistance.Battle
             abilitiesToUseList.Clear();
             abilitiesToUseIndexList.Clear();
             OnAbilitiesToUseChanged?.Invoke(this);
-            InitializeCards();
-            shuffleTimer = TotalShuffleCooldown;
-            shuffleTimer = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleStartingValue, shuffleTimer);
+            InitializeAbilities();
             renewTimer = TotalCardRenewCooldown;
             abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
+            OnBattleStart();
         }
 
         public void BattleEnd()
@@ -270,24 +300,10 @@ namespace Laresistance.Battle
             return count;
         }
 
-        public void Shuffle()
-        {
-            if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && shuffleTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
-            {
-                renewTimer = TotalCardRenewCooldown;
-                OnNextCardProgress?.Invoke(this, NextCardProgress);
-                int[] discarded = DiscardAvailableAbilities();
-                OnShuffle?.Invoke(this, discarded);
-                float energyValue = discarded.Length;
-                energyValue = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleEnergyGain, energyValue);
-                battleStatus.AddEnergy(energyValue);
-                RenewAllAbilities();
-                shuffleTimer = TotalShuffleCooldown;
-                OnNextShuffleProgress?.Invoke(this, NextShuffleProgress);
-            }
-        }
+        public abstract void SupportAbility(InputAction.CallbackContext context);
+        public abstract void UltimateAbility(InputAction.CallbackContext context);
 
-        private void InitializeCards()
+        private void InitializeAbilities()
         {
             var abilities = GetAbilities();
             foreach(var ability in abilities)
@@ -296,6 +312,12 @@ namespace Laresistance.Battle
             }
             UpdateAvailableAbilities(0f);
             RenewAllAbilities();
+            OnInitializeAbilities();
+        }
+
+        protected virtual void OnInitializeAbilities()
+        {
+
         }
 
         private void UpdateAvailableAbilities(float delta)
@@ -374,10 +396,16 @@ namespace Laresistance.Battle
                 availableAbilities[slot] = null;
                 OnAbilityOnQueue?.Invoke(this, slot, false);
                 OnAvailableSkillsChanged?.Invoke(this, AvailableAbilities);
+                OnAbilityExecutedExtra(ability, slot);
             }
         }
 
-        private void RenewAllAbilities() // SHUFFLE
+        protected virtual void OnAbilityExecutedExtra(BattleAbility ability, int slot)
+        {
+
+        }
+
+        protected void RenewAllAbilities() // SHUFFLE
         {
             List<BattleAbility> readyAbilities = new List<BattleAbility>();
             foreach (BattleAbility ability in GetAbilities())
@@ -408,7 +436,7 @@ namespace Laresistance.Battle
             OnRenewAbilities?.Invoke(this);
         }
 
-        private int[] DiscardAvailableAbilities()
+        protected int[] DiscardAvailableAbilities()
         {
             int amountDiscarded = 0;
             List<int> discarded = new List<int>();
@@ -471,5 +499,6 @@ namespace Laresistance.Battle
         }
 
         public BattleAbility PlayerUltimate => player.ultimateAbility;
+        public BattleAbility PlayerSupport => player.supportAbility;
     }
 }

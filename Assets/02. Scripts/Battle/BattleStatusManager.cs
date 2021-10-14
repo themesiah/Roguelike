@@ -53,6 +53,8 @@ namespace Laresistance.Battle
         public event OnSingletonStatusRemovedHandler OnSingletonStatusRemoved;
         public delegate void OnSetBattleManager(CharacterBattleManager cbm);
         public event OnSetBattleManager SetBattleManager;
+        public delegate void OnSupportAbilityExecutedHandler(BattleStatusManager sender);
+        public event OnSupportAbilityExecutedHandler OnSupportAbilityExecuted;
         #endregion
 
         #region Public methods
@@ -221,6 +223,11 @@ namespace Laresistance.Battle
             healAmount = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.BattleEndHeal, healAmount);
             if (healAmount > 0)
                 health.Heal(healAmount);
+        }
+
+        public void ExecuteSupportAbility()
+        {
+            OnSupportAbilityExecuted?.Invoke(this);
         }
 
         public void SetEquipmentsContainer(EquipmentsContainer equipments)

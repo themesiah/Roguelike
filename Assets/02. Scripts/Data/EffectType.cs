@@ -24,6 +24,7 @@
         Regeneration,
         PercentDamage,
         PrepareParry,
-        PrepareBlock
+        PrepareBlock,
+        Shuffle
     }
 }

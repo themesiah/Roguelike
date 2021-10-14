@@ -248,7 +248,8 @@ namespace Laresistance.Simulator
 
             BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentContainer(), playerStatus);
             BattleAbility playerAbility2 = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentContainer(), playerStatus);
-            player.SetMainAbilities(new BattleAbility[] { playerAbility}, playerAbility2);
+            BattleAbility playerAbility3 = BattleAbilityFactory.GetBattleAbility(playerAbilityData, player.GetEquipmentContainer(), playerStatus);
+            player.SetMainAbilities(new BattleAbility[] { playerAbility}, playerAbility2, playerAbility3);
 
             foreach (var md in playerMinions)
             {

@@ -74,13 +74,13 @@ namespace Laresistance.Behaviours
             playerInput.OnNextCardProgress += OnNextCardProgressChanged;
             playerInput.OnNextShuffleProgress += OnNextShuffleProgressChanged;
             playerInput.OnAbilityOnQueue += OnAbilityOnQueue;
-            playerInput.OnShuffle += OnShuffle;
+            //playerInput.OnShuffle += OnShuffle;
             playerInput.OnRenewAbilities += OnRenewedAbilities;
             playerInput.OnAbilityOffQueue += OnAbilityOffQueue;
             playerInput.OnAbilitiesToUseChanged += OnAbilitiesToUseChanged;
             playerInput.OnAbilityExecutedFromQueue += OnAbilityExecutedFromQueue;
             OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
-            OnNextShuffleProgressChanged(playerInput, playerInput.NextShuffleProgress);
+            OnNextShuffleProgressChanged(playerInput, playerInput.NextSupportAbilityProgress);
         }
 
         private void OnDisable()
@@ -90,7 +90,7 @@ namespace Laresistance.Behaviours
             playerInput.OnNextCardProgress -= OnNextCardProgressChanged;
             playerInput.OnNextShuffleProgress -= OnNextShuffleProgressChanged;
             playerInput.OnAbilityOnQueue -= OnAbilityOnQueue;
-            playerInput.OnShuffle -= OnShuffle;
+            //playerInput.OnShuffle -= OnShuffle;
             playerInput.OnRenewAbilities -= OnRenewedAbilities;
             playerInput.OnAbilityOffQueue -= OnAbilityOffQueue;
             playerInput.OnAbilitiesToUseChanged -= OnAbilitiesToUseChanged;
@@ -170,15 +170,21 @@ namespace Laresistance.Behaviours
             // Create the new instances with the correct graphics
             foreach (int index in sender.abilitiesToUseIndexList)
             {
-                if (index != 4)
+                if (index == 4)
                 {
-                    BattleAbility ability = sender.AvailableAbilities[index];
+                    BattleAbility ability = sender.PlayerUltimate;
+                    GameObject instance = abilityToUsePool.GetInstance(abilityToUseQueueParent);
+                    instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
+                    instance.transform.localScale = Vector3.one;
+                } else if (index == 5)
+                {
+                    BattleAbility ability = sender.PlayerSupport;
                     GameObject instance = abilityToUsePool.GetInstance(abilityToUseQueueParent);
                     instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
                     instance.transform.localScale = Vector3.one;
                 } else
                 {
-                    BattleAbility ability = sender.PlayerUltimate;
+                    BattleAbility ability = sender.AvailableAbilities[index];
                     GameObject instance = abilityToUsePool.GetInstance(abilityToUseQueueParent);
                     instance.GetComponent<ShowableAbility>().SetupShowableElement(ability);
                     instance.transform.localScale = Vector3.one;

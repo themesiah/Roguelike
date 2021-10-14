@@ -1,4 +1,5 @@
 ﻿using Laresistance.Battle;
+using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using GamedevsToolbox.ScriptableArchitecture.Values;
@@ -14,7 +15,19 @@ namespace Laresistance.Behaviours
 
         protected override void SetupAbilityInputProcessor()
         {
-            AbilityInputProcessor = new PlayerAbilityInput(playerDataBehaviour.player, StatusManager);
+            switch(playerDataBehaviour.characterType)
+            {
+                case PlayerCharacterList.Body:
+                    AbilityInputProcessor = new PlayerBodyAbilityInput(playerDataBehaviour.player, StatusManager);
+                    break;
+                case PlayerCharacterList.Heart:
+                    AbilityInputProcessor = new PlayerHeartAbilityInput(playerDataBehaviour.player, StatusManager);
+                    break;
+                case PlayerCharacterList.Mind:
+                    AbilityInputProcessor = new PlayerMindAbilityInput(playerDataBehaviour.player, StatusManager);
+                    break;
+            }
+            
         }
 
         protected override void SetupAbilityInputExecutor()
@@ -41,14 +54,8 @@ namespace Laresistance.Behaviours
         public void PerformMinionAbility1(InputAction.CallbackContext context) => PerformAbility(context, 1);
         public void PerformMinionAbility2(InputAction.CallbackContext context) => PerformAbility(context, 2);
         public void PerformMinionAbility3(InputAction.CallbackContext context) => PerformAbility(context, 3);
-        public void PerformUltimateAbility(InputAction.CallbackContext context) => PerformAbility(context, 4);
-        public void PerformReshuffle(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                ((PlayerAbilityInput)AbilityInputProcessor).Shuffle();
-            }
-        }
+        public void PerformUltimateAbility(InputAction.CallbackContext context) => ((PlayerAbilityInput)AbilityInputProcessor).UltimateAbility(context);
+        public void PerformSupportAbility(InputAction.CallbackContext context) => ((PlayerAbilityInput)AbilityInputProcessor).SupportAbility(context);
 
         public void PerformChangeTarget(InputAction.CallbackContext context)
         {
