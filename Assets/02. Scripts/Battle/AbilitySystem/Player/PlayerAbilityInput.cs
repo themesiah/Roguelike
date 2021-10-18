@@ -238,7 +238,7 @@ namespace Laresistance.Battle
                     {
                         BattleAbilityManager.Instance.AbilityInQueue = false;
                     }
-                    return new AbilityExecutionData() { index = i + 20, selectedTarget = GetSelectedTarget(), ability = combo.comboAbility };
+                    return new AbilityExecutionData() { index = i + 21, selectedTarget = GetSelectedTarget(), ability = combo.comboAbility };
                 }
             }
 
@@ -249,7 +249,7 @@ namespace Laresistance.Battle
             {
                 abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
             } else
-            if (abilitiesToUseIndexList.Count != 0 && availableAbilities[abilitiesToUseIndexList[0]].IsPrioritary())
+            if ((abilitiesToUseIndexList.Count != 0 && availableAbilities[abilitiesToUseIndexList[0]].IsPrioritary()))
             {
                 abilitiesToUseDequeueTimer = 0f;
             } else
@@ -477,7 +477,7 @@ namespace Laresistance.Battle
                     if (i < 4)
                         return i;
                     else
-                        return i + 1;
+                        return i + 2;
                 }
             }
             return -1;

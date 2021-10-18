@@ -70,7 +70,7 @@ namespace Laresistance.Battle
 
         protected override void OnAbilityExecutedExtra(BattleAbility ability, int slot)
         {
-            battleStatus.AddEnergy(1f);
+            battleStatus.AddEnergy(0.5f);
         }
     }
 }

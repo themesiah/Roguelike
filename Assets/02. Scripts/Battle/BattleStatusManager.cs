@@ -242,8 +242,8 @@ namespace Laresistance.Battle
 
         public void AddEnergy(float energy)
         {
-            float energyToWin = energy * GameConstantsBehaviour.Instance.energyPerCardReference.GetValue();
-            energyToWin = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, energyToWin);
+            //float energyToWin = energy * GameConstantsBehaviour.Instance.energyPerCardReference.GetValue();
+            float energyToWin = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, energy);
             CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + energyToWin);
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);
         }
