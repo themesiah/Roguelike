@@ -37,7 +37,6 @@ namespace Laresistance.Behaviours
 
         private void Start()
         {
-            DontDestroyOnLoad(gameObject);
         }
 
         public void SaveGame()

@@ -25,6 +25,8 @@
         PercentDamage,
         PrepareParry,
         PrepareBlock,
-        Shuffle
+        Shuffle,
+        BodyBlock,
+        Rush
     }
 }

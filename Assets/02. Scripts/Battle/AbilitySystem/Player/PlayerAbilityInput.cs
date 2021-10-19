@@ -11,7 +11,7 @@ namespace Laresistance.Battle
         protected Player player;
         protected BattleStatusManager battleStatus;
 
-        private int currentAbilityIndex = -1;
+        protected int currentAbilityIndex = -1;
         private BattleAbility[] availableAbilities;
         protected float renewTimer;
         private float abilitiesToUseDequeueTimer;
@@ -42,7 +42,7 @@ namespace Laresistance.Battle
         public delegate void OnNextCardProgressHandler(PlayerAbilityInput sender, float progress);
         public event OnNextCardProgressHandler OnNextCardProgress;
         public delegate void OnNextShuffleProgressHandler(PlayerAbilityInput sender, float progress);
-        public event OnNextShuffleProgressHandler OnNextShuffleProgress;
+        public event OnNextShuffleProgressHandler OnNextSupportAbilityProgress;
         public delegate void OnAbilityOnQueueHandler(PlayerAbilityInput sender, int slot, bool onQueue);
         public event OnAbilityOnQueueHandler OnAbilityOnQueue;
         //public delegate void OnShuffleHandler(PlayerAbilityInput sender, int[] shuffled);
@@ -51,6 +51,8 @@ namespace Laresistance.Battle
         public event OnRenewAbilitiesHandler OnRenewAbilities;
         public delegate void OnAbilityOffQueueHandler(PlayerAbilityInput sender);
         public event OnAbilityOffQueueHandler OnAbilityOffQueue;
+        public delegate void OnAbilityOnCooldownHandler(PlayerAbilityInput sender, BattleAbility ability);
+        public event OnAbilityOnCooldownHandler OnAbilityOnCooldown;
         public delegate void OnAbilitiesToUseChangedHandler(PlayerAbilityInput sender);
         public event OnAbilitiesToUseChangedHandler OnAbilitiesToUseChanged;
         public delegate void OnAbilityExecutedFromQueueHandler(PlayerAbilityInput sender, BattleAbility ability);
@@ -66,17 +68,18 @@ namespace Laresistance.Battle
             abilitiesToUseList = new List<AbilityExecutionData>();
             abilitiesToUseIndexList = new List<int>();
         }
-        protected abstract void AfterUpdateAbilities(float delta);
+
         protected abstract void OnBattleStart();
+        protected abstract bool CanExecuteAbilities();
 
         protected void ExecuteOnShuffle(int[] shuffled)
         {
             //OnShuffle?.Invoke(this, shuffled);
         }
 
-        protected void ExecuteOnNextShuffleProgress(float progress)
+        protected void ExecuteOnNextSupportAbilityProgress(float progress)
         {
-            OnNextShuffleProgress?.Invoke(this, progress);
+            OnNextSupportAbilityProgress?.Invoke(this, progress);
         }
 
         protected void ExecuteOnNextCardProgress()
@@ -84,12 +87,16 @@ namespace Laresistance.Battle
             OnNextCardProgress?.Invoke(this, NextCardProgress);
         }
 
+        protected virtual void ModifyInputDelta(ref float delta)
+        {
+        }
+
         public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
+            ModifyInputDelta(ref delta);
+
             // Update if any current ability has to change or be added
             UpdateAvailableAbilities(delta);
-
-            AfterUpdateAbilities(delta);
 
             if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && !battleStatus.Stunned && BattleAbilityManager.Instance.QueueIsEmpty)
             {} else if (!BattleAbilityManager.Instance.Executing && !battleStatus.Stunned)
@@ -147,6 +154,8 @@ namespace Laresistance.Battle
 
         public void TryToExecuteAbility(int index)
         {
+            if (!CanExecuteAbilities())
+                return;
             if (index < -1 || index > 5)
                 throw new System.Exception("Invalid index trying to execute ability. It must be 0,1,2,3 (abilities) or 4 (ultimate)");
 
@@ -245,7 +254,7 @@ namespace Laresistance.Battle
             abilitiesToUseIndexList.RemoveAt(0);
             AbilityExecutionData aed = abilitiesToUseList[0];
             abilitiesToUseList.RemoveAt(0);
-            if (abilitiesToUseIndexList.Count != 0 && abilitiesToUseIndexList[0] == 4)
+            if (abilitiesToUseIndexList.Count != 0 && (abilitiesToUseIndexList[0] == 4 || abilitiesToUseIndexList[0] == 5))
             {
                 abilitiesToUseDequeueTimer = GameConstantsBehaviour.Instance.abilityToUseDequeueTimer.GetValue();
             } else
@@ -392,6 +401,7 @@ namespace Laresistance.Battle
                 //if (GetAbilitiesCount() == 4 || GetAbilitiesCount() == 5) Commented, so abilities are always rotating, even when you already have minions
                 //{
                 nextAbilitiesQueue.Enqueue(availableAbilities[slot]);
+                OnAbilityOnCooldown?.Invoke(this, availableAbilities[slot]);
                 //}
                 availableAbilities[slot] = null;
                 OnAbilityOnQueue?.Invoke(this, slot, false);

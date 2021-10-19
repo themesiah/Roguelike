@@ -28,10 +28,6 @@ namespace Laresistance.Battle
             if (context.performed) TryToExecuteAbility(5);
         }
 
-        protected override void AfterUpdateAbilities(float delta)
-        {
-        }
-
         protected override void OnBattleStart()
         {
         }
@@ -48,7 +44,7 @@ namespace Laresistance.Battle
                 //energyValue = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleEnergyGain, energyValue);
                 //battleStatus.AddEnergy(energyValue);
                 RenewAllAbilities();
-                ExecuteOnNextShuffleProgress(NextSupportAbilityProgress);
+                ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
             }
         }
 
@@ -65,12 +61,18 @@ namespace Laresistance.Battle
         protected override void OnAbilitiesUpdate(float delta)
         {
             player.supportAbility?.Tick(delta);
-            ExecuteOnNextShuffleProgress(NextSupportAbilityProgress);
+            ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 
         protected override void OnAbilityExecutedExtra(BattleAbility ability, int slot)
         {
-            battleStatus.AddEnergy(0.5f);
+            battleStatus.AddEnergy(5f);
+        }
+
+        protected override bool CanExecuteAbilities()
+        {
+            // No deberia poder hacer habilidades si shuffle está en la cola del manager
+            return true;
         }
     }
 }

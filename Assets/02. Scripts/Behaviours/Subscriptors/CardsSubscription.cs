@@ -72,11 +72,12 @@ namespace Laresistance.Behaviours
             PlayerAbilityInput playerInput = GetPlayerInput();
             playerInput.OnAvailableSkillsChanged += OnAvailableSkillsChanged;
             playerInput.OnNextCardProgress += OnNextCardProgressChanged;
-            playerInput.OnNextShuffleProgress += OnNextShuffleProgressChanged;
+            playerInput.OnNextSupportAbilityProgress += OnNextShuffleProgressChanged;
             playerInput.OnAbilityOnQueue += OnAbilityOnQueue;
             //playerInput.OnShuffle += OnShuffle;
             playerInput.OnRenewAbilities += OnRenewedAbilities;
             playerInput.OnAbilityOffQueue += OnAbilityOffQueue;
+            playerInput.OnAbilityOnCooldown += OnAbilityOnCooldown;
             playerInput.OnAbilitiesToUseChanged += OnAbilitiesToUseChanged;
             playerInput.OnAbilityExecutedFromQueue += OnAbilityExecutedFromQueue;
             OnNextCardProgressChanged(playerInput, playerInput.NextCardProgress);
@@ -88,11 +89,12 @@ namespace Laresistance.Behaviours
             PlayerAbilityInput playerInput = GetPlayerInput();
             playerInput.OnAvailableSkillsChanged -= OnAvailableSkillsChanged;
             playerInput.OnNextCardProgress -= OnNextCardProgressChanged;
-            playerInput.OnNextShuffleProgress -= OnNextShuffleProgressChanged;
+            playerInput.OnNextSupportAbilityProgress -= OnNextShuffleProgressChanged;
             playerInput.OnAbilityOnQueue -= OnAbilityOnQueue;
             //playerInput.OnShuffle -= OnShuffle;
             playerInput.OnRenewAbilities -= OnRenewedAbilities;
             playerInput.OnAbilityOffQueue -= OnAbilityOffQueue;
+            playerInput.OnAbilityOnCooldown -= OnAbilityOnCooldown;
             playerInput.OnAbilitiesToUseChanged -= OnAbilitiesToUseChanged;
             playerInput.OnAbilityExecutedFromQueue -= OnAbilityExecutedFromQueue;
         }
@@ -225,6 +227,15 @@ namespace Laresistance.Behaviours
                 nextShowableAbilities.RemoveAt(0);
             }
             ActivateQueueAnimator();
+        }
+
+        private void OnAbilityOnCooldown(PlayerAbilityInput sender, BattleAbility ability)
+        {
+            GameObject instance = nextAbilityQueuePool.GetInstance(nextAbilityQueueParent);
+            ShowableAbility sa = instance.GetComponent<ShowableAbility>();
+            sa.SetupShowableElement(ability);
+            nextShowableAbilities.Add(sa);
+            instance.transform.localScale = Vector3.one;
         }
 
         private void OnAbilityExecutedFromQueue(PlayerAbilityInput sender, BattleAbility ability)

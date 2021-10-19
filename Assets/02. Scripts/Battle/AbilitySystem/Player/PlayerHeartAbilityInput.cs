@@ -13,10 +13,6 @@ namespace Laresistance.Battle
         {
         }
 
-        protected override void AfterUpdateAbilities(float delta)
-        {
-        }
-
         protected override void OnBattleStart()
         {
         }
@@ -24,6 +20,11 @@ namespace Laresistance.Battle
         public override void UltimateAbility(InputAction.CallbackContext context)
         {
             if (context.performed) TryToExecuteAbility(4);
+        }
+
+        protected override bool CanExecuteAbilities()
+        {
+            return true;
         }
     }
 }

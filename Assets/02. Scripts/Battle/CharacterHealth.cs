@@ -20,6 +20,7 @@ namespace Laresistance.Battle
         private int maxHealth = 0;
         private int currentHealth = 0;
         private List<Shield> currentShields = default;
+        private float percentDamageBlock = 0f;
         #endregion
 
         #region Events
@@ -39,6 +40,8 @@ namespace Laresistance.Battle
         public event OnAttackMissedHandler OnAttackMissed;
         public delegate void OnAttackBlockedHandler(CharacterHealth sender, int damageBlocked);
         public event OnAttackBlockedHandler OnAttackBlocked;
+        public delegate void OnAttackReceivedHandler(CharacterHealth sender);
+        public event OnAttackReceivedHandler OnAttackReceived;
         #endregion
 
         #region Public API
@@ -108,6 +111,10 @@ namespace Laresistance.Battle
 
             remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
             remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
+            if (percentDamageBlock > 0f)
+            {
+                remainingPower = (int)((float)remainingPower * (1f - percentDamageBlock));
+            }
             int finalPowerDealt = remainingPower;
 
             for (int i = currentShields.Count-1; i >= 0; --i)
@@ -153,6 +160,9 @@ namespace Laresistance.Battle
             {
                 OnDeath?.Invoke(this);
             }
+
+            OnAttackReceived?.Invoke(this);
+
             return remainingPower;
         }
 
@@ -226,6 +236,11 @@ namespace Laresistance.Battle
         public void BattleStart()
         {
             OnShieldsChanged?.Invoke(this, 0, TotalShields(), false, 0f);
+        }
+
+        public void SetPercentDamageBlock(float value)
+        {
+            percentDamageBlock = value;
         }
         #endregion
     }

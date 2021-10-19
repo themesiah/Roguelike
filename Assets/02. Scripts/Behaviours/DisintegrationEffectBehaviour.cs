@@ -14,16 +14,17 @@ namespace Laresistance.Behaviours
 
         private void Start()
         {
-            disintegrationMaterials = new List<Material>();
-            Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            foreach(Renderer r in renderers)
-            {
-                disintegrationMaterials.Add(r.material);
-            }
+            
         }
 
         public void StartDisintegration()
         {
+            disintegrationMaterials = new List<Material>();
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in renderers)
+            {
+                disintegrationMaterials.Add(r.material);
+            }
             StartCoroutine(DisintegrationFade());
         }
 

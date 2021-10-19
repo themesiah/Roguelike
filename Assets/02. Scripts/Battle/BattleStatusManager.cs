@@ -50,7 +50,7 @@ namespace Laresistance.Battle
         public event OnStatusesRemovedHandler OnBuffsRemoved;
         public event OnStatusesRemovedHandler OnDebuffsRemoved;
         public delegate void OnSingletonStatusRemovedHandler(BattleStatusManager sender, StatusIconType statusType);
-        public event OnSingletonStatusRemovedHandler OnSingletonStatusRemoved;
+        public OnSingletonStatusRemovedHandler OnSingletonStatusRemoved;
         public delegate void OnSetBattleManager(CharacterBattleManager cbm);
         public event OnSetBattleManager SetBattleManager;
         public delegate void OnSupportAbilityExecutedHandler(BattleStatusManager sender);
@@ -129,6 +129,10 @@ namespace Laresistance.Battle
         public void ApplyStatusEffect(StatusType type, float value)
         {
             GetStatus(type).AddValue(value);
+            if (((RushStatusEffect)GetStatus(StatusType.Rush)).HaveRush())
+            {
+                GetStatus(type).Cure();
+            }
         }
 
         public float GetValueModifier(StatusType statusType)

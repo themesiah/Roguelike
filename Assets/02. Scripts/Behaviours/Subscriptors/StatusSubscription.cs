@@ -46,12 +46,14 @@ namespace Laresistance.Behaviours
 
         private List<StatusIconManager> buffList;
         private List<StatusIconManager> debuffList;
+        private List<StatusIconManager> otherList;
 
         private void Start()
         {
             statusIndicatorPool = PoolInitializerBehaviour.GetPool("Status");
             buffList = new List<StatusIconManager>();
             debuffList = new List<StatusIconManager>();
+            otherList = new List<StatusIconManager>();
         }
 
         private void OnEnable()
@@ -126,6 +128,10 @@ namespace Laresistance.Behaviours
             {
                 buffList.Add(sim);
             }
+            else
+            {
+                otherList.Add(sim);
+            }
             ExecuteOnStartEvents(statusType);
         }
 
@@ -176,6 +182,10 @@ namespace Laresistance.Behaviours
             {
                 debuffList.Remove(sender);
             }
+            if (otherList.Contains(sender))
+            {
+                otherList.Remove(sender);
+            }
             ExecuteOnEndEvents(type);
         }
 
@@ -214,6 +224,14 @@ namespace Laresistance.Behaviours
                 if (debuffList[i].GetStatusType == statusType)
                 {
                     debuffList[i].ManualTermination();
+                    break;
+                }
+            }
+            for (int i = 0; i < otherList.Count; ++i)
+            {
+                if (otherList[i].GetStatusType == statusType)
+                {
+                    otherList[i].ManualTermination();
                     break;
                 }
             }

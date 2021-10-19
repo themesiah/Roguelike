@@ -6,8 +6,6 @@ namespace Laresistance.Battle
 {
     public class ShieldPreparedStatusEffect : StatusEffect
     {
-        private static float GRACE_TIME = 0.5f; // THIS WILL BE WHEN PARRY PREPARATION ANIMATION IS FINISHED
-
         private float shieldPreparedTimer;
         private UnityAction onShieldStatusFinished;
 
@@ -57,7 +55,7 @@ namespace Laresistance.Battle
 
         public override bool AppliesBuff()
         {
-            return shieldPreparedTimer > 0f && shieldPreparedTimer < (PreparationTime - GRACE_TIME);
+            return shieldPreparedTimer > 0f;
         }
 
         public override void CopyTo(StatusEffect other)

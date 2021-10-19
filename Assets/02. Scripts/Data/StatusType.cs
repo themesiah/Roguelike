@@ -9,5 +9,7 @@
     ShieldPrepared,
     Retaliation,
     Barrier,
-    Regeneration
+    Regeneration,
+    BodyBlockStatus,
+    Rush
 }

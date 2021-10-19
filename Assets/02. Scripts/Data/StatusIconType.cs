@@ -14,5 +14,7 @@
     ShieldPrepared,
     Retaliation,
     Barrier,
-    Regeneration
+    Regeneration,
+    BodyDamageBlock,
+    Rush
 }
