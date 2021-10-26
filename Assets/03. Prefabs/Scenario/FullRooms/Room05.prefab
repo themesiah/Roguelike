@@ -587,6 +587,12 @@ MonoBehaviour:
   possibleMinibossSpawnPoint: {fileID: 0}
   possibleInteractablePositions:
   - {fileID: 4310638822859515689}
+  possibleInteractablePermissions:
+  - allowPilgrim: 1
+    allowBlood: 1
+    allowEquipment: 1
+    allowNPC: 0
+    allowSanctuary: 1
   topRoomConnection: {fileID: 627356776294453813}
   bottomRoomConnection: {fileID: 627356777757666098}
   rightRoomConnection: {fileID: 7654492332366135104}
@@ -10021,6 +10027,14 @@ PrefabInstance:
       propertyPath: alternativeObjects.Array.data[0]
       value: 
       objectReference: {fileID: 80921914519016484}
+    - target: {fileID: 5805560305898299867, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5805560305898299867, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.33
+      objectReference: {fileID: 0}
     - target: {fileID: 7087729635357471124, guid: b1524f85a642f164c808c5bfd1749382, type: 3}
       propertyPath: m_Name
       value: StairsLeft

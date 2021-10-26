@@ -66,5 +66,10 @@ namespace Laresistance.Battle
                 other.AddValue(blindEffect.coeficient);
             }
         }
+
+        public override void RemoveStatus()
+        {
+            Cure();
+        }
     }
 }

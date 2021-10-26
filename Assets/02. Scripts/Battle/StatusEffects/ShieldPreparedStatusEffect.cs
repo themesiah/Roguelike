@@ -61,5 +61,10 @@ namespace Laresistance.Battle
         public override void CopyTo(StatusEffect other)
         {
         }
+
+        public override void RemoveStatus()
+        {
+            RemoveBuff();
+        }
     }
 }

@@ -10,12 +10,12 @@ namespace Laresistance.Behaviours
         public static GameConstantsBehaviour Instance;
 
         [Header("Card system constants")]
-        [Tooltip("How much energy do you obtain from shuffling per every card")]
-        public ScriptableFloatReference energyPerCardReference = default;
-        [Tooltip("How much time to wait to get a card after using one or obtaining the later")]
-        public ScriptableFloatReference cardRenewCooldown = default;
-        [Tooltip("How much time to wait to shuffle the cards since the beginning of the battle or the last shuffle")]
-        public ScriptableFloatReference shuffleCooldown = default;
+        [Tooltip("How much time to wait to get a card after using one or obtaining the later for the BODY character")]
+        public ScriptableFloatReference bodyCardRenewCooldown = default;
+        [Tooltip("How much time to wait to get a card after using one or obtaining the later for the HEART character")]
+        public ScriptableFloatReference heartCardRenewCooldown = default;
+        [Tooltip("How much time to wait to get a card after using one or obtaining the later for the MIND character")]
+        public ScriptableFloatReference mindCardRenewCooldown = default;
         [Tooltip("How much energy are you able to have at a time")]
         public ScriptableFloatReference maxEnergy = default;
         [Tooltip("Time between pressing the time stop button and the time being stopped completely")]
@@ -55,6 +55,8 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference healOverTimeDuration = default;
         [Tooltip("Time in seconds between heals in heal over time effects")]
         public ScriptableFloatReference healOverTimeTickDelay = default;
+        [Tooltip("Time in seconds of duration for rush buff (body ultimate)")]
+        public ScriptableFloatReference bodyRushBuffDuration = default;
 
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]

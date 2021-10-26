@@ -73,5 +73,10 @@ namespace Laresistance.Battle
                 other.AddValue(dot.power);
             }
         }
+
+        public override void RemoveStatus()
+        {
+            Cure();
+        }
     }
 }

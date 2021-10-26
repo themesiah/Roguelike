@@ -22,17 +22,18 @@ namespace Laresistance.Battle
         {
             active = true;
             timer = 0f;
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Rush, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Rush, GameConstantsBehaviour.Instance.bodyRushBuffDuration.GetValue());
         }
 
-        public override void Tick(float delta)
+        public override void RealtimeTick(float delta)
         {
             if (active)
             {
                 timer += delta;
-                if (timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
+                if (timer >= GameConstantsBehaviour.Instance.bodyRushBuffDuration.GetValue())
                 {
                     active = false;
+                    statusManager.OnSingletonStatusRemoved?.Invoke(statusManager, StatusIconType.Rush);
                 }
             }
         }
@@ -53,6 +54,11 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             if (active)
                 other.AddValue(0f);
+        }
+
+        public override void RemoveStatus()
+        {
+            RemoveRush();
         }
     }
 }

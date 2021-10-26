@@ -6,6 +6,10 @@ namespace Laresistance.Battle
 {
     public class PlayerMindAbilityInput : PlayerAbilityInput
     {
+        protected override float SpecificCardRenewCooldown()
+        {
+            return GameConstantsBehaviour.Instance.mindCardRenewCooldown.GetValue();
+        }
 
         public override float TotalSupportAbilityCooldown
         {
@@ -24,7 +28,6 @@ namespace Laresistance.Battle
 
         public override void SupportAbility(InputAction.CallbackContext context)
         {
-            //if (context.performed) Shuffle(battleStatus);
             if (context.performed) TryToExecuteAbility(5);
         }
 
@@ -34,18 +37,14 @@ namespace Laresistance.Battle
 
         private void Shuffle(BattleStatusManager bsm)
         {
-            //if (!BattleAbilityManager.Instance.Executing && !BattleAbilityManager.Instance.AbilityInQueue && supportAbilityTimer <= 0f && battleStatus.Stunned == false && abilitiesToUseList.Count == 0)
-            {
-                renewTimer = TotalCardRenewCooldown;
-                ExecuteOnNextCardProgress();
-                int[] discarded = DiscardAvailableAbilities();
-                ExecuteOnShuffle(discarded);
-                //float energyValue = discarded.Length;
-                //energyValue = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleEnergyGain, energyValue);
-                //battleStatus.AddEnergy(energyValue);
-                RenewAllAbilities();
-                ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
-            }
+            renewTimer = TotalCardRenewCooldown;
+            ExecuteOnNextCardProgress();
+            int[] discarded = DiscardAvailableAbilities();
+            ExecuteOnShuffle(discarded);
+            RenewAllAbilities();
+            ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
+            // Si haces shuffle, debería cargarse las habilidades en cola porque no debería poder hacerlas
+            ClearAbilityToUseQueue();
         }
 
         public override void UltimateAbility(InputAction.CallbackContext context)
@@ -72,6 +71,10 @@ namespace Laresistance.Battle
         protected override bool CanExecuteAbilities()
         {
             // No deberia poder hacer habilidades si shuffle está en la cola del manager
+            if (BattleAbilityManager.Instance.IsAbilityInQueue(player.supportAbility) || nextAbilitiesQueue.Contains(player.supportAbility))
+            {
+                return false;
+            }
             return true;
         }
     }

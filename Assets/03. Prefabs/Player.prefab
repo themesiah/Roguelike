@@ -2555,6 +2555,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: bec9c532b5d2fd54c8b995a92286b51d, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
+          GamedevsToolbox
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBattleBehaviourDisable:
     m_PersistentCalls:
       m_Calls:
@@ -2660,6 +2673,19 @@ MonoBehaviour:
           GameScripts
         m_MethodName: SetHorizontalSpeed
         m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 51941fa0d36b8e0478e277eadccc01a3, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
+          GamedevsToolbox
+        m_MethodName: Raise
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4834,7 +4860,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusList: {fileID: 11400000, guid: ec818095b6a9e0340b7a714e70e1bfaa, type: 2}
-  OnStartStatusEvents: []
+  OnStartStatusEvents:
+  - statusType: 15
+    subscriptionEvent:
+      m_PersistentCalls:
+        m_Calls: []
   OnEndStatusEvents:
   - statusType: 15
     subscriptionEvent:

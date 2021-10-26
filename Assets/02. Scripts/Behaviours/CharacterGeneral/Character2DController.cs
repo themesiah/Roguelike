@@ -132,6 +132,7 @@ namespace Laresistance.Behaviours
                 // Add the impulse
                 body.AddForce(force, ForceMode2D.Impulse);
                 // Manage events
+                Debug.Log("OnJump", gameObject);
                 OnJump?.Invoke(groundCheck.position);
                 // Increase number of jumps done in mid air
                 performedJumps++;
@@ -270,6 +271,7 @@ namespace Laresistance.Behaviours
                         {
                             delayAfterLandingTimer = delayAfterLanding;
                             performedJumps = 0;
+                            Debug.Log("OnLand", gameObject);
                             OnLand?.Invoke(groundCheck.position);
                             var raycastHit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.3f, groundLayers);
                             if (raycastHit.transform == null)
@@ -300,7 +302,7 @@ namespace Laresistance.Behaviours
                         break;
                     }
                 }
-            }
+            } else
             if (!collided && body.velocity.y <= 0f)
             {
                 if (falling == false && !jumping && fallingTime < timeToFall)
@@ -312,6 +314,7 @@ namespace Laresistance.Behaviours
                     fallingTime = 0f;
                     falling = true;
                     jumping = false;
+                    Debug.Log("OnStartFall", gameObject);
                     OnStartFall?.Invoke(groundCheck.position);
                 }
             }

@@ -109,5 +109,11 @@ namespace Laresistance.Battle
                 other.AddValue(speedEffect.speedCoeficient);
             }
         }
+
+        public override void RemoveStatus()
+        {
+            RemoveBuff();
+            Cure();
+        }
     }
 }

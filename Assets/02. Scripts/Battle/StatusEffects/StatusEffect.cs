@@ -8,7 +8,8 @@ namespace Laresistance.Battle
         {
             this.statusManager = statusManager;
         }
-        public abstract void Tick(float delta);
+        public virtual void Tick(float delta) { }
+        public virtual void RealtimeTick(float delta) { }
         public abstract float GetValue();
         public abstract void AddValue(float value);
         public abstract StatusType StatusType { get; }
@@ -17,6 +18,7 @@ namespace Laresistance.Battle
         public virtual bool HaveDebuff() { return false; }
         public virtual bool HaveBuff() { return false; }
         public virtual bool AppliesBuff() { return HaveBuff(); }
+        public abstract void RemoveStatus();
         public abstract void CopyTo(StatusEffect other);
     }
 }

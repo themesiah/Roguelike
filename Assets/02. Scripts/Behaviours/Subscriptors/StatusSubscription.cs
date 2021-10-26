@@ -48,7 +48,7 @@ namespace Laresistance.Behaviours
         private List<StatusIconManager> debuffList;
         private List<StatusIconManager> otherList;
 
-        private void Start()
+        private void Awake()
         {
             statusIndicatorPool = PoolInitializerBehaviour.GetPool("Status");
             buffList = new List<StatusIconManager>();

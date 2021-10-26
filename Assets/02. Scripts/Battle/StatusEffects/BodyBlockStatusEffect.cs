@@ -46,16 +46,16 @@ namespace Laresistance.Battle
             return blockValue > 0f;
         }
 
-        public override void RemoveBuff()
-        {
-            
-        }
-
         public void CancelBlock()
         {
             blockValue = 0f;
             statusManager.health.SetPercentDamageBlock(blockValue);
             statusManager.OnSingletonStatusRemoved?.Invoke(statusManager, StatusIconType.BodyDamageBlock);
+        }
+
+        public override void RemoveStatus()
+        {
+            CancelBlock();
         }
     }
 }

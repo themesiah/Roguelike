@@ -66,5 +66,10 @@ namespace Laresistance.Battle
                 other.AddValue(barrier.barrier);
             }
         }
+
+        public override void RemoveStatus()
+        {
+            RemoveBuff();
+        }
     }
 }

@@ -4,7 +4,7 @@
     {
         BloodReward = 0,
         EquipmentReward,
-        Lore,
+        NPC,
         Fountain,
         Pilgrim,
         LevelStart,

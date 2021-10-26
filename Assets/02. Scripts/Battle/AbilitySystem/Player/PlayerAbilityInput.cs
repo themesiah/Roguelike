@@ -23,10 +23,12 @@ namespace Laresistance.Battle
 
         public BattleAbility[] AvailableAbilities { get { return availableAbilities; } }
         public float NextCardProgress { get { return 1f - (renewTimer / TotalCardRenewCooldown); } }
+
+        protected abstract float SpecificCardRenewCooldown();
         
         public float TotalCardRenewCooldown { get
             {
-                float total = GameConstantsBehaviour.Instance.cardRenewCooldown.GetValue();
+                float total = SpecificCardRenewCooldown();
                 total = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.RenewCardDelay, total);
                 return total;
             } }
@@ -91,8 +93,12 @@ namespace Laresistance.Battle
         {
         }
 
+        protected virtual void Tick(float delta)
+        { }
+
         public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
         {
+            Tick(delta);
             ModifyInputDelta(ref delta);
 
             // Update if any current ability has to change or be added
@@ -210,7 +216,6 @@ namespace Laresistance.Battle
             OnAbilitiesToUseChanged?.Invoke(this);
             OnAbilityOnQueue?.Invoke(this, abilityInternalIndex, true);
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
-            OnAbilitiesToUseChanged?.Invoke(this);
             BattleAbilityManager.Instance.AbilityInQueue = true;
         }
 
@@ -271,6 +276,15 @@ namespace Laresistance.Battle
                 BattleAbilityManager.Instance.AbilityInQueue = false;
             }
             return aed;
+        }
+
+        protected void ClearAbilityToUseQueue()
+        {
+            abilitiesToUseList.Clear();
+            abilitiesToUseIndexList.Clear();
+            OnAbilitiesToUseChanged?.Invoke(this);
+            OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
+            BattleAbilityManager.Instance.AbilityInQueue = false;
         }
 
         public void BattleStart()
@@ -365,7 +379,7 @@ namespace Laresistance.Battle
             }
         }
 
-        private void RenewAbility() // NATURAL CARD RENEWAL
+        protected void RenewAbility() // NATURAL CARD RENEWAL
         {
             if (renewTimer > 0f)
                 return;
@@ -441,6 +455,21 @@ namespace Laresistance.Battle
                 availableAbilities[i] = nextAbilitiesQueue.Dequeue();
                 availableAbilities[i].CurrentPlayerSlot = i;
                 OnAbilityOnQueue?.Invoke(this, i, false);
+            }
+            OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
+            OnRenewAbilities?.Invoke(this);
+        }
+
+        protected void RenewAllEmptyAbilities() // RUSH
+        {
+            for (int i = 0; i < availableAbilities.Length; ++i)
+            {
+                if (availableAbilities[i] == null)
+                {
+                    availableAbilities[i] = nextAbilitiesQueue.Dequeue();
+                    availableAbilities[i].CurrentPlayerSlot = i;
+                    OnAbilityOnQueue?.Invoke(this, i, false);
+                }
             }
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
             OnRenewAbilities?.Invoke(this);

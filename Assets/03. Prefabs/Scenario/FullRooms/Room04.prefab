@@ -536,6 +536,12 @@ MonoBehaviour:
   possibleMinibossSpawnPoint: {fileID: 1437863182717110594}
   possibleInteractablePositions:
   - {fileID: 668516517392763074}
+  possibleInteractablePermissions:
+  - allowPilgrim: 1
+    allowBlood: 1
+    allowEquipment: 1
+    allowNPC: 0
+    allowSanctuary: 1
   topRoomConnection: {fileID: 5031357852843667438}
   bottomRoomConnection: {fileID: 7068844498534944567}
   rightRoomConnection: {fileID: 8772661416202083152}
@@ -7187,7 +7193,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8520915474713141460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.26, y: 27.15, z: 0}
+  m_LocalPosition: {x: 30.61, y: 26.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1142164209263728330}
@@ -12907,8 +12913,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 1142164209263728330}
     m_Modifications:
     - target: {fileID: 622041310181459583, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: m_Size.y
+      value: 4.494158
+      objectReference: {fileID: 0}
+    - target: {fileID: 622041310181459583, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 622041310181459583, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: m_Offset.y
+      value: 2.362008
       objectReference: {fileID: 0}
     - target: {fileID: 1620858110097728193, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12978,6 +12992,22 @@ PrefabInstance:
       propertyPath: alternativeObjects.Array.data[0]
       value: 
       objectReference: {fileID: 8282665769447397490}
+    - target: {fileID: 3720887337174615788, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4371679715477956222, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6208095686151974237, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 6208095686151974237, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.77
+      objectReference: {fileID: 0}
     - target: {fileID: 7271700387682958610, guid: 2853f45a1a538694b96c254c4821c58c, type: 3}
       propertyPath: m_Name
       value: StairsUp

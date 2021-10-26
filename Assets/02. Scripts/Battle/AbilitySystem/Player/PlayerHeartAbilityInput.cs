@@ -1,3 +1,4 @@
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,12 @@ namespace Laresistance.Battle
 {
     public class PlayerHeartAbilityInput : PlayerAbilityInput
     {
+
+        protected override float SpecificCardRenewCooldown()
+        {
+            return GameConstantsBehaviour.Instance.heartCardRenewCooldown.GetValue();
+        }
+
         public PlayerHeartAbilityInput(Player player, BattleStatusManager battleStatus) : base(player, battleStatus)
         {
         }

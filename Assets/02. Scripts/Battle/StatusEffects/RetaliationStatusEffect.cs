@@ -66,5 +66,10 @@ namespace Laresistance.Battle
                 other.AddValue(retaliationEffect.retaliationDamage);
             }
         }
+
+        public override void RemoveStatus()
+        {
+            RemoveBuff();
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace Laresistance.Battle
         public event OnAbilityExecutedHandler OnAbilityExecuted;
         public delegate void OnTickHandler(BattleStatusManager sender, float delta);
         public event OnTickHandler OnTick;
+        public event OnTickHandler OnRealTimeTick;
         public delegate void OnResetStatusHandler(BattleStatusManager sender);
         public event OnResetStatusHandler OnResetStatus;
         public delegate void OnStatusesRemovedHandler(BattleStatusManager sender);
@@ -76,6 +77,11 @@ namespace Laresistance.Battle
 
         public void ProcessStatus(float delta, float speedModifier)
         {
+            foreach(var statusEffect in statusEffectsList)
+            {
+                statusEffect.RealtimeTick(delta);
+            }
+            OnRealTimeTick?.Invoke(this, delta);
             if (!BattleAbilityManager.Instance.Executing)
             {
                 float totalDelta = delta * speedModifier;
@@ -150,8 +156,7 @@ namespace Laresistance.Battle
         {
             foreach(var statusEffect in statusEffectsList)
             {
-                statusEffect.Cure();
-                statusEffect.RemoveBuff();
+                statusEffect.RemoveStatus();
             }
             OnResetStatus?.Invoke(this);
         }
@@ -246,7 +251,6 @@ namespace Laresistance.Battle
 
         public void AddEnergy(float energy)
         {
-            //float energyToWin = energy * GameConstantsBehaviour.Instance.energyPerCardReference.GetValue();
             float energyToWin = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.EnergyProduction, energy);
             CurrentEnergy = Mathf.Min(GameConstantsBehaviour.Instance.maxEnergy.GetValue(), CurrentEnergy + energyToWin);
             OnEnergyChanged?.Invoke(CurrentEnergy, UsableEnergy);

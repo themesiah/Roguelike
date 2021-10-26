@@ -255,5 +255,17 @@ namespace Laresistance.Battle
             abilityToCancel.SetAbilityState(BattleAbility.AbilityState.Idle);
             abilityQueue.Remove(abilityToCancel);
         }
+
+        public bool IsAbilityInQueue(BattleAbility abilityToSearch)
+        {
+            if (abilityQueue == null)
+                return false;
+            foreach(var ability in abilityQueue)
+            {
+                if (ability == abilityToSearch)
+                    return true;
+            }
+            return false;
+        }
     }
 }

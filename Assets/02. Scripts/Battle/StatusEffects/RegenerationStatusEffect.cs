@@ -45,6 +45,11 @@ namespace Laresistance.Battle
             return temp;
         }
 
+        public override void RemoveBuff()
+        {
+            healsOverTime.Clear();
+        }
+
         public override void Tick(float delta)
         {
             for (int i = healsOverTime.Count - 1; i >= 0; --i)
@@ -62,6 +67,11 @@ namespace Laresistance.Battle
                     }
                 }
             }
+        }
+
+        public override void RemoveStatus()
+        {
+            RemoveBuff();
         }
     }
 }

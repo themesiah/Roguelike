@@ -112,5 +112,11 @@ namespace Laresistance.Battle
                 other.AddValue(damageModification.modifier);
             }
         }
+
+        public override void RemoveStatus()
+        {
+            RemoveBuff();
+            Cure();
+        }
     }
 }

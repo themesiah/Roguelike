@@ -6248,6 +6248,12 @@ MonoBehaviour:
   possibleMinibossSpawnPoint: {fileID: 0}
   possibleInteractablePositions:
   - {fileID: 4938267103555287585}
+  possibleInteractablePermissions:
+  - allowPilgrim: 1
+    allowBlood: 1
+    allowEquipment: 1
+    allowNPC: 0
+    allowSanctuary: 1
   topRoomConnection: {fileID: 1181124657595858012}
   bottomRoomConnection: {fileID: 0}
   rightRoomConnection: {fileID: 1661195198566615219}
@@ -6333,6 +6339,9 @@ GameObject:
   - component: {fileID: 4091095032491917152}
   - component: {fileID: 2252556590421481917}
   - component: {fileID: 6606458050518289970}
+  - component: {fileID: 17253168120448975}
+  - component: {fileID: 7875359974295923230}
+  - component: {fileID: 5398704664071585810}
   m_Layer: 0
   m_Name: CameraChange
   m_TagString: Untagged
@@ -6395,10 +6404,11 @@ MonoBehaviour:
   onTriggerEnterEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5536137449259487194}
-        m_TargetAssemblyTypeName: Cinemachine.CinemachineVirtualCameraBase, Cinemachine
-        m_MethodName: set_Priority
-        m_Mode: 3
+      - m_Target: {fileID: 7875359974295923230}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.VirtualCameraPriorityManager,
+          GameScripts
+        m_MethodName: ShowCamera
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6410,10 +6420,11 @@ MonoBehaviour:
   onTriggerExitEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5536137449259487194}
-        m_TargetAssemblyTypeName: Cinemachine.CinemachineVirtualCameraBase, Cinemachine
-        m_MethodName: set_Priority
-        m_Mode: 3
+      - m_Target: {fileID: 7875359974295923230}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.VirtualCameraPriorityManager,
+          GameScripts
+        m_MethodName: HideCamera
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6425,6 +6436,80 @@ MonoBehaviour:
   tagToCheck: Player
   checkTag: 1
   destroyOnTrigger: 0
+--- !u!114 &17253168120448975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164335043003131555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: bec9c532b5d2fd54c8b995a92286b51d, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7875359974295923230}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.VirtualCameraPriorityManager,
+          GameScripts
+        m_MethodName: StartBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7875359974295923230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164335043003131555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2efb72b3c6b7db4b82811f0c9ddf5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basePriority: 100
+  virtualCamera: {fileID: 5536137449259487194}
+--- !u!114 &5398704664071585810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164335043003131555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: 51941fa0d36b8e0478e277eadccc01a3, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7875359974295923230}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.VirtualCameraPriorityManager,
+          GameScripts
+        m_MethodName: EndBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6381138818249738440
 GameObject:
   m_ObjectHideFlags: 0
@@ -7150,7 +7235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6078100707174220511, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
       propertyPath: m_SortingLayer
-      value: 9
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6078100707174220511, guid: 12b2c073c70beb74986ac074c21a893f, type: 3}
       propertyPath: m_SortingOrder
@@ -9039,6 +9124,11 @@ PrefabInstance:
       objectReference: {fileID: 234499861849177735}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0b11c10bb694734aa0b97e9591574cf, type: 3}
+--- !u!4 &2928058094421778822 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2188290473810225202, guid: e0b11c10bb694734aa0b97e9591574cf, type: 3}
+  m_PrefabInstance: {fileID: 3962274616371825076}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5678912272452935909 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8661371352362133841, guid: e0b11c10bb694734aa0b97e9591574cf, type: 3}
@@ -9050,11 +9140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b30338a58fad340a62be51fd420965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &2928058094421778822 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2188290473810225202, guid: e0b11c10bb694734aa0b97e9591574cf, type: 3}
-  m_PrefabInstance: {fileID: 3962274616371825076}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3985459879685250305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9818,14 +9903,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
---- !u!1 &1598915818437358263 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6063682126704424457, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
-  m_PrefabInstance: {fileID: 4762270403796927678}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1598915818437358262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6063682126704424456, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
+  m_PrefabInstance: {fileID: 4762270403796927678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1598915818437358263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6063682126704424457, guid: ee253f646566ff048901a25db8c7f1ff, type: 3}
   m_PrefabInstance: {fileID: 4762270403796927678}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4821351267094444429

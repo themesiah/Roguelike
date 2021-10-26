@@ -44,6 +44,9 @@ namespace Laresistance.Behaviours
             if (statusType == StatusIconType.Shield)
             {
                 statusManager.health.OnShieldsChanged += OnShieldsChanged;
+            } else if (statusType == StatusIconType.Rush)
+            {
+                statusManager.OnRealTimeTick += OnTick;
             } else
             {
                 statusManager.OnTick += OnTick;
@@ -57,6 +60,9 @@ namespace Laresistance.Behaviours
             if (statusType == StatusIconType.Shield)
             {
                 statusManager.health.OnShieldsChanged -= OnShieldsChanged;
+            } else if (statusType == StatusIconType.Rush)
+            {
+                statusManager.OnRealTimeTick -= OnTick;
             } else
             {
                 statusManager.OnTick -= OnTick;

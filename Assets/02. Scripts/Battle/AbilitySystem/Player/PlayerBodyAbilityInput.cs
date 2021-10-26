@@ -1,3 +1,4 @@
+using Laresistance.Behaviours;
 using Laresistance.Core;
 using UnityEngine.InputSystem;
 
@@ -5,11 +6,39 @@ namespace Laresistance.Battle
 {
     public class PlayerBodyAbilityInput : PlayerAbilityInput
     {
+        private static float SUPPORT_CANCEL_GRACE_TIME = 0.3f;
+
         private bool delayedBlockStop = false;
+        private float cancelTimer = -1f;
+
+        protected override float SpecificCardRenewCooldown()
+        {
+            return GameConstantsBehaviour.Instance.bodyCardRenewCooldown.GetValue();
+        }
+
         public PlayerBodyAbilityInput(Player player, BattleStatusManager battleStatus) : base(player, battleStatus)
         {
             battleStatus.OnStatusApplied += OnStatusApplied;
             battleStatus.health.OnAttackReceived += AttackReceived;
+        }
+
+        protected override void Tick(float delta)
+        {
+            if (cancelTimer > 0f)
+            {
+                cancelTimer -= delta;
+                if (cancelTimer <= 0f)
+                {
+                    if (((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock())
+                    {
+                        ((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).CancelBlock();
+                    }
+                    else
+                    {
+                        delayedBlockStop = true;
+                    }
+                }
+            }
         }
 
         public override void SupportAbility(InputAction.CallbackContext context)
@@ -17,17 +46,11 @@ namespace Laresistance.Battle
             if (context.performed)
             {
                 TryToExecuteAbility(5);
+                cancelTimer = -1f;
             }
             if (context.canceled)
             {
-                if (((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock())
-                {
-                    ((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).CancelBlock();
-                } else
-                {
-                    delayedBlockStop = true;
-                }
-                
+                cancelTimer = SUPPORT_CANCEL_GRACE_TIME;
             }
         }
 
@@ -49,6 +72,9 @@ namespace Laresistance.Battle
                 {
                     ((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).CancelBlock();
                 }
+            } else if (statusType == StatusIconType.Rush)
+            {
+                RenewAllEmptyAbilities();
             }
         }
 
@@ -83,7 +109,8 @@ namespace Laresistance.Battle
         {
             if ((((RushStatusEffect)battleStatus.GetStatus(StatusType.Rush)).HaveRush()))
             {
-                renewTimer = 0f;
+                //renewTimer = 0f;
+                RenewAllEmptyAbilities();
             }
         }
     }

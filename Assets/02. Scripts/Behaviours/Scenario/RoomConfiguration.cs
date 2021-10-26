@@ -13,6 +13,43 @@ namespace Laresistance.Behaviours
     [DefaultExecutionOrder(100)]
     public class RoomConfiguration : MonoBehaviour
     {
+        [System.Serializable]
+        public class InteractablePermissions
+        {
+            public bool allowPilgrim;
+            public bool allowBlood;
+            public bool allowEquipment;
+            public bool allowNPC;
+            public bool allowSanctuary;
+
+            public bool CheckValidity(RoomInteractableType type)
+            {
+                bool isValid = false;
+                switch(type)
+                {
+                    case RoomInteractableType.BloodReward:
+                        isValid = allowBlood;
+                        break;
+                    case RoomInteractableType.EquipmentReward:
+                        isValid = allowEquipment;
+                        break;
+                    case RoomInteractableType.Fountain:
+                        isValid = allowSanctuary;
+                        break;
+                    case RoomInteractableType.NPC:
+                        isValid = allowNPC;
+                        break;
+                    case RoomInteractableType.Pilgrim:
+                        isValid = allowPilgrim;
+                        break;
+                    case RoomInteractableType.LevelEnd:
+                    case RoomInteractableType.LevelStart:
+                        isValid = true;
+                        break;
+                }
+                return isValid;
+            }
+        }
         // How many more space than actual content is needed to consider the room too big for the requirements.
         // For example, assigning a 1 enemy room to a room with 6 enemy spots available may result in a boring, empty room.
         private static int TOO_MUCH_SPACE_THRESHOLD = 1;
@@ -26,6 +63,8 @@ namespace Laresistance.Behaviours
         private Transform possibleMinibossSpawnPoint = default;
         [SerializeField]
         private Transform[] possibleInteractablePositions = default;
+        [SerializeField]
+        private InteractablePermissions[] possibleInteractablePermissions = default;
         [SerializeField]
         private RoomChangeBehaviour topRoomConnection = null;
         [SerializeField]
@@ -116,7 +155,11 @@ namespace Laresistance.Behaviours
                 else
                 {
                     interactableType = (RoomInteractableType)Random.Range(0, (int)RoomInteractableType.LevelStart);
-                    while (interactableType == RoomInteractableType.Lore)
+                    //while (interactableType == RoomInteractableType.NPC)
+                    //{
+                    //    interactableType = (RoomInteractableType)Random.Range(0, (int)RoomInteractableType.LevelStart);
+                    //}
+                    while (!possibleInteractablePermissions[i].CheckValidity(interactableType))
                     {
                         interactableType = (RoomInteractableType)Random.Range(0, (int)RoomInteractableType.LevelStart);
                     }
@@ -253,6 +296,15 @@ namespace Laresistance.Behaviours
             if (roomData.GetInteractables().Length > possibleInteractablePositions.Length || possibleInteractablePositions.Length - roomData.GetInteractables().Length > TOO_MUCH_SPACE_THRESHOLD + thresholdReduction)
             {
                 return false;
+            }
+
+            // Check interactable permissions
+            for (int i = 0; i < roomData.GetInteractables().Length; ++i)
+            {
+                if (!possibleInteractablePermissions[i].CheckValidity(roomData.GetInteractables()[i].roomInteractableType))
+                {
+                    return false;
+                }
             }
 
             // Check for movement test

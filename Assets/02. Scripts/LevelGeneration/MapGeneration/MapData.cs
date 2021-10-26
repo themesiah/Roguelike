@@ -453,7 +453,7 @@ namespace Laresistance.LevelGeneration
             while (numberOfLoreInteractables > 0 && loreCandidates.Count > 0)
             {
                 int loreIndex = Random.Range(0, loreCandidates.Count);
-                RoomInteractable lore = new RoomInteractable() { roomInteractableType = RoomInteractableType.Lore };
+                RoomInteractable lore = new RoomInteractable() { roomInteractableType = RoomInteractableType.NPC };
                 loreCandidates[loreIndex].AddInteractable(lore);
                 loreCandidates.RemoveAt(loreIndex);
                 numberOfLoreInteractables--;

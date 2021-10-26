@@ -46,5 +46,10 @@
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             other.AddValue(stunTimer);
         }
+
+        public override void RemoveStatus()
+        {
+            Cure();
+        }
     }
 }
