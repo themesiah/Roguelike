@@ -19,7 +19,7 @@ namespace Laresistance.Battle
         {
             blockValue = value;
             statusManager.health.SetPercentDamageBlock(blockValue);
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.BodyDamageBlock, -1f);
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.BodyDamageBlock, 5f);
         }
 
         public override void CopyTo(StatusEffect other)

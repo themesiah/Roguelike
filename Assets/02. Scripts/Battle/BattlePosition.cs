@@ -116,7 +116,7 @@ namespace Laresistance.Battle
             Turn(playerObject, playerLookingRight);
             Turn(enemyObjects[0], !playerLookingRight);
 
-            Vector3 center = enemyObjects[0].transform.position;
+            Vector3 center = enemyObjects[0].transform.position + Vector3.up * 0.2f;
             center = GetRaycastedCenter(center, centerCheckLayerMask);
             float distanceToLeft = GetDistanceToLeft(center, centerCheckLayerMask);
             float distanceToRight = GetDistanceToRight(center, centerCheckLayerMask);

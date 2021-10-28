@@ -69,6 +69,15 @@ namespace Laresistance.Battle
             nextAbilitiesQueue = new Queue<BattleAbility>();
             abilitiesToUseList = new List<AbilityExecutionData>();
             abilitiesToUseIndexList = new List<int>();
+            battleStatus.OnStatusApplied += OnApplyStatus;
+        }
+
+        private void OnApplyStatus(BattleStatusManager sender, StatusIconType statusType, float duration)
+        {
+            if (statusType == StatusIconType.Stun)
+            {
+                ClearAbilityToUseQueue();
+            }
         }
 
         protected abstract void OnBattleStart();
@@ -285,6 +294,10 @@ namespace Laresistance.Battle
             OnAbilitiesToUseChanged?.Invoke(this);
             OnAvailableSkillsChanged?.Invoke(this, availableAbilities);
             BattleAbilityManager.Instance.AbilityInQueue = false;
+            for (int i = 0; i < 4; i++)
+            {
+                OnAbilityOnQueue?.Invoke(this, i, false);
+            }
         }
 
         public void BattleStart()

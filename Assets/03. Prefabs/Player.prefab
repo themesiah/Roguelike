@@ -2332,6 +2332,19 @@ MonoBehaviour:
           m_StringArgument: StartFall
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
+          GameScripts
+        m_MethodName: ResetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Land
+          m_BoolArgument: 1
+        m_CallState: 2
   OnJump:
     m_PersistentCalls:
       m_Calls:
@@ -2812,7 +2825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d52f57e9d129664ba1895af32e2e08e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacterData: {fileID: 11400000, guid: 7d650418634461a41984b822cc700ee4, type: 2}
+  playerCharacterData: {fileID: 11400000, guid: a0077e5c25c66ff45ab95d55c7131ae3, type: 2}
   combosData:
   - {fileID: 11400000, guid: b1c513b3ee30f3a4b999f8e0a320aa75, type: 2}
   - {fileID: 11400000, guid: 008fb25989b23a642a6666e7d1c3cc16, type: 2}
@@ -7283,6 +7296,14 @@ PrefabInstance:
     - target: {fileID: 8224378019107882707, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_Bounds.m_Extent.y
       value: 1.4739197
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343532587065398381, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 0.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343532587065398381, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[11]
+      value: 2075291091
       objectReference: {fileID: 0}
     - target: {fileID: 8359472953133684888, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_UseBatching

@@ -252,7 +252,7 @@ namespace Laresistance.Behaviours
                 falling = false;
                 collided = true;
             } else
-            if ((body.velocity.y <= 0f || isOnSlope && !jumping))
+            if (((body.velocity.y <= 0f && body.velocity.y >= -2f) || isOnSlope && !jumping))
             {
                 Collider2D[] colliders = GetGroundColliders();
                 for (int i = 0; i < colliders.Length; i++)
@@ -303,11 +303,11 @@ namespace Laresistance.Behaviours
                     }
                 }
             } else
-            if (!collided && body.velocity.y <= 0f)
+            if (!collided && body.velocity.y <= -2f)
             {
                 if (falling == false && !jumping && fallingTime < timeToFall)
                 {
-                    fallingTime += Time.fixedDeltaTime;
+                    fallingTime += Time.deltaTime;
                     isGrounded = true;
                 } else if (falling == false)
                 {

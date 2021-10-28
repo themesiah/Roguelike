@@ -1,15 +1,20 @@
 using Laresistance.Behaviours;
 using Laresistance.Core;
+using System;
 using UnityEngine.InputSystem;
 
 namespace Laresistance.Battle
 {
     public class PlayerBodyAbilityInput : PlayerAbilityInput
     {
-        private static float SUPPORT_CANCEL_GRACE_TIME = 0.3f;
-
-        private bool delayedBlockStop = false;
-        private float cancelTimer = -1f;
+        public override float TotalSupportAbilityCooldown
+        {
+            get
+            {
+                float total = player.supportAbility.Cooldown;
+                return total;
+            }
+        }
 
         protected override float SpecificCardRenewCooldown()
         {
@@ -20,25 +25,12 @@ namespace Laresistance.Battle
         {
             battleStatus.OnStatusApplied += OnStatusApplied;
             battleStatus.health.OnAttackReceived += AttackReceived;
+            battleStatus.OnSupportAbilityExecuted += OnBlockExecuted;
         }
 
-        protected override void Tick(float delta)
+        private void OnBlockExecuted(BattleStatusManager sender)
         {
-            if (cancelTimer > 0f)
-            {
-                cancelTimer -= delta;
-                if (cancelTimer <= 0f)
-                {
-                    if (((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock())
-                    {
-                        ((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).CancelBlock();
-                    }
-                    else
-                    {
-                        delayedBlockStop = true;
-                    }
-                }
-            }
+            ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 
         public override void SupportAbility(InputAction.CallbackContext context)
@@ -46,11 +38,6 @@ namespace Laresistance.Battle
             if (context.performed)
             {
                 TryToExecuteAbility(5);
-                cancelTimer = -1f;
-            }
-            if (context.canceled)
-            {
-                cancelTimer = SUPPORT_CANCEL_GRACE_TIME;
             }
         }
 
@@ -62,6 +49,11 @@ namespace Laresistance.Battle
         public override void UltimateAbility(InputAction.CallbackContext context)
         {
             if (context.performed) TryToExecuteAbility(4);
+        }
+
+        protected override void OnInitializeAbilities()
+        {
+            player.supportAbility.ResetCooldown();
         }
 
         private void OnStatusApplied(BattleStatusManager sender, StatusIconType statusType, float duration)
@@ -80,15 +72,7 @@ namespace Laresistance.Battle
 
         protected override bool CanExecuteAbilities()
         {
-            return !(((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock());
-        }
-
-        protected override void ModifyInputDelta(ref float delta)
-        {
-            if (((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock())
-            {
-                delta = 0f;
-            }
+            return true;
         }
 
         private void AttackReceived(CharacterHealth sender)
@@ -98,18 +82,14 @@ namespace Laresistance.Battle
 
         protected override void OnAbilitiesUpdate(float delta)
         {
-            if (((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock() && delayedBlockStop)
-            {
-                ((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).CancelBlock();
-                delayedBlockStop = false;
-            }
+            player.supportAbility?.Tick(delta);
+            ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 
         protected override void OnAbilityExecutedExtra(BattleAbility ability, int slot)
         {
             if ((((RushStatusEffect)battleStatus.GetStatus(StatusType.Rush)).HaveRush()))
             {
-                //renewTimer = 0f;
                 RenewAllEmptyAbilities();
             }
         }
