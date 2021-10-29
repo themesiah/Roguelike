@@ -49,9 +49,12 @@ namespace Laresistance.Behaviours
                     GameObject go = handler.Result;
                     go.transform.localPosition = Vector3.zero;
                     go.transform.localScale = go.transform.localScale * scaleMultiplier;
-                    SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
-                    renderer.sortingOrder = sortingOrder;
-                    renderer.material = unlitMaterial;
+                    SpriteRenderer renderer = go.GetComponentInChildren<SpriteRenderer>();
+                    if (renderer)
+                    {
+                        renderer.sortingOrder = sortingOrder;
+                        renderer.material = unlitMaterial;
+                    }
                 };
             }
             // End show 3 current minions
