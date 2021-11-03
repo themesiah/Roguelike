@@ -1,8 +1,5 @@
-﻿using GamedevsToolbox.ScriptableArchitecture.Events;
-using GamedevsToolbox.Utils;
-using Laresistance.Behaviours.Platforms;
+﻿using GamedevsToolbox.Utils;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -309,7 +306,7 @@ namespace Laresistance.Behaviours
                 {
                     fallingTime += Time.deltaTime;
                     isGrounded = true;
-                } else if (falling == false)
+                } else if (falling == false && !isGrounded)
                 {
                     fallingTime = 0f;
                     falling = true;
