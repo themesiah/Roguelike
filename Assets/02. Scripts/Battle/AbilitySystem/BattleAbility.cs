@@ -178,6 +178,11 @@ namespace Laresistance.Battle
             return builder.ToString();
         }
 
+        public string GetSimpleAbilityText()
+        {
+            return Texts.GetText(data.ShortDesc);
+        }
+
         public string GetAbilityPowerText(int level)
         {
             StringBuilder builder = new StringBuilder();

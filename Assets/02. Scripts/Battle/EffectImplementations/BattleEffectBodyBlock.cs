@@ -1,3 +1,4 @@
+using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Core;
 using Laresistance.Data;

@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine;
 using Laresistance.Battle;
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
 {
@@ -28,6 +29,10 @@ namespace Laresistance.Behaviours
         protected Transform effectTargetPivot = default;
         [SerializeField]
         private ScriptableFloatReference energyProductionRef = default;
+        [SerializeField]
+        private Text supportAbilityText = default;
+        [SerializeField]
+        private Text ultimateAbilityText = default;
 
         public Player player { get; private set; }
         public BattleStatusManager StatusManager { get; private set; }
@@ -82,6 +87,12 @@ namespace Laresistance.Behaviours
                     MapEquipment.AddToGlobalEquipList(eq);
                 }
             }
+        }
+
+        private void Start()
+        {
+            supportAbilityText.text = player.supportAbility.GetSimpleAbilityText();
+            ultimateAbilityText.text = player.ultimateAbility.GetSimpleAbilityText();
         }
 
         private void OnEnable()
