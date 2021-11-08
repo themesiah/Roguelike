@@ -2456,6 +2456,23 @@ MonoBehaviour:
           m_StringArgument: MapCamera
           m_BoolArgument: 0
         m_CallState: 2
+  attackStopTime: 0.5
+  onMapAttack:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8584464741198961604}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.AnimatorWrapperBridge,
+          GameScripts
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OffBattleAttack
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &23771295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3100,6 +3117,22 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerContextBehaviour,
             GameScripts
           m_MethodName: PerformTimeStop
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Event: {fileID: 11400000, guid: 44c696546f1501c4581680d30e2894f5, type: 2}
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1591657531686456961}
+          m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerMapBehaviour, GameScripts
+          m_MethodName: MapAttack
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -7101,7 +7134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5026825936307919926, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00039401365
+      value: -0.00039439308
       objectReference: {fileID: 0}
     - target: {fileID: 5324838246669917144, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_SortingOrder

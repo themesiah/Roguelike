@@ -32,14 +32,16 @@ namespace Laresistance.Systems
             {
                 // Show message telling you obtained blood
                 bloodReference.SetValue(bloodReference.GetValue() + reward.bloodAmount);
-                yield return rewardUILibrary?.GetBehaviour(RewardUIType.Blood).StartPanel(reward);
+				if (reward.showPanel)
+					yield return rewardUILibrary?.GetBehaviour(RewardUIType.Blood).StartPanel(reward);
             }
 
             if (reward.hardCurrencyAmount > 0)
             {
                 // Show message telling you obtained hard currency
                 hardCurrencyReference.SetValue(hardCurrencyReference.GetValue() + reward.hardCurrencyAmount);
-                yield return rewardUILibrary?.GetBehaviour(RewardUIType.HardCurrency).StartPanel(reward);
+				if (reward.showPanel)
+					yield return rewardUILibrary?.GetBehaviour(RewardUIType.HardCurrency).StartPanel(reward);
             }
 
             if (reward.minion != null)
@@ -52,12 +54,14 @@ namespace Laresistance.Systems
                 if (autoEquipped)
                 {
                     // Show message telling you obtained the minion
-                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.Minion).StartPanel(reward);
+					if (reward.showPanel)
+						yield return rewardUILibrary?.GetBehaviour(RewardUIType.Minion).StartPanel(reward);
                 }
                 else
                 {
                     // Show options to switch minions
-                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.MinionFull).StartPanel(reward);
+					if (reward.showPanel)
+						yield return rewardUILibrary?.GetBehaviour(RewardUIType.MinionFull).StartPanel(reward);
                 }
             }
 
@@ -68,25 +72,29 @@ namespace Laresistance.Systems
                 if (autoEquipped)
                 {
                     // Show message telling you obtained the consumable
-                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.Consumable).StartPanel(reward);
+					if (reward.showPanel)
+						yield return rewardUILibrary?.GetBehaviour(RewardUIType.Consumable).StartPanel(reward);
                 }
                 else
                 {
                     // Show options to switch consumables
-                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.ConsumableFull).StartPanel(reward);
+					if (reward.showPanel)
+						yield return rewardUILibrary?.GetBehaviour(RewardUIType.ConsumableFull).StartPanel(reward);
                 }
             }
 
             if (reward.equip != null)
             {
                 // Equips are never autoequipped, as they may not be always good
-                yield return rewardUILibrary?.GetBehaviour(RewardUIType.Equip).StartPanel(reward);
+				if (reward.showPanel)
+					yield return rewardUILibrary?.GetBehaviour(RewardUIType.Equip).StartPanel(reward);
             }
 
             if (reward.mapAbilityData != null)
             {
                 reward.mapAbilityData.AbilityObtainedReference.SetValue(true);
-                yield return rewardUILibrary?.GetBehaviour(RewardUIType.MapAbility).StartPanel(reward);
+				if (reward.showPanel)
+					yield return rewardUILibrary?.GetBehaviour(RewardUIType.MapAbility).StartPanel(reward);
             }
             yield return null;
         }

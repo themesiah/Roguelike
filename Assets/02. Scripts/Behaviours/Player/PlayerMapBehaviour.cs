@@ -19,6 +19,14 @@ namespace Laresistance.Behaviours
         private UnityEvent OnPlatformFallStart = default;
         [SerializeField]
         private UnityEvent OnPlatformFallEnd = default;
+		
+		[Header("Map attack")]
+		[SerializeField]
+		private float attackStopTime = 0.5f;
+		[SerializeField]
+		private UnityEvent onMapAttack = default;
+		private float attackStopTimeTimer = 0f;
+		private bool isAttacking = false;
 
         private ScenarioInteraction currentInteraction = null;
         private PlayerScenarioInteraction playerInteraction = null;
@@ -36,6 +44,8 @@ namespace Laresistance.Behaviours
 
         private void FixedUpdate()
         {
+			if (isAttacking)
+				return;
             characterController.Move(currentMovementValue);
             if (jumpSignal)
             {
@@ -49,6 +59,17 @@ namespace Laresistance.Behaviours
                 stopJumpSignal = false;
             }
         }
+		
+		private void Update()
+		{
+			if (attackStopTimeTimer > 0f) {
+				attackStopTimeTimer -= Time.deltaTime;
+				if (attackStopTimeTimer <= 0f)
+				{
+					isAttacking = false;
+				}
+			}
+		}
 
         public void ChangeRoomSignal()
         {
@@ -135,6 +156,14 @@ namespace Laresistance.Behaviours
         public bool FallingSignal => fallSignal;
         public void Interact(InputAction.CallbackContext context) => playerInteraction.Interact(context, currentInteraction, false);
         public void InteractEquip(InputAction.CallbackContext context) => playerInteraction.Interact(context, currentInteraction, true);
+		public void MapAttack(InputAction.CallbackContext context) {
+			if (context.performed && !isAttacking)
+			{
+				isAttacking = true;
+				attackStopTimeTimer = attackStopTime;
+				onMapAttack?.Invoke();
+			}
+		}
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
