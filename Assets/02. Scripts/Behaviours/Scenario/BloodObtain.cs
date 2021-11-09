@@ -23,9 +23,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RewardUILibrary uiLibrary = default;
         [SerializeField]
-        private StringGameEvent gameContextSignal = default;
-        [SerializeField]
         private SpriteRenderer spriteRenderer = default;
+        [SerializeField]
+        private IntGameEvent bloodObtainedEvent = default;
 
         private RewardSystem rewardSystem;
         private int currentLevel = 1;
@@ -55,9 +55,10 @@ namespace Laresistance.Behaviours
         {
             if (spriteRenderer != null)
                 spriteRenderer.enabled = false;
-            gameContextSignal.Raise("UI");
-            yield return rewardSystem.GetReward(new RewardData(amount, 0, null, null, null, null, null));
-            gameContextSignal.Raise("Map");
+            //gameContextSignal.Raise("UI");
+            yield return rewardSystem.GetReward(new RewardData(amount, 0, null, null, null, null, null, false));
+            bloodObtainedEvent?.Raise(amount);
+            //gameContextSignal.Raise("Map");
             Destroy(gameObject);
         }
     }

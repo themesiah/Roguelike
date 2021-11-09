@@ -1,4 +1,5 @@
-﻿using Laresistance.Battle;
+﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
+using Laresistance.Battle;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,6 +56,16 @@ namespace Laresistance.Behaviours
             SpawnDamageText(shieldAmount, Color.blue);
         }
 
+        public void BloodText(int bloodAmount)
+        {
+            SpawnRewardText(bloodAmount, Color.red, Texts.GetText("CURRENCY_01"));
+        }
+
+        public void HardCurrencyText(int hcAmount)
+        {
+            SpawnRewardText(hcAmount, Color.white, Texts.GetText("CURRENCY_02"));
+        }
+
         private void SpawnDamageText(int power, Color color)
         {
             GameObject textObject = Instantiate(textPrefab, canvasObject.transform);
@@ -70,6 +81,15 @@ namespace Laresistance.Behaviours
             Text text = textObject.GetComponent<Text>();
             text.text = "MISS";
             text.color = Color.white;
+            textObject.transform.localPosition = Vector3.zero;
+        }
+
+        public void SpawnRewardText(int power, Color color, string rewardName)
+        {
+            GameObject textObject = Instantiate(textPrefab, canvasObject.transform);
+            Text text = textObject.GetComponent<Text>();
+            text.text = string.Format("+{0} {1}", power.ToString(), rewardName);
+            text.color = color;
             textObject.transform.localPosition = Vector3.zero;
         }
 

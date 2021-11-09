@@ -14,11 +14,15 @@ namespace Laresistance.Audio
         private string[] parameterNames = default;
         [SerializeField]
         private float[] parameterValues = default;
+        [SerializeField]
+        private float cooldown = 0f;
 
         private System.Guid eventId;
         private FMOD.Studio.EventDescription eventDescription;
         protected FMOD.Studio.PARAMETER_DESCRIPTION[] paramDescription = null;
         protected FMOD.Studio.EventInstance instance;
+        [System.NonSerialized]
+        protected float lastPlayed = 0f;
 
         private void Init()
         {
@@ -68,8 +72,13 @@ namespace Laresistance.Audio
             Init();
             GetInstance();
             SetParameters();
-            instance.start();
-            instance.release();
+            //Debug.LogFormat("Current time {0}, last played {1}, cooldown {2}", Time.time, lastPlayed, cooldown);
+            if (Time.time > lastPlayed + cooldown)
+            {
+                instance.start();
+                instance.release();
+                lastPlayed = Time.time;
+            }
         }
     }
 }

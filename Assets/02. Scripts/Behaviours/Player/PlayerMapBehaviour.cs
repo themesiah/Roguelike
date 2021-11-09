@@ -154,16 +154,23 @@ namespace Laresistance.Behaviours
         public bool IsJumpingOrFalling => characterController.IsJumpingOrFalling;
         public Vector2 CurrentVelocity => characterController.CurrentVelocity;
         public bool FallingSignal => fallSignal;
-        public void Interact(InputAction.CallbackContext context) => playerInteraction.Interact(context, currentInteraction, false);
+        public void Interact(InputAction.CallbackContext context)
+        {
+            if (context.performed && !isAttacking && characterController.IsGrounded)
+            {
+                if (currentInteraction != null)
+                {
+                    playerInteraction.Interact(context, currentInteraction, false);
+                }
+                else
+                {
+                    isAttacking = true;
+                    attackStopTimeTimer = attackStopTime;
+                    onMapAttack?.Invoke();
+                }
+            }
+        }
         public void InteractEquip(InputAction.CallbackContext context) => playerInteraction.Interact(context, currentInteraction, true);
-		public void MapAttack(InputAction.CallbackContext context) {
-			if (context.performed && !isAttacking)
-			{
-				isAttacking = true;
-				attackStopTimeTimer = attackStopTime;
-				onMapAttack?.Invoke();
-			}
-		}
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
@@ -176,11 +183,12 @@ namespace Laresistance.Behaviours
 
         private void OnTriggerExit2D(Collider2D collider)
         {
-            if (currentInteraction != null)
+            var tempInteraction = collider.gameObject.GetComponent<ScenarioInteraction>();
+            if (currentInteraction != null && currentInteraction == tempInteraction)
             {
                 currentInteraction.ExitInteractionZone();
+                currentInteraction = null;
             }
-            currentInteraction = null;
         }
     }
 }

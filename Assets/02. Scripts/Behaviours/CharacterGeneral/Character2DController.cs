@@ -46,6 +46,9 @@ namespace Laresistance.Behaviours
         public UnityEvent<float> OnHorizontalVelocityChanged = default;
         public UnityEvent<float> OnVerticalVelocityChanged = default;
 
+        [Header("Debug")]
+        public bool showDebugMessages = false;
+
         // State
         // Movement state
         private float currentMovement = 0f;
@@ -129,7 +132,7 @@ namespace Laresistance.Behaviours
                 // Add the impulse
                 body.AddForce(force, ForceMode2D.Impulse);
                 // Manage events
-                Debug.Log("OnJump", gameObject);
+                DebugMessage("OnJump");
                 OnJump?.Invoke(groundCheck.position);
                 // Increase number of jumps done in mid air
                 performedJumps++;
@@ -268,7 +271,7 @@ namespace Laresistance.Behaviours
                         {
                             delayAfterLandingTimer = delayAfterLanding;
                             performedJumps = 0;
-                            Debug.Log("OnLand", gameObject);
+                            DebugMessage("OnLand");
                             OnLand?.Invoke(groundCheck.position);
                             var raycastHit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.3f, groundLayers);
                             if (raycastHit.transform == null)
@@ -311,7 +314,7 @@ namespace Laresistance.Behaviours
                     fallingTime = 0f;
                     falling = true;
                     jumping = false;
-                    Debug.Log("OnStartFall", gameObject);
+                    DebugMessage("OnStartFall");
                     OnStartFall?.Invoke(groundCheck.position);
                 }
             }
@@ -459,6 +462,14 @@ namespace Laresistance.Behaviours
             isPaused = false;
             body.simulated = true;
             body.velocity = beforePauseVelocity;
+        }
+
+        protected void DebugMessage(string message)
+        {
+            if (showDebugMessages)
+            {
+                Debug.Log(message, gameObject);
+            }
         }
     }
 }

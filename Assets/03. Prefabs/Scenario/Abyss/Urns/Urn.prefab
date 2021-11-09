@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3006408457304556662}
   - component: {fileID: 3303046278915853133}
   - component: {fileID: 3762265399652932670}
-  m_Layer: 0
+  - component: {fileID: 5164116726087367200}
+  m_Layer: 16
   m_Name: Urn
   m_TagString: Urn
   m_Icon: {fileID: 0}
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202132082198658855}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -44.543633, y: 177.72963, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2795445018275866421}
@@ -82,9 +83,11 @@ MonoBehaviour:
   - {fileID: 1919829317253545744}
   - {fileID: 5335355974303212094}
   - {fileID: 5386625788970201602}
-  breakForceMinMax: {x: 0, y: 10}
-  explosionEffect: {fileID: 6443766980642840044}
   fadeDuration: 2
+  bloodChance: 0.15
+  bloodAmountRange: {x: 50, y: 100}
+  hardCurrencyChance: 0.01
+  hardCurrencyAmountRange: {x: 1, y: 2}
   playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   bloodReference:
     useConstant: 0
@@ -104,6 +107,25 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
+  bloodObtainedEvent: {fileID: 11400000, guid: 55c26a9e7f727734fafc6693c15cf071, type: 2}
+  hardCurrencyObtainedEvent: {fileID: 11400000, guid: 6c6e57661f95a544bae39d050071e536, type: 2}
+  breakAudioEvent: {fileID: 11400000, guid: 54c7066d1a755304da21214d63b276b0, type: 2}
+--- !u!114 &5164116726087367200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202132082198658855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8baba6af9391243a2dd7d61febf55b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetList:
+  - 0
+  - 180
+  targetReference: {fileID: 3006408457304556662}
 --- !u!1 &1372392551448337539
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,8 +196,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: -7545281907445010602, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -257,6 +279,134 @@ PolygonCollider2D:
       - {x: -0.385, y: -0.105}
       - {x: -0.385, y: -0.085}
       - {x: -0.415, y: -0.055}
+--- !u!1 &1486871402764281446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1878965298396412476}
+  - component: {fileID: 6015905537451693737}
+  - component: {fileID: 8316134915237800238}
+  m_Layer: 0
+  m_Name: Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1878965298396412476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486871402764281446}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.026, y: -0.469, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2795445018275866421}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6015905537451693737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486871402764281446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.4
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: 0000000077123553df53474051751e576fb123bee3e3fb8f9973cc1861b76c670b935505b1c1abbff5548149
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_ShadowIntensity: 0
+  m_ShadowVolumeIntensity: 0
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_PointLightDistance: 3
+  m_PointLightQuality: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &8316134915237800238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486871402764281446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 800feb4737224f74a99b26e321098777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  evaluationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.2901001
+      inSlope: 0.2098999
+      outSlope: 0.2098999
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: 0.2098999
+      outSlope: 0.2098999
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  evaluationValue:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6015905537451693737}
+        m_TargetAssemblyTypeName: UnityEngine.Experimental.Rendering.Universal.Light2D,
+          Unity.RenderPipelines.Universal.Runtime
+        m_MethodName: set_intensity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  evaluationTime: 2.5
+  pingPong: 1
+  maxRandomTimeOffset: 0.5
 --- !u!1 &3550787021651403767
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,8 +545,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: 3145059468360208001, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -540,8 +690,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: 951489821637005301, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -624,8 +774,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: -2051954442803895504, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -774,8 +924,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 829550703565560573, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -913,6 +1063,7 @@ Transform:
   - {fileID: 1276015751618004611}
   - {fileID: 7679879181374565419}
   - {fileID: 1927602476807695886}
+  - {fileID: 1878965298396412476}
   m_Father: {fileID: 3006408457304556662}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -953,8 +1104,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -2271619163935919764, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1037,8 +1188,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: 1333423436410663754, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1177,8 +1328,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -1377930597725175409, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1261,8 +1412,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: -2366669494046114543, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1416,8 +1567,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1879317533
-  m_SortingLayer: 5
+  m_SortingLayerID: -1104957073
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: -6339753644789688081, guid: 52de40e8a53dc7b4085f06abb4f1b59d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
