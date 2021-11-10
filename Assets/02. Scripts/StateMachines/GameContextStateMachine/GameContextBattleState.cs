@@ -95,6 +95,8 @@ namespace Laresistance.StateMachines
             }
             goToMap = false;
             forcedStop = false;
+			RaycastHit2D hit = Physics2D.Raycast(playerObject.transform.position + Vector3.up*0.1f, Vector2.down);
+			playerObject.transform.position = hit.point;
             yield return null;
         }
 
