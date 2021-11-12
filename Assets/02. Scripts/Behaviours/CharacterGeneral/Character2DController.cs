@@ -45,6 +45,7 @@ namespace Laresistance.Behaviours
         public UnityEvent<bool> OnFlip = default;
         public UnityEvent<float> OnHorizontalVelocityChanged = default;
         public UnityEvent<float> OnVerticalVelocityChanged = default;
+        public UnityEvent OnManualSetLand = default;
 
         [Header("Debug")]
         public bool showDebugMessages = false;
@@ -470,6 +471,11 @@ namespace Laresistance.Behaviours
             {
                 Debug.Log(message, gameObject);
             }
+        }
+
+        public void ManualLanding()
+        {
+            OnManualSetLand?.Invoke();
         }
     }
 }

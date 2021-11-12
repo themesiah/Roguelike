@@ -74,8 +74,11 @@ namespace Laresistance.StateMachines
         public IEnumerator ExitState()
         {
             Vector3 targetPoint = playerTransform.position;
-            targetPoint.x = currentRoomData.nextRoom.GetRoomChangeData().enterPoint.position.x;
-            targetPoint.y = currentRoomData.nextRoom.GetRoomChangeData().enterPoint.position.y;
+            Vector3 enterPointPosition = currentRoomData.nextRoom.GetRoomChangeData().enterPoint.position;
+            targetPoint.x = enterPointPosition.x;
+
+            RaycastHit2D hit = Physics2D.Raycast(enterPointPosition + Vector3.up * 0.5f, Vector2.down);
+            targetPoint.y = hit.point.y;
             // Flip character
             if (playerTransform.position.x > targetPoint.x)
             {
@@ -95,6 +98,7 @@ namespace Laresistance.StateMachines
             // Put rigid body to simulate
             body.simulated = true;
             finishedChangingRoomEvent?.Raise();
+            characterController.ManualLanding();
             yield return null;
         }
 
