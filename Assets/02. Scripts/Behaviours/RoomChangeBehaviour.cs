@@ -61,7 +61,7 @@ namespace Laresistance.Behaviours
 
         public void InitRoom()
         {
-            var hit = Physics2D.Raycast(roomEnterPoint.position, Vector2.down);
+            var hit = Physics2D.Raycast(roomEnterPoint.position + Vector3.up * 0.1f, Vector2.down);
             if (snapEnterPointToFloor)
             {
                 roomEnterPoint.position = hit.point;

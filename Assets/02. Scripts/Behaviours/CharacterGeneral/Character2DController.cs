@@ -138,6 +138,7 @@ namespace Laresistance.Behaviours
                 // Increase number of jumps done in mid air
                 performedJumps++;
                 jumping = true;
+                falling = false;
             } else if (!isGrounded && allowJumpAttempt)
             {
                 jumpAttemptTimer = JUMP_ATTEMPT_TIMER;
