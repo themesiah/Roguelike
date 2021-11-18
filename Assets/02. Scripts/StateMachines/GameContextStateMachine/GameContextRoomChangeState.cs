@@ -68,6 +68,7 @@ namespace Laresistance.StateMachines
             finished = true;
             // Set next room bounds for the camera confinement
             boundsChangeEvent?.Raise(currentRoomData.nextRoom.GetRoomChangeData().bounds);
+            currentRoomData.nextRoom.ChangeRoom();
             yield return null;
         }
 

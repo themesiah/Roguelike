@@ -93,6 +93,8 @@ namespace Laresistance.Behaviours
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
         [SerializeField]
         private Collider2DGameEvent boundsChangeEvent = default;
+        [SerializeField]
+        private RuntimeMinimapSingle minimapReference = default;
 
         [Header("Temp and test")]
         public RoomBiome roomBiome;
@@ -414,6 +416,7 @@ namespace Laresistance.Behaviours
                         linkedRoomIndex = link.linkedRoomIndex;
                     }
                 }
+
                 if (linkedRoomIndex != -1)
                 {
                     if (mapData != null)
@@ -436,6 +439,12 @@ namespace Laresistance.Behaviours
                                 roomChangeBehaviour.SetRoomBounds(roomLimits);
                             }
                         }
+                    }
+
+                    var minimap = minimapReference?.Get();
+                    if (minimap != null)
+                    {
+                        minimap.AddRoom(roomChangeBehaviour.NextRoom, linkedRoomIndex);
                     }
                 }
                 else

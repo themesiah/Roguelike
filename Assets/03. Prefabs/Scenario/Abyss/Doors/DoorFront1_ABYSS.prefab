@@ -255,7 +255,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8965869369504910313}
         m_TargetAssemblyTypeName: Laresistance.Behaviours.RoomChangeBehaviour, GameScripts
-        m_MethodName: ChangeRoom
+        m_MethodName: SignalChangeRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -314,7 +314,8 @@ MonoBehaviour:
   snapExitPointToFloor: 1
   changeRoomOnEnterTrigger: 0
   nextRoom: {fileID: 8965869369504910313}
-  roomChangeEvent: {fileID: 11400000, guid: e3b0f15f6b2002a49a4e21f914f04ca0, type: 2}
+  roomChangedEvent: {fileID: 11400000, guid: e3b0f15f6b2002a49a4e21f914f04ca0, type: 2}
+  roomChangeSignal: {fileID: 11400000, guid: 899737a041762384e845464c760c12b6, type: 2}
   alternativeObjects: []
   aditionalObjects: []
 --- !u!1 &8212807706530609198

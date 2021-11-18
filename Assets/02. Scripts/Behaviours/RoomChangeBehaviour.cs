@@ -21,7 +21,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private RoomChangeBehaviour nextRoom = default;
         [SerializeField]
-        private RoomChangeBehaviourEvent roomChangeEvent = default;
+        private RoomChangeBehaviourEvent roomChangedEvent = default;
+        [SerializeField]
+        private RoomChangeBehaviourEvent roomChangeSignal = default;
 
         [SerializeField]
         [Tooltip("Alternative objects to activate in case this connection is not used")]
@@ -76,7 +78,12 @@ namespace Laresistance.Behaviours
 
         public void ChangeRoom()
         {
-            roomChangeEvent.Raise(this);
+            roomChangedEvent?.Raise(this);
+        }
+
+        public void SignalChangeRoom()
+        {
+            roomChangeSignal?.Raise(this);
         }
 
         public void SetNextRoom(RoomChangeBehaviour nextRoom)

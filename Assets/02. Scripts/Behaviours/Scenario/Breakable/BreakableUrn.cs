@@ -60,7 +60,7 @@ namespace Laresistance.Behaviours
 				fullSpriteObject.SetActive(false);
 				partSpriteObject.SetActive(true);
 				// Give resources here
-				TweenFactory.Tween(gameObject.name, 1f, 0f, fadeDuration, TweenScaleFunctions.CubicEaseIn, UpdateAlpha, FadeCompleted);
+				TweenFactory.Tween(gameObject.name + gameObject.GetInstanceID().ToString(), 1f, 0f, fadeDuration, TweenScaleFunctions.CubicEaseIn, UpdateAlpha, FadeCompleted);
                 breakAudioEvent.Play();
                 GetReward();
                 alreadyBroke = true;

@@ -3973,13 +3973,13 @@ GameObject:
   - component: {fileID: 8200218794505864924}
   - component: {fileID: 9121599824974081652}
   - component: {fileID: 7518730485009172032}
-  - component: {fileID: 9125262672345676458}
   - component: {fileID: 4333061527807672565}
   - component: {fileID: 1405283105323133629}
   - component: {fileID: 7575177876541414949}
   - component: {fileID: 3946988853950612825}
   - component: {fileID: 544704412574151261}
   - component: {fileID: 4337614599366421085}
+  - component: {fileID: 3343919589023249246}
   m_Layer: 9
   m_Name: EventsAndSubscriptions
   m_TagString: Untagged
@@ -4596,35 +4596,6 @@ MonoBehaviour:
           m_StringArgument: Map
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &9125262672345676458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3897970144034760309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d30ff2d412178f04ba18441ed07ec63b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: e3b0f15f6b2002a49a4e21f914f04ca0, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 23771290}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerContextBehaviour,
-          GameScripts
-        m_MethodName: RoomChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &4333061527807672565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5124,6 +5095,35 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Laresistance.Behaviours.DamageTextSpawnerBehaviour,
           GameScripts
         m_MethodName: HardCurrencyText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3343919589023249246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3897970144034760309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d30ff2d412178f04ba18441ed07ec63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 899737a041762384e845464c760c12b6, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 23771290}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.PlayerContextBehaviour,
+          GameScripts
+        m_MethodName: RoomChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
