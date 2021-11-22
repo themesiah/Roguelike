@@ -50,6 +50,8 @@ namespace Laresistance.Behaviours
         private RuntimeSingleCinemachineTargetGroup targetGroupRef = default;
         [SerializeField]
         private GameEvent finishedChangingRoomEvent = default;
+        [SerializeField]
+        private GameEvent saveGameEvent = default;
         [Header("Dialog")]
         [SerializeField]
         private CharacterDialogEvent dialogEvent = default;
@@ -68,7 +70,8 @@ namespace Laresistance.Behaviours
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
             states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef, virtualCameraChangeEvent));
-            battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value, rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef);
+            battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value,
+                rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef, saveGameEvent);
             states.Add("Battle", battleState);
             roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent, finishedChangingRoomEvent);
             states.Add("RoomChange", roomChangeState);

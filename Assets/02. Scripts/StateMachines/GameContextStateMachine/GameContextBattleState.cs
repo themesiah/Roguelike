@@ -31,6 +31,7 @@ namespace Laresistance.StateMachines
         private ScriptableIntReference battlePositionIntReference;
         private StringGameEvent virtualCameraChangeEvent;
         private RuntimeSingleCinemachineTargetGroup targetGroupRef;
+        private GameEvent saveGameEvent;
 
         #region ICoroutineState Implementation
         public IEnumerator EnterState()
@@ -97,6 +98,7 @@ namespace Laresistance.StateMachines
             forcedStop = false;
 			RaycastHit2D hit = Physics2D.Raycast(playerObject.transform.position + Vector3.up*0.1f, Vector2.down);
 			playerObject.transform.position = hit.point;
+            saveGameEvent?.Raise();
             yield return null;
         }
 
@@ -154,9 +156,10 @@ namespace Laresistance.StateMachines
 
         public GameContextBattleState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference,
             ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary, ScriptableIntReference battlePositionIntReference,
-            StringGameEvent virtualCameraChangeEvent, RuntimeSingleCinemachineTargetGroup targetGroupRef)
+            StringGameEvent virtualCameraChangeEvent, RuntimeSingleCinemachineTargetGroup targetGroupRef, GameEvent saveGameEvent)
         {
             this.playerObject = playerObject;
+            this.saveGameEvent = saveGameEvent;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
             this.centerCheckLayerMask = centerCheckLayerMask;
             Player player = playerObject.GetComponent<PlayerDataBehaviour>().player;

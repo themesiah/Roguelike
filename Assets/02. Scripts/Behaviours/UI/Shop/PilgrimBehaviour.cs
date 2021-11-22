@@ -47,6 +47,8 @@ namespace Laresistance.Behaviours
         private StringGameEvent gameContextSignal = default;
         [SerializeField]
         private RewardUILibrary rewardUILibrary = default;
+        [SerializeField]
+        private GameEvent saveGameEvent = default;
         [Header("Prefabs")]
         [SerializeField]
         private GameObject[] offerPanelPrefabs = default;
@@ -335,6 +337,7 @@ namespace Laresistance.Behaviours
             // If there are reserved minions, convert them into hard currency and do reward manager thing.
             reserveSize = player.ClearMinionReserve();
             yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null));
+            saveGameEvent?.Raise();
             gameContextSignal.Raise("Map");
         }
 

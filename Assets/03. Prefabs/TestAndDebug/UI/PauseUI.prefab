@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 2275754259917508185}
   - component: {fileID: 6434204206396843953}
   - component: {fileID: 8208491474433979939}
+  - component: {fileID: 1886930153937452171}
   m_Layer: 5
   m_Name: SAVE
   m_TagString: Untagged
@@ -229,6 +230,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1886930153937452171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685331604734226192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d919c809960bbb44bbf44989a6341bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideOnBuild: 1
 --- !u!1 &2072155160000335776
 GameObject:
   m_ObjectHideFlags: 0
@@ -14759,6 +14773,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 11400000, guid: ed7cd1f2cdf86fa4bbeb8008e3ccb235, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
+          GamedevsToolbox
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11400000, guid: ed8a5e5f9b50d374c94f1382b2172a6e, type: 2}
         m_TargetAssemblyTypeName: Laresistance.ScriptableUtils.ScriptableGameExit,
           GameScripts

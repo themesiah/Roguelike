@@ -6,6 +6,7 @@ namespace Laresistance.Systems
 {
     public static class SaveSystem
     {
+        // La partida debería guardarse al salir del menú del Peregrino, al terminar una batalla o al morir.
         public static void Save(SavedGame data)
         {
             BinaryFormatter formatter = new BinaryFormatter();
