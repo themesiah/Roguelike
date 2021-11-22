@@ -113,12 +113,12 @@ namespace Laresistance.Behaviours
                 if (roomEnterPoint != null)
                 {
                     Gizmos.color = Color.blue;
-                    Gizmos.DrawSphere(roomEnterPoint.position, 1f);
+                    //Gizmos.DrawSphere(roomEnterPoint.position, 1f);
                 }
                 if (roomExitPoint != null)
                 {
                     Gizmos.color = Color.yellow;
-                    Gizmos.DrawSphere(roomExitPoint.position, 1f);
+                    //Gizmos.DrawSphere(roomExitPoint.position, 1f);
                     Gizmos.color = Color.red;
                     Gizmos.DrawLine(roomExitPoint.position, nextRoom.GetRoomChangeData().exitPoint.position);
                 }

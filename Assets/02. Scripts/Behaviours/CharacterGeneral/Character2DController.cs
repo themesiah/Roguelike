@@ -238,6 +238,8 @@ namespace Laresistance.Behaviours
 
         private void CheckGrounded()
         {
+            if (!body.simulated)
+                return;
             bool wasGrounded = isGrounded;
             isGrounded = false;
 
@@ -307,11 +309,12 @@ namespace Laresistance.Behaviours
             } else
             if (!collided && body.velocity.y <= -2f)
             {
-                if (falling == false && !jumping && fallingTime < timeToFall)
+                if (!falling && !jumping && fallingTime <= timeToFall)
                 {
+                    DebugMessage("Adding to timer fallingTime");
                     fallingTime += Time.deltaTime;
                     isGrounded = true;
-                } else if (falling == false && !isGrounded)
+                } else if (!falling && !isGrounded)
                 {
                     fallingTime = 0f;
                     falling = true;
@@ -476,7 +479,13 @@ namespace Laresistance.Behaviours
 
         public void ManualLanding()
         {
+            DebugMessage("ManualLanding triggered");
             OnManualSetLand?.Invoke();
+            isGrounded = true;
+            falling = false;
+            jumping = false;
+            body.velocity = Vector2.zero;
+            fallingTime = 0f;
         }
     }
 }
