@@ -49,7 +49,7 @@ namespace Laresistance.Battle
             selfBattleManager = battleManager;
         }
 
-        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
+        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta, float unmodifiedDelta)
         {
             // If there is no ability in queue we select one and configure the timers.
             if (nextAbility == null)

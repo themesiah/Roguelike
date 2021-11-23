@@ -22,7 +22,7 @@ namespace Laresistance.Battle
             return abilities;
         }
 
-        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
+        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta, float unmodifiedDelta)
         {
             for (int i = 0; i < abilities.Length; ++i)
             {

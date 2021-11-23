@@ -105,7 +105,7 @@ namespace Laresistance.Battle
         protected virtual void Tick(float delta)
         { }
 
-        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta)
+        public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta, float unmodifiedDelta)
         {
             Tick(delta);
             ModifyInputDelta(ref delta);
@@ -129,7 +129,7 @@ namespace Laresistance.Battle
                 {
                     ability?.Tick(delta);
                 }
-                OnAbilitiesUpdate(delta);
+                OnAbilitiesUpdate(delta, unmodifiedDelta);
             }
 
             // Check if the player selected any ability
@@ -162,7 +162,7 @@ namespace Laresistance.Battle
             }
         }
 
-        protected virtual void OnAbilitiesUpdate(float delta)
+        protected virtual void OnAbilitiesUpdate(float delta, float unmodifiedDelta)
         {
 
         }

@@ -80,9 +80,9 @@ namespace Laresistance.Battle
             battleStatus.AddEnergy(10f);
         }
 
-        protected override void OnAbilitiesUpdate(float delta)
+        protected override void OnAbilitiesUpdate(float delta, float unmodifiedDelta)
         {
-            player.supportAbility?.Tick(delta);
+            player.supportAbility?.Tick(unmodifiedDelta);
             ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 

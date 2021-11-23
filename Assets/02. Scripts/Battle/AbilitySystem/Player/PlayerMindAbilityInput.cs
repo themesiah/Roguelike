@@ -57,9 +57,9 @@ namespace Laresistance.Battle
             player.supportAbility.SetCooldownAsUsed();
         }
 
-        protected override void OnAbilitiesUpdate(float delta)
+        protected override void OnAbilitiesUpdate(float delta, float unmodifiedDelta)
         {
-            player.supportAbility?.Tick(delta);
+            player.supportAbility?.Tick(unmodifiedDelta);
             ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 

@@ -130,7 +130,7 @@ namespace Laresistance.Core
             int targetSelectionInput = TargetSelector.GetTargetSelection();
             if (targetSelectionInput == -1) battleSystem.SelectPrevious();
             if (targetSelectionInput == 1) battleSystem.SelectNext();
-            AbilityExecutionData abilityExecutionData = AbilityInputProcessor.GetAbilitiesToExecute(StatusManager, StatusManager.GetValueModifier(StatusType.Speed) * delta);
+            AbilityExecutionData abilityExecutionData = AbilityInputProcessor.GetAbilitiesToExecute(StatusManager, StatusManager.GetValueModifier(StatusType.Speed) * delta, delta);
             return abilityExecutionData;
         }
 
