@@ -77,7 +77,7 @@ namespace Laresistance.Battle
 
         private void AttackReceived(CharacterHealth sender)
         {
-            battleStatus.AddEnergy(10f);
+            battleStatus.AddEnergy(GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue());
         }
 
         protected override void OnAbilitiesUpdate(float delta, float unmodifiedDelta)

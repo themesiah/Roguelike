@@ -65,7 +65,7 @@ namespace Laresistance.Battle
 
         protected override void OnAbilityExecutedExtra(BattleAbility ability, int slot)
         {
-            battleStatus.AddEnergy(5f);
+            battleStatus.AddEnergy(GameConstantsBehaviour.Instance.mindEnergyGain.GetValue());
         }
 
         protected override bool CanExecuteAbilities()

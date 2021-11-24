@@ -544,6 +544,11 @@ namespace Laresistance.Behaviours
                     if (interactable.roomInteractableType == RoomInteractableType.Pilgrim)
                     {
                         go.GetComponent<PilgrimBehaviour>().SetCurrentLevel(roomLevel);
+                        var minimap = minimapReference?.Get();
+                        if (minimap != null)
+                        {
+                            minimap.SetPilgrim(roomData.RoomIndex);
+                        }
                     } else  if (interactable.roomInteractableType == RoomInteractableType.BloodReward || interactable.roomInteractableType == RoomInteractableType.Fountain)
                     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

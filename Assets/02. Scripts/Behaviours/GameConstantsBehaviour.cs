@@ -18,6 +18,12 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference mindCardRenewCooldown = default;
         [Tooltip("How much energy are you able to have at a time")]
         public ScriptableFloatReference maxEnergy = default;
+        [Tooltip("How much energy the BODY character gets at a time")]
+        public ScriptableFloatReference bodyEnergyGain = default;
+        [Tooltip("How much energy the HEART character gets at a time")]
+        public ScriptableFloatReference heartEnergyGain = default;
+        [Tooltip("How much energy the MIND character gets at a time")]
+        public ScriptableFloatReference mindEnergyGain = default;
         [Tooltip("Time between pressing the time stop button and the time being stopped completely")]
         public ScriptableFloatReference stopTimeDelay = default;
         [Tooltip("Time for an ability to go from the 'queued' state to 'executing'. It should be pretty small for the player not to notice it too much")]

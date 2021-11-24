@@ -28,6 +28,7 @@ namespace Laresistance.Minimap
 
         private Dictionary<RoomChangeBehaviour, int> roomToIndex;
         private int playerCurrentRoom = 0;
+        private int pilgrimRoom = -1;
 
         private void OnEnable()
         {
@@ -47,6 +48,12 @@ namespace Laresistance.Minimap
         public void AddRoom(RoomChangeBehaviour room, int index)
         {
             roomToIndex.Add(room, index);
+        }
+
+        public void SetPilgrim(int index)
+        {
+            pilgrimRoom = index;
+            miniRooms[index].SetPilgrim();
         }
 
         public int RoomIndexesToConnectionIndex(int index1, int index2)
