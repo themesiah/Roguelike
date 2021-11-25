@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using Laresistance.Behaviours;
+using Laresistance.Data;
 using System.Collections.Generic;
 
 namespace Laresistance.LevelGeneration
@@ -26,10 +27,20 @@ namespace Laresistance.LevelGeneration
         [SerializeField]
         private bool generateMock = false;
 
+        [SerializeField]
+        private RuntimePlayerDataBehaviourSingle playerDataRef = default;
+        [SerializeField]
+        private GameObject viewBlockerReference = default;
+
         private int currentSeed = 0;
 
         private void Start()
         {
+            if (playerDataRef == null)
+            {
+                Debug.LogError("Missing player data reference. Can't generate a map");
+                return;
+            }
             if (generateMock)
             {
                 GenerateMapMock();
@@ -76,6 +87,9 @@ namespace Laresistance.LevelGeneration
         private IEnumerator GenerateRooms(MapData mapData)
         {
             List<RoomGeneration> rooms = new List<RoomGeneration>();
+            while (playerDataRef.Get() == null) {
+                yield return null;
+            }
             foreach(var room in mapData.GetAllRooms())
             {
                 RoomGeneration rg = new RoomGeneration(room, mapData, this, biome, roomPrefabs);
@@ -86,6 +100,7 @@ namespace Laresistance.LevelGeneration
             {
                 yield return room.GenerateRoom();
             }
+            viewBlockerReference.SetActive(false);
         }
 
         private XYPair GenerateMapSize()
