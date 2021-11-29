@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 633562388}
   - component: {fileID: 633562387}
   - component: {fileID: 633562389}
+  - component: {fileID: 633562390}
   m_Layer: 0
   m_Name: GameContextStateMachine
   m_TagString: Untagged
@@ -234,6 +235,35 @@ MonoBehaviour:
           GameScripts
         m_MethodName: ReceiveSignal
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &633562390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633562384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: f3e4895d57d366646b683d3d02e06a3b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 633562388}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.GameSceneManager, GameScripts
+        m_MethodName: SceneFinishedLoading
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -403,27 +433,10 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9064644352779028495, guid: 4719ab3807b86a846a7af0c5ee765c59, type: 3}
   m_PrefabInstance: {fileID: 775476005}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198156914}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56b4af22b0762ea4f96923d3dc665247, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1198156914 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4033904729299518214, guid: 4719ab3807b86a846a7af0c5ee765c59, type: 3}
-  m_PrefabInstance: {fileID: 775476005}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1198156915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198156914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2eb80758d08408448a05dbcce7c0dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1198639460

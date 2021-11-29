@@ -18,6 +18,8 @@ namespace Laresistance.Behaviours
         private bool blankSceneLoaded = false;
         private AsyncOperationHandle<UnityEngine.ResourceManagement.ResourceProviders.SceneInstance> blankSceneOp;
 
+        private bool sceneFinishedLoading = false;
+
         private void Awake()
         {
             if (instance == null)
@@ -38,6 +40,12 @@ namespace Laresistance.Behaviours
             StartCoroutine(SceneLoadAndChange(targetScene));
         }
 
+        public void SceneFinishedLoading()
+        {
+            if (currentlyLoadingScene)
+                sceneFinishedLoading = true;
+        }
+
         public IEnumerator SceneLoadAndChange(AssetReference targetScene)
         {
             if (!currentlyLoadingScene)
@@ -53,9 +61,14 @@ namespace Laresistance.Behaviours
                 blankSceneLoaded = true;
                 var loadingSceneOp = loadingScene.LoadSceneAsync(LoadSceneMode.Additive);
                 yield return loadingSceneOp;
-                var newSceneOp = targetScene.LoadSceneAsync(LoadSceneMode.Additive, true);
+                var newSceneOp = targetScene.LoadSceneAsync(LoadSceneMode.Additive);
                 yield return newSceneOp;
                 Debug.LogFormat("Loaded scene with name {0}", newSceneOp.Result.Scene.name);
+                while (sceneFinishedLoading == false)
+                {
+                    yield return null;
+                }
+                sceneFinishedLoading = false;
                 yield return Addressables.UnloadSceneAsync(loadingSceneOp);
 
                 currentlyLoadingScene = false;

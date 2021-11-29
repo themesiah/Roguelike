@@ -191,6 +191,22 @@ MonoBehaviour:
   generateMock: 0
   playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
   viewBlockerReference: {fileID: 1746925006}
+  onFinishedGenerating:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: f3e4895d57d366646b683d3d02e06a3b, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
+          GamedevsToolbox
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &386389615
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,6 +596,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1746925007, guid: 1e7d78d15487a3a4295ac15f3bba5cec, type: 3}
+      propertyPath: m_SortingLayer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7126503037837757138, guid: 1e7d78d15487a3a4295ac15f3bba5cec, type: 3}
       propertyPath: m_RootOrder
       value: 6

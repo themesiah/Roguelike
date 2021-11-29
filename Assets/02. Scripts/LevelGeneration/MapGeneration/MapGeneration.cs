@@ -7,6 +7,7 @@ using System.Collections;
 using Laresistance.Behaviours;
 using Laresistance.Data;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Laresistance.LevelGeneration
 {
@@ -31,35 +32,36 @@ namespace Laresistance.LevelGeneration
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
         [SerializeField]
         private GameObject viewBlockerReference = default;
+        [SerializeField]
+        private UnityEvent onFinishedGenerating = default;
 
         private int currentSeed = 0;
 
-        private void Start()
+        private IEnumerator Start()
         {
             if (playerDataRef == null)
             {
                 Debug.LogError("Missing player data reference. Can't generate a map");
-                return;
-            }
-            if (generateMock)
+                yield return null;
+            } else if (generateMock)
             {
-                GenerateMapMock();
+                yield return GenerateMapMock();
             }
             else
             {
-                GenerateMap();
+                yield return GenerateMap();
             }
         }
 
-        private void GenerateMapMock()
+        private IEnumerator GenerateMapMock()
         {
             XYPair size = new XYPair() { x = 3, y = 3 };
             MapData mapData = new MapData(size);
             mapData.GenerateMapMock();
-            StartCoroutine(GenerateRooms(mapData));
+            yield return GenerateRooms(mapData);
         }
 
-        public void GenerateMap()
+        public IEnumerator GenerateMap()
         {
             if (seed == -1)
             {
@@ -81,7 +83,7 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateRoomEnemies();
             if (generateLogs)
                 mapData.GenerateMapLog(currentSeed);
-            StartCoroutine(GenerateRooms(mapData));
+            yield return GenerateRooms(mapData);
         }
 
         private IEnumerator GenerateRooms(MapData mapData)
@@ -101,6 +103,7 @@ namespace Laresistance.LevelGeneration
                 yield return room.GenerateRoom();
             }
             viewBlockerReference.SetActive(false);
+            onFinishedGenerating?.Invoke();
         }
 
         private XYPair GenerateMapSize()
