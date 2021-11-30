@@ -2794,11 +2794,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146934d39bb1739498e75df7ebdc63f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveGameEvent: {fileID: 11400000, guid: ed7cd1f2cdf86fa4bbeb8008e3ccb235, type: 2}
+  boundsChangeEvent: {fileID: 11400000, guid: 85c18dbbab14d4840b19cb449ce0d153, type: 2}
+  virtualCameraChangeEvent: {fileID: 11400000, guid: e416d32a787d43b4f8d62d48879dacc5, type: 2}
   actionMapSwitchEvent: {fileID: 11400000, guid: 2f9fa807aa3a8e347899a1ca266e9589, type: 2}
+  OnTimeStopActivated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTimeStopDeactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTimeStopDeltaModified:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: d9011909e625029439d33a6f6f3dd2e0, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Values.ScriptableValue`1[[System.Single,
+          mscorlib
+        m_MethodName: SetValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  finishedChangingRoomEvent: {fileID: 11400000, guid: bfcf2874860648746aa4baffde300e01, type: 2}
   mapBehavioursRef: {fileID: 11400000, guid: 0582eea4fb828034e978bc4d82173239, type: 2}
-  centerCheckLayerMask:
-    serializedVersion: 2
-    m_Bits: 1025
   bloodReference:
     useConstant: 0
     value: {fileID: 11400000, guid: 5c70e07ff8fc69d4a8fb65ef00e3b8d5, type: 2}
@@ -2829,33 +2852,28 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
-  OnTimeStopActivated:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTimeStopDeactivated:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTimeStopDeltaModified:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: d9011909e625029439d33a6f6f3dd2e0, type: 2}
-        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Values.ScriptableValue`1[[System.Single,
-          mscorlib
-        m_MethodName: SetValue
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  boundsChangeEvent: {fileID: 11400000, guid: 85c18dbbab14d4840b19cb449ce0d153, type: 2}
-  virtualCameraChangeEvent: {fileID: 11400000, guid: e416d32a787d43b4f8d62d48879dacc5, type: 2}
   targetGroupRef: {fileID: 11400000, guid: acf40ad936be1774b875e4eee8cf15de, type: 2}
-  finishedChangingRoomEvent: {fileID: 11400000, guid: bfcf2874860648746aa4baffde300e01, type: 2}
-  saveGameEvent: {fileID: 11400000, guid: ed7cd1f2cdf86fa4bbeb8008e3ccb235, type: 2}
+  difficultyRef:
+    useConstant: 0
+    value: {fileID: 11400000, guid: afa22070a564d9543a93099a1583209e, type: 2}
+    constantValue: 0
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  playerSelectionIndexRef:
+    useConstant: 1
+    value: {fileID: 0}
+    constantValue: 0
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  centerCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 1025
   dialogEvent: {fileID: 11400000, guid: 4d754f6a9a4c39d4391663fc64b925f8, type: 2}
   systemDialog: {fileID: 11400000, guid: 6039e569b68f19c489178ef27295e5f5, type: 2}
   dialogVariablesStatus: {fileID: 11400000, guid: da5ec8215e52df34b92cefaefcaad07b, type: 2}
@@ -2916,6 +2934,7 @@ MonoBehaviour:
       constantValue: {x: 0, y: 0}
   supportAbilityText: {fileID: 2457595891470959877}
   ultimateAbilityText: {fileID: 9158290775218310978}
+  playerBattleBehaviour: {fileID: 23771295}
 --- !u!114 &3811345349916794757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4341,7 +4360,7 @@ MonoBehaviour:
       - m_Target: {fileID: 23771295}
         m_TargetAssemblyTypeName: Laresistance.Behaviours.CharacterBattleBehaviour,
           GameScripts
-        m_MethodName: OutsideBattleDamage
+        m_MethodName: FallDamage
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7235,7 +7254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5026825936307919926, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00039401365
+      value: -0.00039382704
       objectReference: {fileID: 0}
     - target: {fileID: 5324838246669917144, guid: 475616d3a0fd5024ba438d8d452553dd, type: 3}
       propertyPath: m_SortingOrder

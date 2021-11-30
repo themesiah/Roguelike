@@ -33,6 +33,8 @@ namespace Laresistance.Behaviours
         private Text supportAbilityText = default;
         [SerializeField]
         private Text ultimateAbilityText = default;
+        [SerializeField]
+        private PlayerBattleBehaviour playerBattleBehaviour = default;
 
         public Player player { get; private set; }
         public BattleStatusManager StatusManager { get; private set; }
@@ -40,7 +42,7 @@ namespace Laresistance.Behaviours
 
         private void Awake()
         {
-            StatusManager = new BattleStatusManager(new CharacterHealth(150), effectTargetPivot, energyProductionRef.GetValue());
+            StatusManager = new BattleStatusManager(playerBattleBehaviour, new CharacterHealth(150), effectTargetPivot, energyProductionRef.GetValue());
             player = new Player(StatusManager);
             StatusManager.health.RegisterEquipmentEvents(player.GetEquipmentContainer());
             StatusManager.SetEquipmentsContainer(player.GetEquipmentContainer());

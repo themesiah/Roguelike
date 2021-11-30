@@ -3,6 +3,9 @@ using Laresistance.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using Laresistance.Core;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
+using Laresistance.Systems;
 
 namespace Laresistance.Behaviours
 {
@@ -74,9 +77,23 @@ namespace Laresistance.Behaviours
             {
                 player.UnequipMinion(selectedOptionIndex);
                 player.EquipMinion(rewardData.minion);
+                AnalyticsSystem.Instance.CustomEvent("MinionRecruitment", new Dictionary<string, object>() {
+                    { "Recruited", true },
+                    { "Overwrited", true },
+                    { "Level", currentLevelRef.GetValue() },
+                    { "MinionName", rewardData.minion.Data.name },
+                    { "MinionLevel", rewardData.minion.Level }
+                });
             } else
             {
                 player.AddMinionToReserve(rewardData.minion);
+                AnalyticsSystem.Instance.CustomEvent("MinionRecruitment", new Dictionary<string, object>() {
+                    { "Recruited", false },
+                    { "Overwrited", false },
+                    { "Level", currentLevelRef.GetValue() },
+                    { "MinionName", rewardData.minion.Data.name },
+                    { "MinionLevel", rewardData.minion.Level }
+                });
             }
         }
 

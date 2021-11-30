@@ -1,10 +1,12 @@
-﻿using GamedevsToolbox.Utils;
+﻿using GamedevsToolbox.ScriptableArchitecture.Values;
+using GamedevsToolbox.Utils;
 using Laresistance.Battle;
 using Laresistance.Behaviours;
 using Laresistance.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 namespace Laresistance.Systems
 {
@@ -24,6 +26,8 @@ namespace Laresistance.Systems
 
         private float stopTimeDelayTimer = 0f;
 
+        private static int battlesFinished = 0;
+
         public delegate void OnTimeStopActivationHandler(BattleSystem sender, bool activate);
         public event OnTimeStopActivationHandler OnTimeStopActivation;
         public delegate void OnTimeStopDeltaModifierHandler(BattleSystem sender, float modifier);
@@ -31,9 +35,19 @@ namespace Laresistance.Systems
         public delegate void OnEnemyRemovedHandler(BattleSystem sender, CharacterBattleManager enemy);
         public event OnEnemyRemovedHandler OnEnemyRemoved;
 
-        public BattleSystem()
+        // References
+        private ScriptableIntReference difficultyRef;
+        private int characterIndex;
+        private CharacterBattleManager[] enemiesTemp;
+        private CharacterBattleManager playerTemp;
+        private Player playerRef;
+
+        public BattleSystem(ScriptableIntReference difficultyRef = null, int characterIndex = -1, Player playerRef = null)
         {
             selectedEnemy = null;
+            this.difficultyRef = difficultyRef;
+            this.characterIndex = characterIndex;
+            this.playerRef = playerRef;
         }
 
         public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies)
@@ -66,6 +80,9 @@ namespace Laresistance.Systems
             battling = true;
             BattleAbilityManager.Instance.StartBattle();
             OnTimeStopDeltaModifier?.Invoke(this, 0f);
+
+            enemiesTemp = enemies;
+            playerTemp = player;
         }
 
         public void EndBattle()
@@ -84,6 +101,103 @@ namespace Laresistance.Systems
             enemiesBattleManager = null;
             battling = false;
             OnTimeStopDeltaModifier?.Invoke(this, 0f);
+            SendEndBattleEvent();
+        }
+
+        private void SendEndBattleEvent()
+        {
+            // Battles finished
+            BattleSystem.battlesFinished++;
+            // Character
+            string playerCharacter = GameConstantsBehaviour.Instance.characterName[characterIndex];
+            // Player minions
+            string minion1name = null;
+            int minion1Level = 0;
+            string minion2name = null;
+            int minion2Level = 0;
+            string minion3name = null;
+            int minion3Level = 0;
+            if (playerRef.EquippedMinionsQuantity >= 1)
+            {
+                minion1name = playerRef.GetMinions()[0].Data.name;
+                minion1Level = playerRef.GetMinions()[0].Level;
+            }
+            if (playerRef.EquippedMinionsQuantity >= 2)
+            {
+                minion2name = playerRef.GetMinions()[1].Data.name;
+                minion2Level = playerRef.GetMinions()[1].Level;
+            }
+            if (playerRef.EquippedMinionsQuantity >= 3)
+            {
+                minion3name = playerRef.GetMinions()[2].Data.name;
+                minion3Level = playerRef.GetMinions()[2].Level;
+            }
+            // Player equipments
+            string equipment1Name = null;
+            string equipment2Name = null;
+            string equipment3Name = null;
+            string equipment4Name = null;
+            if (playerRef.GetEquipments().Length >= 1 && playerRef.GetEquipments()[0] != null)
+            {
+                equipment1Name = playerRef.GetEquipments()[0].Data.name;
+            }
+            if (playerRef.GetEquipments().Length >= 2 && playerRef.GetEquipments()[1] != null)
+            {
+                equipment2Name = playerRef.GetEquipments()[1].Data.name;
+            }
+            if (playerRef.GetEquipments().Length >= 3 && playerRef.GetEquipments()[2] != null)
+            {
+                equipment3Name = playerRef.GetEquipments()[2].Data.name;
+            }
+            if (playerRef.GetEquipments().Length >= 4 && playerRef.GetEquipments()[3] != null)
+            {
+                equipment4Name = playerRef.GetEquipments()[3].Data.name;
+            }
+            // Enemy data
+            string enemy1name = null;
+            string enemy2name = null;
+            string enemy3name = null;
+            int enemy1level = 0;
+            int enemy2level = 0;
+            int enemy3level = 0;
+            if (enemiesTemp.Length >= 1)
+            {
+                enemy1name = ((EnemyBattleBehaviour)enemiesTemp[0].StatusManager.ParentBattleBehaviour).GetEnemyData().name;
+                enemy1level = ((EnemyBattleBehaviour)enemiesTemp[0].StatusManager.ParentBattleBehaviour).EnemyLevel;
+            }
+            if (enemiesTemp.Length >= 2)
+            {
+                enemy2name = ((EnemyBattleBehaviour)enemiesTemp[1].StatusManager.ParentBattleBehaviour).GetEnemyData().name;
+                enemy2level = ((EnemyBattleBehaviour)enemiesTemp[1].StatusManager.ParentBattleBehaviour).EnemyLevel;
+            }
+            if (enemiesTemp.Length >= 3)
+            {
+                enemy3name = ((EnemyBattleBehaviour)enemiesTemp[2].StatusManager.ParentBattleBehaviour).GetEnemyData().name;
+                enemy3level = ((EnemyBattleBehaviour)enemiesTemp[2].StatusManager.ParentBattleBehaviour).EnemyLevel;
+            }
+
+            AnalyticsSystem.Instance.CustomEvent("BattleEnd", new Dictionary<string, object>() {
+                { "Win", true },
+                { "BattlesFinished", BattleSystem.battlesFinished },
+                { "Difficulty", difficultyRef.GetValue() },
+                { "Character", playerCharacter },
+                { "Minion1Name", minion1name },
+                { "Minion2Name", minion2name },
+                { "Minion3Name", minion3name },
+                { "Minion1Level", minion1Level },
+                { "Minion2Level", minion2Level },
+                { "Minion3Level", minion3Level },
+                { "Equip1", equipment1Name },
+                { "Equip2", equipment2Name },
+                { "Equip3", equipment3Name },
+                { "Equip4", equipment4Name },
+                { "Enemy1Name", enemy1name },
+                { "Enemy2Name", enemy2name },
+                { "Enemy3Name", enemy3name },
+                { "Enemy1Level", enemy1level },
+                { "Enemy2Level", enemy2level },
+                { "Enemy3Level", enemy3level }
+            });
         }
 
         public void SelectNext()

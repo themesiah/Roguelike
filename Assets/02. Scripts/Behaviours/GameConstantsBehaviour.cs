@@ -92,6 +92,10 @@ namespace Laresistance.Behaviours
         [Tooltip("Discount for minions buying at the pilgrim. (0~1)")]
         public ScriptableFloatReference minionDiscount = default;
 
+        [Header("Event descriptor constants")]
+        [Tooltip("Name descriptor for player characters")]
+        public string[] characterName = default;
+
         private void Awake()
         {
             GameConstantsBehaviour.Instance = this;

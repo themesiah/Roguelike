@@ -10,6 +10,7 @@ namespace Laresistance.Battle
     {
 
         #region Private Variables
+        CharacterBattleBehaviour parentBattleBehaviour;
         private EquipmentsContainer equipmentsContainer;
         private Dictionary<StatusType, StatusEffect> statusEffects;
         private List<StatusEffect> statusEffectsList;
@@ -29,6 +30,7 @@ namespace Laresistance.Battle
         public bool WillBlock => GetStatus(StatusType.ShieldPrepared).AppliesBuff();
         public bool HaveParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
         public bool HaveBlock => GetStatus(StatusType.ShieldPrepared).HaveBuff();
+        public CharacterBattleBehaviour ParentBattleBehaviour => parentBattleBehaviour;
         #endregion
 
         #region Events
@@ -59,8 +61,9 @@ namespace Laresistance.Battle
         #endregion
 
         #region Public methods
-        public BattleStatusManager(CharacterHealth health, Transform targetPivot = null, float energyPerSecond = 1f)
+        public BattleStatusManager(CharacterBattleBehaviour parentBattleBehaviour, CharacterHealth health, Transform targetPivot = null, float energyPerSecond = 1f)
         {
+            this.parentBattleBehaviour = parentBattleBehaviour;
             equipmentsContainer = new EquipmentsContainer();
             this.health = health;
             statusEffectsList = new List<StatusEffect>();

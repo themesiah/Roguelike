@@ -9,7 +9,7 @@ namespace Laresistance.Tests
 
         private BattleStatusManager GetStatus()
         {
-            return new BattleStatusManager(new CharacterHealth(100));
+            return new BattleStatusManager(null, new CharacterHealth(100));
         }
 
         [Test]

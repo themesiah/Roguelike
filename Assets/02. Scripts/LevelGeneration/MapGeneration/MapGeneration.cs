@@ -31,8 +31,6 @@ namespace Laresistance.LevelGeneration
         [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
         [SerializeField]
-        private GameObject viewBlockerReference = default;
-        [SerializeField]
         private UnityEvent onFinishedGenerating = default;
 
         private int currentSeed = 0;
@@ -102,7 +100,6 @@ namespace Laresistance.LevelGeneration
             {
                 yield return room.GenerateRoom();
             }
-            viewBlockerReference.SetActive(false);
             onFinishedGenerating?.Invoke();
         }
 

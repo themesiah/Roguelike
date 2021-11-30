@@ -29,7 +29,7 @@ namespace Laresistance.Tests
         private CharacterBattleManager GetCharacterBattleManager(string name)
         {
             EnemyData enemyData = AssetDatabase.LoadAssetAtPath(ENEMY_PATH + name + ".asset", typeof(EnemyData)) as EnemyData;
-            BattleStatusManager enemyStatus = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth));
+            BattleStatusManager enemyStatus = new BattleStatusManager(null, new CharacterHealth(enemyData.MaxHealth));
             BattleAbility[] abilities = new BattleAbility[enemyData.AbilitiesData.Length];
             for (int i = 0; i < enemyData.AbilitiesData.Length; ++i)
             {

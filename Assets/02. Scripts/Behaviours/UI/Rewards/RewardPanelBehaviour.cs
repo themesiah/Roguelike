@@ -1,4 +1,5 @@
 ﻿using DigitalRuby.Tween;
+using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Core;
 using Laresistance.Data;
 using System.Collections;
@@ -19,6 +20,8 @@ namespace Laresistance.Behaviours
         private Button startingButton = default;
         [SerializeField]
         protected Button[] selectableButtons = default;
+        [SerializeField]
+        protected ScriptableIntReference currentLevelRef = default;
 
         private bool finished = false;
         protected int selectedOptionIndex = -2;

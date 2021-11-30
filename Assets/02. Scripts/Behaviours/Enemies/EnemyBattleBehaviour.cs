@@ -29,6 +29,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         protected int enemyLevel = 0;
 
+        public EnemyData GetEnemyData() => enemyData;
+        public int EnemyLevel => enemyLevel;
+
         public void InitEnemy(int overrideLevel)
         {
             if (overrideLevel > 0)
@@ -55,7 +58,7 @@ namespace Laresistance.Behaviours
         protected override void SetupStatusManager()
         {
             GenerateEnemyLevel();
-            StatusManager = new BattleStatusManager(new CharacterHealth((int)(enemyData.MaxHealth * (1f + (enemyLevel - 1) * 0.1f))), effectTargetPivot);
+            StatusManager = new BattleStatusManager(this, new CharacterHealth((int)(enemyData.MaxHealth * (1f + (enemyLevel - 1) * 0.1f))), effectTargetPivot);
             StatusManager.SetBossType(enemyData.BossType);
             OnEnemyName?.Invoke(Texts.GetText(enemyData.NameRef));
         }

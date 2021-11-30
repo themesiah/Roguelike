@@ -2,9 +2,8 @@
 using Laresistance.Core;
 using GamedevsToolbox.ScriptableArchitecture.Values;
 using System.Collections;
-using GamedevsToolbox.Utils;
-using UnityEngine;
-using Laresistance.Behaviours;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 
 namespace Laresistance.Systems
 {
@@ -32,6 +31,7 @@ namespace Laresistance.Systems
             {
                 // Show message telling you obtained blood
                 bloodReference.SetValue(bloodReference.GetValue() + reward.bloodAmount);
+                AnalyticsSystem.Instance.CustomEvent("BloodObtained", new Dictionary<string, object>() { { "Amount", reward.bloodAmount }, { "TotalBlood", bloodReference.GetValue() } });
 				if (reward.showPanel)
 					yield return rewardUILibrary?.GetBehaviour(RewardUIType.Blood).StartPanel(reward);
             }

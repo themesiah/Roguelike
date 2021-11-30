@@ -3,6 +3,9 @@ using Laresistance.Battle;
 using UnityEngine.Events;
 using Laresistance.Core;
 using GamedevsToolbox.ScriptableArchitecture.Sets;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
+using Laresistance.Systems;
 
 namespace Laresistance.Behaviours
 {
@@ -79,11 +82,23 @@ namespace Laresistance.Behaviours
         {
             int finalHeal = StatusManager.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.FountainHealing, heal);
             StatusManager.health.Heal(finalHeal);
+            AnalyticsSystem.Instance.CustomEvent("SanctuaryHeal", new Dictionary<string, object>() {
+                { "Amount healed", heal }
+            });
         }
 
-        public virtual void OutsideBattleDamage(int damage)
+        protected virtual void OutsideBattleDamage(int damage)
         {
             StatusManager.health.TakeDamage(damage, new EquipmentsContainer(), new EquipmentsContainer());
+        }
+
+        public void FallDamage(int damage)
+        {
+            AnalyticsSystem.Instance.CustomEvent("TrapDamage", new Dictionary<string, object>() {
+                { "Type", "Fall" },
+                { "DamageReceived", damage }
+            });
+            OutsideBattleDamage(damage);
         }
 
         public abstract BattleAbility[] GetAbilities();

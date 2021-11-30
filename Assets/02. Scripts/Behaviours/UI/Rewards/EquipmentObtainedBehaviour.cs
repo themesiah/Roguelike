@@ -1,8 +1,11 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.LocalizationV2;
 using Laresistance.Core;
 using Laresistance.Data;
+using Laresistance.Systems;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 namespace Laresistance.Behaviours
@@ -82,10 +85,21 @@ namespace Laresistance.Behaviours
                 if (dropedEquipment != null)
                     player.UnequipEquipment(selectedOptionIndex);
                 player.EquipEquipment(rewardData.equip, selectedOptionIndex);
+
+                AnalyticsSystem.Instance.CustomEvent("EquipmentObtained", new Dictionary<string, object>() {
+                    { "Obtained", true },
+                    { "Overwrited", dropedEquipment != null },
+                    { "EquipName", rewardData.equip.Data.name }
+                });
             }
             else
             {
                 dropedEquipment = rewardData.equip;
+                AnalyticsSystem.Instance.CustomEvent("EquipmentObtained", new Dictionary<string, object>() {
+                    { "Obtained", false },
+                    { "Overwrited", false },
+                    { "EquipName", rewardData.equip.Data.name }
+                });
             }
 
             if (dropedEquipment != null)

@@ -18,12 +18,26 @@ namespace Laresistance.Behaviours
 {
     public class PlayerContextBehaviour : MonoBehaviour, IPausable
     {
+        [Header("Events")]
+        [SerializeField]
+        private GameEvent saveGameEvent = default;
+        [SerializeField]
+        private Collider2DGameEvent boundsChangeEvent = default;
+        [SerializeField]
+        private StringGameEvent virtualCameraChangeEvent = default;
         [SerializeField]
         private StringGameEvent actionMapSwitchEvent = default;
         [SerializeField]
-        private RuntimeMapBehaviourSet mapBehavioursRef = default;
+        private UnityEvent OnTimeStopActivated = default;
         [SerializeField]
-        private LayerMask centerCheckLayerMask = default;
+        private UnityEvent OnTimeStopDeactivated = default;
+        [SerializeField]
+        private UnityEvent<float> OnTimeStopDeltaModified = default;
+        [SerializeField]
+        private GameEvent finishedChangingRoomEvent = default;
+        [Header("References")]
+        [SerializeField]
+        private RuntimeMapBehaviourSet mapBehavioursRef = default;
         [SerializeField]
         private ScriptableIntReference bloodReference = default;
         [SerializeField]
@@ -37,21 +51,15 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private ScriptableIntReference battlePositionIntegerReference = default;
         [SerializeField]
-        private UnityEvent OnTimeStopActivated = default;
-        [SerializeField]
-        private UnityEvent OnTimeStopDeactivated = default;
-        [SerializeField]
-        private UnityEvent<float> OnTimeStopDeltaModified = default;
-        [SerializeField]
-        private Collider2DGameEvent boundsChangeEvent = default;
-        [SerializeField]
-        private StringGameEvent virtualCameraChangeEvent = default;
-        [SerializeField] [Tooltip("Group of entities followed by the combat camera")]
+        [Tooltip("Group of entities followed by the combat camera")]
         private RuntimeSingleCinemachineTargetGroup targetGroupRef = default;
         [SerializeField]
-        private GameEvent finishedChangingRoomEvent = default;
+        private ScriptableIntReference difficultyRef = default;
         [SerializeField]
-        private GameEvent saveGameEvent = default;
+        private ScriptableIntReference playerSelectionIndexRef = default;
+        [Header("Configuration")]
+        [SerializeField]
+        private LayerMask centerCheckLayerMask = default;
         [Header("Dialog")]
         [SerializeField]
         private CharacterDialogEvent dialogEvent = default;
@@ -71,7 +79,8 @@ namespace Laresistance.Behaviours
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
             states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef, virtualCameraChangeEvent));
             battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value,
-                rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef, saveGameEvent);
+                rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef, saveGameEvent,
+                difficultyRef, playerSelectionIndexRef.GetValue());
             states.Add("Battle", battleState);
             roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent, finishedChangingRoomEvent);
             states.Add("RoomChange", roomChangeState);

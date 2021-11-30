@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Laresistance.Systems.Dialog;
+using UnityEngine.Analytics;
 
 namespace Laresistance.Behaviours
 {
@@ -49,6 +50,8 @@ namespace Laresistance.Behaviours
         private RewardUILibrary rewardUILibrary = default;
         [SerializeField]
         private GameEvent saveGameEvent = default;
+        [SerializeField]
+        private ScriptableIntReference currentLevelRef = default;
         [Header("Prefabs")]
         [SerializeField]
         private GameObject[] offerPanelPrefabs = default;
@@ -82,7 +85,7 @@ namespace Laresistance.Behaviours
         private int offerSelected = -1;
         private List<IShopOfferUI> shopOfferUIList;
         private List<IShopOfferUI> shopUpgradeUIList;
-        private int currentLevel = -1;
+        private int currentRoomLevel = -1;
         private bool started = false;
 
         #region Initialization
@@ -91,13 +94,13 @@ namespace Laresistance.Behaviours
             shopOfferUIList = new List<IShopOfferUI>();
             shopUpgradeUIList = new List<IShopOfferUI>();
             started = true;
-            if (currentLevel != -1)
+            if (currentRoomLevel != -1)
                 Init();
         }
 
         public void SetCurrentLevel(int level)
         {
-            currentLevel = level;
+            currentRoomLevel = level;
             if (started == true)
                 Init();
         }
@@ -327,6 +330,7 @@ namespace Laresistance.Behaviours
         #region Coroutines
         private IEnumerator OpenShopCoroutine()
         {
+            AnalyticsSystem.Instance.CustomEvent("PilgrimStart", new Dictionary<string, object>() { { "Level", currentLevelRef.GetValue() } });
             yield return characterDialogEvent.Raise(characterDialog);
             gameContextSignal.Raise("UI");
             int reserveSize = player.ClearMinionReserve();
@@ -367,6 +371,16 @@ namespace Laresistance.Behaviours
                         {
                             yield return FinishingTween();
                             RemoveOffer(offerSelected);
+                            if (rd.equip != null)
+                            {
+                                TransactionAnalytics(rd.equip.Data.name, "Equipment", offer.Cost, 0);
+                            } else if (rd.mapAbilityData != null)
+                            {
+                                TransactionAnalytics(rd.mapAbilityData.name, "MovementAbility", offer.Cost, 0);
+                            } else if (rd.minion != null)
+                            {
+                                TransactionAnalytics(rd.minion.Data.name, "Minion", offer.Cost, rd.minion.Level);
+                            }
                             yield return rewardSystem.GetReward(rd);
                             UpdateShopPanel();
                             if (shopOfferUIList.Count > 0)
@@ -435,6 +449,7 @@ namespace Laresistance.Behaviours
                                 minionToUpgrade = player.GetMinions()[offerSelected-1];
                                 if (minionToUpgrade.Upgrade())
                                 {
+                                    TransactionAnalytics(minionToUpgrade.Data.name, "Upgrade", cost, minionToUpgrade.Level - 1);
                                     bloodReference.SetValue(bloodReference.GetValue() - cost);
                                 }
                             }
@@ -528,7 +543,19 @@ namespace Laresistance.Behaviours
 
         private int GetRandomMinionLevel()
         {
-            return System.Math.Max(1, Random.Range(currentLevel - 1, currentLevel + 2));
+            return System.Math.Max(1, Random.Range(currentRoomLevel - 1, currentRoomLevel + 2));
+        }
+
+        private void TransactionAnalytics(string id, string type, int cost, int offerLevel)
+        {
+            AnalyticsSystem.Instance.CustomEvent("PilgrimBuy", new Dictionary<string, object>()
+            {
+                { "Level", currentLevelRef.GetValue() },
+                { "OfferType", type },
+                { "OfferName", id },
+                { "OfferPrice", cost },
+                { "OfferLevel", offerLevel }
+            });
         }
     }
 }

@@ -190,7 +190,7 @@ namespace Laresistance.Simulator
 
         private IEnumerator SimulateBattle(int playerHealth, AbilityData playerAbilityData, MinionData[] playerMinions, EquipmentData[] playerEquipments, ConsumableData[] playerConsumables, EnemyPartyData enemyParty)
         {
-            BattleSystem battleSystem = new BattleSystem();
+            BattleSystem battleSystem = new BattleSystem(null);
             CharacterBattleManager playerBattleManager = GetPlayerBattleManager(playerHealth, playerAbilityData, playerMinions, playerEquipments, playerConsumables);
             CharacterBattleManager[] enemyBattleManagers = new CharacterBattleManager[enemyParty.partyEnemiesData.Length+1];
             enemyBattleManagers[0] = GetEnemyBattleManager(enemyParty.enemyData);
@@ -242,7 +242,7 @@ namespace Laresistance.Simulator
 
         private CharacterBattleManager GetPlayerBattleManager(int playerHealth, AbilityData playerAbilityData, MinionData[] playerMinions, EquipmentData[] playerEquipments, ConsumableData[] playerConsumables)
         {
-            BattleStatusManager playerStatus = new BattleStatusManager(new CharacterHealth(playerHealth));
+            BattleStatusManager playerStatus = new BattleStatusManager(null, new CharacterHealth(playerHealth));
             Player player = new Player(playerStatus);
             playerStatus.SetEquipmentsContainer(player.GetEquipmentContainer());
 
@@ -276,7 +276,7 @@ namespace Laresistance.Simulator
 
         private CharacterBattleManager GetEnemyBattleManager(EnemyData enemyData)
         {
-            BattleStatusManager enemyStatus = new BattleStatusManager(new CharacterHealth(enemyData.MaxHealth));
+            BattleStatusManager enemyStatus = new BattleStatusManager(null, new CharacterHealth(enemyData.MaxHealth));
             BattleAbility[] abilities = new BattleAbility[enemyData.AbilitiesData.Length];
             for (int i = 0; i < enemyData.AbilitiesData.Length; ++i)
             {
@@ -325,7 +325,7 @@ namespace Laresistance.Simulator
             string wonIndicator = battleExecutionData.playerWon ? ">>>>>" : "<<<<<";
             string whoWon = battleExecutionData.playerWon ? "The player" : "The enemies";
             int remainingHealth = battleExecutionData.playerWon ? battleExecutionData.playerRemainingHealth : battleExecutionData.enemiesRemainingHealth;
-            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(battleExecutionData.playerAbility, new EquipmentsContainer(), new BattleStatusManager(new CharacterHealth(1)));
+            BattleAbility playerAbility = BattleAbilityFactory.GetBattleAbility(battleExecutionData.playerAbility, new EquipmentsContainer(), new BattleStatusManager(null, new CharacterHealth(1)));
             StringBuilder minionsText = new StringBuilder();
             for (int i = 0; i < battleExecutionData.minions.Length; ++i)
             {

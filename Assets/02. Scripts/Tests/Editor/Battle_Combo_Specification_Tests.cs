@@ -23,7 +23,7 @@ namespace Laresistance.Tests
 
         private BattleStatusManager GetBattleStatus()
         {
-            return new BattleStatusManager(new CharacterHealth(100));
+            return new BattleStatusManager(null, new CharacterHealth(100));
         }
 
         private AbilityData GetAbilityData(string path)

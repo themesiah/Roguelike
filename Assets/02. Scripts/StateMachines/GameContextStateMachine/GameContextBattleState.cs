@@ -33,6 +33,9 @@ namespace Laresistance.StateMachines
         private RuntimeSingleCinemachineTargetGroup targetGroupRef;
         private GameEvent saveGameEvent;
 
+        private ScriptableIntReference difficultyRef;
+        private int characterIndex;
+
         #region ICoroutineState Implementation
         public IEnumerator EnterState()
         {
@@ -156,7 +159,8 @@ namespace Laresistance.StateMachines
 
         public GameContextBattleState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference,
             ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary, ScriptableIntReference battlePositionIntReference,
-            StringGameEvent virtualCameraChangeEvent, RuntimeSingleCinemachineTargetGroup targetGroupRef, GameEvent saveGameEvent)
+            StringGameEvent virtualCameraChangeEvent, RuntimeSingleCinemachineTargetGroup targetGroupRef, GameEvent saveGameEvent,
+            ScriptableIntReference difficultyRef, int characterIndex)
         {
             this.playerObject = playerObject;
             this.saveGameEvent = saveGameEvent;
@@ -165,11 +169,13 @@ namespace Laresistance.StateMachines
             Player player = playerObject.GetComponent<PlayerDataBehaviour>().player;
             this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             this.companionSpawner = new PlayerMinionCompanionSpawner(player);
-            this.battleSystem = new BattleSystem();
             this.battlePositionIntReference = battlePositionIntReference;
-            this.battleSystem.OnEnemyRemoved += EnemyFlee;
             this.virtualCameraChangeEvent = virtualCameraChangeEvent;
             this.targetGroupRef = targetGroupRef;
+            this.difficultyRef = difficultyRef;
+            this.characterIndex = characterIndex;
+            this.battleSystem = new BattleSystem(difficultyRef, characterIndex, player);
+            this.battleSystem.OnEnemyRemoved += EnemyFlee;
         }
 
         public void PerformTimeStop(bool activate)

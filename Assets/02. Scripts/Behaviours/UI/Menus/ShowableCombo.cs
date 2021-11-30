@@ -28,7 +28,7 @@ namespace Laresistance.Behaviours
                 {
                     PoolInitializerBehaviour.GetPool("ComboCondition").FreeInstance(conditionsHolder.GetChild(i).gameObject);
                 }
-                BattleStatusManager dummyStatusManager = new BattleStatusManager(new CharacterHealth(1));
+                BattleStatusManager dummyStatusManager = new BattleStatusManager(null, new CharacterHealth(1));
                 foreach (AbilityConditionData acd in combo.comboCondition.conditionData.AbilityConditionDatas)
                 {
                     GameObject go = PoolInitializerBehaviour.GetPool("ComboCondition").GetInstance(conditionsHolder);

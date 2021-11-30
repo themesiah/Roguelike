@@ -8,8 +8,6 @@ namespace Laresistance.Behaviours
     public class AddressableSelectorInstancerBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableAssetReferenceSelector selectorReference = default;
-        [SerializeField]
         private AssetReference[] gameObjectsReferences = default;
         [SerializeField]
         private ScriptableIntReference indexReference = default;

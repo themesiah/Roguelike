@@ -548,6 +548,8 @@ MonoBehaviour:
   spriteReference: {fileID: 1756525900888052644}
   spriteRenderer: {fileID: 0}
   keySetSelector: {fileID: 11400000, guid: 193b091ebe699ac44945000dec57f3d4, type: 2}
+  activateOnChange: 1
+  scalePerScheme: []
 --- !u!1 &1756525901051553065
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,6 +641,8 @@ MonoBehaviour:
   spriteReference: {fileID: 1756525901051553067}
   spriteRenderer: {fileID: 0}
   keySetSelector: {fileID: 11400000, guid: ed996fd2138f8664ebd33d65e4c2d4ea, type: 2}
+  activateOnChange: 1
+  scalePerScheme: []
 --- !u!1 &1756525901116969211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,6 +1285,8 @@ MonoBehaviour:
   spriteReference: {fileID: 1756525901691044296}
   spriteRenderer: {fileID: 0}
   keySetSelector: {fileID: 11400000, guid: 139f3189ff4be22439aaf7dbe7b08b8c, type: 2}
+  activateOnChange: 1
+  scalePerScheme: []
 --- !u!1 &1756525901707300307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,6 +2129,8 @@ MonoBehaviour:
   spriteReference: {fileID: 1756525902448479282}
   spriteRenderer: {fileID: 0}
   keySetSelector: {fileID: 11400000, guid: 791b31e8aa0445d4890cb97719111a7f, type: 2}
+  activateOnChange: 1
+  scalePerScheme: []
 --- !u!1 &1756525902450258208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2258,6 +2266,15 @@ MonoBehaviour:
   rewardUILibrary: {fileID: 11400000, guid: a3ecab3626909ed479217658a13d6457, type: 2}
   startingButton: {fileID: 0}
   selectableButtons: []
+  currentLevelRef:
+    useConstant: 0
+    value: {fileID: 11400000, guid: bfbb4414e16061d4db7522b8e2bc8ace, type: 2}
+    constantValue: 0
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
   consumableRewardText1: {fileID: 1756525902091626647}
   consumableRewardText2: {fileID: 1756525902305437460}
   currentConsumablesNames:

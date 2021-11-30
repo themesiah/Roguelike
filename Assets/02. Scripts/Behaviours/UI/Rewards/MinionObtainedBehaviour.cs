@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Laresistance.Core;
+using UnityEngine.Analytics;
+using Laresistance.Systems;
 
 namespace Laresistance.Behaviours
 {
@@ -27,6 +29,13 @@ namespace Laresistance.Behaviours
             rewardData.minion.StatusManager?.ResetStatus();
             minionRewardText1.ChangeVariable(rewardData.minion.Name);
             minionRewardText2.text = rewardData.minion.GetAbilityText();
+            AnalyticsSystem.Instance.CustomEvent("MinionRecruitment", new Dictionary<string, object>() {
+                { "Recruited", true },
+                { "Overwrited", false },
+                { "Level", currentLevelRef.GetValue() },
+                { "MinionName", rewardData.minion.Data.name },
+                { "MinionLevel", rewardData.minion.Level }
+            });
             yield return base.StartingTween(rewardData);
         }
 

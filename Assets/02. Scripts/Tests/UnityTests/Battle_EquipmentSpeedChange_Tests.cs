@@ -11,7 +11,7 @@ namespace Laresistance.Tests {
     {
         private BattleStatusManager GetStatus()
         {
-            return new BattleStatusManager(new CharacterHealth(100));
+            return new BattleStatusManager(null, new CharacterHealth(100));
         }
 
         private BattleAbility GetAbilityByIndex(int i, EquipmentsContainer equipments)
@@ -34,7 +34,7 @@ namespace Laresistance.Tests {
 
         private BattleStatusManager GetStatusManager(int health)
         {
-            return new BattleStatusManager(new CharacterHealth(health));
+            return new BattleStatusManager(null, new CharacterHealth(health));
         }
 
         [UnityTest]
