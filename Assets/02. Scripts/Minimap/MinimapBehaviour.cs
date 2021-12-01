@@ -24,11 +24,24 @@ namespace Laresistance.Minimap
         private Renderer[] connections = default;
 
         [SerializeField]
-        private Transform playerIndicator = default;
+        private Transform[] playerIndicators = default;
+
+        [SerializeField]
+        private Transform[] pilgrimIndicators = default;
+
+        [SerializeField]
+        private SpriteRenderer pilgrimRenderer = default;
+
+        [SerializeField]
+        private SpriteRenderer pilgrimRendererExtra = default;
+
+        [SerializeField]
+        private SpriteRenderer exitRenderer = default;
 
         private Dictionary<RoomChangeBehaviour, int> roomToIndex;
         private int playerCurrentRoom = 0;
         private int pilgrimRoom = -1;
+        private bool pilgrimDiscovered = false;
 
         private void OnEnable()
         {
@@ -53,7 +66,11 @@ namespace Laresistance.Minimap
         public void SetPilgrim(int index)
         {
             pilgrimRoom = index;
-            miniRooms[index].SetPilgrim();
+            foreach (var indicator in pilgrimIndicators)
+            {
+                indicator.SetParent(miniRooms[index].transform);
+                indicator.localPosition = Vector3.zero;
+            }
         }
 
         public int RoomIndexesToConnectionIndex(int index1, int index2)
@@ -99,9 +116,33 @@ namespace Laresistance.Minimap
                 int lastRoom = playerCurrentRoom;
                 ShowConnection(lastRoom, index);
                 miniRooms[index].Show();
-                playerIndicator.SetParent(miniRooms[index].transform);
-                playerIndicator.localPosition = Vector3.zero;
+                foreach(var indicator in playerIndicators)
+                {
+                    indicator.SetParent(miniRooms[index].transform);
+                    indicator.localPosition = Vector3.zero;
+                }
                 playerCurrentRoom = index;
+
+                
+                    if (pilgrimRoom == playerCurrentRoom)
+                    {
+                        pilgrimDiscovered = true;
+                        
+
+                        pilgrimRenderer.enabled = false;
+                        pilgrimRendererExtra.enabled = true;
+                    }
+                    else if (pilgrimDiscovered)
+                    {
+                        pilgrimRenderer.enabled = true;
+                        pilgrimRendererExtra.enabled = true;
+                    }
+                
+
+                if (index == 8)
+                {
+                    exitRenderer.enabled = true;
+                }
             }
         }
     }
