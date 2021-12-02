@@ -81,6 +81,7 @@ namespace Laresistance.Battle
         }
 
         protected abstract void OnBattleStart();
+        protected abstract void OnBattleEnd();
         protected abstract bool CanExecuteAbilities();
 
         protected void ExecuteOnShuffle(int[] shuffled)
@@ -317,6 +318,7 @@ namespace Laresistance.Battle
             {
                 OnAbilityOnQueue?.Invoke(this, i, false);
             }
+            OnBattleEnd();
         }
 
         public BattleAbility[] GetAbilities()

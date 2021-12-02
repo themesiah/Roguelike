@@ -17,6 +17,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Damage;
 
+        protected virtual bool CanHealWithVampirism => true;
+
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);
@@ -62,6 +64,12 @@ namespace Laresistance.Battle
                 if (retaliation > 0)
                 {
                     SelfStatus.health.TakeDamage(retaliation, equipments, target.GetEquipmentsContainer());
+                }
+                if (CanHealWithVampirism && SelfStatus.GetStatus(StatusType.Vampirism).HaveBuff())
+                {
+                    float coeficient = SelfStatus.GetStatus(StatusType.Vampirism).GetValue();
+                    int selfHeal = (int) (damageDone * coeficient);
+                    SelfStatus.health.Heal(selfHeal);
                 }
             } else
             {

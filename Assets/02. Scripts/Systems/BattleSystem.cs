@@ -111,11 +111,11 @@ namespace Laresistance.Systems
             // Character
             string playerCharacter = GameConstantsBehaviour.Instance.characterName[characterIndex];
             // Player minions
-            string minion1name = null;
+            string minion1name = "";
             int minion1Level = 0;
-            string minion2name = null;
+            string minion2name = "";
             int minion2Level = 0;
-            string minion3name = null;
+            string minion3name = "";
             int minion3Level = 0;
             if (playerRef.EquippedMinionsQuantity >= 1)
             {
@@ -133,10 +133,10 @@ namespace Laresistance.Systems
                 minion3Level = playerRef.GetMinions()[2].Level;
             }
             // Player equipments
-            string equipment1Name = null;
-            string equipment2Name = null;
-            string equipment3Name = null;
-            string equipment4Name = null;
+            string equipment1Name = "";
+            string equipment2Name = "";
+            string equipment3Name = "";
+            string equipment4Name = "";
             if (playerRef.GetEquipments().Length >= 1 && playerRef.GetEquipments()[0] != null)
             {
                 equipment1Name = playerRef.GetEquipments()[0].Data.name;
@@ -154,9 +154,9 @@ namespace Laresistance.Systems
                 equipment4Name = playerRef.GetEquipments()[3].Data.name;
             }
             // Enemy data
-            string enemy1name = null;
-            string enemy2name = null;
-            string enemy3name = null;
+            string enemy1name = "";
+            string enemy2name = "";
+            string enemy3name = "";
             int enemy1level = 0;
             int enemy2level = 0;
             int enemy3level = 0;

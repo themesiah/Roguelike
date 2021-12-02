@@ -11,5 +11,6 @@
     Barrier,
     Regeneration,
     BodyBlockStatus,
-    Rush
+    Rush,
+    Vampirism
 }

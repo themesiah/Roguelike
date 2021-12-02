@@ -35,6 +35,10 @@ namespace Laresistance.Battle
         {
         }
 
+        protected override void OnBattleEnd()
+        {
+        }
+
         private void Shuffle(BattleStatusManager bsm)
         {
             renewTimer = TotalCardRenewCooldown;

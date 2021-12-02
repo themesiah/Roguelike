@@ -46,6 +46,10 @@ namespace Laresistance.Battle
             ExecuteOnNextSupportAbilityProgress(1f);
         }
 
+        protected override void OnBattleEnd()
+        {
+        }
+
         public override void UltimateAbility(InputAction.CallbackContext context)
         {
             if (context.performed) TryToExecuteAbility(4);

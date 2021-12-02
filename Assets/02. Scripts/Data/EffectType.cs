@@ -27,6 +27,8 @@
         PrepareBlock,
         Shuffle,
         BodyBlock,
-        Rush
+        Rush,
+        Vampirism,
+        DamagePerLife
     }
 }

@@ -63,6 +63,8 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference healOverTimeTickDelay = default;
         [Tooltip("Time in seconds of duration for rush buff (body ultimate)")]
         public ScriptableFloatReference bodyRushBuffDuration = default;
+        [Tooltip("Time in seconds of duration for vampirism (heart support)")]
+        public ScriptableFloatReference vampirismDuration = default;
 
         [Header("Battle effect constants")]
         [Tooltip("Amount (percent of 1) of damage that Health Siphon returns to the attacker")]
