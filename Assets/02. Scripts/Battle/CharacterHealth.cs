@@ -30,6 +30,8 @@ namespace Laresistance.Battle
         public event OnHealedHandler OnHealed;
         public delegate void OnShieldsChangedHandler(CharacterHealth sender, int delta, int totalShields, bool isDamage, float healthShieldPercent);
         public event OnShieldsChangedHandler OnShieldsChanged;
+        public delegate void OnPercentBlockedHandler(CharacterHealth sender, float percentBlocked, int totalBlocked);
+        public event OnPercentBlockedHandler OnPercentBlocked;
         public delegate void OnDeathHandler(CharacterHealth sender);
         public event OnDeathHandler OnDeath;
         public delegate void OnMaxHealthChangedHandler(CharacterHealth sender, int maxHealth);
@@ -113,7 +115,9 @@ namespace Laresistance.Battle
             remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
             if (percentDamageBlock > 0f)
             {
+                int beforePercentBlock = remainingPower;
                 remainingPower = (int)((float)remainingPower * (1f - percentDamageBlock));
+                OnPercentBlocked?.Invoke(this, percentDamageBlock, beforePercentBlock - remainingPower);
             }
             int finalPowerDealt = remainingPower;
 

@@ -2,6 +2,7 @@ using Laresistance.Behaviours;
 using Laresistance.Core;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 namespace Laresistance.Battle
 {
@@ -24,7 +25,6 @@ namespace Laresistance.Battle
         public PlayerBodyAbilityInput(Player player, BattleStatusManager battleStatus) : base(player, battleStatus)
         {
             battleStatus.OnStatusApplied += OnStatusApplied;
-            battleStatus.health.OnAttackReceived += AttackReceived;
             battleStatus.OnSupportAbilityExecuted += OnBlockExecuted;
         }
 
@@ -44,10 +44,30 @@ namespace Laresistance.Battle
         protected override void OnBattleStart()
         {
             ExecuteOnNextSupportAbilityProgress(1f);
+            battleStatus.health.OnShieldsChanged += OnBlockDamage;
+            battleStatus.health.OnPercentBlocked += OnPercentBlockDamage;
         }
 
         protected override void OnBattleEnd()
         {
+            battleStatus.health.OnShieldsChanged -= OnBlockDamage;
+            battleStatus.health.OnPercentBlocked -= OnPercentBlockDamage;
+        }
+
+        private void OnBlockDamage(CharacterHealth sender, int delta, int totalShields, bool isDamage, float healthShieldPercent)
+        {
+            if (isDamage && delta < 0)
+            {
+                battleStatus.AddEnergy(Mathf.Abs(delta) * GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue());
+            }
+        }
+
+        private void OnPercentBlockDamage(CharacterHealth sender, float percentBlocked, int damageBlocked)
+        {
+            if (percentBlocked > 0f)
+            {
+                battleStatus.AddEnergy(damageBlocked * GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue());
+            }
         }
 
         public override void UltimateAbility(InputAction.CallbackContext context)
@@ -77,11 +97,6 @@ namespace Laresistance.Battle
         protected override bool CanExecuteAbilities()
         {
             return true;
-        }
-
-        private void AttackReceived(CharacterHealth sender)
-        {
-            battleStatus.AddEnergy(GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue());
         }
 
         protected override void OnAbilitiesUpdate(float delta, float unmodifiedDelta)
