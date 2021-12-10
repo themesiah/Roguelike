@@ -23,7 +23,7 @@ namespace Laresistance.Battle
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
             float percentPower = (float)GetPower(level, equipments) / 100f;
-            target.ApplyStatusEffect(StatusType.BodyBlockStatus, percentPower);
+            target.ApplyStatusEffect(SelfStatus, StatusType.BodyBlockStatus, percentPower);
         }
 
         public override string GetEffectString(int level, EquipmentsContainer equipments)

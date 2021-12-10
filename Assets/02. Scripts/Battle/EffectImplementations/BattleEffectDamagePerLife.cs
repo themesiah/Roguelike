@@ -16,6 +16,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.DamagePerLife;
 
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateDamage;
+
         protected override bool CanHealWithVampirism => false;
 
         public override int GetPower(int level, EquipmentsContainer equipments)

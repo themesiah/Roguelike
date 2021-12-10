@@ -12,11 +12,29 @@ namespace Laresistance.Battle
 {
     public abstract class BattleEffect
     {
-        protected int Power;
+        protected int power;
         protected EffectTargetType TargetType;
         protected BattleStatusManager SelfStatus;
         private EffectData effectData;
         private BattleAbility parentAbility;
+
+        protected delegate int CalculatePower(int finalPower);
+
+        virtual protected CalculatePower calculatePowerFunction 
+        { 
+            get
+            {
+                return SelfStatus.battleStats.DummyCalculation;
+            }
+        }
+
+        protected virtual int Power {
+            get
+            {
+                int finalPower = calculatePowerFunction.Invoke(power);
+                return finalPower;
+            }
+        }
 
         public BattleEffect(int power, EffectTargetType targetType, BattleStatusManager selfStatus, EffectData effectData)
         {
@@ -55,7 +73,7 @@ namespace Laresistance.Battle
 
         public void SetPower(int power)
         {
-            Power = power;
+            this.power = power;
         }
 
         public virtual bool EffectCanBeUsedStunned()

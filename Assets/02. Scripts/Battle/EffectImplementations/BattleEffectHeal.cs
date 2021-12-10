@@ -16,6 +16,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Heal;
 
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateHeal;
+
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);

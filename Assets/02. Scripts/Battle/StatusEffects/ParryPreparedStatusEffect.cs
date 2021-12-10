@@ -22,9 +22,10 @@ namespace Laresistance.Battle
             onParryStatusFinished = callback;
         }
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
             parryPreparedTimer = PreparationTime;
+            GetDuration(ref parryPreparedTimer);
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.ParryPrepared, parryPreparedTimer);
         }
 

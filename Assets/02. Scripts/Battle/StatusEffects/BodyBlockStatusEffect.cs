@@ -1,3 +1,4 @@
+using Laresistance.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace Laresistance.Battle
     public class BodyBlockStatusEffect : StatusEffect
     {
         private float blockValue = 0f;
+        private float timer = 0f;
 
         public override StatusType StatusType => StatusType.BodyBlockStatus;
 
@@ -15,16 +17,19 @@ namespace Laresistance.Battle
 
         }
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
+            float duration = GameConstantsBehaviour.Instance.bodyBlockBuffDuration.GetValue();
+            GetDuration(ref duration);
             blockValue = value;
+            timer = duration;
             statusManager.health.SetPercentDamageBlock(blockValue);
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.BodyDamageBlock, 5f);
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.BodyDamageBlock, duration);
         }
 
         public override void CopyTo(StatusEffect other)
         {
-            other.AddValue(blockValue);
+            other.AddValue(sourceStatusManager, blockValue);
         }
 
         public override float GetValue()
@@ -34,6 +39,14 @@ namespace Laresistance.Battle
 
         public override void Tick(float delta)
         {
+            if (timer > 0f)
+            {
+                timer -= delta;
+                if (timer <= 0f)
+                {
+                    blockValue = 0f;
+                }
+            }
         }
 
         public override bool HaveBuff()

@@ -19,10 +19,12 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Blind;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
-            blindStatuses.Add(new BlindStatus() { coeficient = value, timer = 0f });
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Blind, GameConstantsBehaviour.Instance.blindDuration.GetValue());
+            float duration = GameConstantsBehaviour.Instance.blindDuration.GetValue();
+            GetDuration(ref duration);
+            blindStatuses.Add(new BlindStatus() { coeficient = value, timer = duration });
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Blind, duration);
         }
 
         public override float GetValue()
@@ -40,8 +42,8 @@ namespace Laresistance.Battle
             for (int i = blindStatuses.Count - 1; i >= 0; --i)
             {
                 BlindStatus bs = blindStatuses[i];
-                bs.timer += delta;
-                if (bs.timer >= GameConstantsBehaviour.Instance.blindDuration.GetValue())
+                bs.timer -= delta;
+                if (bs.timer <= 0f)
                 {
                     blindStatuses.Remove(bs);
                 }
@@ -63,7 +65,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach (var blindEffect in blindStatuses)
             {
-                other.AddValue(blindEffect.coeficient);
+                other.AddValue(sourceStatusManager, blindEffect.coeficient);
             }
         }
 

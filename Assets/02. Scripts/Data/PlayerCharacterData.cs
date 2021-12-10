@@ -10,6 +10,10 @@ namespace Laresistance.Data
         public PlayerCharacterList PlayerCharacterType { get { return playerCharacterType; } }
 
         [SerializeField]
+        private int characterMaxHealth = default;
+        public int CharacterMaxHealth { get { return characterMaxHealth; } }
+
+        [SerializeField]
         private AbilityData[] playerAbilityData = default;
         public AbilityData[] PlayerAbilityData { get { return playerAbilityData; } }
 

@@ -16,6 +16,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Retaliation;
 
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateDamage;
+
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);
@@ -51,7 +53,7 @@ namespace Laresistance.Battle
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef)
         {
-            target.ApplyStatusEffect(StatusType.Retaliation, GetPower(level, equipments));
+            target.ApplyStatusEffect(SelfStatus, StatusType.Retaliation, GetPower(level, equipments));
         }
     }
 }

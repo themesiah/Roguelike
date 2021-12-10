@@ -22,7 +22,7 @@ namespace Laresistance.Battle
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
             target.Cure();
-            target.ApplyStatusEffect(StatusType.Rush, 0f);
+            target.ApplyStatusEffect(SelfStatus, StatusType.Rush, 0f);
         }
 
         public override string GetEffectString(int level, EquipmentsContainer equipments)

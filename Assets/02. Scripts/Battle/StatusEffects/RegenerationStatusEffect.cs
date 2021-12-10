@@ -23,10 +23,12 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Regeneration;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
+            float duration = GameConstantsBehaviour.Instance.healOverTimeDuration.GetValue();
+            GetDuration(ref duration);
             healsOverTime.Add(new HealOverTime() { power = (int)value, ticked = 0, timer = 0f });
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Regeneration, GameConstantsBehaviour.Instance.healOverTimeDuration.GetValue());
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Regeneration, duration);
         }
 
         public override void CopyTo(StatusEffect other)
@@ -34,7 +36,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach (var healOverTime in healsOverTime)
             {
-                other.AddValue(healOverTime.power);
+                other.AddValue(sourceStatusManager, healOverTime.power);
             }
         }
 
@@ -61,7 +63,11 @@ namespace Laresistance.Battle
                     currentTotalHeal += hot.power;
                     hot.ticked++;
                     hot.timer = hot.timer - GameConstantsBehaviour.Instance.healOverTimeTickDelay.GetValue();
-                    if (hot.ticked >= Mathf.CeilToInt(GameConstantsBehaviour.Instance.healOverTimeDuration.GetValue() / GameConstantsBehaviour.Instance.healOverTimeTickDelay.GetValue()))
+
+                    float duration = GameConstantsBehaviour.Instance.healOverTimeDuration.GetValue();
+                    GetDuration(ref duration);
+
+                    if (hot.ticked >= Mathf.FloorToInt(duration / GameConstantsBehaviour.Instance.healOverTimeTickDelay.GetValue()))
                     {
                         healsOverTime.Remove(hot);
                     }

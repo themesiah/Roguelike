@@ -17,6 +17,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.LifeSiphon;
 
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateDamage;
+
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);
@@ -48,6 +50,7 @@ namespace Laresistance.Battle
                 int healAmount = Mathf.FloorToInt(damageDone * GameConstantsBehaviour.Instance.siphonPercent.GetValue());
                 if (healAmount > 0)
                 {
+                    healAmount = SelfStatus.battleStats.CalculateHeal(healAmount);
                     healAmount = equipments.ModifyValue(Equipments.EquipmentSituation.HealPower, healAmount);
                     SelfStatus.health.Heal(healAmount);
                 }

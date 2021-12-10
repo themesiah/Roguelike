@@ -19,10 +19,12 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Retaliation;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
-            retaliationEffectInstances.Add(new RetaliationEffect() { retaliationDamage = (int)value, timer = 0f });
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Retaliation, GameConstantsBehaviour.Instance.retaliationBuffDuration.GetValue());
+            float duration = GameConstantsBehaviour.Instance.retaliationBuffDuration.GetValue();
+            GetDuration(ref duration);
+            retaliationEffectInstances.Add(new RetaliationEffect() { retaliationDamage = (int)value, timer = duration });
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Retaliation, duration);
         }
 
         public override float GetValue()
@@ -40,8 +42,8 @@ namespace Laresistance.Battle
             for (int i = retaliationEffectInstances.Count - 1; i >= 0; --i)
             {
                 RetaliationEffect se = retaliationEffectInstances[i];
-                se.timer += delta;
-                if (se.timer >= GameConstantsBehaviour.Instance.retaliationBuffDuration.GetValue())
+                se.timer -= delta;
+                if (se.timer <= 0f)
                 {
                     retaliationEffectInstances.Remove(se);
                 }
@@ -63,7 +65,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach (var retaliationEffect in retaliationEffectInstances)
             {
-                other.AddValue(retaliationEffect.retaliationDamage);
+                other.AddValue(sourceStatusManager, retaliationEffect.retaliationDamage);
             }
         }
 

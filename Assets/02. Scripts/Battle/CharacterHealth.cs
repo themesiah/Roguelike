@@ -16,6 +16,7 @@ namespace Laresistance.Battle
         #endregion
 
         #region Private Variables
+        private BattleStatusManager selfStatus = default;
         private int originalMaxHealth = 0;
         private int maxHealth = 0;
         private int currentHealth = 0;
@@ -84,10 +85,16 @@ namespace Laresistance.Battle
 
         public CharacterHealth(int health)
         {
-            maxHealth = health;
             originalMaxHealth = health;
-            currentHealth = health;
+            maxHealth = originalMaxHealth;
+            currentHealth = maxHealth;
             currentShields = new List<Shield>();
+        }
+
+        public void SetBattleStatusManager(BattleStatusManager selfStatus)
+        {
+            this.selfStatus = selfStatus;
+            RecalculateMaxHealth(selfStatus.GetEquipmentsContainer());
         }
 
         public void RegisterEquipmentEvents(EquipmentsContainer equipmentsContainer)
@@ -214,9 +221,12 @@ namespace Laresistance.Battle
                 });
             }
 
+            float shieldDuration = GameConstantsBehaviour.Instance.shieldDuration.GetValue();
+            shieldDuration = selfStatus.battleStats.CalculateShieldTime(shieldDuration);
+
             for (int i = currentShields.Count-1; i >= 0; --i)
             {
-                if (currentShields[i].timer >= GameConstantsBehaviour.Instance.shieldDuration.GetValue())
+                if (currentShields[i].timer >= shieldDuration)
                 {
                     int amount = -currentShields[i].remainingAmount;
                     currentShields.RemoveAt(i);
@@ -229,6 +239,7 @@ namespace Laresistance.Battle
         {
             maxHealth = originalMaxHealth;
             maxHealth = equipments.ModifyValue(Equipments.EquipmentSituation.MaxHealth, maxHealth);
+            maxHealth = selfStatus.battleStats.CalculateHealth(maxHealth);
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;

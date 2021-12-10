@@ -19,9 +19,10 @@ namespace Laresistance.Battle
             onShieldStatusFinished = callback;
         }
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
             shieldPreparedTimer = PreparationTime;
+            GetDuration(ref shieldPreparedTimer);
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.ShieldPrepared, shieldPreparedTimer);
         }
 

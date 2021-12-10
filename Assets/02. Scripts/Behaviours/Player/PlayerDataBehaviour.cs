@@ -15,8 +15,19 @@ namespace Laresistance.Behaviours
         private PlayerCharacterData playerCharacterData = default;
         [SerializeField]
         private ComboData[] combosData = default;
+        [Header("Debug starting data")]
         [SerializeField]
         private bool useStartingData = false;
+        [SerializeField]
+        private int damageStatLevel = 0;
+        [SerializeField]
+        private int shieldStatLevel = 0;
+        [SerializeField]
+        private int healStatLevel = 0;
+        [SerializeField]
+        private int statusTimeStatLevel = 0;
+        [SerializeField]
+        private int maxHealthStatLevel = 0;
         [SerializeField]
         private List<MinionData> startingMinions = default;
         [SerializeField]
@@ -42,7 +53,7 @@ namespace Laresistance.Behaviours
 
         private void Awake()
         {
-            StatusManager = new BattleStatusManager(playerBattleBehaviour, new CharacterHealth(150), effectTargetPivot, energyProductionRef.GetValue());
+            StatusManager = new BattleStatusManager(playerBattleBehaviour, new CharacterHealth(playerCharacterData.CharacterMaxHealth), effectTargetPivot, energyProductionRef.GetValue());
             player = new Player(StatusManager);
             StatusManager.health.RegisterEquipmentEvents(player.GetEquipmentContainer());
             StatusManager.SetEquipmentsContainer(player.GetEquipmentContainer());
@@ -69,6 +80,28 @@ namespace Laresistance.Behaviours
             // Starting minions, equipments... for testing purposes
             if (useStartingData)
             {
+                for (int i = 0; i < damageStatLevel; ++i)
+                {
+                    StatusManager.battleStats.UpgradeDamage();
+                }
+                for (int i = 0; i < shieldStatLevel; ++i)
+                {
+                    StatusManager.battleStats.UpgradeShield();
+                }
+                for (int i = 0; i < healStatLevel; ++i)
+                {
+                    StatusManager.battleStats.UpgradeHeal();
+                }
+                for (int i = 0; i < statusTimeStatLevel; ++i)
+                {
+                    StatusManager.battleStats.UpgradeStatusTime();
+                }
+                for (int i = 0; i < maxHealthStatLevel; ++i)
+                {
+                    StatusManager.battleStats.UpgradeMaxHealth();
+                }
+
+
                 foreach (var md in startingMinions)
                 {
                     Minion m = MinionFactory.GetMinion(md, 1, player.GetEquipmentContainer(), StatusManager);

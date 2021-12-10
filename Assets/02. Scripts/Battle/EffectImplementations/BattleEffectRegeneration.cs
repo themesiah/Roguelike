@@ -16,6 +16,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Regeneration;
 
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateHeal;
+
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);
@@ -52,7 +54,7 @@ namespace Laresistance.Battle
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef)
         {
-            target.ApplyStatusEffect(StatusType.Regeneration, GetPower(level, equipments));
+            target.ApplyStatusEffect(SelfStatus, StatusType.Regeneration, GetPower(level, equipments));
         }
     }
 }

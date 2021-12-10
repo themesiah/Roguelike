@@ -22,10 +22,12 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.DoT;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
+            float duration = GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue();
+            GetDuration(ref duration);
             damageOverTimes.Add(new DamageOverTime() { power = (int)value, timer = 0, ticked = 0 });
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.DoT, GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue());
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.DoT, duration);
         }
 
         public override float GetValue()
@@ -46,7 +48,11 @@ namespace Laresistance.Battle
                     currentTotalDamage += dot.power;
                     dot.ticked++;
                     dot.timer = dot.timer - GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue();
-                    if (dot.ticked >= Mathf.CeilToInt(GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue() / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
+
+                    float duration = GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue();
+                    GetDuration(ref duration);
+
+                    if (dot.ticked >= Mathf.FloorToInt(duration / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
                     {
                         damageOverTimes.Remove(dot);
                     }
@@ -70,7 +76,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach (var dot in damageOverTimes)
             {
-                other.AddValue(dot.power);
+                other.AddValue(sourceStatusManager, dot.power);
             }
         }
 

@@ -15,6 +15,7 @@ namespace Laresistance.Battle
         }
 
         public override EffectType EffectType => EffectType.DamageOverTime;
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateDamage;
 
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
@@ -38,7 +39,7 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
-            target.ApplyStatusEffect(StatusType.DoT, GetPower(level, equipments));
+            target.ApplyStatusEffect(SelfStatus, StatusType.DoT, GetPower(level, equipments));
         }
 
         public override string GetEffectString(int level, EquipmentsContainer equipments)

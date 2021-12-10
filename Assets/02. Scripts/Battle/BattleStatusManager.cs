@@ -31,6 +31,7 @@ namespace Laresistance.Battle
         public bool HaveParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
         public bool HaveBlock => GetStatus(StatusType.ShieldPrepared).HaveBuff();
         public CharacterBattleBehaviour ParentBattleBehaviour => parentBattleBehaviour;
+        public BattleStats battleStats;
         #endregion
 
         #region Events
@@ -63,6 +64,7 @@ namespace Laresistance.Battle
         #region Public methods
         public BattleStatusManager(CharacterBattleBehaviour parentBattleBehaviour, CharacterHealth health, Transform targetPivot = null, float energyPerSecond = 1f)
         {
+            battleStats = new BattleStats(this);
             this.parentBattleBehaviour = parentBattleBehaviour;
             equipmentsContainer = new EquipmentsContainer();
             this.health = health;
@@ -71,6 +73,7 @@ namespace Laresistance.Battle
             this.energyPerSecond = energyPerSecond;
             this.TargetPivot = targetPivot;
             health.OnDeath += OnDeath;
+            health.SetBattleStatusManager(this);
         }
 
         private void OnDeath(CharacterHealth sender)
@@ -135,9 +138,9 @@ namespace Laresistance.Battle
             return statusEffectsList;
         }
 
-        public void ApplyStatusEffect(StatusType type, float value)
+        public void ApplyStatusEffect(BattleStatusManager source, StatusType type, float value)
         {
-            GetStatus(type).AddValue(value);
+            GetStatus(type).AddValue(source, value);
             if (((RushStatusEffect)GetStatus(StatusType.Rush)).HaveRush())
             {
                 GetStatus(type).Cure();
@@ -166,12 +169,12 @@ namespace Laresistance.Battle
 
         public void PrepareParry()
         {
-            GetStatus(StatusType.ParryPrepared).AddValue(0f);
+            GetStatus(StatusType.ParryPrepared).AddValue(this, 0f);
         }
 
         public void PrepareShield()
         {
-            GetStatus(StatusType.ShieldPrepared).AddValue(0f);
+            GetStatus(StatusType.ShieldPrepared).AddValue(this, 0f);
         }
 
         public void ParryExecuted()

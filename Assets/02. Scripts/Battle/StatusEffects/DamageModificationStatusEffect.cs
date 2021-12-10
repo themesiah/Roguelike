@@ -19,13 +19,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.DamageModification;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
-            damageModifications.Add(new TempDamageChange() { modifier = value, timer = 0f });
+            float duration = GameConstantsBehaviour.Instance.damageModifierDuration.GetValue();
+            GetDuration(ref duration);
+            damageModifications.Add(new TempDamageChange() { modifier = value, timer = duration });
             if (value > 1f) {
                 statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.DamageImprovement, -1f);
             } else {
-                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Debuff, GameConstantsBehaviour.Instance.damageModifierDuration.GetValue());
+                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Debuff, duration);
             }
         }
 
@@ -49,8 +51,8 @@ namespace Laresistance.Battle
                 if (damageModifications[i].modifier < 1f)
                 {
                     TempDamageChange tdm = damageModifications[i];
-                    tdm.timer += delta;
-                    if (tdm.timer >= GameConstantsBehaviour.Instance.damageModifierDuration.GetValue())
+                    tdm.timer -= delta;
+                    if (tdm.timer <= 0f)
                     {
                         damageModifications.Remove(tdm);
                     }
@@ -109,7 +111,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach (var damageModification in damageModifications)
             {
-                other.AddValue(damageModification.modifier);
+                other.AddValue(sourceStatusManager, damageModification.modifier);
             }
         }
 

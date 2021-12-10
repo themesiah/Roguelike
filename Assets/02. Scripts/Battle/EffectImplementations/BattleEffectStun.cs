@@ -55,7 +55,7 @@ namespace Laresistance.Battle
             equipments.ModifyValue(Equipments.EquipmentSituation.EffectBloodCost, bloodRef);
             int power = GetPower(level, equipments);
             float seconds = GetSeconds(power);
-            target.ApplyStatusEffect(StatusType.Stun, seconds);
+            target.ApplyStatusEffect(SelfStatus, StatusType.Stun, seconds);
         }
 
         private float GetSeconds(int power)

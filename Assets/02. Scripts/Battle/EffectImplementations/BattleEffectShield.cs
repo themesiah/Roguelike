@@ -15,6 +15,8 @@ namespace Laresistance.Battle
 
         public override EffectType EffectType => EffectType.Shield;
 
+        protected override CalculatePower calculatePowerFunction => SelfStatus.battleStats.CalculateShield;
+
         public override int GetPower(int level, EquipmentsContainer equipments)
         {
             base.GetPower(level, equipments);

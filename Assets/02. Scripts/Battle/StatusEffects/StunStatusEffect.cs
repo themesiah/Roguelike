@@ -9,12 +9,13 @@
 
         private float stunTimer;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
             if (value > 0f && stunTimer < value)
             {
                 stunTimer = value;
-                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Stun, value);
+                GetDuration(ref stunTimer);
+                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Stun, stunTimer);
             }
         }
 
@@ -44,7 +45,7 @@
         public override void CopyTo(StatusEffect other)
         {
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
-            other.AddValue(stunTimer);
+            other.AddValue(sourceStatusManager ,stunTimer);
         }
 
         public override void RemoveStatus()

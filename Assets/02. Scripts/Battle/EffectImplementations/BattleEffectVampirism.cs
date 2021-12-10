@@ -23,7 +23,7 @@ namespace Laresistance.Battle
 
         protected override void PerformEffectOnTarget(BattleStatusManager target, int level, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
         {
-            target.ApplyStatusEffect(StatusType.Vampirism, ((float)GetPower(level, equipments) / 100f));
+            target.ApplyStatusEffect(SelfStatus, StatusType.Vampirism, ((float)GetPower(level, equipments) / 100f));
         }
 
         public override string GetEffectString(int level, EquipmentsContainer equipments)

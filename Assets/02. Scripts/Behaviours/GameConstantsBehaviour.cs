@@ -61,6 +61,8 @@ namespace Laresistance.Behaviours
         public ScriptableFloatReference healOverTimeDuration = default;
         [Tooltip("Time in seconds between heals in heal over time effects")]
         public ScriptableFloatReference healOverTimeTickDelay = default;
+        [Tooltip("Time in seconds of duration for block buff (body support)")]
+        public ScriptableFloatReference bodyBlockBuffDuration = default;
         [Tooltip("Time in seconds of duration for rush buff (body ultimate)")]
         public ScriptableFloatReference bodyRushBuffDuration = default;
         [Tooltip("Time in seconds of duration for vampirism (heart support)")]
@@ -93,6 +95,20 @@ namespace Laresistance.Behaviours
         [Header("Pilgrim constants")]
         [Tooltip("Discount for minions buying at the pilgrim. (0~1)")]
         public ScriptableFloatReference minionDiscount = default;
+
+        [Header("Battle Stats Constants")]
+        [Tooltip("How much % damage adds a damage stat point")]
+        public ScriptableFloatReference damageStatCoeficient = default;
+        [Tooltip("How much % shield adds a shield stat point")]
+        public ScriptableFloatReference shieldStatCoeficient = default;
+        [Tooltip("How much % shield time adds a shield stat point")]
+        public ScriptableFloatReference shieldTimeStatCoeficient = default;
+        [Tooltip("How much % healing adds a heal stat point")]
+        public ScriptableFloatReference healStatCoeficient = default;
+        [Tooltip("How much % time adds a status time stat point")]
+        public ScriptableFloatReference statusTimeStatCoeficient = default;
+        [Tooltip("How much max life adds a max life stat point")]
+        public ScriptableIntReference maxHealthStatAmount = default;
 
         [Header("Event descriptor constants")]
         [Tooltip("Name descriptor for player characters")]

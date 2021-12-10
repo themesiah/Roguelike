@@ -19,10 +19,12 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Barrier;
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
-            barrierEffectInstances.Add(new BarrierEffect() { barrier = (int)value, timer = 0f });
-            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Barrier, GameConstantsBehaviour.Instance.barrierBuffDuration.GetValue());
+            float duration = GameConstantsBehaviour.Instance.barrierBuffDuration.GetValue();
+            GetDuration(ref duration);
+            barrierEffectInstances.Add(new BarrierEffect() { barrier = (int)value, timer = duration });
+            statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Barrier, duration);
         }
 
         public override float GetValue()
@@ -40,8 +42,8 @@ namespace Laresistance.Battle
             for (int i = barrierEffectInstances.Count - 1; i >= 0; --i)
             {
                 BarrierEffect se = barrierEffectInstances[i];
-                se.timer += delta;
-                if (se.timer >= GameConstantsBehaviour.Instance.retaliationBuffDuration.GetValue())
+                se.timer -= delta;
+                if (se.timer <= 0f)
                 {
                     barrierEffectInstances.Remove(se);
                 }
@@ -63,7 +65,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach(var barrier in barrierEffectInstances)
             {
-                other.AddValue(barrier.barrier);
+                other.AddValue(sourceStatusManager, barrier.barrier);
             }
         }
 

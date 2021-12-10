@@ -30,15 +30,18 @@ namespace Laresistance.Battle
             return speedModifier;
         }
 
-        public override void AddValue(float value)
+        protected override void AddValue(float value)
         {
-            speedEffectInstances.Add(new SpeedEffect() { speedCoeficient = value, timer = 0f });
+            float duration = GameConstantsBehaviour.Instance.speedModifierDuration.GetValue();
+            GetDuration(ref duration);
+
+            speedEffectInstances.Add(new SpeedEffect() { speedCoeficient = value, timer = duration });
             if (value > 1f)
             {
-                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Speed, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
+                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Speed, duration);
             } else
             {
-                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Slow, GameConstantsBehaviour.Instance.speedModifierDuration.GetValue());
+                statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Slow, duration);
             }
         }
 
@@ -47,8 +50,8 @@ namespace Laresistance.Battle
             for (int i = speedEffectInstances.Count - 1; i >= 0; --i)
             {
                 SpeedEffect se = speedEffectInstances[i];
-                se.timer += delta;
-                if (se.timer >= GameConstantsBehaviour.Instance.speedModifierDuration.GetValue())
+                se.timer -= delta;
+                if (se.timer <= 0f)
                 {
                     speedEffectInstances.Remove(se);
                 }
@@ -106,7 +109,7 @@ namespace Laresistance.Battle
             UnityEngine.Assertions.Assert.AreEqual(StatusType, other.StatusType);
             foreach (var speedEffect in speedEffectInstances)
             {
-                other.AddValue(speedEffect.speedCoeficient);
+                other.AddValue(sourceStatusManager, speedEffect.speedCoeficient);
             }
         }
 
