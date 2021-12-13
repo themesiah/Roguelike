@@ -101,7 +101,10 @@ namespace Laresistance.Battle
 
         protected override void OnAbilitiesUpdate(float delta, float unmodifiedDelta)
         {
-            player.supportAbility?.Tick(unmodifiedDelta);
+            if (!((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock())
+            {
+                player.supportAbility?.Tick(unmodifiedDelta);
+            }
             ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 

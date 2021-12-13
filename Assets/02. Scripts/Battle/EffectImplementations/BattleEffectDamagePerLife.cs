@@ -27,8 +27,9 @@ namespace Laresistance.Battle
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AbilityPower, power);
             power = equipments.ModifyValue(Equipments.EquipmentSituation.AttackPower, power);
             power = (int)(power * SelfStatus.GetValueModifier(StatusType.DamageModification));
-            power = System.Math.Max(1, power);
-            int totalPower = (int)((float)power * SelfStatus.health.GetPercentHealth());
+            
+            int totalPower = (int)((float)power * SelfStatus.health.GetCurrentHealth() / 100f);
+            totalPower = System.Math.Max(1, totalPower);
             Assert.IsTrue(totalPower >= 0, "Power should not be negative.");
             return totalPower;
         }
