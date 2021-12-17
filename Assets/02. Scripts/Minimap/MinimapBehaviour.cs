@@ -3,6 +3,7 @@ using Laresistance.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Laresistance.Minimap
 {
@@ -21,7 +22,7 @@ namespace Laresistance.Minimap
         private Miniroom[] miniRooms = default;
 
         [SerializeField] [Tooltip("List of the 12 connections on the minimap, in order")]
-        private Renderer[] connections = default;
+        private Image[] connections = default;
 
         [SerializeField]
         private Transform[] playerIndicators = default;
@@ -30,13 +31,13 @@ namespace Laresistance.Minimap
         private Transform[] pilgrimIndicators = default;
 
         [SerializeField]
-        private SpriteRenderer pilgrimRenderer = default;
+        private Image pilgrimRenderer = default;
 
         [SerializeField]
-        private SpriteRenderer pilgrimRendererExtra = default;
+        private Image pilgrimRendererExtra = default;
 
         [SerializeField]
-        private SpriteRenderer exitRenderer = default;
+        private Image exitRenderer = default;
 
         private Dictionary<RoomChangeBehaviour, int> roomToIndex;
         private int playerCurrentRoom = 0;
@@ -60,16 +61,20 @@ namespace Laresistance.Minimap
 
         public void AddRoom(RoomChangeBehaviour room, int index)
         {
-            roomToIndex.Add(room, index);
+            if (!roomToIndex.ContainsKey(room))
+                roomToIndex.Add(room, index);
         }
 
         public void SetPilgrim(int index)
         {
-            pilgrimRoom = index;
-            foreach (var indicator in pilgrimIndicators)
+            if (index >= 0 && index < miniRooms.Length)
             {
-                indicator.SetParent(miniRooms[index].transform);
-                indicator.localPosition = Vector3.zero;
+                pilgrimRoom = index;
+                foreach (var indicator in pilgrimIndicators)
+                {
+                    indicator.SetParent(miniRooms[index].transform);
+                    indicator.localPosition = Vector3.zero;
+                }
             }
         }
 

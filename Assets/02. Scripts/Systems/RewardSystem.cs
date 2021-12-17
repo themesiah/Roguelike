@@ -96,6 +96,13 @@ namespace Laresistance.Systems
 				if (reward.showPanel)
 					yield return rewardUILibrary?.GetBehaviour(RewardUIType.MapAbility).StartPanel(reward);
             }
+
+            if (reward.statsTypeList != null)
+            {
+                if (reward.showPanel)
+                    yield return rewardUILibrary?.GetBehaviour(RewardUIType.Altar).StartPanel(reward);
+            }
+
             yield return null;
         }
     }

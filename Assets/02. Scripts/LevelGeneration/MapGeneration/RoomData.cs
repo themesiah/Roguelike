@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.Utils;
+using Laresistance.Data;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,6 +27,10 @@ namespace Laresistance.LevelGeneration
         private List<RoomInteractable> roomInteractables;
         [SerializeField]
         private List<RoomEnemy> roomEnemies;
+        [SerializeField]
+        private bool hasAltar = false;
+        [SerializeField]
+        private StatsType[] availableAltarStats;
 
         [SerializeField]
         private int roomIndex;
@@ -127,6 +132,22 @@ namespace Laresistance.LevelGeneration
         public void RemoveLastEnemy()
         {
             roomEnemies.RemoveAt(roomEnemies.Count - 1);
+        }
+
+        public void SetAltarStats(StatsType[] statsTypes)
+        {
+            hasAltar = true;
+            availableAltarStats = statsTypes;
+        }
+
+        public bool HasAltar()
+        {
+            return hasAltar;
+        }
+
+        public StatsType[] GetAltarStatsTypes()
+        {
+            return availableAltarStats;
         }
 
         public void SetAsMinimalPathRoom()

@@ -66,6 +66,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private InteractablePermissions[] possibleInteractablePermissions = default;
         [SerializeField]
+        private Transform altarLocation = default;
+        [SerializeField]
         private RoomChangeBehaviour topRoomConnection = null;
         [SerializeField]
         private RoomChangeBehaviour bottomRoomConnection = null;
@@ -87,6 +89,8 @@ namespace Laresistance.Behaviours
         private RuntimeSetAssetReference spawnableMinionList = default;
         [SerializeField]
         private AssetReference[] interactableList = default;
+        [SerializeField]
+        private AssetReference altarReference = default;
 
         [Header("References")]
         [SerializeField]
@@ -101,6 +105,7 @@ namespace Laresistance.Behaviours
         public bool mockTest;
         public bool playerStartPoint;
         public bool spawnMiniboss;
+        public bool putAltar;
         public int mockIndex = -1;
         public int mockTotalRooms = 9;
         public List<RoomEnemyType> enemyTypesSpawn;
@@ -367,6 +372,8 @@ namespace Laresistance.Behaviours
             yield return ConfigureEnemies(mapData, roomData, biome);
             // Spawn interactables
             yield return ConfigureInteractables(roomData, biome);
+            // Spawn altars
+            yield return ConfigureAltars(roomData, biome);
         }
 
         private void ConfigureRoomLevel(MapData mapData, RoomData roomData)
@@ -566,6 +573,44 @@ namespace Laresistance.Behaviours
                 };
                 yield return op;
                 tempInteractablePositions.Remove(randomPosition);
+            }
+        }
+
+        private StatsType[] RandomStatsList()
+        {
+            List<StatsType> statsTypes = new List<StatsType>() { StatsType.Damage, StatsType.Shield, StatsType.Heal, StatsType.StatusTime, StatsType.MaxHealth };
+            List<StatsType> tempList = new List<StatsType>();
+            while (statsTypes.Count > 0)
+            {
+                int index = Random.Range(0, statsTypes.Count);
+                var stat = statsTypes[index];
+                tempList.Add(stat);
+                statsTypes.RemoveAt(index);
+            }
+            return tempList.ToArray();
+        }
+
+        private IEnumerator ConfigureAltars(RoomData roomData, RoomBiome biome)
+        {
+            if (mockTest && putAltar)
+            {
+                roomData.SetAltarStats(RandomStatsList());
+            }
+            if (roomData.HasAltar())
+            {
+                var op = altarReference.InstantiateAsync(altarLocation, true);
+                op.Completed += (obj) =>
+                {
+                    GameObject altarObject = obj.Result;
+                    altarObject.transform.localPosition = Vector3.zero;
+                    altarObject.transform.localScale = Vector3.one;
+                    StatsType[] altarStats = roomData.GetAltarStatsTypes();
+                    // Set stats for the altar
+                    Altar altar = altarObject.GetComponent<Altar>();
+                    Debug.LogFormat("Room {0} altar has {1} stats", gameObject.name, roomData.GetAltarStatsTypes().Length);
+                    altar.SetStats(roomData.GetAltarStatsTypes());
+                };
+                yield return op;
             }
         }
 

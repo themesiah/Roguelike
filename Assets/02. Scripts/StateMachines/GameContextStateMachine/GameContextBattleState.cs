@@ -141,7 +141,7 @@ namespace Laresistance.StateMachines
                 {
                     removeFirstEnemy = false;
                     battleSystem.RemoveEnemyAt(0);
-                    rewardData = new RewardData(0, 0, null, null, null, null, null);
+                    rewardData = new RewardData(0, 0, null, null, null, null, null, null);
                     deathCount++;
                 }
             }

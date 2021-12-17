@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Laresistance.Minimap
 {
     public class Miniroom : MonoBehaviour
     {
         [SerializeField]
-        private SpriteRenderer roomRenderer = default;
+        private Image roomRenderer = default;
         [SerializeField]
         [Tooltip("Position of the room circle in the minimap prefab")]
         private Transform miniroomCenter = default;

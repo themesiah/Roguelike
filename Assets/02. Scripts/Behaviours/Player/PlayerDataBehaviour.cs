@@ -15,6 +15,8 @@ namespace Laresistance.Behaviours
         private PlayerCharacterData playerCharacterData = default;
         [SerializeField]
         private ComboData[] combosData = default;
+        [SerializeField]
+        private Laresistance.Systems.Dialog.DialogVariablesStatus dialogVariables = default;
         [Header("Debug starting data")]
         [SerializeField]
         private bool useStartingData = false;
@@ -57,6 +59,8 @@ namespace Laresistance.Behaviours
             player = new Player(StatusManager);
             StatusManager.health.RegisterEquipmentEvents(player.GetEquipmentContainer());
             StatusManager.SetEquipmentsContainer(player.GetEquipmentContainer());
+
+            dialogVariables.SetVariable("CHARACTER", (int)playerCharacterData.PlayerCharacterType);
 
             // Abilities
             BattleAbility[] playerAbilities = new BattleAbility[4];

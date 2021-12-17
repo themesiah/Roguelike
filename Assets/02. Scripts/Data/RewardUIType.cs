@@ -8,6 +8,7 @@
         Equip,
         Consumable,
         ConsumableFull,
-        MapAbility
+        MapAbility,
+        Altar
     }
 }

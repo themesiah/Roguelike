@@ -141,7 +141,7 @@ namespace Laresistance.Behaviours
                     Minion minion = MinionFactory.GetMinion(buyableMinionList.minionList[index], GetRandomMinionLevel(), player.GetEquipmentContainer(), statusManager);
                     int cost = (int)(minion.GetFullCost(player.GetEquipmentContainer()) * (1f - GameConstantsBehaviour.Instance.minionDiscount.GetValue()));
                     cost = (int)System.Math.Round((double)cost / 100d, 0) * 100;
-                    shopSystem.AddOffer(new ShopOffer(cost, false, new RewardData(0, 0, minion, null, null, null, null)));
+                    shopSystem.AddOffer(new ShopOffer(cost, false, new RewardData(0, 0, minion, null, null, null, null, null)));
                     selectedMinionIndexes.Add(index);
                 }
             }
@@ -151,7 +151,7 @@ namespace Laresistance.Behaviours
                 if (!selectedConsumableIndexes.Contains(index))
                 {
                     Consumable c = ConsumableFactory.GetConsumable(consumableDatas[index], player.GetEquipmentContainer(), statusManager);
-                    shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null, null)));
+                    shopSystem.AddOffer(new ShopOffer(c.Data.BaseBloodPrice, false, new RewardData(0, 0, null, c, null, null, null, null)));
                     selectedConsumableIndexes.Add(index);
                 }
             }
@@ -161,7 +161,7 @@ namespace Laresistance.Behaviours
                 if (!selectedEquipmentIndexes.Contains(index))
                 {
                     Equipment e = EquipmentFactory.GetEquipment(equipmentDatas[index], playerDataBehaviourReference.Get().StatusManager);
-                    shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null, null)));
+                    shopSystem.AddOffer(new ShopOffer(e.Data.HardCurrencyCost, true, new RewardData(0, 0, null, null, e, null, null, null)));
                     selectedEquipmentIndexes.Add(index);
                 }
             }
@@ -170,7 +170,7 @@ namespace Laresistance.Behaviours
                 int index = Random.Range(0, mapAbilityDatas.Count);
                 if (!selectedMapAbilityIndexes.Contains(index))
                 {
-                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index], null)));
+                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index], null, null)));
                     selectedMapAbilityIndexes.Add(index);
                 }
             }
@@ -204,7 +204,7 @@ namespace Laresistance.Behaviours
                 shopUpgradeUIList.Add(shopOfferUI);
                 shopOfferUI.SetOfferKey(offerKeys[0]);
                 int upgradeCost = player.GetUpgradeCost();
-                shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, player)));
+                shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, null, player)));
                 int currentIndex = 0;
                 shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex; });
                 shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && player.CanUpgrade());
@@ -220,7 +220,7 @@ namespace Laresistance.Behaviours
                     shopUpgradeUIList.Add(shopOfferUI);
                     shopOfferUI.SetOfferKey(offerKeys[i+1]);
                     int upgradeCost = m.GetUpgradeCost(player.GetEquipmentContainer());
-                    shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null)));
+                    shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null, null)));
                     int currentIndex = i;
                     shopOfferUI.SetButtonAction(() => { offerSelected = currentIndex+1; });
                     shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
@@ -232,7 +232,7 @@ namespace Laresistance.Behaviours
         {
             IShopOfferUI shopOfferUI = shopUpgradeUIList[0];
             int upgradeCost = player.GetUpgradeCost();
-            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, player)));
+            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, null, null, null, null, null, player)));
             shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && player.CanUpgrade());
         }
 
@@ -240,7 +240,7 @@ namespace Laresistance.Behaviours
         {
             IShopOfferUI shopOfferUI = shopUpgradeUIList[index+1];
             int upgradeCost = m.GetUpgradeCost(player.GetEquipmentContainer());
-            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null)));
+            shopOfferUI.SetupOffer(new ShopOffer(upgradeCost, false, new RewardData(0, 0, m, null, null, null, null, null)));
             shopOfferUI.SetInteractable(bloodReference.GetValue() >= upgradeCost && m.CanUpgrade());
         }        
 
@@ -334,13 +334,13 @@ namespace Laresistance.Behaviours
             yield return characterDialogEvent.Raise(characterDialog);
             gameContextSignal.Raise("UI");
             int reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null));
+            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null, null));
             UpdateShopPanel();
             // Show all shop panels. Wait for input.
             yield return OpenShopUI();
             // If there are reserved minions, convert them into hard currency and do reward manager thing.
             reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null));
+            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null, null));
             saveGameEvent?.Raise();
             gameContextSignal.Raise("Map");
         }

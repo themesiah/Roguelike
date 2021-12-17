@@ -180,6 +180,8 @@ namespace Laresistance.Behaviours
 
             body.velocity = targetVelocity;
 
+            OnHorizontalVelocityChanged?.Invoke(currentMovement);
+
             currentMovement = 0f;
         }
 
@@ -244,7 +246,6 @@ namespace Laresistance.Behaviours
             isGrounded = false;
 
             OnVerticalVelocityChanged?.Invoke(body.velocity.y);
-            OnHorizontalVelocityChanged?.Invoke(body.velocity.x);
             bool collided = false;
             if (canJumpSignal == true)
             {

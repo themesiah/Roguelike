@@ -44,7 +44,7 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (!partyMember)
             {

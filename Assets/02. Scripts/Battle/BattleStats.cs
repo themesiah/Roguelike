@@ -1,4 +1,5 @@
 using Laresistance.Behaviours;
+using Laresistance.Data;
 using UnityEngine;
 
 namespace Laresistance.Battle
@@ -16,6 +17,29 @@ namespace Laresistance.Battle
         public BattleStats(BattleStatusManager statusManager)
         {
             this.statusManager = statusManager;
+        }
+
+        public void UpgradeStat(StatsType statType)
+        {
+            Debug.LogFormat("Upgrading stat {0}", statType.ToString());
+            switch(statType)
+            {
+                case StatsType.Damage:
+                    UpgradeDamage();
+                    break;
+                case StatsType.Shield:
+                    UpgradeShield();
+                    break;
+                case StatsType.Heal:
+                    UpgradeHeal();
+                    break;
+                case StatsType.StatusTime:
+                    UpgradeStatusTime();
+                    break;
+                case StatsType.MaxHealth:
+                    UpgradeMaxHealth();
+                    break;
+            }
         }
 
         public void UpgradeDamage()

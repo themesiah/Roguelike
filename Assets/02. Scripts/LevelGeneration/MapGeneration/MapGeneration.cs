@@ -79,6 +79,7 @@ namespace Laresistance.LevelGeneration
             mapData.GenerateInteractables();
             mapData.GenerateMovementTestRooms();
             mapData.GenerateRoomEnemies();
+            mapData.GenerateAltars();
             if (generateLogs)
                 mapData.GenerateMapLog(currentSeed);
             yield return GenerateRooms(mapData);

@@ -1,4 +1,5 @@
 ﻿using GamedevsToolbox.Utils;
+using Laresistance.Data;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -20,6 +21,8 @@ namespace Laresistance.LevelGeneration
         private static int[] NORMAL_ENEMIES_DISTRIBUTION = { 0, 1, 1, 2 };
         private static int[] MINION_ENEMIES_DISTRIBUTION = { 1, 1, 1, 1 };
         private static float MINIBOSS_ENEMIES_PER_ROOM = 2f / 16f;
+        // Altars
+        private static int NUMBER_OF_ALTARS_PER_MAP = 3;
 
         [SerializeField]
         private XYPair mapSize;
@@ -499,6 +502,35 @@ namespace Laresistance.LevelGeneration
             }
         }
 
+        public void GenerateAltars()
+        {
+            for (int i = 0; i < NUMBER_OF_ALTARS_PER_MAP - 1; ++i)
+            {
+                var altarCandidates = nodesData.FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom).FindAll(FilterMinimalPathRoom).FindAll(FilterNotHasAltar);
+                int altarIndex = Random.Range(0, altarCandidates.Count);
+                var statsList = RandomStatsList();
+                altarCandidates[altarIndex].SetAltarStats(statsList);
+            }
+            var lastAltarCandidates = nodesData.FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom).FindAll(FilterNotHasAltar);
+            int lastAltarIndex = Random.Range(0, lastAltarCandidates.Count);
+            var lastStatsList = RandomStatsList();
+            lastAltarCandidates[lastAltarIndex].SetAltarStats(lastStatsList);
+        }
+
+        private StatsType[] RandomStatsList()
+        {
+            List<StatsType> statsTypes = new List<StatsType>() { StatsType.Damage, StatsType.Shield, StatsType.Heal, StatsType.StatusTime, StatsType.MaxHealth };
+            List<StatsType> tempList = new List<StatsType>();
+            while (statsTypes.Count > 0)
+            {
+                int index = Random.Range(0, statsTypes.Count);
+                var stat = statsTypes[index];
+                tempList.Add(stat);
+                statsTypes.RemoveAt(index);
+            }
+            return tempList.ToArray();
+        }
+
         private void GenerateNormalEnemies()
         {
             var enemyCandidates = nodesData.FindAll(FilterAll);
@@ -620,6 +652,11 @@ namespace Laresistance.LevelGeneration
         private bool FilterPathEnd(RoomData roomData)
         {
             return roomData.IsPathEnd;
+        }
+
+        private bool FilterNotHasAltar(RoomData roomData)
+        {
+            return !roomData.HasAltar();
         }
 
         private bool FilterEquipmentReward(RoomData roomData)

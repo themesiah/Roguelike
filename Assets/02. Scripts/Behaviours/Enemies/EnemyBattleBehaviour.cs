@@ -92,7 +92,7 @@ namespace Laresistance.Behaviours
         {
             int bloodToGet = enemyData.BaseBloodReward * enemyLevel;
             bloodToGet = playerDataRef.Get().player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ExtraBlood, bloodToGet);
-            RewardData rewardData = new RewardData(bloodToGet, 0, null, null, null, null, null);
+            RewardData rewardData = new RewardData(bloodToGet, 0, null, null, null, null, null, null);
             return rewardData;
         }
 

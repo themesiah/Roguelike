@@ -56,7 +56,7 @@ namespace Laresistance.Behaviours
             if (spriteRenderer != null)
                 spriteRenderer.enabled = false;
             //gameContextSignal.Raise("UI");
-            yield return rewardSystem.GetReward(new RewardData(amount, 0, null, null, null, null, null, false));
+            yield return rewardSystem.GetReward(new RewardData(amount, 0, null, null, null, null, null, null, false));
             bloodObtainedEvent?.Raise(amount);
             //gameContextSignal.Raise("Map");
             Destroy(gameObject);
