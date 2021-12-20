@@ -132,7 +132,6 @@ namespace Laresistance.Behaviours
             List<int> selectedMinionIndexes = new List<int>();
             List<int> selectedConsumableIndexes = new List<int>();
             List<int> selectedEquipmentIndexes = new List<int>();
-            List<int> selectedMapAbilityIndexes = new List<int>();
             while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY)
             {
                 int index = Random.Range(0, buyableMinionList.minionList.Count - 1);
@@ -165,13 +164,11 @@ namespace Laresistance.Behaviours
                     selectedEquipmentIndexes.Add(index);
                 }
             }
-            while(shopSystem.GetOffers().Count < OFFER_MINIONS_QUANTITY + OFFER_CONSUMABLES_QUANTITY + OFFER_EQUIPMENTS_QUANTITY + OFFER_MAP_ABILITIES_QUANTITY)
+            for (int i = 0; i < mapAbilityDatas.Count; ++i)
             {
-                int index = Random.Range(0, mapAbilityDatas.Count);
-                if (!selectedMapAbilityIndexes.Contains(index))
+                if (mapAbilityDatas[i].AbilityObtainedReference.GetValue() == false)
                 {
-                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[index], null, null)));
-                    selectedMapAbilityIndexes.Add(index);
+                    shopSystem.AddOffer(new ShopOffer(2, true, new RewardData(0, 0, null, null, null, mapAbilityDatas[i], null, null)));
                 }
             }
 
@@ -328,19 +325,23 @@ namespace Laresistance.Behaviours
         #endregion
 
         #region Coroutines
+        private IEnumerator GetReserveMinions()
+        {
+            int reserveSize = player.ClearMinionReserve();
+            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null, null));
+        }
+
         private IEnumerator OpenShopCoroutine()
         {
             AnalyticsSystem.Instance.CustomEvent("PilgrimStart", new Dictionary<string, object>() { { "Level", currentLevelRef.GetValue() } });
             yield return characterDialogEvent.Raise(characterDialog);
             gameContextSignal.Raise("UI");
-            int reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null, null));
+            yield return GetReserveMinions();
             UpdateShopPanel();
             // Show all shop panels. Wait for input.
             yield return OpenShopUI();
             // If there are reserved minions, convert them into hard currency and do reward manager thing.
-            reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null, null));
+            yield return GetReserveMinions();
             saveGameEvent?.Raise();
             gameContextSignal.Raise("Map");
         }
@@ -387,6 +388,7 @@ namespace Laresistance.Behaviours
                             {
                                 shopOfferUIList[0].SelectButton();
                             }
+                            yield return GetReserveMinions();
                             yield return StartingTween();
                         }
                     }

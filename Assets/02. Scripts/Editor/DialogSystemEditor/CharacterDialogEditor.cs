@@ -95,6 +95,11 @@ namespace Laresistance.Systems.Dialog
                 DrawGrid(20, 0.2f, Color.gray);
                 DrawGrid(100, 0.4f, Color.gray);
 
+                if (GUILayout.Button("Save")) {
+                    characterDialog.SetDirty();
+                    AssetDatabase.SaveAssets();
+                }
+
                 DrawNodes();
                 DrawConnections();
 

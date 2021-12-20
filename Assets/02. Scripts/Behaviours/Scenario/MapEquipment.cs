@@ -29,10 +29,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private bool randomDataFromDatas = false;
 
-        [Header("Object")]
-        [SerializeField]
-        private SpriteRenderer spriteRenderer = default;
-
         private RewardSystem rewardSystem;
 
         public static List<string> GlobalEquipList;
@@ -75,7 +71,6 @@ namespace Laresistance.Behaviours
         public void SetData(EquipmentData data)
         {
             this.data = data;
-            spriteRenderer.sprite = data.SpriteReference;
         }
 
         public void Interact()
@@ -86,7 +81,6 @@ namespace Laresistance.Behaviours
 
         private IEnumerator RewardCoroutine(Equipment e)
         {
-            spriteRenderer.enabled = false;
             gameContextSignal.Raise("UI");
             yield return rewardSystem.GetReward(new RewardData(0, 0, null, null, e, null, null, null));
             gameContextSignal.Raise("Map");

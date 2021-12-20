@@ -24,6 +24,10 @@ namespace Laresistance.Data
         public Sprite SpriteReference { get { return spriteReference; } }
 
         [SerializeField]
+        private Sprite mapSpriteReference = default;
+        public Sprite MapSpriteReference { get { return mapSpriteReference; } }
+
+        [SerializeField]
         private List<EquipmentEffect> equipmentEffects = default;
         public List<EquipmentEffect> EquipmentEffects { get { return equipmentEffects; } }
 

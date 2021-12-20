@@ -1267,6 +1267,10 @@ PrefabInstance:
       propertyPath: putAltar
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6273306887255599214, guid: 34fa54bf4d3097f48a0efe1eb31e6cf9, type: 3}
+      propertyPath: playerStartPoint
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34fa54bf4d3097f48a0efe1eb31e6cf9, type: 3}
 --- !u!114 &1040847264 stripped
@@ -1714,7 +1718,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6273306887255599214, guid: 4fb6e71433114a7448cf98bcfd4cada2, type: 3}
       propertyPath: playerStartPoint
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273306887255599214, guid: 4fb6e71433114a7448cf98bcfd4cada2, type: 3}
+      propertyPath: interactableTypesSpawn.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273306887255599214, guid: 4fb6e71433114a7448cf98bcfd4cada2, type: 3}
+      propertyPath: interactableTypesSpawn.Array.data[0]
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7052891017568468402, guid: 4fb6e71433114a7448cf98bcfd4cada2, type: 3}
       propertyPath: nextRoom
@@ -2186,11 +2198,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: startingMinions.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: startingEquipments.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: startingMinions.Array.data[0]
@@ -2199,11 +2211,27 @@ PrefabInstance:
     - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: startingMinions.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 8644ee1abbc8eef4886790ef97dd5565, type: 2}
+      objectReference: {fileID: 11400000, guid: 3416f5bbf3c733048af2107810b65998, type: 2}
     - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: startingMinions.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 8644ee1abbc8eef4886790ef97dd5565, type: 2}
+      objectReference: {fileID: 11400000, guid: 9ee1879824da53143b639e470906f7f8, type: 2}
+    - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
+      propertyPath: startingEquipments.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: cf6cb6ba65e5d674f87e722cd36900fe, type: 2}
+    - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
+      propertyPath: startingEquipments.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: e8d8e80ddf6918a4496eeede1407975c, type: 2}
+    - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
+      propertyPath: startingEquipments.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 19a67fa755b71134e8ca5484b4036703, type: 2}
+    - target: {fileID: 291160939167484136, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
+      propertyPath: startingEquipments.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: abe8fe989eaa6104ba52c1a3d06e23fd, type: 2}
     - target: {fileID: 2410868430639364778, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2253,24 +2281,8 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4290916134631984991, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.99999994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4290916134631984991, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4290916134631984991, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4290916134631984991, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.00039401365
-      objectReference: {fileID: 0}
-    - target: {fileID: 6945322827365739168, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca0be8a4ed96d7e42a84d06235609b25, type: 3}

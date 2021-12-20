@@ -104,10 +104,10 @@ namespace Laresistance.Behaviours
 
             if (dropedEquipment != null)
             {
-                GameObject go = Instantiate(mapEquipmentPrefab);
-                go.transform.position = playerDataReference.Get().transform.position;
-                go.GetComponent<Rigidbody2D>().AddForce(Vector2.up * force, ForceMode2D.Impulse);
-                go.GetComponent<MapEquipment>().SetData(dropedEquipment.Data);
+                //GameObject go = Instantiate(mapEquipmentPrefab);
+                //go.transform.position = playerDataReference.Get().transform.position;
+                //go.GetComponent<Rigidbody2D>().AddForce(Vector2.up * force, ForceMode2D.Impulse);
+                //go.GetComponent<MapEquipment>().SetData(dropedEquipment.Data);
             }
         }
 
