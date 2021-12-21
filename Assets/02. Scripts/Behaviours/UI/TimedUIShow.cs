@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Laresistance.Behaviours
@@ -7,27 +6,31 @@ namespace Laresistance.Behaviours
     public class TimedUIShow : MonoBehaviour
     {
         [SerializeField]
-        private GameObject[] objectsToShow = default;
+        private CanvasGroup canvasGroup = default;
 
         [SerializeField]
-        private float showTime = 0.5f;
+        private float showTime = 1.5f;
+
+        [SerializeField]
+        private float alphaTime = 0.5f;
 
         public void Show()
         {
-            foreach(var obj in objectsToShow)
-            {
-                obj.SetActive(true);
-            }
+            canvasGroup.alpha = 1f;
             StartCoroutine(Hide());
         }
 
         private IEnumerator Hide()
         {
             yield return new WaitForSeconds(showTime);
-            foreach (var obj in objectsToShow)
+            float timer = 0f;
+            while(timer < alphaTime)
             {
-                obj.SetActive(false);
+                timer += Time.deltaTime;
+                canvasGroup.alpha = (1f - timer / alphaTime);
+                yield return null;
             }
+            canvasGroup.alpha = 0f;
         }
     }
 }

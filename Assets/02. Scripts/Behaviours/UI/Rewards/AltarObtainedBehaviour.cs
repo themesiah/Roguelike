@@ -1,5 +1,6 @@
 using Laresistance.Core;
 using Laresistance.Data;
+using Laresistance.Systems.Dialog;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace Laresistance.Behaviours
         private Text[] statDescriptions = default;
         [SerializeField]
         private StatsInfo[] statsInfo = default;
+        [SerializeField]
+        private DialogVariablesStatus dialogVariables = default;
 
         public override RewardUIType RewardType => RewardUIType.Altar;
 
@@ -52,6 +55,7 @@ namespace Laresistance.Behaviours
             }
 
             player.statusManager.battleStats.UpgradeStat(rewardData.statsTypeList[selectedOptionIndex+1]);
+            dialogVariables.SetVariable("SELECTED_STAT", (int)rewardData.statsTypeList[selectedOptionIndex+1]);
         }
 
         private StatsInfo GetStatInfo(StatsType type)

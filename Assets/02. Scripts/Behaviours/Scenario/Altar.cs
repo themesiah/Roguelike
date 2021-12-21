@@ -15,6 +15,8 @@ namespace Laresistance.Behaviours
         private CharacterDialogEvent characterDialogEvent = default;
         [SerializeField]
         private CharacterDialog characterDialog = default;
+        [SerializeField]
+        private CharacterDialog statsDialog = default;
         [Header("References")]
         [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
@@ -57,6 +59,7 @@ namespace Laresistance.Behaviours
             gameContextSignal.Raise("UI");
             yield return rewardSystem.GetReward(new RewardData(0, 0, null, null, null, null, statsTypeList, playerDataRef.Get().player, true));
             gameContextSignal.Raise("Map");
+            yield return characterDialogEvent?.Raise(statsDialog);
         }
     }
 }
