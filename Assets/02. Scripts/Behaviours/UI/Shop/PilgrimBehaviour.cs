@@ -20,7 +20,6 @@ namespace Laresistance.Behaviours
         private static int OFFER_MINIONS_QUANTITY = 3;
         private static int OFFER_CONSUMABLES_QUANTITY = 0;
         private static int OFFER_EQUIPMENTS_QUANTITY = 2;
-        private static int OFFER_MAP_ABILITIES_QUANTITY = 1;
 
 
         [Header("Dialog")]

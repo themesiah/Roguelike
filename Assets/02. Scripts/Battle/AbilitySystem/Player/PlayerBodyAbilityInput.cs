@@ -8,15 +8,6 @@ namespace Laresistance.Battle
 {
     public class PlayerBodyAbilityInput : PlayerAbilityInput
     {
-        public override float TotalSupportAbilityCooldown
-        {
-            get
-            {
-                float total = player.supportAbility.Cooldown;
-                return total;
-            }
-        }
-
         protected override float SpecificCardRenewCooldown()
         {
             return GameConstantsBehaviour.Instance.bodyCardRenewCooldown.GetValue();
@@ -58,7 +49,9 @@ namespace Laresistance.Battle
         {
             if (isDamage && delta < 0)
             {
-                battleStatus.AddEnergy(Mathf.Abs(delta) * GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue());
+                float energy = Mathf.Abs(delta) * GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue();
+                energy = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.EnergyGain, energy);
+                battleStatus.AddEnergy(energy);
             }
         }
 
@@ -66,7 +59,9 @@ namespace Laresistance.Battle
         {
             if (percentBlocked > 0f)
             {
-                battleStatus.AddEnergy(damageBlocked * GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue());
+                float energy = damageBlocked * GameConstantsBehaviour.Instance.bodyEnergyGain.GetValue();
+                energy = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.EnergyGain, energy);
+                battleStatus.AddEnergy(energy);
             }
         }
 
@@ -103,7 +98,8 @@ namespace Laresistance.Battle
         {
             if (!((BodyBlockStatusEffect)battleStatus.GetStatus(StatusType.BodyBlockStatus)).HaveBlock())
             {
-                player.supportAbility?.Tick(unmodifiedDelta);
+                float newDelta = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.SupportRenewSpeed, unmodifiedDelta);
+                player.supportAbility?.Tick(newDelta);
             }
             ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }

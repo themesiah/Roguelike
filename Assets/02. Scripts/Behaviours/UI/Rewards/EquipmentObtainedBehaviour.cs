@@ -29,11 +29,6 @@ namespace Laresistance.Behaviours
         private LocalizedStringTextBehaviour newEquipNameText = default;
         [SerializeField]
         private Text newEquipDescriptionText = default;
-        [Header("Droped equipment")]
-        [SerializeField]
-        private GameObject mapEquipmentPrefab = default;
-        [SerializeField]
-        private float force = 10f;
 
         protected override IEnumerator StartingTween(RewardData rewardData)
         {
@@ -100,14 +95,6 @@ namespace Laresistance.Behaviours
                     { "Overwrited", false },
                     { "EquipName", rewardData.equip.Data.name }
                 });
-            }
-
-            if (dropedEquipment != null)
-            {
-                //GameObject go = Instantiate(mapEquipmentPrefab);
-                //go.transform.position = playerDataReference.Get().transform.position;
-                //go.GetComponent<Rigidbody2D>().AddForce(Vector2.up * force, ForceMode2D.Impulse);
-                //go.GetComponent<MapEquipment>().SetData(dropedEquipment.Data);
             }
         }
 

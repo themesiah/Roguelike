@@ -40,10 +40,13 @@ namespace Laresistance.Behaviours
                 GameObject go = handler.Result;
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localScale = go.transform.localScale * scaleMultiplier;
-                SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
-                renderer.sortingOrder = sortingOrder;
-                renderer.sortingLayerName = "UI";
-                renderer.material = unlitMaterial;
+                SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
+                foreach (var renderer in renderers)
+                {
+                    renderer.sortingOrder = sortingOrder;
+                    renderer.sortingLayerName = "UI";
+                    renderer.material = unlitMaterial;
+                }
             };            
         }
 

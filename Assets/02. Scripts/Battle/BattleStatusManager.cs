@@ -233,7 +233,8 @@ namespace Laresistance.Battle
         public void BattleEnd()
         {
             health.RemoveShields();
-            CurrentEnergy = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.AfterBattleEnergyLoss, CurrentEnergy);
+            CurrentEnergy = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.AfterBattleEnergyChange, CurrentEnergy);
+            CurrentEnergy = Mathf.Clamp(CurrentEnergy, 0f, GameConstantsBehaviour.Instance.maxEnergy.GetValue());
             int healAmount = 0;
             healAmount = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.BattleEndHeal, healAmount);
             if (healAmount > 0)

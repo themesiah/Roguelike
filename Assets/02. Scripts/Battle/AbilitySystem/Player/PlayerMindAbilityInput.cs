@@ -11,16 +11,6 @@ namespace Laresistance.Battle
             return GameConstantsBehaviour.Instance.mindCardRenewCooldown.GetValue();
         }
 
-        public override float TotalSupportAbilityCooldown
-        {
-            get
-            {
-                float total = player.supportAbility.Cooldown;
-                total = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.ShuffleDelay, total);
-                return total;
-            }
-        }
-
         public PlayerMindAbilityInput(Player player, BattleStatusManager battleStatus) : base(player, battleStatus)
         {
             battleStatus.OnSupportAbilityExecuted += Shuffle;
@@ -63,13 +53,16 @@ namespace Laresistance.Battle
 
         protected override void OnAbilitiesUpdate(float delta, float unmodifiedDelta)
         {
-            player.supportAbility?.Tick(unmodifiedDelta);
+            float newDelta = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.SupportRenewSpeed, unmodifiedDelta);
+            player.supportAbility?.Tick(newDelta);
             ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }
 
         protected override void OnAbilityExecutedExtra(BattleAbility ability, int slot)
         {
-            battleStatus.AddEnergy(GameConstantsBehaviour.Instance.mindEnergyGain.GetValue());
+            float energy = GameConstantsBehaviour.Instance.mindEnergyGain.GetValue();
+            energy = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.EnergyGain, energy);
+            battleStatus.AddEnergy(energy);
         }
 
         protected override bool CanExecuteAbilities()

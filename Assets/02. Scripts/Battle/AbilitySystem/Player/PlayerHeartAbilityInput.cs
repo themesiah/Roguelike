@@ -19,7 +19,9 @@ namespace Laresistance.Battle
 
         private void OnHealed(CharacterHealth sender, int healAmount, int currentHealth)
         {
-            battleStatus.AddEnergy(healAmount * GameConstantsBehaviour.Instance.heartEnergyGain.GetValue());
+            float energy = healAmount * GameConstantsBehaviour.Instance.heartEnergyGain.GetValue();
+            energy = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.EnergyGain, energy);
+            battleStatus.AddEnergy(energy);
         }
 
         public override void SupportAbility(InputAction.CallbackContext context)
@@ -56,7 +58,8 @@ namespace Laresistance.Battle
         {
             if (!battleStatus.GetStatus(StatusType.Vampirism).HaveBuff())
             {
-                player.supportAbility?.Tick(unmodifiedDelta);
+                float newDelta = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.SupportRenewSpeed, unmodifiedDelta);
+                player.supportAbility?.Tick(newDelta);
             }
             ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
         }

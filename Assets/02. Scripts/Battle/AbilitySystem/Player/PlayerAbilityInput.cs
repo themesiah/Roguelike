@@ -17,7 +17,6 @@ namespace Laresistance.Battle
         private float abilitiesToUseDequeueTimer;
 
         public float NextSupportAbilityProgress { get { return 1f - player.supportAbility.TimerProgress; } }
-        public virtual float TotalSupportAbilityCooldown => 0f;
 
         public Queue<BattleAbility> nextAbilitiesQueue { get; private set; }
 
