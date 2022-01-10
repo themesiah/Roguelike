@@ -15,25 +15,13 @@ namespace Laresistance.Behaviours
 
         [Header("References")]
         [SerializeField]
-        private RuntimePlayerDataBehaviourSingle playerDataRef = default;
-        [SerializeField]
-        private ScriptableIntReference bloodReference = default;
-        [SerializeField]
-        private ScriptableIntReference hardCurrencyReference = default;
-        [SerializeField]
-        private RewardUILibrary uiLibrary = default;
+        private RewardEvent rewardEvent = default;
         [SerializeField]
         private SpriteRenderer spriteRenderer = default;
         [SerializeField]
         private IntGameEvent bloodObtainedEvent = default;
 
-        private RewardSystem rewardSystem;
         private int currentLevel = 1;
-
-        private void Start()
-        {
-            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
-        }
 
         public void SetCurrentLevel(int currentLevel)
         {
@@ -55,10 +43,8 @@ namespace Laresistance.Behaviours
         {
             if (spriteRenderer != null)
                 spriteRenderer.enabled = false;
-            //gameContextSignal.Raise("UI");
-            yield return rewardSystem.GetReward(new RewardData(amount, 0, null, null, null, null, null, null, false));
+            yield return rewardEvent?.Raise(new RewardData(amount, 0, null, null, null, null, null, null, false));
             bloodObtainedEvent?.Raise(amount);
-            //gameContextSignal.Raise("Map");
             Destroy(gameObject);
         }
     }

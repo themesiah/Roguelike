@@ -1,7 +1,6 @@
 using UnityEngine;
 using DigitalRuby.Tween;
 using Laresistance.Systems;
-using GamedevsToolbox.ScriptableArchitecture.Values;
 using GamedevsToolbox.ScriptableArchitecture.Events;
 using Laresistance.Data;
 using Laresistance.Audio;
@@ -31,28 +30,18 @@ namespace Laresistance.Behaviours
         private float hardCurrencyChance = 0.01f;
         [SerializeField]
         private Vector2Int hardCurrencyAmountRange = default;
-		
-		[Header("Other References")]
+
+        [Header("Other References")]
         [SerializeField]
-        private RuntimePlayerDataBehaviourSingle playerDataRef = default;
-        [SerializeField]
-        private ScriptableIntReference bloodReference = default;
-        [SerializeField]
-        private ScriptableIntReference hardCurrencyReference = default;
+        private RewardEvent rewardEvent = default;
         [SerializeField]
         private IntGameEvent bloodObtainedEvent = default;
         [SerializeField]
         private IntGameEvent hardCurrencyObtainedEvent = default;
         [SerializeField]
         private ScriptableFMODEventEmitter breakAudioEvent = default;
-		
-		private RewardSystem rewardSystem;
-        private bool alreadyBroke = false;
 
-        private void Start()
-        {
-			rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, null);
-        }
+        private bool alreadyBroke = false;
 
         public void Break()
         {
@@ -86,14 +75,9 @@ namespace Laresistance.Behaviours
 
             if (rd != null)
             {
-                StartCoroutine(rewardSystem.GetReward(rd));
+                StartCoroutine(rewardEvent.Raise(rd));
             }
         }
-		
-		//private IEnumerator RewardCoroutine(RewardData reward)
-		//{
-		//	yield return rewardSystem.GetReward(reward);
-        //}
 
         private void UpdateAlpha(ITween<float> t)
         {

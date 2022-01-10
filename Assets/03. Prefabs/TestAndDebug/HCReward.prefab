@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.6401813, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -106,9 +106,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7844113951782939351}
-  - component: {fileID: 7031925430056978331}
+  - component: {fileID: 852621164637530198}
   m_Layer: 0
-  m_Name: BloodReward
+  m_Name: HCReward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,7 +130,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7031925430056978331
+--- !u!114 &852621164637530198
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,21 +139,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2988227640911888894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb71ea1befaeef4fb5b98c9b994a9e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8998f0a0bcd56884fa30aab350380ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseBloodAmount:
-    useConstant: 0
-    value: {fileID: 11400000, guid: b24f137477236f546a151ac2ab9c2a02, type: 2}
-    constantValue: 0
-    useRandom: 0
-    minMax:
-      useConstant: 1
-      value: {fileID: 0}
-      constantValue: {x: 0, y: 0}
+  amountObtain: 1
   rewardEvent: {fileID: 11400000, guid: e067f9daa605e1847803cc55de4af00f, type: 2}
-  spriteRenderer: {fileID: 2639857365304987136}
-  bloodObtainedEvent: {fileID: 11400000, guid: 55c26a9e7f727734fafc6693c15cf071, type: 2}
+  hcObtainedEvent: {fileID: 11400000, guid: 6c6e57661f95a544bae39d050071e536, type: 2}
 --- !u!1 &5098945777243392393
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,8 +309,8 @@ MonoBehaviour:
   interactionEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7031925430056978331}
-        m_TargetAssemblyTypeName: Laresistance.Behaviours.BloodObtain, GameScripts
+      - m_Target: {fileID: 852621164637530198}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.HCObtain, GameScripts
         m_MethodName: Obtain
         m_Mode: 1
         m_Arguments:

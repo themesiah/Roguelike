@@ -21,7 +21,7 @@ namespace Laresistance.StateMachines
         private bool goToMap = false;
         private bool forcedStop = false;
         private bool removeFirstEnemy = false;
-        private RewardSystem rewardSystem;
+        private RewardEvent rewardEvent;
         private PlayerMinionCompanionSpawner companionSpawner;
         public BattleSystem battleSystem { get; private set; }
         private GameObject[] enemyObjects;
@@ -95,7 +95,7 @@ namespace Laresistance.StateMachines
             if (!forcedStop)
             {
                 actionMapSwitchEvent.Raise("UI");
-                yield return rewardSystem.GetReward(rewardData);
+                yield return rewardEvent?.Raise(rewardData);
             }
             goToMap = false;
             forcedStop = false;
@@ -157,8 +157,8 @@ namespace Laresistance.StateMachines
             rewardData = enemyObjects[0].GetComponent<IRewardable>().GetReward();
         }
 
-        public GameContextBattleState(GameObject playerObject, Camera playerCamera, StringGameEvent actionMapSwitchEvent, ScriptableIntReference bloodReference,
-            ScriptableIntReference hardCurrencyReference, int centerCheckLayerMask, RewardUILibrary rewardUILibrary, ScriptableIntReference battlePositionIntReference,
+        public GameContextBattleState(GameObject playerObject, StringGameEvent actionMapSwitchEvent, RewardEvent rewardEvent,
+            int centerCheckLayerMask, ScriptableIntReference battlePositionIntReference,
             StringGameEvent virtualCameraChangeEvent, RuntimeSingleCinemachineTargetGroup targetGroupRef, GameEvent saveGameEvent,
             ScriptableIntReference difficultyRef, int characterIndex)
         {
@@ -166,8 +166,8 @@ namespace Laresistance.StateMachines
             this.saveGameEvent = saveGameEvent;
             this.actionMapSwitchEvent = actionMapSwitchEvent;
             this.centerCheckLayerMask = centerCheckLayerMask;
+            this.rewardEvent = rewardEvent;
             Player player = playerObject.GetComponent<PlayerDataBehaviour>().player;
-            this.rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             this.companionSpawner = new PlayerMinionCompanionSpawner(player);
             this.battlePositionIntReference = battlePositionIntReference;
             this.virtualCameraChangeEvent = virtualCameraChangeEvent;

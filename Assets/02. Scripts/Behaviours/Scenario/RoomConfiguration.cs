@@ -21,6 +21,7 @@ namespace Laresistance.Behaviours
             public bool allowEquipment;
             public bool allowNPC;
             public bool allowSanctuary;
+            public bool allowHC;
 
             public bool CheckValidity(RoomInteractableType type)
             {
@@ -40,7 +41,11 @@ namespace Laresistance.Behaviours
                         isValid = allowNPC;
                         break;
                     case RoomInteractableType.Pilgrim:
+                    case RoomInteractableType.Hunter:
                         isValid = allowPilgrim;
+                        break;
+                    case RoomInteractableType.HCReward:
+                        isValid = allowHC;
                         break;
                     case RoomInteractableType.LevelEnd:
                     case RoomInteractableType.LevelStart:
@@ -540,7 +545,7 @@ namespace Laresistance.Behaviours
             List<Transform> tempInteractablePositions = new List<Transform>(possibleInteractablePositions);
             foreach(var interactable in roomData.GetInteractables())
             {
-                if ((int)interactable.roomInteractableType > (int)RoomInteractableType.Pilgrim)
+                if ((int)interactable.roomInteractableType > (int)RoomInteractableType.HCReward)
                     continue;
                 Transform randomPosition = tempInteractablePositions[Random.Range(0, tempInteractablePositions.Count)];
                 Debug.LogFormat("Interactable type with index: {0} (index){1}", interactable.roomInteractableType.ToString(), (int)interactable.roomInteractableType);
@@ -556,7 +561,8 @@ namespace Laresistance.Behaviours
                         {
                             minimap.SetPilgrim(roomData.RoomIndex);
                         }
-                    } else  if (interactable.roomInteractableType == RoomInteractableType.BloodReward || interactable.roomInteractableType == RoomInteractableType.Fountain)
+                    } else  if (interactable.roomInteractableType == RoomInteractableType.BloodReward ||
+                                interactable.roomInteractableType == RoomInteractableType.Fountain)
                     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                         if (mockTest)
@@ -569,6 +575,9 @@ namespace Laresistance.Behaviours
 #else
                         go.GetComponent<BloodObtain>().SetCurrentLevel(roomLevel * roomData.RoomIndex); // TODO
 #endif
+                    } else if (interactable.roomInteractableType == RoomInteractableType.HCReward)
+                    {
+                        // Do nothing
                     }
                 };
                 yield return op;

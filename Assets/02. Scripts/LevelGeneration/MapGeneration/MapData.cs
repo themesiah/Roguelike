@@ -13,10 +13,11 @@ namespace Laresistance.LevelGeneration
         // Movement tests
         private static float MOVEMENT_TESTS_PER_NON_MINIMAL_PATH_ROOMS = 0.2f;
         // Interactables
-        private static float BLOOD_CLUSTERS_PER_ROOM = 0.4f;
-        private static float EQUIPMENTS_PER_CANDIDATE_ROOM = 0.5f; // A candidate room is the end of a non minimal path
-        private static float FOUNTAINS_PER_ROOM = 0.25f;
-        private static float LORE_NPC_PER_ROOM = 0f; // not yet 0.1f;
+        private static int BLOOD_CLUSTERS_AMOUNT = 2;
+        private static int HC_CLUSTERS_AMOUNT = 2;
+        private static int EQUIPMENT_AMOUNT = 2;
+        private static int FOUNTAINS_AMOUNT = 2;
+        private static int LORE_NPC_AMOUNT = 0; // 0 for now, 1 then
         // Enemies
         private static int[] NORMAL_ENEMIES_DISTRIBUTION = { 0, 1, 1, 2 };
         private static int[] MINION_ENEMIES_DISTRIBUTION = { 1, 1, 1, 1 };
@@ -168,6 +169,22 @@ namespace Laresistance.LevelGeneration
 
         public void GenerateInteractables()
         {
+            /*
+            1 Pilgrim
+            1 Hunter
+            2 Equipments
+            2 Fountains
+            1 NPC
+            2 HC
+
+            OR TEMP
+
+            1 Pilgrim
+            2 Equipments
+            2 Fountains
+            2 HC
+            2 Blood
+             */
             // Set pilgrim in minimal path, but not in the first or last room. Just 1 pilgrim.
             GeneratePilgrimInteractable();
             // Set equipment rewards, only in candidate rooms (end of non minimal path).
@@ -176,6 +193,8 @@ namespace Laresistance.LevelGeneration
             GenerateFountainInteractables();
             // Set lore pieces, on places with no other reward.
             GenerateLoreInteractables();
+            // Set HC clusters, on places with no other reward.
+            GenerateHCInteractables();
             // Set blood clusters, on places with no other reward.
             GenerateBloodInteractables();
         }
@@ -435,10 +454,26 @@ namespace Laresistance.LevelGeneration
             pilgrimAbleRooms[indexOfPilgrim].AddInteractable(pilgrim);
         }
 
+        private void GenerateHCInteractables()
+        {
+            var hcCandidates = nodesData.FindAll(FilterRoomWithNoRewards);
+            int numberOfHCClusters = HC_CLUSTERS_AMOUNT;
+            Assert.IsTrue(hcCandidates.Count >= numberOfHCClusters);
+            while (numberOfHCClusters > 0 && hcCandidates.Count > 0)
+            {
+                int hcIndex = Random.Range(0, hcCandidates.Count);
+                RoomInteractable blood = new RoomInteractable() { roomInteractableType = RoomInteractableType.HCReward };
+                hcCandidates[hcIndex].AddInteractable(blood);
+                hcCandidates.RemoveAt(hcIndex);
+                numberOfHCClusters--;
+            }
+        }
+
         private void GenerateBloodInteractables()
         {
             var bloodCandidates = nodesData.FindAll(FilterRoomWithNoRewards);
-            int numberOfBloodClusters = Mathf.RoundToInt(mapSize.x * mapSize.y * BLOOD_CLUSTERS_PER_ROOM);
+            int numberOfBloodClusters = BLOOD_CLUSTERS_AMOUNT;
+            Assert.IsTrue(bloodCandidates.Count >= numberOfBloodClusters);
             while (numberOfBloodClusters > 0 && bloodCandidates.Count > 0)
             {
                 int bloodIndex = Random.Range(0, bloodCandidates.Count);
@@ -452,7 +487,7 @@ namespace Laresistance.LevelGeneration
         private void GenerateLoreInteractables()
         {
             var loreCandidates = nodesData.FindAll(FilterRoomWithNoRewards);
-            int numberOfLoreInteractables = Mathf.RoundToInt(mapSize.x * mapSize.y * LORE_NPC_PER_ROOM);
+            int numberOfLoreInteractables = LORE_NPC_AMOUNT;
             while (numberOfLoreInteractables > 0 && loreCandidates.Count > 0)
             {
                 int loreIndex = Random.Range(0, loreCandidates.Count);
@@ -466,14 +501,14 @@ namespace Laresistance.LevelGeneration
         private void GenerateFountainInteractables()
         {
             var fountainCandidates = nodesData.FindAll(FilterRoomWithNoRewards).FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom);
-            int numberOfFountains = Mathf.RoundToInt(mapSize.x * mapSize.y * FOUNTAINS_PER_ROOM);
-            Assert.IsTrue(numberOfFountains > 0);
+            int numberOfFountains = FOUNTAINS_AMOUNT;
             var fountainMinimalPathCandidates = fountainCandidates.FindAll(FilterMinimalPathRoom);
             int fountainIndex = Random.Range(0, fountainMinimalPathCandidates.Count);
             RoomInteractable fountain = new RoomInteractable() { roomInteractableType = RoomInteractableType.Fountain };
             fountainMinimalPathCandidates[fountainIndex].AddInteractable(fountain);
             fountainCandidates.Remove(fountainMinimalPathCandidates[fountainIndex]);
             numberOfFountains--;
+            Assert.IsTrue(fountainCandidates.Count >= numberOfFountains);
             while (numberOfFountains > 0 && fountainCandidates.Count > 0)
             {
                 fountainIndex = Random.Range(0, fountainCandidates.Count);
@@ -486,18 +521,24 @@ namespace Laresistance.LevelGeneration
 
         private void GenerateEquipmentInteractables()
         {
-            var equipmentCandidates = nodesData.FindAll(FilterPathEnd);
-            int numberOfEquipments = Mathf.FloorToInt(equipmentCandidates.Count * EQUIPMENTS_PER_CANDIDATE_ROOM);
-            if (numberOfEquipments == 0 && equipmentCandidates.Count > 0)
-            {
-                numberOfEquipments = 1; // At least one equipment if there is at least one candidate.
-            }
-            while (numberOfEquipments > 0 && equipmentCandidates.Count > 0)
+            var equipmentCandidates1 = nodesData.FindAll(FilterPathEnd).FindAll(FilterRoomWithNoRewards);
+            var equipmentCandidates2 = nodesData.FindAll(FilterRoomWithNoRewards).FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom);
+            int numberOfEquipments = EQUIPMENT_AMOUNT;
+            Assert.IsTrue(equipmentCandidates1.Count + equipmentCandidates2.Count >= numberOfEquipments);
+            if (numberOfEquipments > 0 && equipmentCandidates1.Count > 0)
             {
                 RoomInteractable equipment = new RoomInteractable() { roomInteractableType = RoomInteractableType.EquipmentReward };
-                int equipmentIndex = Random.Range(0, equipmentCandidates.Count);
-                equipmentCandidates[equipmentIndex].AddInteractable(equipment);
-                equipmentCandidates.RemoveAt(equipmentIndex);
+                int equipmentIndex = Random.Range(0, equipmentCandidates1.Count);
+                equipmentCandidates1[equipmentIndex].AddInteractable(equipment);
+                equipmentCandidates1.RemoveAt(equipmentIndex);
+                numberOfEquipments--;
+            }
+            while (numberOfEquipments > 0 && equipmentCandidates2.Count > 0)
+            {
+                RoomInteractable equipment = new RoomInteractable() { roomInteractableType = RoomInteractableType.EquipmentReward };
+                int equipmentIndex = Random.Range(0, equipmentCandidates2.Count);
+                equipmentCandidates2[equipmentIndex].AddInteractable(equipment);
+                equipmentCandidates2.RemoveAt(equipmentIndex);
                 numberOfEquipments--;
             }
         }

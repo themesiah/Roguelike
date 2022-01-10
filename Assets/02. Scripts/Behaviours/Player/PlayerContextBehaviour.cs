@@ -37,17 +37,15 @@ namespace Laresistance.Behaviours
         private GameEvent finishedChangingRoomEvent = default;
         [Header("References")]
         [SerializeField]
+        private RewardEvent rewardEvent = default;
+        [SerializeField]
         private RuntimeMapBehaviourSet mapBehavioursRef = default;
         [SerializeField]
         private ScriptableIntReference bloodReference = default;
         [SerializeField]
-        private ScriptableIntReference hardCurrencyReference = default;
-        [SerializeField]
         private RuntimeSingleCamera cameraReference = default;
         [SerializeField]
         private PlayerMovementData playerMovementData = default;
-        [SerializeField]
-        private RewardUILibrary rewardUILibrary = default;
         [SerializeField]
         private ScriptableIntReference battlePositionIntegerReference = default;
         [SerializeField]
@@ -78,8 +76,8 @@ namespace Laresistance.Behaviours
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
             states.Add("Map", new GameContextMapState(gameObject, camera, actionMapSwitchEvent, bloodReference, mapBehavioursRef, virtualCameraChangeEvent));
-            battleState = new GameContextBattleState(gameObject, camera, actionMapSwitchEvent, bloodReference, hardCurrencyReference, centerCheckLayerMask.value,
-                rewardUILibrary, battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef, saveGameEvent,
+            battleState = new GameContextBattleState(gameObject, actionMapSwitchEvent, rewardEvent, centerCheckLayerMask.value,
+                battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef, saveGameEvent,
                 difficultyRef, playerSelectionIndexRef.GetValue());
             states.Add("Battle", battleState);
             roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent, finishedChangingRoomEvent);

@@ -7,6 +7,8 @@
         NPC,
         Fountain,
         Pilgrim,
+        HCReward,
+        Hunter,
         LevelStart,
         LevelEnd,
         MAX

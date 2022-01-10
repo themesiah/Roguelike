@@ -1,7 +1,6 @@
 using UnityEngine;
 using Laresistance.Data;
 using Laresistance.Systems;
-using GamedevsToolbox.ScriptableArchitecture.Values;
 using System.Collections;
 using Laresistance.Systems.Dialog;
 using GamedevsToolbox.ScriptableArchitecture.Events;
@@ -19,24 +18,14 @@ namespace Laresistance.Behaviours
         private CharacterDialog statsDialog = default;
         [Header("References")]
         [SerializeField]
+        private RewardEvent rewardEvent = default;
+        [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
-        [SerializeField]
-        private ScriptableIntReference bloodReference = default;
-        [SerializeField]
-        private ScriptableIntReference hardCurrencyReference = default;
-        [SerializeField]
-        private RewardUILibrary uiLibrary = default;
         [SerializeField]
         private StringGameEvent gameContextSignal = default;
 
         private StatsType[] statsTypeList;
-        private RewardSystem rewardSystem;
         private bool alreadyActivated = false;
-
-        private void Start()
-        {
-            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
-        }
 
         public void SetStats(StatsType[] statsList)
         {
@@ -57,7 +46,7 @@ namespace Laresistance.Behaviours
         {
             yield return characterDialogEvent?.Raise(characterDialog);
             gameContextSignal.Raise("UI");
-            yield return rewardSystem.GetReward(new RewardData(0, 0, null, null, null, null, statsTypeList, playerDataRef.Get().player, true));
+            yield return rewardEvent?.Raise(new RewardData(0, 0, null, null, null, null, statsTypeList, playerDataRef.Get().player, true));
             gameContextSignal.Raise("Map");
             yield return characterDialogEvent?.Raise(statsDialog);
         }

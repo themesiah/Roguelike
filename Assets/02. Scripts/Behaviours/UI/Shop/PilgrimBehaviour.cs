@@ -11,7 +11,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Laresistance.Systems.Dialog;
-using UnityEngine.Analytics;
 
 namespace Laresistance.Behaviours
 {
@@ -38,6 +37,8 @@ namespace Laresistance.Behaviours
         private List<MapAbilityData> mapAbilityDatas = default;
         [Header("References")]
         [SerializeField]
+        private RewardEvent rewardEvent = default;
+        [SerializeField]
         private ScriptableIntReference bloodReference = default;
         [SerializeField]
         private ScriptableIntReference hardCurrencyReference = default;
@@ -45,8 +46,6 @@ namespace Laresistance.Behaviours
         private RuntimePlayerDataBehaviourSingle playerDataBehaviourReference = default;
         [SerializeField]
         private StringGameEvent gameContextSignal = default;
-        [SerializeField]
-        private RewardUILibrary rewardUILibrary = default;
         [SerializeField]
         private GameEvent saveGameEvent = default;
         [SerializeField]
@@ -77,7 +76,6 @@ namespace Laresistance.Behaviours
         private Button exitButton = default;
 
         private ShopSystem shopSystem;
-        private RewardSystem rewardSystem;
         private Player player;
         private bool initialized = false;
         private bool panelTweenFinished = false;
@@ -110,7 +108,6 @@ namespace Laresistance.Behaviours
                 return;
             player = playerDataBehaviourReference.Get().player;
             shopSystem = new ShopSystem(bloodReference, hardCurrencyReference);
-            rewardSystem = new RewardSystem(player, bloodReference, hardCurrencyReference, rewardUILibrary);
             BattleStatusManager statusManager = playerDataBehaviourReference.Get().StatusManager;
 
             goShopButton.onClick.AddListener(() => { offerSelected = -3; });
@@ -327,7 +324,7 @@ namespace Laresistance.Behaviours
         private IEnumerator GetReserveMinions()
         {
             int reserveSize = player.ClearMinionReserve();
-            yield return rewardSystem.GetReward(new RewardData(0, reserveSize, null, null, null, null, null, null));
+            yield return rewardEvent?.Raise(new RewardData(0, reserveSize, null, null, null, null, null, null));
         }
 
         private IEnumerator OpenShopCoroutine()
@@ -381,7 +378,7 @@ namespace Laresistance.Behaviours
                             {
                                 TransactionAnalytics(rd.minion.Data.name, "Minion", offer.Cost, rd.minion.Level);
                             }
-                            yield return rewardSystem.GetReward(rd);
+                            yield return rewardEvent?.Raise(rd);
                             UpdateShopPanel();
                             if (shopOfferUIList.Count > 0)
                             {

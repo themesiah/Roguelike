@@ -1,5 +1,4 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Events;
-using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Core;
 using Laresistance.Data;
 using Laresistance.Systems;
@@ -13,13 +12,9 @@ namespace Laresistance.Behaviours
     {
         [Header("References")]
         [SerializeField]
+        private RewardEvent rewardEvent = default;
+        [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
-        [SerializeField]
-        private RewardUILibrary rewardUILibrary = default;
-        [SerializeField]
-        private ScriptableIntReference bloodReference = default;
-        [SerializeField]
-        private ScriptableIntReference hardCurrencyReference = default;
         [SerializeField]
         private EquipmentData data = default;
         [SerializeField]
@@ -29,8 +24,6 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private bool randomDataFromDatas = false;
 
-        private RewardSystem rewardSystem;
-
         public static List<string> GlobalEquipList;
 
         private void Start()
@@ -39,7 +32,6 @@ namespace Laresistance.Behaviours
             {
                 GlobalEquipList = new List<string>();
             }
-            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, rewardUILibrary);
             if (randomDataFromDatas && data == null)
             {
                 var data = GetRandomData();
@@ -82,7 +74,7 @@ namespace Laresistance.Behaviours
         private IEnumerator RewardCoroutine(Equipment e)
         {
             gameContextSignal.Raise("UI");
-            yield return rewardSystem.GetReward(new RewardData(0, 0, null, null, e, null, null, null));
+            yield return rewardEvent?.Raise(new RewardData(0, 0, null, null, e, null, null, null));
             gameContextSignal.Raise("Map");
             Destroy(gameObject);
         }
