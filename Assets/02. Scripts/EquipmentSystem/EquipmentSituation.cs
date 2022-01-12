@@ -35,6 +35,9 @@
         ComboAbilityPower,
         NonComboAbilityPower,
         ShuffleStartingValue,
-        BattleEndHeal
+        BattleEndHeal,
+        ExcessDamageToBlood,
+        ExcessHealDamage,
+        ShieldDestroyedSupportCooldown
     }
 }

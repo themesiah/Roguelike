@@ -56,6 +56,7 @@ namespace Laresistance.Core
             StatusManager.BattleStart();
             AbilityInputProcessor.BattleStart();
             animator.SetTrigger("StartBattle");
+            this.StatusManager.health.OnExcessHealToDamage += OnExcessHealToDamage;
         }
 
         public void EndBattle()
@@ -65,6 +66,15 @@ namespace Laresistance.Core
             StatusManager.BattleEnd();
             AbilityInputProcessor.BattleEnd();
             animator.SetTrigger("StopBattle");
+            this.StatusManager.health.OnExcessHealToDamage -= OnExcessHealToDamage;
+        }
+
+        private void OnExcessHealToDamage(CharacterHealth sender, int healExcess, int damage)
+        {
+            foreach(var enemy in enemies)
+            {
+                enemy.StatusManager.health.TakeDamage(damage, enemy.StatusManager.GetEquipmentsContainer(), StatusManager.GetEquipmentsContainer());
+            }
         }
 
         public bool Select()

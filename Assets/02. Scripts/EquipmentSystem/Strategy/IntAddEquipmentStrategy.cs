@@ -9,10 +9,15 @@ namespace Laresistance.Equipments
         private int value = default;
         [SerializeField]
         private bool cantBeZero = true;
+        [SerializeField]
+        private bool cantBeNegative = false;
 
         public override int ModificationStrategy(int originalValue)
         {
             if (cantBeZero)
+            {
+                return System.Math.Max(1, originalValue + value);
+            } else if (cantBeNegative)
             {
                 return System.Math.Max(0, originalValue + value);
             } else

@@ -64,12 +64,12 @@ namespace Laresistance.Behaviours
             if (value < bloodChance)
             {
                 amount = Random.Range(bloodAmountRange.x, bloodAmountRange.y);
-                rd = new RewardData(amount, 0, null, null, null, null, null, null);
+                rd = new RewardData(amount, 0, null, null, null, null, null, null, false);
                 bloodObtainedEvent?.Raise(amount);
             } else if (value < bloodChance+hardCurrencyChance)
             {
                 amount = Random.Range(hardCurrencyAmountRange.x, hardCurrencyAmountRange.y);
-                rd = new RewardData(0, amount, null, null, null, null, null, null);
+                rd = new RewardData(0, amount, null, null, null, null, null, null, false);
                 hardCurrencyObtainedEvent?.Raise(amount);
             }
 

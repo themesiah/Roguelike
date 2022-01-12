@@ -46,8 +46,6 @@ namespace Laresistance.Battle
         public event OnNextShuffleProgressHandler OnNextSupportAbilityProgress;
         public delegate void OnAbilityOnQueueHandler(PlayerAbilityInput sender, int slot, bool onQueue);
         public event OnAbilityOnQueueHandler OnAbilityOnQueue;
-        //public delegate void OnShuffleHandler(PlayerAbilityInput sender, int[] shuffled);
-        //public event OnShuffleHandler OnShuffle;
         public delegate void OnRenewAbilitiesHandler(PlayerAbilityInput sender);
         public event OnRenewAbilitiesHandler OnRenewAbilities;
         public delegate void OnAbilityOffQueueHandler(PlayerAbilityInput sender);
@@ -69,6 +67,7 @@ namespace Laresistance.Battle
             abilitiesToUseList = new List<AbilityExecutionData>();
             abilitiesToUseIndexList = new List<int>();
             battleStatus.OnStatusApplied += OnApplyStatus;
+            battleStatus.health.OnShieldTotallyDestroyed += OnShieldTotallyDestroyed;
         }
 
         private void OnApplyStatus(BattleStatusManager sender, StatusIconType statusType, float duration)
@@ -76,6 +75,17 @@ namespace Laresistance.Battle
             if (statusType == StatusIconType.Stun)
             {
                 ClearAbilityToUseQueue();
+            }
+        }
+
+        private void OnShieldTotallyDestroyed(CharacterHealth health)
+        {
+            float supportRenew = 0f;
+            supportRenew = battleStatus.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.ShieldDestroyedSupportCooldown, supportRenew);
+            if (supportRenew > 0f)
+            {
+                player.supportAbility.ForceTick(supportRenew, false);
+                ExecuteOnNextSupportAbilityProgress(NextSupportAbilityProgress);
             }
         }
 

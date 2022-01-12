@@ -38,12 +38,16 @@ namespace Laresistance.Battle
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.ShieldBloodCost, bloodRef);
-            int healthCost = 0;
-            healthCost = equipments.ModifyValue(Equipments.EquipmentSituation.ShieldHealthCost, healthCost);
+            // Calculate equipment shield health cost
+            int currentHealth = SelfStatus.health.GetCurrentHealth();
+            currentHealth = equipments.ModifyValue(Equipments.EquipmentSituation.ShieldHealthCost, currentHealth);
+            int lastHealth = SelfStatus.health.GetCurrentHealth();
+            int healthCost = lastHealth - currentHealth;
             if (healthCost > 0)
             {
                 SelfStatus.health.TakeDotDamage(healthCost);
             }
+            // Add the shield
             target.health.AddShield(GetPower(level, equipments));
         }
 

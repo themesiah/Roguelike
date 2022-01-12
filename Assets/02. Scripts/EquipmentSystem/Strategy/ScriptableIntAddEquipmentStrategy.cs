@@ -8,12 +8,25 @@ namespace Laresistance.Equipments
     {
         [SerializeField]
         private int value = default;
+        [SerializeField]
+        private bool cantBeZero = false;
+        [SerializeField]
+        private bool cantBeNegative = false;
 
         public override ScriptableIntReference ModificationStrategy(ScriptableIntReference reference)
         {
             if (reference != null)
             {
-                reference.SetValue(reference.GetValue() + value);
+                int val = reference.GetValue() + value;
+                if (cantBeZero)
+                {
+                    val = System.Math.Max(1, val);
+                }
+                else if (cantBeNegative)
+                {
+                    val = System.Math.Max(0, val);
+                }
+                reference.SetValue(val);
             }
             return reference;
         }

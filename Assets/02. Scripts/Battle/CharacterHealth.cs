@@ -45,6 +45,10 @@ namespace Laresistance.Battle
         public event OnAttackBlockedHandler OnAttackBlocked;
         public delegate void OnAttackReceivedHandler(CharacterHealth sender);
         public event OnAttackReceivedHandler OnAttackReceived;
+        public delegate void OnExcessHealToDamageHandler(CharacterHealth sender, int healExcess, int damage);
+        public event OnExcessHealToDamageHandler OnExcessHealToDamage;
+        public delegate void OnShieldTotallyDestroyedHandler(CharacterHealth sender);
+        public event OnShieldTotallyDestroyedHandler OnShieldTotallyDestroyed;
         #endregion
 
         #region Public API
@@ -107,6 +111,21 @@ namespace Laresistance.Battle
         {
             if (currentHealth <= 0)
                 return;
+            // Excess heal to damage equipment case
+            int nonClampedTotal = currentHealth + power;
+            if (nonClampedTotal > maxHealth)
+            {
+                int excess = nonClampedTotal - maxHealth;
+                int damage = excess;
+                EquipmentsContainer equipmentsContainer = this.selfStatus.GetEquipmentsContainer();
+                float damageMultiplier = 0f;
+                damageMultiplier = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.ExcessHealDamage, damageMultiplier);
+                damage = (int)(damageMultiplier * damage);
+                if (damage > 0)
+                {
+                    OnExcessHealToDamage?.Invoke(this, excess, damage);
+                }
+            }
             currentHealth += power;
             currentHealth = System.Math.Min(currentHealth, maxHealth);
             OnHealed?.Invoke(this, power, currentHealth);
@@ -147,6 +166,7 @@ namespace Laresistance.Battle
                         s.remainingAmount = 0;
                         currentShields.Remove(s);
                         OnShieldsChanged?.Invoke(this, -last, TotalShields(), true, GetPercentShield());
+                        OnShieldTotallyDestroyed?.Invoke(this);
                     }
                 } else
                 {
@@ -238,8 +258,8 @@ namespace Laresistance.Battle
         public void RecalculateMaxHealth(EquipmentsContainer equipments)
         {
             maxHealth = originalMaxHealth;
-            maxHealth = equipments.ModifyValue(Equipments.EquipmentSituation.MaxHealth, maxHealth);
             maxHealth = selfStatus.battleStats.CalculateHealth(maxHealth);
+            maxHealth = equipments.ModifyValue(Equipments.EquipmentSituation.MaxHealth, maxHealth);
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;

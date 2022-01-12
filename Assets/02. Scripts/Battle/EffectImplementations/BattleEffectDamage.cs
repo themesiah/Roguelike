@@ -47,7 +47,7 @@ namespace Laresistance.Battle
             PerformAttackEffect(target, damage, equipments, bloodRef);
         }
 
-        protected int PerformAttackEffect(BattleStatusManager target, int damage, EquipmentsContainer equipments, ScriptableIntReference bloodRef = null)
+        protected int PerformAttackEffect(BattleStatusManager target, int damage, EquipmentsContainer equipments, ScriptableIntReference bloodRef)
         {
             equipments.ModifyValue(Equipments.EquipmentSituation.AbilityBloodCost, bloodRef);
             equipments.ModifyValue(Equipments.EquipmentSituation.AttackBloodCost, bloodRef);
@@ -57,8 +57,15 @@ namespace Laresistance.Battle
                 // Damage barrier
                 damage -= (int)target.GetValueModifier(StatusType.Barrier);
                 damage = System.Math.Max(damage, 1);
+                int lastEnemyHealth = target.health.GetCurrentHealth();
                 // Deal damage (equipment shenanigans calculated in TakeDamage)
                 damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer(), equipments);
+                int damageHealthDifference = damageDone - lastEnemyHealth;
+                if (damageHealthDifference > 0 && bloodRef != null)
+                {
+                    damageHealthDifference = equipments.ModifyValue(Equipments.EquipmentSituation.ExcessDamageToBlood, damageHealthDifference);
+                    bloodRef.SetValue(bloodRef.GetValue() + damageHealthDifference);
+                }
                 // Check for equipment and buff retaliation and apply if necessary
                 int retaliation = 0;
                 retaliation = target.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.RetaliationDamage, retaliation);

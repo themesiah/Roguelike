@@ -214,6 +214,18 @@ namespace Laresistance.Battle
             }
         }
 
+        public void ForceTick(float deltaTime, bool modifyValue)
+        {
+            float totalDelta = deltaTime;
+            if (modifyValue)
+            {
+                totalDelta = totalDelta * statusManager.GetValueModifier(StatusType.Speed);
+            }
+
+            cooldownTimer -= totalDelta;
+            internalCooldown -= totalDelta;
+        }
+
         public IEnumerator ExecuteAbility(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
             // We need to actually start a new coroutine here because prioritary abilities can and should be processed BEFORE non prioritary abilities.
