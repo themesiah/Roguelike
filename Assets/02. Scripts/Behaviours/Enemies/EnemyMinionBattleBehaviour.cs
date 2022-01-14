@@ -25,6 +25,7 @@ namespace Laresistance.Behaviours
 
         public override RewardData GetReward()
         {
+            minion.CutTo4Abilities();
             RewardData rewardData = new RewardData(0, 0, minion, null, null, null, null, null);
             return rewardData;
         }

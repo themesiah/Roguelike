@@ -13,6 +13,11 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Rush;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         public override float GetValue()
         {
             return active ? 1f : 0f;
@@ -22,7 +27,7 @@ namespace Laresistance.Battle
         {
             active = true;
             timer = GameConstantsBehaviour.Instance.bodyRushBuffDuration.GetValue();
-            GetDuration(ref timer);
+            GetDuration(ref timer, IsGoodStatus(value));
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Rush, timer);
         }
 

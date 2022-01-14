@@ -19,10 +19,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Retaliation;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.retaliationBuffDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             retaliationEffectInstances.Add(new RetaliationEffect() { retaliationDamage = (int)value, timer = duration });
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Retaliation, duration);
         }

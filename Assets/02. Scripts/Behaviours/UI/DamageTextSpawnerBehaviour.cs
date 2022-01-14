@@ -93,6 +93,15 @@ namespace Laresistance.Behaviours
             textObject.transform.localPosition = Vector3.zero;
         }
 
+        public void SpawnWardText()
+        {
+            GameObject textObject = Instantiate(textPrefab, canvasObject.transform);
+            Text text = textObject.GetComponent<Text>();
+            text.text = "WARD";
+            text.color = Color.white;
+            textObject.transform.localPosition = Vector3.zero;
+        }
+
         private void OnDestroy()
         {
             Destroy(canvasObject.gameObject);

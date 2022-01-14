@@ -39,6 +39,8 @@ namespace Laresistance.Behaviours
         private UnityEvent OnSlowed = default;
         [SerializeField]
         private UnityEvent OnPoisoned = default;
+        [SerializeField]
+        private UnityEvent OnWarded = default;
 
         private bool haveShields = false;
         private bool haveDamageImprovement = false;
@@ -64,6 +66,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.OnBuffsRemoved += OnRemoveBuffs;
             battleBehaviour.StatusManager.OnDebuffsRemoved += OnRemoveDebuffs;
             battleBehaviour.StatusManager.OnSingletonStatusRemoved += OnRemoveSingleton;
+            battleBehaviour.StatusManager.OnStatusWarded += OnStatusWarded;
         }
 
         private void OnDisable()
@@ -74,6 +77,7 @@ namespace Laresistance.Behaviours
             battleBehaviour.StatusManager.OnBuffsRemoved -= OnRemoveBuffs;
             battleBehaviour.StatusManager.OnDebuffsRemoved -= OnRemoveDebuffs;
             battleBehaviour.StatusManager.OnSingletonStatusRemoved -= OnRemoveSingleton;
+            battleBehaviour.StatusManager.OnStatusWarded -= OnStatusWarded;
         }
 
         private void OnStatusApplied(BattleStatusManager sender, StatusIconType statusType, float duration)
@@ -253,6 +257,11 @@ namespace Laresistance.Behaviours
                 if (ev.IsStatusType(statusType))
                     ev.Invoke();
             }
+        }
+
+        private void OnStatusWarded(BattleStatusManager statusManager)
+        {
+            OnWarded?.Invoke();
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Laresistance.Battle
         private Dictionary<StatusType, StatusEffect> statusEffects;
         private List<StatusEffect> statusEffectsList;
         private float energyPerSecond;
+        private bool firstAttackDone = false;
+        private int statusWard = 0;
         #endregion
 
         #region Public variables
@@ -30,6 +32,7 @@ namespace Laresistance.Battle
         public bool WillBlock => GetStatus(StatusType.ShieldPrepared).AppliesBuff();
         public bool HaveParry => GetStatus(StatusType.ParryPrepared).HaveBuff();
         public bool HaveBlock => GetStatus(StatusType.ShieldPrepared).HaveBuff();
+        public bool FirstAttackDone => firstAttackDone;
         public CharacterBattleBehaviour ParentBattleBehaviour => parentBattleBehaviour;
         public BattleStats battleStats;
         #endregion
@@ -37,6 +40,8 @@ namespace Laresistance.Battle
         #region Events
         public delegate void OnStatusAppliedHandler(BattleStatusManager sender, StatusIconType statusType, float duration);
         public OnStatusAppliedHandler OnStatusApplied;
+        public delegate void OnStatusWardedHandler(BattleStatusManager sender);
+        public OnStatusWardedHandler OnStatusWarded;
         public delegate void OnEnergyChangedHandler(float currentEnergy, int usableEnergy);
         public event OnEnergyChangedHandler OnEnergyChanged;
         public delegate void OnNextAbilityChangedHandler(BattleAbility nextAbility);
@@ -140,7 +145,15 @@ namespace Laresistance.Battle
 
         public void ApplyStatusEffect(BattleStatusManager source, StatusType type, float value)
         {
-            GetStatus(type).AddValue(source, value);
+            if (statusWard > 0 && !GetStatus(type).IsGoodStatus(value))
+            {
+                statusWard--;
+                OnStatusWarded?.Invoke(this);
+            }
+            else
+            {
+                GetStatus(type).AddValue(source, value);
+            }
             if (((RushStatusEffect)GetStatus(StatusType.Rush)).HaveRush())
             {
                 GetStatus(type).Cure();
@@ -154,6 +167,9 @@ namespace Laresistance.Battle
 
         public void BattleStart()
         {
+            firstAttackDone = false;
+            statusWard = 0;
+            statusWard = GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.BattleStartWarding, statusWard);
             ResetStatus();
             health.BattleStart();
         }
@@ -239,6 +255,11 @@ namespace Laresistance.Battle
             healAmount = equipmentsContainer.ModifyValue(Equipments.EquipmentSituation.BattleEndHeal, healAmount);
             if (healAmount > 0)
                 health.Heal(healAmount);
+        }
+
+        public void SetFirstAttackDone()
+        {
+            firstAttackDone = true;
         }
 
         public void ExecuteSupportAbility()

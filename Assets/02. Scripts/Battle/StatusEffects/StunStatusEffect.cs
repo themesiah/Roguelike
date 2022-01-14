@@ -7,6 +7,11 @@
         }
         public override StatusType StatusType => StatusType.Stun;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return false;
+        }
+
         private float stunTimer;
 
         protected override void AddValue(float value)
@@ -14,7 +19,7 @@
             if (value > 0f && stunTimer < value)
             {
                 stunTimer = value;
-                GetDuration(ref stunTimer);
+                GetDuration(ref stunTimer, IsGoodStatus(value));
                 statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Stun, stunTimer);
             }
         }

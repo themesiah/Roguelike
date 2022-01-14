@@ -46,6 +46,7 @@ namespace Laresistance.Systems
 
             if (reward.minion != null)
             {
+                reward.minion.CutTo4Abilities();
                 int level = reward.minion.Level;
                 level = player.GetEquipmentContainer().ModifyValue(Equipments.EquipmentSituation.RecruitedMinionLevel, level);
                 reward.minion.SetLevel(level);

@@ -38,6 +38,10 @@
         BattleEndHeal,
         ExcessDamageToBlood,
         ExcessHealDamage,
-        ShieldDestroyedSupportCooldown
+        ShieldDestroyedSupportCooldown,
+        DamageReceivedNegativeStatus,
+        BattleStartWarding,
+        FirstAttack,
+        SelfNegativeStatusDuration
     }
 }

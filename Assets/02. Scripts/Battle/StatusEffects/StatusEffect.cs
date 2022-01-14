@@ -30,9 +30,19 @@ namespace Laresistance.Battle
         public abstract void RemoveStatus();
         public abstract void CopyTo(StatusEffect other);
 
-        protected virtual void GetDuration(ref float duration)
+        public abstract bool IsGoodStatus(float value);
+
+        protected virtual void GetDuration(ref float duration, bool goodStatus)
         {
             duration = sourceStatusManager.battleStats.CalculateStatusTime(duration);
+            duration = sourceStatusManager.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.StatusDuration, duration);
+            if (goodStatus)
+            {
+                // Nothing for now
+            } else
+            {
+                duration = statusManager.GetEquipmentsContainer().ModifyValue(Equipments.EquipmentSituation.SelfNegativeStatusDuration, duration);
+            }
         }
     }
 }

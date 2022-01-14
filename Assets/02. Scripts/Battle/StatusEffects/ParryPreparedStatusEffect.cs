@@ -17,6 +17,11 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.ParryPrepared;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         public void SetCallback(UnityAction callback)
         {
             onParryStatusFinished = callback;
@@ -25,7 +30,7 @@ namespace Laresistance.Battle
         protected override void AddValue(float value)
         {
             parryPreparedTimer = PreparationTime;
-            GetDuration(ref parryPreparedTimer);
+            GetDuration(ref parryPreparedTimer, IsGoodStatus(value));
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.ParryPrepared, parryPreparedTimer);
         }
 

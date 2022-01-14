@@ -19,6 +19,11 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Speed;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return value > 1f;
+        }
+
         public override float GetValue()
         {
             float speedModifier = 1f;
@@ -33,7 +38,7 @@ namespace Laresistance.Battle
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.speedModifierDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
 
             speedEffectInstances.Add(new SpeedEffect() { speedCoeficient = value, timer = duration });
             if (value > 1f)

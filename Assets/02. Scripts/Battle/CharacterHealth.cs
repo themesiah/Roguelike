@@ -139,6 +139,10 @@ namespace Laresistance.Battle
 
             remainingPower = equipments.ModifyValue(Equipments.EquipmentSituation.DamageReceived, remainingPower);
             remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.EnemyDamageReceived, remainingPower);
+            if (selfStatus.HaveDebuff())
+            {
+                remainingPower = damageDealerEquipments.ModifyValue(Equipments.EquipmentSituation.DamageReceivedNegativeStatus, remainingPower);
+            }
             if (percentDamageBlock > 0f)
             {
                 int beforePercentBlock = remainingPower;

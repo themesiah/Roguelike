@@ -23,10 +23,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Regeneration;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.healOverTimeDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             healsOverTime.Add(new HealOverTime() { power = (int)value, ticked = 0, timer = 0f });
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Regeneration, duration);
         }
@@ -65,7 +70,7 @@ namespace Laresistance.Battle
                     hot.timer = hot.timer - GameConstantsBehaviour.Instance.healOverTimeTickDelay.GetValue();
 
                     float duration = GameConstantsBehaviour.Instance.healOverTimeDuration.GetValue();
-                    GetDuration(ref duration);
+                    GetDuration(ref duration, true);
 
                     if (hot.ticked >= Mathf.FloorToInt(duration / GameConstantsBehaviour.Instance.healOverTimeTickDelay.GetValue()))
                     {

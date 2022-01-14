@@ -19,10 +19,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Blind;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return false;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.blindDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             blindStatuses.Add(new BlindStatus() { coeficient = value, timer = duration });
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Blind, duration);
         }

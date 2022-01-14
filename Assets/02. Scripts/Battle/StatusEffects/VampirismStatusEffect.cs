@@ -16,10 +16,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Vampirism;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         protected override void AddValue(float value)
         {
             vampirismTimer = PreparationTime;
-            GetDuration(ref vampirismTimer);
+            GetDuration(ref vampirismTimer, IsGoodStatus(value));
             coeficient = value;
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Vampirism, vampirismTimer);
         }

@@ -14,6 +14,11 @@ namespace Laresistance.Battle
         public ShieldPreparedStatusEffect(BattleStatusManager statusManager) : base(statusManager) { }
         public override StatusType StatusType => StatusType.ShieldPrepared;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         public void SetCallback(UnityAction callback)
         {
             onShieldStatusFinished = callback;
@@ -22,7 +27,7 @@ namespace Laresistance.Battle
         protected override void AddValue(float value)
         {
             shieldPreparedTimer = PreparationTime;
-            GetDuration(ref shieldPreparedTimer);
+            GetDuration(ref shieldPreparedTimer, IsGoodStatus(value));
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.ShieldPrepared, shieldPreparedTimer);
         }
 

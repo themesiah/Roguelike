@@ -22,10 +22,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.DoT;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return false;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             damageOverTimes.Add(new DamageOverTime() { power = (int)value, timer = 0, ticked = 0 });
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.DoT, duration);
         }
@@ -50,7 +55,7 @@ namespace Laresistance.Battle
                     dot.timer = dot.timer - GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue();
 
                     float duration = GameConstantsBehaviour.Instance.damageOverTimeDuration.GetValue();
-                    GetDuration(ref duration);
+                    GetDuration(ref duration, false);
 
                     if (dot.ticked >= Mathf.FloorToInt(duration / GameConstantsBehaviour.Instance.damageOverTimeTickDelay.GetValue()))
                     {

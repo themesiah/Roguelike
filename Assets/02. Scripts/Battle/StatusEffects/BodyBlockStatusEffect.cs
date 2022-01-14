@@ -17,10 +17,15 @@ namespace Laresistance.Battle
 
         }
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.bodyBlockBuffDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             blockValue = value;
             timer = duration;
             statusManager.health.SetPercentDamageBlock(blockValue);

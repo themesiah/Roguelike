@@ -19,10 +19,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.DamageModification;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return value > 1f;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.damageModifierDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             damageModifications.Add(new TempDamageChange() { modifier = value, timer = duration });
             if (value > 1f) {
                 statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.DamageImprovement, -1f);

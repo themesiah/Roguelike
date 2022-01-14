@@ -58,6 +58,12 @@ namespace Laresistance.Battle
                 damage -= (int)target.GetValueModifier(StatusType.Barrier);
                 damage = System.Math.Max(damage, 1);
                 int lastEnemyHealth = target.health.GetCurrentHealth();
+                // Extra damage on first attack?
+                if (!SelfStatus.FirstAttackDone)
+                {
+                    SelfStatus.SetFirstAttackDone();
+                    damage = equipments.ModifyValue(Equipments.EquipmentSituation.FirstAttack, damage);
+                }
                 // Deal damage (equipment shenanigans calculated in TakeDamage)
                 damageDone = target.health.TakeDamage(damage, target.GetEquipmentsContainer(), equipments);
                 int damageHealthDifference = damageDone - lastEnemyHealth;

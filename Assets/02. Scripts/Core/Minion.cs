@@ -131,5 +131,18 @@ namespace Laresistance.Core
         {
             return Level < MAX_MINION_LEVEL;
         }
+
+        public void CutTo4Abilities()
+        {
+            if (abilities.Length != 4)
+            {
+                BattleAbility[] tempAbilities = new BattleAbility[4];
+                for (int i = 0; i < 4; ++i)
+                {
+                    tempAbilities[i] = abilities[i];
+                }
+                abilities = tempAbilities;
+            }
+        }
     } 
 }

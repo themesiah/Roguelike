@@ -19,10 +19,15 @@ namespace Laresistance.Battle
 
         public override StatusType StatusType => StatusType.Barrier;
 
+        public override bool IsGoodStatus(float value)
+        {
+            return true;
+        }
+
         protected override void AddValue(float value)
         {
             float duration = GameConstantsBehaviour.Instance.barrierBuffDuration.GetValue();
-            GetDuration(ref duration);
+            GetDuration(ref duration, IsGoodStatus(value));
             barrierEffectInstances.Add(new BarrierEffect() { barrier = (int)value, timer = duration });
             statusManager.OnStatusApplied?.Invoke(statusManager, StatusIconType.Barrier, duration);
         }
