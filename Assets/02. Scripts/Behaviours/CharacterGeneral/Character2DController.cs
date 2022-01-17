@@ -37,6 +37,10 @@ namespace Laresistance.Behaviours
         private float maxSlopeAngle = 45f;
         [SerializeField]
         private float timeToFall = 0.1f;
+        [SerializeField]
+        private bool clampFallSpeed = true;
+        [SerializeField]
+        private float maxFallSpeed = 5f;
 
         [Header("Events")]
         public UnityEvent<Vector3> OnLand = default;
@@ -175,6 +179,11 @@ namespace Laresistance.Behaviours
             else if (!isGrounded)
             {
                 targetVelocity = new Vector2(currentMovement, body.velocity.y);
+            }
+
+            if (clampFallSpeed && targetVelocity.y < -maxFallSpeed)
+            {
+                targetVelocity.y = -maxFallSpeed;
             }
 
 
