@@ -1,27 +1,53 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using Laresistance.Movement;
-using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Battle;
+using Laresistance.Data;
+using Laresistance.StateMachines;
+using System.Collections.Generic;
+using GamedevsToolbox.StateMachine;
 
 namespace Laresistance.Behaviours
 {
     public class EnemyMapBehaviour : MapBehaviour
     {
         [SerializeField]
-        private ScriptableFloatReference speedReference = default;
+        private EnemyMapData enemyMapData = default;
         [SerializeField]
         private LayerMask raycastLayerMask = default;
         [SerializeField]
         private Transform raycastPivot = default;
         [SerializeField]
         private bool partyMember = false;
+        [SerializeField]
+        private RuntimePlayerDataBehaviourSingle playerDataRef = default;
+        [SerializeField]
+        private UnityEvent OnPlayerDiscovered = default;
+        [SerializeField]
+        private UnityEvent OnPlayerLost = default;
 
         private IMovementManager movementManager;
+        private SimpleSignalStateMachine stateMachine;
 
         protected void Awake()
         {
-            movementManager = new EnemySimpleMovementManager(characterController, speedReference, raycastLayerMask.value, raycastPivot);
+            GameObject playerObject = playerDataRef.Get().gameObject;
+            stateMachine = new SimpleSignalStateMachine();
+            Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
+
+            states.Add("Move", new EnemyMapSimpleMovementState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, playerObject, OnPlayerDiscovered, OnPlayerLost));
+            if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.Chase)
+            {
+                states.Add("PlayerDiscover", new EnemyMapChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, playerObject));
+            } else if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.DistanceAttack)
+            {
+                states.Add("PlayerDiscover", new EnemyMapDistanceAttack(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, playerObject));
+            }
+
+            stateMachine.SetStates(states);
+            StartCoroutine(StateMachineCoroutine());
+            movementManager = new EnemySimpleMovementManager(characterController, enemyMapData, raycastLayerMask.value, raycastPivot);
         }
 
         private IEnumerator Start()
@@ -48,7 +74,7 @@ namespace Laresistance.Behaviours
         {
             if (!partyMember)
             {
-                movementManager.Tick(Time.deltaTime);
+                //movementManager.Tick(Time.deltaTime);
             }
         }
 
@@ -56,12 +82,28 @@ namespace Laresistance.Behaviours
         {
             //base.PauseMapBehaviour();
             movementManager?.Pause();
+            stateMachine.Pause();
         }
 
         public override void ResumeMapBehaviour()
         {
             //base.ResumeMapBehaviour();
             movementManager?.Resume();
+            stateMachine.Resume();
+        }
+
+        public void ReceiveSignal(string signal)
+        {
+
+            stateMachine.ReceiveSignal(signal);
+        }
+
+        IEnumerator StateMachineCoroutine()
+        {
+            while (true)
+            {
+                yield return stateMachine.Update(null);
+            }
         }
     }
 }

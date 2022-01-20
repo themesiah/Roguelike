@@ -132,6 +132,12 @@ namespace Laresistance.Behaviours
                 animator.ResetTrigger(trigger);
         }
 
+        public void SetBool(string name, bool state)
+        {
+            if (animator.HasParameter(name))
+                animator.SetBool(name, state);
+        }
+
         public bool IsAnimating()
         {
             return animating;

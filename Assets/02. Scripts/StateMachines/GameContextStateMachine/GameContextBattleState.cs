@@ -44,6 +44,7 @@ namespace Laresistance.StateMachines
             virtualCameraChangeEvent.Raise("BattleCamera");
             ConfigureEnemyObjects();
             SpawnPlayerCompanions();
+            playerObject.GetComponent<Character2DController>().Move(0f);
             // Move characters
             var battlePositionData = BattlePosition.MoveCharacters(this.playerObject, this.enemyObjects, centerCheckLayerMask);
             int position = 0;

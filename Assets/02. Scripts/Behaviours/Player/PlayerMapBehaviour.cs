@@ -166,6 +166,7 @@ namespace Laresistance.Behaviours
                 {
                     isAttacking = true;
                     attackStopTimeTimer = attackStopTime;
+                    characterController.Move(0f);
                     onMapAttack?.Invoke();
                 }
             }

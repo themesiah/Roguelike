@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Laresistance.Behaviours
 {
@@ -6,6 +7,11 @@ namespace Laresistance.Behaviours
     {
         [SerializeField]
         private AnimatorWrapperBehaviour animatorWrapper = default;
+
+        public IEnumerator PlayAnimation(string trigger)
+        {
+            yield return animatorWrapper.PlayAnimation(trigger);
+        }
 
         public void SetHorizontalSpeed(float speed)
         {
@@ -25,6 +31,16 @@ namespace Laresistance.Behaviours
         public void SetTrigger(string trigger)
         {
             animatorWrapper?.SetTrigger(trigger);
+        }
+
+        public void SetBoolTrue(string trigger)
+        {
+            animatorWrapper?.SetBool(trigger, true);
+        }
+
+        public void SetBoolFalse(string trigger)
+        {
+            animatorWrapper?.SetBool(trigger, false);
         }
 
         public void ResetTrigger(string trigger)

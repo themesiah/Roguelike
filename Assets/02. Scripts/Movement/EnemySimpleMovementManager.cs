@@ -1,5 +1,6 @@
 ﻿using GamedevsToolbox.ScriptableArchitecture.Values;
 using Laresistance.Behaviours;
+using Laresistance.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,17 +10,17 @@ namespace Laresistance.Movement
 {
     public class EnemySimpleMovementManager : IMovementManager
     {
-        private ScriptableFloatReference movementSpeed;
+        private EnemyMapData enemyMapData;
         private int raycastLayerMask;
         private Transform raycastPivot;
         private Character2DController characterController;
 
         private int pauseStack = 0;
 
-        public EnemySimpleMovementManager(Character2DController characterController, ScriptableFloatReference movementSpeed, int raycastLayerMask, Transform raycastPivot)
+        public EnemySimpleMovementManager(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot)
         {
             this.characterController = characterController;
-            this.movementSpeed = movementSpeed;
+            this.enemyMapData = enemyMapData;
             this.raycastLayerMask = raycastLayerMask;
             this.raycastPivot = raycastPivot;
         }
@@ -81,12 +82,12 @@ namespace Laresistance.Movement
             return false;
         }
 
-        public void Turn()
+        private void Turn()
         {
             characterController.Flip();
         }
 
-        public void Turn(bool r)
+        private void Turn(bool r)
         {
             characterController.Flip(r);
         }
@@ -94,7 +95,7 @@ namespace Laresistance.Movement
         private void Move()
         {
             float modifier = characterController.FacingRight ? 1f : -1f;
-            float movement = modifier * movementSpeed.GetValue();
+            float movement = modifier * enemyMapData.Speed;
             characterController.Move(movement);
         }
     }

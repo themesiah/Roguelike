@@ -191,7 +191,7 @@ namespace Laresistance.Behaviours
 
             OnHorizontalVelocityChanged?.Invoke(currentMovement);
 
-            currentMovement = 0f;
+            //currentMovement = 0f;
         }
 
         public void Move(float movement)
@@ -468,6 +468,7 @@ namespace Laresistance.Behaviours
             body.simulated = false;
             beforePauseVelocity = body.velocity;
             body.velocity = Vector3.zero;
+            currentMovement = 0f;
             OnHorizontalVelocityChanged?.Invoke(0f);
             OnVerticalVelocityChanged?.Invoke(0f);
         }
