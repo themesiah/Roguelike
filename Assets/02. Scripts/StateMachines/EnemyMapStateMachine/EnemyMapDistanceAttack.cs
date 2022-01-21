@@ -15,8 +15,8 @@ namespace Laresistance.StateMachines
         private float delayTimer = 0f;
         private IRangedAttackSpawner rangedAttackSpawner;
 
-        public EnemyMapDistanceAttack(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, GameObject playerObject)
-            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, playerObject)
+        public EnemyMapDistanceAttack(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject)
+            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject)
         {
             rangedAttackSpawner = characterController.gameObject.GetComponent<IRangedAttackSpawner>();
         }
@@ -39,6 +39,7 @@ namespace Laresistance.StateMachines
                 delayTimer += Time.deltaTime;
                 if (delayTimer >= enemyMapData.AttackDelay)
                 {
+                    Turn(characterController.transform.position.x - playerObject.transform.position.x < 0f);
                     yield return rangedAttackSpawner.SpawnRangedAttack(playerObject.transform);
                     delayTimer = 0f;
                 }

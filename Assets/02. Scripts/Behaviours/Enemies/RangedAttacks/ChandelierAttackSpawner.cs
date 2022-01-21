@@ -29,8 +29,8 @@ namespace Laresistance.Behaviours
                 };
                 yield return op1;
 
-                yield return animatorWrapper.PlayAnimation("MapAttack");
                 yield return new WaitForSeconds(0.5f);
+                yield return animatorWrapper.PlayAnimation("MapAttack");
 
                 var op2 = fireHazardReference.InstantiateAsync(null, true);
                 op2.Completed += (handle) =>

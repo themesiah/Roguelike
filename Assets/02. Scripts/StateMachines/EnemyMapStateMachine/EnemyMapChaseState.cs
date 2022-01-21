@@ -13,8 +13,8 @@ namespace Laresistance.StateMachines
         private static float MAX_TIME_NO_SEE_PLAYER = 1.5f;
         private float timeNoSeePlayer = 0f;
 
-        public EnemyMapChaseState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, GameObject playerObject)
-            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, playerObject)
+        public EnemyMapChaseState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject)
+            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject)
         {
         }
 
@@ -31,6 +31,10 @@ namespace Laresistance.StateMachines
         public override IEnumerator Update(Action<string> resolve)
         {
             Move();
+            if (CheckRaycastNeedToTurn())
+            {
+                resolve("Move");
+            } else
             if (CheckPlayerDiscovered())
             {
                 timeNoSeePlayer = 0f;

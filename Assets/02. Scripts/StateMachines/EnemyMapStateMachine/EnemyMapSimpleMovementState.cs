@@ -14,9 +14,9 @@ namespace Laresistance.StateMachines
         private UnityEvent OnPlayerDiscovered;
         private UnityEvent OnPlayerLost;
 
-        public EnemyMapSimpleMovementState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, GameObject playerObject,
-                                            UnityEvent onPlayerDiscovered, UnityEvent onPlayerLost)
-            : base (characterController, enemyMapData, raycastLayerMask, raycastPivot, playerObject)
+        public EnemyMapSimpleMovementState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot,
+            GameObject playerObject, UnityEvent onPlayerDiscovered, UnityEvent onPlayerLost)
+            : base (characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject)
         {
             OnPlayerDiscovered = onPlayerDiscovered;
             OnPlayerLost = onPlayerLost;
@@ -54,47 +54,6 @@ namespace Laresistance.StateMachines
             {
                 yield return null;
             }
-        }
-
-        private bool CheckRaycastNeedToTurn()
-        {
-            if (!characterController.FacingRight)
-            {
-                // Left
-                if (Physics2D.Raycast(raycastPivot.position, Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(characterController.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.left, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
-                {
-                    return true;
-                }
-                // Left down
-                if (!Physics2D.Raycast(raycastPivot.position + Vector3.left * GameConstantsBehaviour.Instance.enemyMapVerticalRaycastOffset.GetValue(), Vector3.down, GameConstantsBehaviour.Instance.enemyMapVerticalRaycastLength.GetValue(), raycastLayerMask))
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                // Right
-                if (Physics2D.Raycast(raycastPivot.position, Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask) || Physics2D.Raycast(characterController.transform.position + Vector3.up * GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastOffsetUp.GetValue(), Vector3.right, GameConstantsBehaviour.Instance.enemyMapHorizontalRaycastLength.GetValue(), raycastLayerMask))
-                {
-                    return true;
-                }
-                // Right down
-                if (!Physics2D.Raycast(raycastPivot.position + Vector3.right * GameConstantsBehaviour.Instance.enemyMapVerticalRaycastOffset.GetValue(), Vector3.down, GameConstantsBehaviour.Instance.enemyMapVerticalRaycastLength.GetValue(), raycastLayerMask))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void Turn()
-        {
-            characterController.Flip();
-        }
-
-        private void Turn(bool r)
-        {
-            characterController.Flip(r);
         }
 
         private void Move()

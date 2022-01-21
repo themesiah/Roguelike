@@ -19,6 +19,8 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private Transform raycastPivot = default;
         [SerializeField]
+        private Transform visibilityPivot = default;
+        [SerializeField]
         private bool partyMember = false;
         [SerializeField]
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
@@ -36,13 +38,13 @@ namespace Laresistance.Behaviours
             stateMachine = new SimpleSignalStateMachine();
             Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
 
-            states.Add("Move", new EnemyMapSimpleMovementState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, playerObject, OnPlayerDiscovered, OnPlayerLost));
+            states.Add("Move", new EnemyMapSimpleMovementState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, OnPlayerDiscovered, OnPlayerLost));
             if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.Chase)
             {
-                states.Add("PlayerDiscover", new EnemyMapChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, playerObject));
+                states.Add("PlayerDiscover", new EnemyMapChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject));
             } else if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.DistanceAttack)
             {
-                states.Add("PlayerDiscover", new EnemyMapDistanceAttack(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, playerObject));
+                states.Add("PlayerDiscover", new EnemyMapDistanceAttack(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject));
             }
 
             stateMachine.SetStates(states);
