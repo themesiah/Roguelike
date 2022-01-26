@@ -21,7 +21,7 @@ namespace Laresistance.Tests
             CharacterBattleManager cbm1 = GetCharacterBattleManager("ENEMY_001");
             CharacterBattleManager cbm2 = GetCharacterBattleManager("ENEMY_002");
 
-            bs.InitBattle(cbm1, new CharacterBattleManager[] { cbm2 });
+            bs.InitBattle(cbm1, new CharacterBattleManager[] { cbm2 }, false);
 
             return bs;
         }

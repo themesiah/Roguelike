@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 1014155916375037204}
   - component: {fileID: 7643532951830851678}
   - component: {fileID: 4165254090432699178}
+  - component: {fileID: 7014771726187281824}
   m_Layer: 8
   m_Name: GenericEnemy
   m_TagString: Enemy
@@ -153,6 +154,19 @@ MonoBehaviour:
       - m_Target: {fileID: 8162774514312405274}
         m_TargetAssemblyTypeName: Laresistance.Behaviours.NonReferencedFlipper, GameScripts
         m_MethodName: Flip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7014771726187281824}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.NonAdvantagePlayerCollidable,
+          GameScripts
+        m_MethodName: SetDirection
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -588,6 +602,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: PlayerFound
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 0a8e20440a04cc24fac7e3d86ec15e03, type: 2}
+        m_TargetAssemblyTypeName: Laresistance.Audio.ScriptableFMODEventEmitter,
+          GameScripts
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   OnPlayerLost:
@@ -1041,6 +1068,18 @@ MonoBehaviour:
   animationDuration: 0.5
   fadeDuration: 0.5
   xPivotReference: {fileID: 0}
+--- !u!114 &7014771726187281824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: -2378162190959191101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc9a32d947c8d14dac8ce34769ffc36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &530036859482145158
 GameObject:
   m_ObjectHideFlags: 0
@@ -3564,17 +3603,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2768716388989322899, guid: db755438e67decc448255c14d7d9f476, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: db755438e67decc448255c14d7d9f476, type: 3}
---- !u!114 &1542141927736425856 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7613381854477899707, guid: db755438e67decc448255c14d7d9f476, type: 3}
-  m_PrefabInstance: {fileID: 8993375765805951547}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5094470855110748006 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4214755570874092893, guid: db755438e67decc448255c14d7d9f476, type: 3}
@@ -3616,6 +3644,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8b13e4c98209354db24aa7414f0b9ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1542141927736425856 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7613381854477899707, guid: db755438e67decc448255c14d7d9f476, type: 3}
+  m_PrefabInstance: {fileID: 8993375765805951547}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &103271954165682158 stripped

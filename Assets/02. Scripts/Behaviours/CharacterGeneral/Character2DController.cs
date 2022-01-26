@@ -90,6 +90,7 @@ namespace Laresistance.Behaviours
         public bool FacingRight => facingRight;
         public bool IsJumping => jumping;
         public bool IsFalling => falling;
+        public float CurrentMovement => currentMovement;
         // Slope accessors
         public bool IsOnSlope => isOnSlope;
         public float SlopeDownAngle => slopeDownAngle;
@@ -191,7 +192,7 @@ namespace Laresistance.Behaviours
 
             OnHorizontalVelocityChanged?.Invoke(currentMovement);
 
-            //currentMovement = 0f;
+            currentMovement = 0f;
         }
 
         public void Move(float movement)

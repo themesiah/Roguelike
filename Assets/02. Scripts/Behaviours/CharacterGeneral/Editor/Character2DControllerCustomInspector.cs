@@ -17,6 +17,7 @@ namespace Laresistance.Behaviours
         {
             Character2DController characterControler = (Character2DController)target;
             GUILayout.Label(string.Format("IsGrounded: {0}", characterControler.IsGrounded));
+            GUILayout.Label(string.Format("CurrentMovement: {0}", characterControler.CurrentMovement));
             GUILayout.Label(string.Format("CurrentVelocity: {0}", characterControler.CurrentVelocity));
             GUILayout.Label(string.Format("IsJumping: {0}", characterControler.IsJumping));
             GUILayout.Label(string.Format("IsFalling: {0}", characterControler.IsFalling));

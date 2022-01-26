@@ -9,6 +9,7 @@
         WhenEnemyHaveBuff,
         WhenAllyAttacked,
         PrepareBlock,
-        PrepareParry
+        PrepareParry,
+        Advantage
     }
 }

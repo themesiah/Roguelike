@@ -17,6 +17,9 @@ namespace Laresistance.Battle
             this.abilities = abilities;
         }
 
+        public void SetAdvantage()
+        { }
+
         public BattleAbility[] GetAbilities()
         {
             return abilities;

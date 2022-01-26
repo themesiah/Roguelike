@@ -7,10 +7,10 @@ namespace GamedevsToolbox.Utils
     public class OnTrigger2DEvents : MonoBehaviour
     {
         [SerializeField]
-        private UnityEvent onTriggerEnterEvent = default;
+        private UnityEvent<Collider2D> onTriggerEnterEvent = default;
 
         [SerializeField]
-        private UnityEvent onTriggerExitEvent = default;
+        private UnityEvent<Collider2D> onTriggerExitEvent = default;
 
         [SerializeField]
         private string tagToCheck = null;
@@ -21,11 +21,15 @@ namespace GamedevsToolbox.Utils
         [SerializeField]
         private bool destroyOnTrigger = false;
 
+        [SerializeField]
+        private bool logEvents = false;
+
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (!checkTag || other.tag == tagToCheck)
             {
-                onTriggerEnterEvent.Invoke();
+                Log("OnTriggerEnter2D");
+                onTriggerEnterEvent.Invoke(other);
                 if (destroyOnTrigger)
                 {
                     Destroy(this);
@@ -37,10 +41,26 @@ namespace GamedevsToolbox.Utils
         {
             if (!checkTag || other.tag == tagToCheck)
             {
-                onTriggerExitEvent.Invoke();
+                Log("OnTriggerExit2D");
+                onTriggerExitEvent.Invoke(other);
                 if (destroyOnTrigger)
                 {
                     Destroy(this);
+                }
+            }
+        }
+
+        private void Log(string text)
+        {
+            if (logEvents)
+            {
+                if (checkTag)
+                {
+                    Debug.LogFormat("[OnTrigger2DEvents@{0}] [W/Tag {1}] {2}", name, tagToCheck, text);
+                }
+                else
+                {
+                    Debug.LogFormat("[OnTrigger2DEvents@{0}] {1}", name, text);
                 }
             }
         }

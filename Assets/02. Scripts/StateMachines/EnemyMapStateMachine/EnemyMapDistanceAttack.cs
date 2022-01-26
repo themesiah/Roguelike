@@ -15,8 +15,8 @@ namespace Laresistance.StateMachines
         private float delayTimer = 0f;
         private IRangedAttackSpawner rangedAttackSpawner;
 
-        public EnemyMapDistanceAttack(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject)
-            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject)
+        public EnemyMapDistanceAttack(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject, IPlayerCollidable playerCollidable)
+            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject, playerCollidable)
         {
             rangedAttackSpawner = characterController.gameObject.GetComponent<IRangedAttackSpawner>();
         }
@@ -54,6 +54,7 @@ namespace Laresistance.StateMachines
                     if (timeNoSeePlayer > MAX_TIME_NO_SEE_PLAYER)
                     {
                         // Return to move state
+                        playerCollidable.SetStatus("Move");
                         resolve("Move");
                     }
                 }

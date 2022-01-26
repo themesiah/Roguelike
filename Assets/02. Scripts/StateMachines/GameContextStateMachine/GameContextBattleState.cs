@@ -25,6 +25,7 @@ namespace Laresistance.StateMachines
         private PlayerMinionCompanionSpawner companionSpawner;
         public BattleSystem battleSystem { get; private set; }
         private GameObject[] enemyObjects;
+        private bool enemyAdvantage;
         private int deathCount;
         private RewardData rewardData = null;
         private bool paused = false;
@@ -66,15 +67,14 @@ namespace Laresistance.StateMachines
                 enemy.transform.SetParent(enemyObjects[0].transform.parent);
             }
             battlePositionIntReference.SetValue(position);
-            // Move Camera
-            // TODO: Change virtual camera
             // Init battle system
             CharacterBattleManager[] enemies = new CharacterBattleManager[enemyObjects.Length];
             for (int i = 0; i < enemies.Length; ++i)
             {
                 enemies[i] = enemyObjects[i].GetComponent<CharacterBattleBehaviour>().battleManager;
             }
-            battleSystem.InitBattle(playerObject.GetComponent<PlayerBattleBehaviour>().battleManager, enemies);            
+            battleSystem.InitBattle(playerObject.GetComponent<PlayerBattleBehaviour>().battleManager, enemies, enemyAdvantage);
+            enemyAdvantage = false;
             GamedevsToolbox.Utils.Logger.Logger.Log("Entering battle state");
             yield return null;
         }
@@ -152,10 +152,11 @@ namespace Laresistance.StateMachines
         #endregion
 
         #region Public Methods
-        public void SetEnemyObjects(GameObject[] enemyObjects)
+        public void SetEnemyObjects(GameObject[] enemyObjects, bool enemyAdvantage)
         {
             this.enemyObjects = enemyObjects;
             rewardData = enemyObjects[0].GetComponent<IRewardable>().GetReward();
+            this.enemyAdvantage = enemyAdvantage;
         }
 
         public GameContextBattleState(GameObject playerObject, StringGameEvent actionMapSwitchEvent, RewardEvent rewardEvent,

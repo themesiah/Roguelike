@@ -70,6 +70,9 @@ namespace Laresistance.Battle
             battleStatus.health.OnShieldTotallyDestroyed += OnShieldTotallyDestroyed;
         }
 
+        public void SetAdvantage()
+        {}
+
         private void OnApplyStatus(BattleStatusManager sender, StatusIconType statusType, float duration)
         {
             if (statusType == StatusIconType.Stun)

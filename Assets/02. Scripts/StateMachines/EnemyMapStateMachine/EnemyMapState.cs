@@ -16,11 +16,12 @@ namespace Laresistance.StateMachines
         protected Transform visibilityPivot;
         protected Character2DController characterController;
         protected GameObject playerObject;
+        protected IPlayerCollidable playerCollidable;
 
         private int pauseStack = 0;
         protected bool Paused => pauseStack > 0;
 
-        public EnemyMapState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject)
+        public EnemyMapState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject, IPlayerCollidable playerCollidable)
         {
             this.characterController = characterController;
             this.enemyMapData = enemyMapData;
@@ -28,6 +29,7 @@ namespace Laresistance.StateMachines
             this.raycastPivot = raycastPivot;
             this.playerObject = playerObject;
             this.visibilityPivot = visibilityPivot;
+            this.playerCollidable = playerCollidable;
         }
 
         public abstract IEnumerator EnterState();

@@ -15,8 +15,8 @@ namespace Laresistance.StateMachines
         private UnityEvent OnPlayerLost;
 
         public EnemyMapSimpleMovementState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot,
-            GameObject playerObject, UnityEvent onPlayerDiscovered, UnityEvent onPlayerLost)
-            : base (characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject)
+            GameObject playerObject, IPlayerCollidable playerCollidable, UnityEvent onPlayerDiscovered, UnityEvent onPlayerLost)
+            : base (characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject, playerCollidable)
         {
             OnPlayerDiscovered = onPlayerDiscovered;
             OnPlayerLost = onPlayerLost;
@@ -48,6 +48,7 @@ namespace Laresistance.StateMachines
             if (nextState)
             {
                 // Go to PlayerDiscover state
+                playerCollidable.SetStatus("PlayerDiscover");
                 resolve("PlayerDiscover");
             }
             else

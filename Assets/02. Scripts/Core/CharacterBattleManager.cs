@@ -19,7 +19,6 @@ namespace Laresistance.Core
         private CharacterBattleManager[] allies;
         private CharacterBattleManager[] enemies;
         private BattleSystem battleSystem;
-        private List<int> abilitiesToUse;
         private CharacterBattleManager selectedTarget = null;
 
         public delegate void OnBattleStartHandler();
@@ -31,7 +30,7 @@ namespace Laresistance.Core
 
         public bool dead { get; private set; }
         public CharacterBattleManager[] Enemies => enemies;
-
+        
         public CharacterBattleManager(BattleStatusManager statusManager, IAbilityInputProcessor inputProcessor, IAbilityExecutor abilityExecutor, ITargetSelection targetSelector, IBattleAnimator animator)
         {
             StatusManager = statusManager;
@@ -41,13 +40,17 @@ namespace Laresistance.Core
             this.animator = animator;
             selected = false;
             dead = false;
-            abilitiesToUse = new List<int>();
             StatusManager.SetCharacterBattleManager(this);
         }
 
         public void SetAnimator(IBattleAnimator animator)
         {
             this.animator = animator;
+        }
+
+        public void SetAdvantage()
+        {
+            AbilityInputProcessor.SetAdvantage();
         }
 
         public void StartBattle()
@@ -133,7 +136,6 @@ namespace Laresistance.Core
 
         public AbilityExecutionData Tick(float delta, float battleSpeedManager)
         {
-            abilitiesToUse.Clear();
             if (dead)
                 return new AbilityExecutionData() { index = -1, selectedTarget = null };
             StatusManager.ProcessStatus(delta, battleSpeedManager);

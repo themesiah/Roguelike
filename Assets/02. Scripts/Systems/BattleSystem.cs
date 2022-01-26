@@ -50,7 +50,7 @@ namespace Laresistance.Systems
             this.playerRef = playerRef;
         }
 
-        public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies)
+        public void InitBattle(CharacterBattleManager player, CharacterBattleManager[] enemies, bool enemyAdvantage)
         {
             currentEnergySpeedModifier = 1f;
             this.playerBattleManager = player;
@@ -65,6 +65,7 @@ namespace Laresistance.Systems
             {
                 playerBattleManager.Die();
             };
+            if (enemyAdvantage) enemiesBattleManager[0].SetAdvantage();
             foreach(var enemy in enemiesBattleManager)
             {
                 enemy.SetBattleSystem(this);

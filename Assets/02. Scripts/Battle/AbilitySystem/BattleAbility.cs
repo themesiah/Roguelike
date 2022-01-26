@@ -248,7 +248,7 @@ namespace Laresistance.Battle
 
         public IEnumerator ExecuteAbilityCoroutine(BattleStatusManager[] allies, BattleStatusManager[] targets, int level, IBattleAnimator animator, ScriptableIntReference bloodRef = null)
         {
-            if (CanBeUsed())
+            if (CanBeExecuted())
             {
                 executingAbility = true;
                 allies[0].health.OnDeath += CancelExecution;
@@ -311,11 +311,21 @@ namespace Laresistance.Battle
 
         public bool CanBeUsed()
         {
-            if (executingAbility)
+            if (executingAbility || data.AiSpecification == AbilityDataAISpecification.Advantage)
             {
                 return false;
             }
             
+            return statusManager.CanExecute(energyCost, CanBeUsedStunned()) && cooldownTimer <= 0f;
+        }
+
+        private bool CanBeExecuted()
+        {
+            if (executingAbility)
+            {
+                return false;
+            }
+
             return statusManager.CanExecute(energyCost, CanBeUsedStunned()) && cooldownTimer <= 0f;
         }
 

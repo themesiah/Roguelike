@@ -8,5 +8,6 @@ namespace Laresistance.Battle
         BattleAbility[] GetAbilities();
         void BattleStart();
         void BattleEnd();
+        void SetAdvantage();
     }
 }

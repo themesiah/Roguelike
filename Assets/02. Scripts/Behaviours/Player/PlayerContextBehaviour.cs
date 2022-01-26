@@ -110,23 +110,19 @@ namespace Laresistance.Behaviours
         {
             if (collision.gameObject.CompareTag("Enemy"))
             {
-                PartyManagerBehaviour pmb = collision.gameObject.GetComponent<PartyManagerBehaviour>();
-                GameObject[] enemies;
-                if (pmb == null)
-                {
-                    enemies = new GameObject[] { collision.gameObject };
-                } else
-                {
-                    enemies = pmb.GetFullParty();
-                }
+                BattleContextStart(collision.gameObject, true);
+            }
+        }
 
-                //foreach(GameObject enemy in enemies)
-                //{
-                //    if (enemy == enemies[0]) continue;
-                //    enemy.transform.SetParent(enemies[0].transform.parent);
-                //}
-                battleState.SetEnemyObjects(enemies);
-                stateMachine.ReceiveSignal("Battle");
+        public void OnPlayerWeaponTrigger(Collider2D collider)
+        {
+            if (collider.gameObject.CompareTag("Enemy"))
+            {
+                IPlayerCollidable playerCollidable = collider.gameObject.GetComponent<IPlayerCollidable>();
+                if (playerCollidable.PlayerAttacked(transform))
+                {
+                    BattleContextStart(collider.gameObject, false);
+                }
             }
         }
 
@@ -141,6 +137,23 @@ namespace Laresistance.Behaviours
                     RoomChange(rcb);
                 }
             }
+        }
+
+        private void BattleContextStart(GameObject enemyObject, bool enemyAdvantage)
+        {
+            PartyManagerBehaviour pmb = enemyObject.GetComponent<PartyManagerBehaviour>();
+            GameObject[] enemies;
+            if (pmb == null)
+            {
+                enemies = new GameObject[] { enemyObject };
+            }
+            else
+            {
+                enemies = pmb.GetFullParty();
+            }
+
+            battleState.SetEnemyObjects(enemies, enemyAdvantage);
+            stateMachine.ReceiveSignal("Battle");
         }
 
         public void RoomChange(RoomChangeBehaviour rcb)

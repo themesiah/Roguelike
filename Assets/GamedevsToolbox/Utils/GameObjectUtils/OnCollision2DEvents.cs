@@ -7,10 +7,10 @@ namespace GamedevsToolbox.Utils
     public class OnCollision2DEvents : MonoBehaviour
     {
         [SerializeField]
-        private UnityEvent onCollisionEnterEvent = default;
+        private UnityEvent<Collision2D> onCollisionEnterEvent = default;
 
         [SerializeField]
-        private UnityEvent onCollisionExitEvent = default;
+        private UnityEvent<Collision2D> onCollisionExitEvent = default;
 
         [SerializeField]
         private string tagToCheck = null;
@@ -22,7 +22,7 @@ namespace GamedevsToolbox.Utils
         {
             if (!checkTag || other.gameObject.tag == tagToCheck)
             {
-                onCollisionEnterEvent.Invoke();
+                onCollisionEnterEvent.Invoke(other);
             }
         }
 
@@ -30,7 +30,7 @@ namespace GamedevsToolbox.Utils
         {
             if (!checkTag || other.gameObject.tag == tagToCheck)
             {
-                onCollisionExitEvent.Invoke();
+                onCollisionExitEvent.Invoke(other);
             }
         }
     }

@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &4590821900811170588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5742873577149075552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87132616d33559d4eb4b61a1945bb033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &9030819552552784181
 Animator:
   serializedVersion: 3
@@ -86,6 +98,18 @@ PrefabInstance:
       propertyPath: xPivotReference
       value: 
       objectReference: {fileID: 8073859881413512303}
+    - target: {fileID: 2432000505337417554, guid: b86947710d336c541bdefb0e575f6414, type: 3}
+      propertyPath: OnFlip.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 4590821900811170588}
+    - target: {fileID: 2432000505337417554, guid: b86947710d336c541bdefb0e575f6414, type: 3}
+      propertyPath: OnFlip.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetDirection
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432000505337417554, guid: b86947710d336c541bdefb0e575f6414, type: 3}
+      propertyPath: OnFlip.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Laresistance.Behaviours.ChaseShieldPlayerCollidable, GameScripts
+      objectReference: {fileID: 0}
     - target: {fileID: 3450779522385537709, guid: b86947710d336c541bdefb0e575f6414, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -128,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
       propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
       propertyPath: OnPlayerLost.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -143,7 +167,7 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
@@ -151,15 +175,15 @@ PrefabInstance:
       value: SetBoolFalse
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 2260484237424287415}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: SetBoolTrue
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
@@ -171,11 +195,11 @@ PrefabInstance:
       value: ShieldUp
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: Laresistance.Behaviours.AnimatorWrapperBridge, GameScripts
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: ShieldUp
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
@@ -183,15 +207,21 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8416028516385629277, guid: b86947710d336c541bdefb0e575f6414, type: 3}
-      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: OnPlayerDiscovered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8581555535050382565, guid: b86947710d336c541bdefb0e575f6414, type: 3}
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8671142649517316456, guid: b86947710d336c541bdefb0e575f6414, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b86947710d336c541bdefb0e575f6414, type: 3}
+--- !u!1 &5742873577149075552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5183781580845121291, guid: b86947710d336c541bdefb0e575f6414, type: 3}
+  m_PrefabInstance: {fileID: 595237066813402987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2901028237972009458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2305897136593313433, guid: b86947710d336c541bdefb0e575f6414, type: 3}
@@ -202,7 +232,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1665327572550267356, guid: b86947710d336c541bdefb0e575f6414, type: 3}
   m_PrefabInstance: {fileID: 595237066813402987}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5742873577149075552}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb567d268fd6021419131444c8753d48, type: 3}
@@ -359,6 +389,14 @@ PrefabInstance:
     - target: {fileID: 6868768958980688029, guid: e90e6404a99d8e8458920e9b3c1a74b9, type: 3}
       propertyPath: m_Chain.m_DefaultLocalRotations.Array.data[2].z
       value: -0.0015352935
+      objectReference: {fileID: 0}
+    - target: {fileID: 7974295194254337277, guid: e90e6404a99d8e8458920e9b3c1a74b9, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7974295194254337277, guid: e90e6404a99d8e8458920e9b3c1a74b9, type: 3}
+      propertyPath: m_TagString
+      value: EnemyBlock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e90e6404a99d8e8458920e9b3c1a74b9, type: 3}

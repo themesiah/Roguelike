@@ -13,8 +13,8 @@ namespace Laresistance.StateMachines
         private static float MAX_TIME_NO_SEE_PLAYER = 1.5f;
         private float timeNoSeePlayer = 0f;
 
-        public EnemyMapChaseState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject)
-            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject)
+        public EnemyMapChaseState(Character2DController characterController, EnemyMapData enemyMapData, int raycastLayerMask, Transform raycastPivot, Transform visibilityPivot, GameObject playerObject, IPlayerCollidable playerCollidable)
+            : base(characterController, enemyMapData, raycastLayerMask, raycastPivot, visibilityPivot, playerObject, playerCollidable)
         {
         }
 
@@ -30,24 +30,30 @@ namespace Laresistance.StateMachines
 
         public override IEnumerator Update(Action<string> resolve)
         {
-            Move();
-            if (CheckRaycastNeedToTurn())
+            if (!Paused)
             {
-                resolve("Move");
-            } else
-            if (CheckPlayerDiscovered())
-            {
-                timeNoSeePlayer = 0f;
-            } else
-            {
-                timeNoSeePlayer += Time.deltaTime;
-                if (timeNoSeePlayer > MAX_TIME_NO_SEE_PLAYER)
+                Move();
+                if (CheckRaycastNeedToTurn())
                 {
-                    // Return to move state
                     resolve("Move");
                 }
+                else
+                if (CheckPlayerDiscovered())
+                {
+                    timeNoSeePlayer = 0f;
+                }
+                else
+                {
+                    timeNoSeePlayer += Time.deltaTime;
+                    if (timeNoSeePlayer > MAX_TIME_NO_SEE_PLAYER)
+                    {
+                        // Return to move state
+                        playerCollidable.SetStatus("Move");
+                        resolve("Move");
+                    }
+                }
+                yield return null;
             }
-            yield return null;
         }
 
         private void Move()

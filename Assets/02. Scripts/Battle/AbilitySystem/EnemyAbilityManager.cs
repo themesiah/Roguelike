@@ -15,6 +15,7 @@ namespace Laresistance.Battle
         private IBattleAnimator animator;
         private BattleStatusManager selfStatus;
         private CharacterBattleManager selfBattleManager;
+        private bool advantage = false;
 
         private BattleAbility nextAbility = null;
         private float nextAbilityTimer;
@@ -49,8 +50,28 @@ namespace Laresistance.Battle
             selfBattleManager = battleManager;
         }
 
+        public void SetAdvantage()
+        {
+            advantage = true;
+        }
+
         public AbilityExecutionData GetAbilitiesToExecute(BattleStatusManager battleStatus, float delta, float unmodifiedDelta)
         {
+            // If the enemy have advantage and has at least one advantage ability, execute it at the start of the battle (the first one)
+            if (advantage)
+            {
+                for (int i = 0; i < abilities.Length; ++i)
+                {
+                    advantage = false;
+                    if (abilities[i].data.AiSpecification == AbilityDataAISpecification.Advantage)
+                    {
+                        abilities[i].ResetCooldown();
+                        return new AbilityExecutionData() { index = i, selectedTarget = null };
+                    }
+                }
+            }
+
+
             // If there is no ability in queue we select one and configure the timers.
             if (nextAbility == null)
             {
@@ -104,7 +125,7 @@ namespace Laresistance.Battle
                 {
                     if (abilities[i] == nextAbility)
                     {
-                        return new AbilityExecutionData() { index = i, selectedTarget = null }; ;
+                        return new AbilityExecutionData() { index = i, selectedTarget = null };
                     } else
                     {
                     }

@@ -199,7 +199,7 @@ namespace Laresistance.Simulator
                 enemyBattleManagers[i + 1] = GetEnemyBattleManager(enemyParty.partyEnemiesData[i]);
             }
 
-            battleSystem.InitBattle(playerBattleManager, enemyBattleManagers);
+            battleSystem.InitBattle(playerBattleManager, enemyBattleManagers, false);
 
             float battleTimer = 0f;
             Debug.Log("Battle simulation start");
