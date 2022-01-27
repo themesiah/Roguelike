@@ -99,6 +99,23 @@ namespace Laresistance.Battle
             }
             else
             {
+                // Check for alternatives on right and left
+                int iteration = 1;
+                while (intRes == 0 && iteration < 100)
+                {
+                    intRes = Physics2D.Raycast(nonRaycastedCenter + Vector2.right * iteration * 0.2f, Vector2.down, raycastFilters, results);
+                    if (intRes > 0)
+                    {
+                        return results[0].point;
+                    } else
+                    {
+                        intRes = Physics2D.Raycast(nonRaycastedCenter + Vector2.left * iteration * 0.2f, Vector2.down, raycastFilters, results);
+                        if (intRes > 0)
+                        {
+                            return results[0].point;
+                        }
+                    }
+                }
                 return nonRaycastedCenter;
             }
         }

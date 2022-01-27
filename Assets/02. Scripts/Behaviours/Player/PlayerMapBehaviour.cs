@@ -88,7 +88,7 @@ namespace Laresistance.Behaviours
         {
             if (changingRooms)
                 return;
-            if (context.started)// || context.performed)
+            if (context.started || context.performed)
             {
                 float axisValue = context.ReadValue<Vector2>().x;
                 if (Mathf.Abs(axisValue) > 0.3f)

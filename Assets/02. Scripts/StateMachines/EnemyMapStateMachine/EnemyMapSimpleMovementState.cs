@@ -38,22 +38,25 @@ namespace Laresistance.StateMachines
 
         public override IEnumerator Update(Action<string> resolve)
         {
-            bool needToTurn = CheckRaycastNeedToTurn();
-            if (needToTurn)
+            if (!Paused)
             {
-                Turn();
-            }
-            Move();
-            bool nextState = CheckPlayerDiscovered();
-            if (nextState)
-            {
-                // Go to PlayerDiscover state
-                playerCollidable.SetStatus("PlayerDiscover");
-                resolve("PlayerDiscover");
-            }
-            else
-            {
-                yield return null;
+                bool needToTurn = CheckRaycastNeedToTurn();
+                if (needToTurn)
+                {
+                    Turn();
+                }
+                Move();
+                bool nextState = CheckPlayerDiscovered();
+                if (nextState)
+                {
+                    // Go to PlayerDiscover state
+                    playerCollidable.SetStatus("PlayerDiscover");
+                    resolve("PlayerDiscover");
+                }
+                else
+                {
+                    yield return null;
+                }
             }
         }
 

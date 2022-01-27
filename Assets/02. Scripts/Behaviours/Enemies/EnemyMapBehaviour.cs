@@ -46,6 +46,9 @@ namespace Laresistance.Behaviours
             } else if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.DistanceAttack)
             {
                 states.Add("PlayerDiscover", new EnemyMapDistanceAttack(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
+            } else
+            {
+                states.Add("PlayerDiscover", new EnemyMapDummyChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
             }
 
             stateMachine.SetStates(states);
