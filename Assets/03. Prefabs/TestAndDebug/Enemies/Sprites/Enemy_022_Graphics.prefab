@@ -4888,82 +4888,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!95 &5539034146017116750
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4998325933287316437}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: e2360ccac0776244bb346500608514ec, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &451271658526312589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4998325933287316437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e6ce9515f768148b92a6e297053b5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  callableEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 1bf9782b05fa8ee47b5c0b637f4ca89c, type: 2}
-        m_TargetAssemblyTypeName: Laresistance.Audio.ScriptableFMODEventEmitter,
-          GameScripts
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3186563882324995268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4998325933287316437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19610df5162c0d4aa16a817f4c87bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5539034146017116750}
-  horizontalSpeedParameterName: HorizontalSpeed
-  verticalSpeedParameterName: 
-  fallingParameterName: 
---- !u!114 &8945566411443104505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4998325933287316437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adccf773897332b4d80cd5dcace4262d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  originallyRight: 1
 --- !u!1 &7280424151000821890
 GameObject:
   m_ObjectHideFlags: 0
@@ -5422,7 +5346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1076267036790548349, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1619577378038843585, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}
       propertyPath: m_SortingLayer
@@ -5582,7 +5506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5361103147704559383, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5775598992737928571, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}
       propertyPath: m_RootOrder
@@ -5810,11 +5734,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 517992543408651592, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}
---- !u!1 &4998325933287316437 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2498914204612457052, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}
-  m_PrefabInstance: {fileID: 7489613511319677321}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3786248407819464292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6015409507018688493, guid: 1793f877b23178b44b67fff5c81bc43a, type: 3}

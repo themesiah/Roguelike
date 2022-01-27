@@ -522,9 +522,8 @@ namespace Laresistance.LevelGeneration
         private void GenerateEquipmentInteractables()
         {
             var equipmentCandidates1 = nodesData.FindAll(FilterPathEnd).FindAll(FilterRoomWithNoRewards);
-            var equipmentCandidates2 = nodesData.FindAll(FilterRoomWithNoRewards).FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom);
             int numberOfEquipments = EQUIPMENT_AMOUNT;
-            Assert.IsTrue(equipmentCandidates1.Count + equipmentCandidates2.Count >= numberOfEquipments);
+            //Assert.IsTrue(equipmentCandidates1.Count + equipmentCandidates2.Count >= numberOfEquipments);
             if (numberOfEquipments > 0 && equipmentCandidates1.Count > 0)
             {
                 RoomInteractable equipment = new RoomInteractable() { roomInteractableType = RoomInteractableType.EquipmentReward };
@@ -533,6 +532,7 @@ namespace Laresistance.LevelGeneration
                 equipmentCandidates1.RemoveAt(equipmentIndex);
                 numberOfEquipments--;
             }
+            var equipmentCandidates2 = nodesData.FindAll(FilterRoomWithNoRewards).FindAll(FilterNonStartingRoom).FindAll(FilterNonFinalRoom);
             while (numberOfEquipments > 0 && equipmentCandidates2.Count > 0)
             {
                 RoomInteractable equipment = new RoomInteractable() { roomInteractableType = RoomInteractableType.EquipmentReward };

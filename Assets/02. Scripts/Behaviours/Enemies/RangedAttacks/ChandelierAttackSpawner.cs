@@ -8,7 +8,7 @@ namespace Laresistance.Behaviours
     public class ChandelierAttackSpawner : MonoBehaviour, IRangedAttackSpawner
     {
         [SerializeField]
-        private AnimatorWrapperBridge animatorWrapper = default;
+        private AnimatorWrapperBehaviour animatorWrapper = default;
         [SerializeField]
         private AssetReference firePreludeReference = default;
         [SerializeField]
