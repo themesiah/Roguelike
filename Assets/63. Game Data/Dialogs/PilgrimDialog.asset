@@ -15,11 +15,13 @@ MonoBehaviour:
   ListOfDialogs:
   - normalDialog: 1
     dialog:
+      continueDialog: 1
       dialogTextRef:
       - DIALOG_PIL_0001
       - DIALOG_PIL_0002
       - DIALOG_PIL_0003
     questionDialog:
+      continueDialog: 0
       dialogQuestionRef: 
       answer1TextRef: 
       answer2TextRef: 
@@ -30,11 +32,13 @@ MonoBehaviour:
     VariableChanges:
     - name: PilgrimStatus
       value: 1
-    gridPosition: {x: 512, y: 619}
+    gridPosition: {x: 142, y: 417}
   - normalDialog: 0
     dialog:
+      continueDialog: 0
       dialogTextRef: []
     questionDialog:
+      continueDialog: 1
       dialogQuestionRef: DIALOG_PIL_0004
       answer1TextRef: DIALOG_PIL_0005
       answer2TextRef: DIALOG_PIL_0006
@@ -47,12 +51,14 @@ MonoBehaviour:
     - name: PilgrimStatus
       value: 1
     VariableChanges: []
-    gridPosition: {x: 824, y: 622}
+    gridPosition: {x: 454, y: 420}
   - normalDialog: 1
     dialog:
+      continueDialog: 0
       dialogTextRef:
       - DIALOG_PIL_0007
     questionDialog:
+      continueDialog: 0
       dialogQuestionRef: 
       answer1TextRef: 
       answer2TextRef: 
@@ -61,12 +67,14 @@ MonoBehaviour:
     - name: PilgrimStatus
       value: 2
     VariableChanges: []
-    gridPosition: {x: 1032, y: 731}
+    gridPosition: {x: 744, y: 307}
   - normalDialog: 1
     dialog:
+      continueDialog: 0
       dialogTextRef:
       - DIALOG_PIL_0008
     questionDialog:
+      continueDialog: 0
       dialogQuestionRef: 
       answer1TextRef: 
       answer2TextRef: 
@@ -75,6 +83,6 @@ MonoBehaviour:
     - name: PilgrimStatus
       value: 3
     VariableChanges: []
-    gridPosition: {x: 1092, y: 494}
+    gridPosition: {x: 744, y: 534}
   characterNameRef: DIALOG_PIL_NAME
   characterPortrait: {fileID: 21300000, guid: 9ac24212159ea8b48992b7039f036f20, type: 3}

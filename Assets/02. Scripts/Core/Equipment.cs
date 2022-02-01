@@ -8,6 +8,7 @@ using GamedevsToolbox.ScriptableArchitecture.Values;
 
 namespace Laresistance.Core
 {
+    [System.Serializable]
     public class Equipment : ShowableElement, ISlot
     {
         private bool equiped = false;
@@ -16,6 +17,8 @@ namespace Laresistance.Core
         private List<string> descriptionVariables;
         public EquipmentData Data { get; private set; }
         public string Name => Texts.GetText(Data.EquipmentNameReference);
+        [UnityEngine.SerializeField]
+        private string equipId;
 
         public Equipment(EquipmentData equipmentData, BattleStatusManager statusManager)
         {
@@ -23,6 +26,7 @@ namespace Laresistance.Core
             this.statusManager = statusManager;
             descriptionReferences = new List<string>();
             descriptionVariables = new List<string>();
+            equipId = equipmentData.EquipmentNameReference;
         }
 
         public bool SetInSlot(Player player, int slot)

@@ -114,6 +114,7 @@ namespace Laresistance.Systems.Dialog
                 singleDialogData.VariableChanges[i].value = EditorGUILayout.IntField(singleDialogData.VariableChanges[i].value);
                 EditorGUILayout.EndHorizontal();
             }
+            singleDialogData.dialog.continueDialog = EditorGUILayout.Toggle("Continue dialog", singleDialogData.dialog.continueDialog);
         }
     }
 }

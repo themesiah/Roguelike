@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Laresistance.Core
 {
+    [System.Serializable]
     public class Player : ShowableElement
     {
         private static int MAX_MINIONS = 3;
@@ -11,9 +12,11 @@ namespace Laresistance.Core
         private static int MAX_PLAYER_LEVEL = 10;
         private static int BASE_UPGRADE_PRICE = 1000;
 
+        [UnityEngine.SerializeField]
         private Minion[] minions;
         private List<Minion> reservedMinions;
         private Consumable[] consumables;
+        [UnityEngine.SerializeField]
         private EquipmentsContainer equipmentsContainer;
 
         public int Level { get; private set; }
@@ -23,6 +26,7 @@ namespace Laresistance.Core
         public BattleAbility ultimateAbility { get; private set; }
         public BattleAbility supportAbility { get; private set; }
         public Combo[] combos { get; private set; }
+        public int playerCharacterType { get; private set; }
 
         public Player(BattleStatusManager statusManager)
         {
@@ -397,6 +401,11 @@ namespace Laresistance.Core
             return builder.ToString();
         }
         #endregion
+
+        public void SetCharacterType(int type)
+        {
+            playerCharacterType = type;
+        }
 
         #region Combos
         public void SetCombos(Combo[] combos)

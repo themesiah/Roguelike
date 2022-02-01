@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GamedevsToolbox.ScriptableArchitecture.Selectors;
+using UnityEngine.AddressableAssets;
 
 namespace Laresistance.LevelGeneration
 {
@@ -18,5 +19,9 @@ namespace Laresistance.LevelGeneration
         [SerializeField]
         private ScriptableAssetReferenceSelector minibossEnemies = default;
         public ScriptableAssetReferenceSelector MinibossEnemies { get { return minibossEnemies; } }
+
+        [SerializeField]
+        private AssetReference bossSceneRef = default;
+        public AssetReference BossSceneRef { get { return bossSceneRef; } }
     }
 }

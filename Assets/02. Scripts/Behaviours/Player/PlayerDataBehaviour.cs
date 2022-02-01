@@ -72,6 +72,7 @@ namespace Laresistance.Behaviours
             BattleAbility support = BattleAbilityFactory.GetBattleAbility(playerCharacterData.PlayerSupportAbility, player.GetEquipmentContainer(), StatusManager);
 
             player.SetMainAbilities(playerAbilities, ultimate, support);
+            player.SetCharacterType((int)playerCharacterData.PlayerCharacterType);
 
             // Combos
             Combo[] combos = new Combo[combosData.Length];

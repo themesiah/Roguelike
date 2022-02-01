@@ -4,14 +4,18 @@ using UnityEngine;
 
 namespace Laresistance.Core
 {
+    [System.Serializable]
     public class EquipmentsContainer
     {
         private static int MAX_EQUIPS = 4;
-        public Equipment[] Equipments { get; private set; }
+        public Equipment[] Equipments { get { return equipments; } private set { equipments = value; } }
 
         public delegate void OnEquipmentEquipedHandler(EquipmentsContainer sender);
         public event OnEquipmentEquipedHandler OnEquip;
         public event OnEquipmentEquipedHandler OnUnequip;
+
+        [SerializeField]
+        private Equipment[] equipments;
 
         public EquipmentsContainer()
         {

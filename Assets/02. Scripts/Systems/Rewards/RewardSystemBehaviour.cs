@@ -1,4 +1,5 @@
 using GamedevsToolbox.ScriptableArchitecture.Values;
+using Laresistance.Behaviours;
 using Laresistance.Data;
 using System.Collections;
 using UnityEngine;
@@ -23,7 +24,19 @@ namespace Laresistance.Systems
 
         private void Start()
         {
-            rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
+            if (playerDataRef.Get() == null)
+            {
+                playerDataRef.RegisterOnSetEvent(OnPlayerSet);
+            } else
+            {
+                OnPlayerSet(playerDataRef.Get());
+            }
+        }
+
+        private void OnPlayerSet(PlayerDataBehaviour playerData)
+        {
+            if (playerData != null)
+                rewardSystem = new RewardSystem(playerDataRef.Get().player, bloodReference, hardCurrencyReference, uiLibrary);
         }
 
         private void OnEnable()

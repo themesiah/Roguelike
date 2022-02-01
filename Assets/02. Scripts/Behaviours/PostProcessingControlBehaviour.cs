@@ -13,13 +13,16 @@ namespace Laresistance.Behaviours
         Volume volume = default;
         [SerializeField]
         private ScriptableFloatReference chromaticAberrationValueRef = default;
+        [SerializeField]
+        private ScriptableFloatReference gainValueRef = default;
 
         private ChromaticAberration chromaticAberration;
+        private LiftGammaGain liftGammaGain;
 
         private void Start()
         {
             InitializeChromaticAberration();
-
+            InitializeLiftGammaGain();
         }
 
         private void InitializeChromaticAberration()
@@ -28,14 +31,22 @@ namespace Laresistance.Behaviours
             ChromaticAberrationChangeValue(0f);
         }
 
+        private void InitializeLiftGammaGain()
+        {
+            volume.profile.TryGet(out liftGammaGain);
+            LiftGammaGainChangeValue(0f);
+        }
+
         private void OnEnable()
         {
             chromaticAberrationValueRef.RegisterOnChangeAction(ChromaticAberrationChangeValue);
+            gainValueRef.RegisterOnChangeAction(LiftGammaGainChangeValue);
         }
 
         private void OnDisable()
         {
             chromaticAberrationValueRef.UnregisterOnChangeAction(ChromaticAberrationChangeValue);
+            gainValueRef.UnregisterOnChangeAction(LiftGammaGainChangeValue);
         }
 
         public void ChromaticAberrationChangeValue(float value)
@@ -43,6 +54,14 @@ namespace Laresistance.Behaviours
             if (chromaticAberration != null)
             {
                 chromaticAberration.intensity.value = value * GameConstantsBehaviour.Instance.chromaticAberrationMaxIntensity.GetValue();
+            }
+        }
+
+        public void LiftGammaGainChangeValue(float value)
+        {
+            if (liftGammaGain != null)
+            {
+                liftGammaGain.gain.value = Vector4.one * -value;
             }
         }
     }

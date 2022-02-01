@@ -12,8 +12,12 @@ namespace Laresistance.Systems
 
         public void RestartGame()
         {
-            GameSceneManager gsm = GameSceneManager.Instance;
-            gsm.ChangeScene(sceneReference);
+            GameSceneManager.Instance.ChangeScene(sceneReference);
+        }
+
+        public void LoadScene(AssetReference newScene)
+        {
+            GameSceneManager.Instance.ChangeScene(newScene);
         }
     }
 }

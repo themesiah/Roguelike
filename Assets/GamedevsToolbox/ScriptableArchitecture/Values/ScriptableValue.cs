@@ -13,8 +13,20 @@ namespace GamedevsToolbox.ScriptableArchitecture.Values
         [Tooltip("A default value may come in handy to reset it at the start of a level, for example.")]
         private T defaultValue = default;
 
+        [SerializeField]
+        private bool resetOnAwake = false;
+
         private T lastValue;
         private UnityAction<T> onValueChangedEvent = delegate { };
+
+        private void Awake()
+        {
+            if (resetOnAwake)
+            {
+                Debug.LogFormat("ScriptableValue {0} reseted on awake", name);
+                ResetValue();
+            }
+        }
 
         #region IScriptableValue implementation
         public virtual T GetValue()

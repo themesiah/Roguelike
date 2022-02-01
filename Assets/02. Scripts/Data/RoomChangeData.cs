@@ -9,5 +9,6 @@ namespace Laresistance.Data
         public Transform enterPoint;
         public Transform exitPoint;
         public Collider2D bounds;
+        public bool instantRoomChange;
     }
 }

@@ -8,6 +8,7 @@ namespace Laresistance.Systems.Dialog
     public abstract class DialogBase
     {
         protected bool continueSignal = false;
+        public bool continueDialog;
 
         public abstract IEnumerator SetDialog(DialogVariablesStatus dialogVariablesStatus, TextMeshProUGUI dialogRef, TextMeshProUGUI questionRef, 
             TextMeshProUGUI answer1Ref, TextMeshProUGUI answer2Ref, Button answer1Button, Button answer2Button);

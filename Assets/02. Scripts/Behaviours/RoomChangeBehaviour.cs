@@ -17,6 +17,8 @@ namespace Laresistance.Behaviours
         private bool snapExitPointToFloor = true;
         [SerializeField]
         private bool changeRoomOnEnterTrigger = true;
+        [SerializeField]
+        private bool instantRoomChange = false;
 
         [SerializeField]
         private RoomChangeBehaviour nextRoom = default;
@@ -98,7 +100,7 @@ namespace Laresistance.Behaviours
 
         public RoomChangeData GetRoomChangeData()
         {
-            return new RoomChangeData(){ enterPoint = roomEnterPoint, exitPoint = roomExitPoint, nextRoom = nextRoom, bounds = roomBounds };
+            return new RoomChangeData(){ enterPoint = roomEnterPoint, exitPoint = roomExitPoint, nextRoom = nextRoom, bounds = roomBounds, instantRoomChange = instantRoomChange };
         }
 
         public void SetAsLevelEnd()

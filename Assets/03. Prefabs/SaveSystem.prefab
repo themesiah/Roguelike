@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8201132392185665122}
   - component: {fileID: 9064644352779028495}
   - component: {fileID: 6175843839166874514}
+  - component: {fileID: 7752149899534278073}
+  - component: {fileID: 7824352708192809154}
   m_Layer: 0
   m_Name: SaveSystem
   m_TagString: Untagged
@@ -44,19 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b4af22b0762ea4f96923d3dc665247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hardCurrencyReference:
-    useConstant: 0
-    value: {fileID: 11400000, guid: ac30778dae8d5904ea0d437121888166, type: 2}
-    constantValue: 0
-    useRandom: 0
-    minMax:
-      useConstant: 1
-      value: {fileID: 0}
-      constantValue: {x: 0, y: 0}
-  doubleJumpReference:
-    useConstant: 0
-    value: {fileID: 11400000, guid: 1733f5ae7108bb948942eef12e4550f3, type: 2}
-    constantValue: 0
   rumbleActiveReference:
     useConstant: 0
     value: {fileID: 11400000, guid: e9c9c579a233f8942b249ad639262999, type: 2}
@@ -97,7 +86,21 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
+  hardCurrencyReference:
+    useConstant: 0
+    value: {fileID: 11400000, guid: ac30778dae8d5904ea0d437121888166, type: 2}
+    constantValue: 0
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
+  doubleJumpReference:
+    useConstant: 0
+    value: {fileID: 11400000, guid: 1733f5ae7108bb948942eef12e4550f3, type: 2}
+    constantValue: 0
   dialogsStatus: {fileID: 11400000, guid: da5ec8215e52df34b92cefaefcaad07b, type: 2}
+  playerDataRef: {fileID: 11400000, guid: c3245c85c7994f7488fafaca1358588e, type: 2}
 --- !u!114 &6175843839166874514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +121,64 @@ MonoBehaviour:
       - m_Target: {fileID: 9064644352779028495}
         m_TargetAssemblyTypeName: Laresistance.Behaviours.SaveGameBehaviour, GameScripts
         m_MethodName: SaveGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7752149899534278073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4033904729299518214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: 2f48fee403834574d867876d7cc2746d, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9064644352779028495}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.SaveGameBehaviour, GameScripts
+        m_MethodName: SavePreferences
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7824352708192809154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4033904729299518214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: e2861818c102ed94ca40fb8f94c0dccb, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9064644352779028495}
+        m_TargetAssemblyTypeName: Laresistance.Behaviours.SaveGameBehaviour, GameScripts
+        m_MethodName: SaveRun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

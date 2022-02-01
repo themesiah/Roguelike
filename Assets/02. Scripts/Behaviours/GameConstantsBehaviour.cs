@@ -75,6 +75,8 @@ namespace Laresistance.Behaviours
         [Header("Effect constants")]
         [Tooltip("Max intensity for chromatic aberration when stopping time")]
         public ScriptableFloatReference chromaticAberrationMaxIntensity = default;
+        [Tooltip("Room change gain fade time")]
+        public ScriptableFloatReference roomChangeGainFadeTime = default;
 
         [Header("Enemy map constants")]
         [Tooltip("Vertical raycast length")]

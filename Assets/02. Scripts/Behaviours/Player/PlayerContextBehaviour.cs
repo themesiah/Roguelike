@@ -49,7 +49,9 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private ScriptableIntReference battlePositionIntegerReference = default;
         [SerializeField]
+        private ScriptableFloatReference gainValueRef = default;
         [Tooltip("Group of entities followed by the combat camera")]
+        [SerializeField]
         private RuntimeSingleCinemachineTargetGroup targetGroupRef = default;
         [SerializeField]
         private ScriptableIntReference difficultyRef = default;
@@ -65,6 +67,8 @@ namespace Laresistance.Behaviours
         private CharacterDialog systemDialog = default;
         [SerializeField]
         private DialogVariablesStatus dialogVariablesStatus = default;
+        [SerializeField]
+        private GameEvent loadBossRoomEvent = default;
 
         private SimpleSignalStateMachine stateMachine;
         private GameContextBattleState battleState;
@@ -80,7 +84,7 @@ namespace Laresistance.Behaviours
                 battlePositionIntegerReference, virtualCameraChangeEvent, targetGroupRef, saveGameEvent,
                 difficultyRef, playerSelectionIndexRef.GetValue());
             states.Add("Battle", battleState);
-            roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent, finishedChangingRoomEvent);
+            roomChangeState = new GameContextRoomChangeState(gameObject, camera, playerMovementData, boundsChangeEvent, finishedChangingRoomEvent, gainValueRef);
             states.Add("RoomChange", roomChangeState);
             states.Add("UI", new GameContextUIState(actionMapSwitchEvent));
 
@@ -160,7 +164,7 @@ namespace Laresistance.Behaviours
         {
             if (rcb.IsLevelEnd)
             {
-                StartCoroutine(SystemDialogCoroutine(0));
+                StartCoroutine(BossRoomCoroutine());
             }
             else
             {
@@ -170,10 +174,13 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private IEnumerator SystemDialogCoroutine(int dialogValue)
+        private IEnumerator BossRoomCoroutine()
         {
-            dialogVariablesStatus.SetVariable("SystemStatus", dialogValue);
             yield return dialogEvent?.Raise(systemDialog);
+            if (dialogVariablesStatus.GetVariable("RoomChange") == 2)
+            {
+                loadBossRoomEvent?.Raise();
+            }
         }
 
         public void PerformTimeStop(InputAction.CallbackContext context)

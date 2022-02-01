@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 112433446}
   - component: {fileID: 112433447}
+  - component: {fileID: 112433448}
   m_Layer: 0
   m_Name: Scenario
   m_TagString: Untagged
@@ -197,6 +198,36 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
           GamedevsToolbox
         m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  gameSceneManager: {fileID: 11400000, guid: 3b074aaa37b14fe4eabb46b3dba95650, type: 2}
+--- !u!114 &112433448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112433445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c3f4e9c207f1439810d58644a2746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnEvent: 0
+  Event: {fileID: 11400000, guid: 81c229074080e7a429f690c0abe0ec01, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 112433447}
+        m_TargetAssemblyTypeName: Laresistance.LevelGeneration.MapGeneration, GameScripts
+        m_MethodName: LoadBossRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -434,22 +465,6 @@ PrefabInstance:
       propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: Laresistance.Behaviours.ControlsChangedBehaviour, GameScripts
       objectReference: {fileID: 0}
-    - target: {fileID: 4924904879671359768, guid: e18ac95fe16a33f4391cba41e5f3ab1c, type: 3}
-      propertyPath: m_DefaultActionMap
-      value: 4f71f2bf-41c9-4caa-a7ea-457b428630ad
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924904879671359768, guid: e18ac95fe16a33f4391cba41e5f3ab1c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[43].m_ActionId
-      value: 14ec6281-b99c-4682-920e-d804b6adb762
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924904879671359768, guid: e18ac95fe16a33f4391cba41e5f3ab1c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[43].m_ActionName
-      value: PlayerMap/MapAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924904879671359768, guid: e18ac95fe16a33f4391cba41e5f3ab1c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[43].m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8518079533580569094, guid: e18ac95fe16a33f4391cba41e5f3ab1c, type: 3}
       propertyPath: logDebug
       value: 1
@@ -598,6 +613,10 @@ PrefabInstance:
     - target: {fileID: 1746925007, guid: 1e7d78d15487a3a4295ac15f3bba5cec, type: 3}
       propertyPath: m_SortingLayer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126503037837757137, guid: 1e7d78d15487a3a4295ac15f3bba5cec, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7126503037837757138, guid: 1e7d78d15487a3a4295ac15f3bba5cec, type: 3}
       propertyPath: m_RootOrder

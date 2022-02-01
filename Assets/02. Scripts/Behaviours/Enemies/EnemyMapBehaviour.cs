@@ -29,31 +29,34 @@ namespace Laresistance.Behaviours
         [SerializeField]
         private UnityEvent OnPlayerLost = default;
 
-        private IMovementManager movementManager;
         private SimpleSignalStateMachine stateMachine;
 
         protected void Awake()
         {
-            IPlayerCollidable playerCollidable = GetComponent<IPlayerCollidable>();
-            GameObject playerObject = playerDataRef.Get().gameObject;
-            stateMachine = new SimpleSignalStateMachine();
-            Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
+            if (!partyMember)
+            {
+                IPlayerCollidable playerCollidable = GetComponent<IPlayerCollidable>();
+                GameObject playerObject = playerDataRef.Get().gameObject;
+                stateMachine = new SimpleSignalStateMachine();
+                Dictionary<string, ICoroutineState> states = new Dictionary<string, ICoroutineState>();
 
-            states.Add("Move", new EnemyMapSimpleMovementState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable, OnPlayerDiscovered, OnPlayerLost));
-            if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.Chase)
-            {
-                states.Add("PlayerDiscover", new EnemyMapChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
-            } else if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.DistanceAttack)
-            {
-                states.Add("PlayerDiscover", new EnemyMapDistanceAttack(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
-            } else
-            {
-                states.Add("PlayerDiscover", new EnemyMapDummyChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
+                states.Add("Move", new EnemyMapSimpleMovementState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable, OnPlayerDiscovered, OnPlayerLost));
+                if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.Chase)
+                {
+                    states.Add("PlayerDiscover", new EnemyMapChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
+                }
+                else if (enemyMapData.DiscoverBehaviour == EnemyMapData.PlayerDiscoveredBehaviour.DistanceAttack)
+                {
+                    states.Add("PlayerDiscover", new EnemyMapDistanceAttack(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
+                }
+                else
+                {
+                    states.Add("PlayerDiscover", new EnemyMapDummyChaseState(characterController, enemyMapData, raycastLayerMask.value, raycastPivot, visibilityPivot, playerObject, playerCollidable));
+                }
+
+                stateMachine.SetStates(states);
+                StartCoroutine(StateMachineCoroutine());
             }
-
-            stateMachine.SetStates(states);
-            StartCoroutine(StateMachineCoroutine());
-            movementManager = new EnemySimpleMovementManager(characterController, enemyMapData, raycastLayerMask.value, raycastPivot);
         }
 
         private IEnumerator Start()
@@ -76,25 +79,15 @@ namespace Laresistance.Behaviours
             }
         }
 
-        private void FixedUpdate()
-        {
-            if (!partyMember)
-            {
-                //movementManager.Tick(Time.deltaTime);
-            }
-        }
-
         public override void PauseMapBehaviour()
         {
             //base.PauseMapBehaviour();
-            movementManager?.Pause();
             stateMachine.Pause();
         }
 
         public override void ResumeMapBehaviour()
         {
             //base.ResumeMapBehaviour();
-            movementManager?.Resume();
             stateMachine.Resume();
         }
 

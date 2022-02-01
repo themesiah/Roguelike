@@ -2999,6 +2999,15 @@ MonoBehaviour:
       useConstant: 1
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
+  gainValueRef:
+    useConstant: 0
+    value: {fileID: 11400000, guid: 31a0aae4e5501b54db1acf4fbca12174, type: 2}
+    constantValue: 0
+    useRandom: 0
+    minMax:
+      useConstant: 1
+      value: {fileID: 0}
+      constantValue: {x: 0, y: 0}
   targetGroupRef: {fileID: 11400000, guid: acf40ad936be1774b875e4eee8cf15de, type: 2}
   difficultyRef:
     useConstant: 0
@@ -3010,8 +3019,8 @@ MonoBehaviour:
       value: {fileID: 0}
       constantValue: {x: 0, y: 0}
   playerSelectionIndexRef:
-    useConstant: 1
-    value: {fileID: 0}
+    useConstant: 0
+    value: {fileID: 11400000, guid: f18763231c034de4b9d94e4e1a5120d1, type: 2}
     constantValue: 0
     useRandom: 0
     minMax:
@@ -3024,6 +3033,7 @@ MonoBehaviour:
   dialogEvent: {fileID: 11400000, guid: 4d754f6a9a4c39d4391663fc64b925f8, type: 2}
   systemDialog: {fileID: 11400000, guid: 6039e569b68f19c489178ef27295e5f5, type: 2}
   dialogVariablesStatus: {fileID: 11400000, guid: da5ec8215e52df34b92cefaefcaad07b, type: 2}
+  loadBossRoomEvent: {fileID: 11400000, guid: 81c229074080e7a429f690c0abe0ec01, type: 2}
 --- !u!114 &23771297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4496,6 +4506,19 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 11400000, guid: ed7cd1f2cdf86fa4bbeb8008e3ccb235, type: 2}
+        m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
+          GamedevsToolbox
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 2f48fee403834574d867876d7cc2746d, type: 2}
         m_TargetAssemblyTypeName: GamedevsToolbox.ScriptableArchitecture.Events.GameEvent,
           GamedevsToolbox
         m_MethodName: Raise

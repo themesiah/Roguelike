@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Laresistance.Core
 {
+    [System.Serializable]
     public class Minion : ShowableElement, ISlot
     {
         private static int MAX_MINION_LEVEL = 10;
@@ -15,8 +16,10 @@ namespace Laresistance.Core
         public MinionData Data { get; private set; }
         private BattleAbility[] abilities = default;
         private EquipmentsContainer equipmentsContainer;
+        [System.NonSerialized]
         public BattleStatusManager StatusManager;
-        public int Level { get; set; }
+        public int Level;
+        public string minionId;
 
         public Minion(MinionData data, BattleAbility[] abilities, int level, BattleStatusManager statusManager)
         {
@@ -32,6 +35,7 @@ namespace Laresistance.Core
                 throw new System.Exception("A minion level must be at least 1 and " + MAX_MINION_LEVEL + " at max");
             Level = level;
             this.StatusManager = statusManager;
+            this.minionId = data.NameRef;
         }
 
         public void SetEquipmentsContainer(EquipmentsContainer equipments)

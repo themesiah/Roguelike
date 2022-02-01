@@ -105,5 +105,10 @@ namespace Laresistance.Battle
         {
             return maxHealth + (maxHealthStat * GameConstantsBehaviour.Instance.maxHealthStatAmount.GetValue());
         }
+
+        public int[] GetStats()
+        {
+            return new int[] { damageStat, shieldStat, healStat, statusTimeStat, maxHealthStat };
+        }
     }
 }

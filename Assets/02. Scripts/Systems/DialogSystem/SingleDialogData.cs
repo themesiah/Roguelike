@@ -16,6 +16,14 @@ namespace Laresistance.Systems.Dialog
         public Vector2 gridPosition;
 
         public DialogBase Dialog => normalDialog ? (DialogBase)dialog : (DialogBase)questionDialog;
-        public bool Continue => !normalDialog;
+        public bool Continue()
+        {
+            if (dialog != null) 
+            {
+                return dialog.continueDialog;
+            } else {
+                return questionDialog.continueDialog;
+            }
+        }
     }
 }

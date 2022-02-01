@@ -108,7 +108,7 @@ namespace Laresistance.Systems.Dialog
             {
                 dialogVariablesStatus.SetVariable(variableData.name, variableData.value);
             }
-            if (singleDialogData.Continue)
+            if (singleDialogData.Continue())
             {
                 yield return StartDialogCoroutine(characterDialog);
             }

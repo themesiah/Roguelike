@@ -8,6 +8,7 @@ using Laresistance.Behaviours;
 using Laresistance.Data;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using Laresistance.Systems;
 
 namespace Laresistance.LevelGeneration
 {
@@ -32,6 +33,8 @@ namespace Laresistance.LevelGeneration
         private RuntimePlayerDataBehaviourSingle playerDataRef = default;
         [SerializeField]
         private UnityEvent onFinishedGenerating = default;
+        [SerializeField]
+        private ScriptableGameSceneManager gameSceneManager = default;
 
         private int currentSeed = 0;
 
@@ -48,6 +51,7 @@ namespace Laresistance.LevelGeneration
             else
             {
                 yield return GenerateMap();
+
             }
         }
 
@@ -107,6 +111,11 @@ namespace Laresistance.LevelGeneration
         private XYPair GenerateMapSize()
         {
             return new XYPair() { x = 3, y = 3 };
+        }
+
+        public void LoadBossRoom()
+        {
+            gameSceneManager.LoadScene(biome.BossSceneRef);
         }
     }
 }
